@@ -1,0 +1,81 @@
+# fss-0002 iki-0000
+#
+# license: open-standard-license-1.0
+#
+# This file (assumed to be named packet.txt) can be more easily read using the following iki_read commands:
+#   iki_read packet.txt +Q -w -W code '"' '"'
+#
+# To read the "Packet Documentation" section of this file, use this command sequence:
+#   fss_basic_list_read packet.txt +Q -cn "Packet Documentation" | iki_read +Q -w -W code '"' '"'
+#
+
+Packet Documentation:
+  Describes how a packet is designed and intended to be used.
+
+  The code:"packet" is the general category in which multiple types of packets belong.
+  This describes the different packets based on their code:"type".
+
+  Each packet begins with a control block and a size block followed by a payload block.
+
+    The control block\:
+      The leading bit (starting from the left) designates the the format of the payload, which is 0 for string and 1 for binary.
+      The second bit (starting from the left) designates the the byte order for the rest of the packet, which 0 is for little endian and 1 is for big endian.
+      The remaining 6-bits are reserved for future use.
+
+    The size block\:
+      The size block represents the size of the entire packet (the control block, the size blocks, and the payload block).
+      This number is a single 32-bit unsigned integer.
+
+      Example packet structure\:
+      block:"
+        [ Control Block ] [ Size Block                                  ] [ Payload Block         ]
+        [ 0b10000000    ] [ 0b00000000 0b00000000 0b00000100 0b11010010 ] [ size: 1229 (1234 - 5) ]
+      "
+
+    The payload block\:
+      This block is represented by the code:"FSS-000E (Payload)" specification and its structure ad use is described in the next sections.
+
+      The following types of payload are received or sent\:
+      1) controller payload.
+      2) error payload.
+      3) init payload.
+
+  The controller payload\:
+    Commands being sent to the controller and their respective responses utilize a code:"controller" payload.
+    These are pre-defined commands to rules or the controller program itself.
+    Commands such as starting or stopping some rule, for example.
+    A controller payload is also sent in response to a controller payload request to represent a success.
+
+      The code:"now" condition designates that the kexec, reboot, or shutdown is to begin immediately.
+      The code:"at" condition designates that the kexec, reboot, or shutdown is to begin once a specific date and time is reached by the system clock.
+      The code:"in" condition designates that the kexec, reboot, or shutdown is to begin once a specific amount of time is passed by the system clock since the execution of this command started.
+
+    For these code:"time" conditions, different units of time should be supported, such as code:"seconds", code:"days", code:"years" as standard time, Time, or UNIX Time (Epoch Time).
+
+    The normal code:"controller" payload commands are any valid Rule Action that performs some action.
+    This does not include Actions that provide some setting or configuration (such as code:"with_pid").
+    Some of the supported commands are: code:"freeze", code:"kill", code:"pause", code:"reload", code:"rerun", code:"restart", code:"resume", code:"start", code:"stop", or code:"thaw".
+    Multiple commands may be sent multiple code:"action" headers.
+    The code:"action" headers are order sensitive, executing from top to bottom, and one does not start until the previous successfully completes.
+
+    Multiple code:"status" headers may exist in the response so long as they each match an code:"action" in the request.
+
+    The code:"payload" is expected to be empty and have a length of 0 for a request.
+    The code:"payload" may have an code:"FSS-0000 (Basic)" format containing a single Object code:"message" to represent a message associated with an action.
+    Multiple code:"message" may exist in the response so long as they each match an code:"action" in the request.
+
+  The error payload\:
+    The error payload is intended to communicate some sort of failure.
+    The error payload is only sent in response to some request (and not in response to another response).
+    The control (the client) is not expected to send error payloads and the controller (the service) should send an error in response to an error payload or ignore it entirely.
+    The code:"status" from the code:"header" designates the status code as either a status code name string or a status code number (where a number may have error and warning bits).
+    The code:"payload" will contain a NULL terminated string representing the message used to describe the error.
+
+  The init payload\:
+    The init payload is intended exclusively for the code:"init" operation mode and is expected to only be available when running as code:"init".
+    This is used to provide special actions, namely code:"kexec", code:"reboot", and code:"shutdown".
+
+    The code:"kexec" is for booting into another kernel, which may effectively be the same as a code:"reboot" ("kexec" is currently neither supported nor implemented).
+    The code:"reboot" is for rebooting the machine (currently not implemented).
+    The code:"shutdown" is for shutting down the machine (currently not implemented).
+    These three commands are configurable to fire off based on conditions.

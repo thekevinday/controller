@@ -1,0 +1,238 @@
+# fss-0002 iki-0000
+#
+# license: open-standard-license-1.0
+#
+# This file (assumed to be named rule.txt) can be more easily read using the following iki_read commands:
+#   iki_read rule.txt +Q -r PID PID -w -W code '"' '"'
+#
+# To read the "Rule Documentation" section of this file, use this command sequence:
+#   fss_basic_list_read rule.txt +Q -cn "Rule Documentation" | iki_read +Q -r PID PID -w -W code '"' '"'
+#
+
+Rule Documentation:
+  This describes the intent and purpose of a Rule file.
+
+  A Rule file, such as code:"ssh.rule", is intended to designate what to execute.
+
+  The rule file is read top-down, except for the outer most list code:"settings", which is intended to store setting data for this rule.
+  Multiple outer most list Objects may be specified and they are executed as provided, in a top-down manner.
+
+  - The code:"settings" Rule Type has the following code:"FSS-0001 (Extended)" Content\:
+    - code:"affinity": Define one or more processors to restrict this rule by with each number representing a specific processor by its id (starting at 0).
+    - code:"capability": Define a set of capabilities in which to use, using the capability code:"text" format (such as code:"= cap_chown+ep").
+    - code:"cgroup": Define a cgroup (control group) in which everything within this rule executes under.
+    - code:"define": A single environment variable name and its associated value that is automatically exposed to processes executed within this rule.
+    - code:"engine": An executable name of a script, such as code:"bash", to use for the code:"script" Rule Type (which likely defaults to code:"bash" if not specified).
+    - code:"environment": A set of environment variables to expose to the processes executed within this rule (PATH is always exposed).
+    - code:"group": A set of group names or IDs to execute as with the first group being the primary group and all remaining being supplementary groups.
+    - code:"limit": Define a resource limit to use (multiple limits may be specified, but only once for each type).
+    - code:"name": A name used to represent this rule, which is printed to the user, screen, logs, etc...
+    - code:"nice": A single niceness value to run all processes executed within this rule as (-20 gets to be greediest in CPU usage and 19 being the nicest in CPU usage).
+    - code:"on": Define a Rule Action in which a specified dependency is needed, wanted, or wished for.
+    - code:"parameter": An IKI name and its associated value for use in this rule file.
+    - code:"path": A single Content used to set a custom PATH environment variable value.
+    - code:"scheduler": A valid name of a scheduler to use followed by an optional priority number.
+    - code:"timeout": A set of timeouts to wait for in which to perform a set action or to consider failure.
+    - code:"user": A single user name or ID to execute as.
+
+  - The code:"capability" setting\:
+    If the user the controller program is run as does not have the desired capabilities already, they cannot be added.
+    This essentially maintains or reduces the capabilities already available.
+    Due to capabilities only being a draft in the POSIX standard, one may expect code:"capabilities" support may not be available and in such a case this setting will do nothing.
+    If the dependent project (f_capability) does not have libcap support enabled, then capabilities will be unsupported by the compilation of this project.
+
+  - The code:"control" setting\:
+    The first argument is either code:"existing" or code:"new", where for code:"existing" the process is run inside the existing control used by the parent and when code:"new" the process is executed within a new control group namespace entirely.
+
+  - The code:"define" setting\:
+    Use this to define an environment variable (this overwrites any existing environment variable with this name).
+    A define is both exported as an environment variable as well as exposed as an IKI variable.
+    Example IKI variable substitution: for code:"define PATH /bin:/sbin", the associated IKI variable would look like: define:"PATH".
+
+    All environment variables, including those defined using this, must be in the code:"environment" list to be exported to the executed process.
+    Environment variables added here that are not added to the environment are still exposed as an IKI variable.
+
+  - The code:"engine" setting\:
+    This engine is used for both code:"script" and code:"utility" Rule Types.
+    The program that engine refers to must accept a standard input pipe to be supported.
+    Additional parameters may be passed to the engine.
+
+  - The code:"group" and code:"user" settings\:
+    Only users and groups that the user the controller program is being run as is allowed to use may be used.
+
+  - The code:"limit" setting\:
+    The first parameter must be one of: code:"as", code:"core", code:"cpu", code:"data", code:"fsize", code:"locks", code:"memlock", code:"msgqueue", code:"nice", code:"nofile", code:"nproc", code:"rss", code:"rtprio", code:"rttime", code:"sigpending", or code:"stack".
+    The second parameter represents the soft limit.
+    The third parameter represents the hard limit.
+    This may be specified multiply times, but only once for each type.
+
+  - The code:"on" setting\:
+    The first parameter represents the Action the dependency exists under and must be one of: code:"freeze", code:"kill", code:"pause", code:"reload", code:"restart", code:"resume", code:"start", code:"stop", or code:"thaw".
+    The second parameter represents how the dependency is required and must be one of: code:"need", code:"want", or code:"wish".
+    The third parameter is a partial path to the rule file.
+    The fourth parameter represents the name of the rule file.
+
+    - In the case of the second parameter\:
+      - A code:"need" designates that the dependent rule is required to be executed (must exist and must succeed).
+      - A code:"want" designates that the dependent rule is to be executed (may exist and if it does, then it must succeed).
+      - A code:"wish" designates that the dependent rule is to be executed (may exist and if it does, but it does not need to succeed).
+
+      In the case of code:"want" and code:"wish", if the desired rule is either not found or is otherwise disabled, then this will not fail or otherwise block the wanting or wishing rule.
+
+  - The code:"path" setting\:
+    When specified, the code:"PATH" environment variable is automatically added to the code:"environment" setting.
+
+  - The code:"parameter" setting\:
+    Use this to define an IKI variable name and value.
+    These do not conflict with environment variables and are not exposed as environment variables.
+    Example IKI variable substitution: for code:"parameter hello world", the associated IKI variable would look like: parameter:"hello".
+
+  - The code:"scheduler" setting\:
+    The valid range of the priority number is dependent on the scheduler.
+    For example, non-real-time schedulers (such as code:"idle") only support a value of 0 whereas real-time schedulers (such as code:"fifo") only support an inclusive range of 1 to 99.
+    Supported non-real-time schedulers are: code:"batch", code:"idle", and code:"other" (aka: normal/default).
+    Supported real-time schedulers are: code:"deadline", code:"fifo", code:"round_robin".
+
+  - The code:"timeout" setting\:
+    (This is not currently implemented.)
+    Provides settings for each of the three special situations: code:"kill", code:"start", and code:"stop".
+    Each of these may only have a single one exist at a time (one code:"kill", one code:"start", and one code:"stop").
+    Each successive code:"timeout" Item Action, specific to each Action Name (such as code:"start"), specified replaces the previously defined code:"timeout" Action (in a top-down manner).
+    The second Content for each of these, when specified, may be a 0 or greater whole number representing the number of MegaTime (MT) (equivalent to milliseconds).
+    For code:"kill", this represents the number of MegaTime to wait after stopping some Rule and that Rule has not yet stopped to forcefully stop the Rule (aka kill the Rule).
+    For code:"start", this represents the number of MegaTime to wait after starting some Rule before assuming something went wrong and the Rule is returned as failed.
+    For code:"stop", this represents the number of MegaTime to wait after stopping some Rule before assuming something went wrong and the Rule is returned as failed.
+    If the second Content is not specified, then this disables the type (prevents the specified timeout action).
+
+  There are four available Rule Types to choose from: code:"command", code:"service", code:"script", and code:"utility".
+
+  The code:"command" Rule Type provides a simple command to run under the different circumstances: code:"start", code:"stop", code:"restart", and code:"reload".
+  A code:"command" always operates in the foreground.
+
+  The code:"service" Rule Type provides a code:"command" accompanied with a PID:"Process Identifier" file (Process Identifier file).
+
+  The code:"script" Rule Type provides a series of lines to be executed by some engine, such as GNU Bash.
+  This code:"script" operates in the foreground, but individual things done within the script may operate in foreground or background.
+  The last return state is treated as an error, so be sure to finish the script with a return code of 0 to designate no error and any other whole number, such a 1, to designate an error.
+  Therefore passing code:"exit 1" would return as an error and passing code:"exit 0" would return as a success.
+  A code:"script" is assumed to be in GNU Bash, which is the default expected behavior, but the specification does not explicitly require this.
+  Another scripting language can be used but changing this incurs the responsibility to ensure all rules are updated to the appropriate scripting language.
+
+  The code:"utility" Rule Type provides a code:"script" accompanied with a PID:"Process Identifier" file (Process Identifier file).
+
+  There are nine Rule Actions used to execute ("freeze", code:"kill", code:"pause", code:"reload", code:"restart", code:"resume", code:"start", code:"stop", and code:"thaw")\:
+    When code:"restart" Object's Content is not provided, then code:"start" and code:"stop" is called when the rule is executed using the restart Action, if both code:"start" and code:"stop" are provided.
+    When code:"reload", code:"start", or code:"stop" Object's Content are not provided, then no respective Action is performed.
+
+    Commands are conditionally available depending on the presence of these, such as if code:"stop" is not provided then code:"stop" (and code:"restart") will not be available for the code:"control" program(s) to use.
+
+  Thee are additional Rule Actions not used to execute ("pid_file", code:"rerun", and code:"with")\:
+    - The code:"pid_file" Object's Content designates the path to the PID:"Process Identifier" file created by the called program.
+
+    - The code:"rerun" Object's Content designates how to re-run a given execution Rule type.
+      - The first Content represents the execution type, which may be one of: code:"freeze", code:"kill", code:"pause", code:"reload", code:"restart", code:"resume", code:"start", code:"stop", and code:"thaw".
+
+      - The second Content represents when to run this re-run is triggered, which is either code:"success" (return code of 0) or code:"failure" (return code is not 0).
+
+      - The third Content and more represent additional options for fine tuning how the re-run is Performed\:
+        When code:"delay", followed by a number of MegaTime (MT) (equivalent to milliseconds) in which to wait before attempting the re-run.
+        When code:"max", followed by a positive number or the number 0 designating the maximum number of re-runs to perform.
+        When code:"reset", the code:"max" re-run counter is reset for the opposite re-run when this re-run is triggered, such as\:
+          A code:"rerun start success reset" and a code:"rerun failure max 10", the failure counter would reset to 0 when the code:"success" re-run is performed and not when the code:"failure" re-run is performed.
+
+        A code:"max" of 0 designates that the re-run will happen infinitely.
+
+    - The code:"with" Object's Content designates special flags designating very specific behavior to be applied to any single Rule Type.
+      The following flags are supported:
+        - code:"full_path": Used only by Rule Types that execute something, wherein the entire full path is used for execution and is assigned as argument[0] (such as code:"/bin/bash").
+                       When not specified, the path provided is used and the argument[0] will be the base name (such as code:"bash").
+        - code:"session_new": Execute in a new session setting the process group to the executed process' id (making the executed process a code:"controlling terminal").
+        - code:"session_same": Execute in the same session where the process group is set to the parent process id.
+
+  IKI Variables\:
+    All Rule Actions support IKI variable substitution.
+    The Rule Settings do not support IKI variable substitution.
+
+    The following IKI variable names are supported\:
+    - define
+    - parameter
+    - program
+
+    The code:"define" IKI variables, such as define:"PATH", expand environment variables.
+
+    The code:"parameter" IKI variables, such as parameter:"hello", expand IKI variables defined using the code:"parameter" Setting Rule Type.
+
+    The code:"program" IKI variables, such as program:"verbose:option", expand program arguments (where code:"verbose:option" might expand into code:"-v" ).
+
+    Only the following code:"program" IKI variables are supported\:
+      - dark\:
+        This variable holds the code:"dark" program parameters, such as code:"+d".
+        This supports code:":option".
+
+      - light\:
+        This variable holds the code:"light" program parameters, such as code:"+l".
+        This supports code:":option".
+
+      - no_color\:
+        This variable holds the code:"no_color" program parameters, such as code:"+n".
+        This supports code:":option".
+
+      - quiet\:
+        This variable holds the code:"quiet" program parameters, such as code:"+Q".
+        This supports code:":option".
+
+      - error\:
+        This variable holds the code:"error" program parameters, such as code:"+E".
+        This supports code:":option".
+
+      - normal\:
+        This variable holds the code:"normal" program parameters, such as code:"+N".
+        This supports code:":option".
+
+      - verbose\:
+        This variable holds the code:"verbose" program parameters, such as code:"+V".
+        This supports code:":option".
+
+      - debug\:
+        This variable holds the code:"debug" program parameters, such as code:"+D".
+        This supports code:":option".
+
+      - cgroup\:
+        This variable holds the code:"cgroup" program parameters, such as code:"-c /sys/fs/cgroup/".
+        This supports both code:":option" and code:":value".
+
+      - daemon\:
+        This variable holds the code:"daemon" program parameters, such as code:"-d".
+        This supports code:":option".
+
+      - init\:
+        This variable holds the code:"init" program parameters, such as code:"-I".
+        This supports code:":option".
+
+      - interruptible\:
+        This variable holds the code:"interruptible" program parameters, such as code:"-i".
+        This supports code:":option".
+
+      - pid\:
+        This variable holds the code:"pid" program parameters, such as code:"-p controller/run/default.pid".
+        This supports both code:":option" and code:":value".
+
+      - settings\:
+        This variable holds the code:"settings" program parameters, such as code:"-s controller/".
+        This supports both code:":option" and code:":value".
+
+      - simulate\:
+        This variable holds the code:"simulate" program parameters, such as code:"-S".
+        This supports code:":option".
+
+      - socket\:
+        This variable holds the code:"socket" program parameters, such as code:"-k controller/run/default.socket".
+        This supports both code:":option" and code:":value".
+
+      - uninterruptible\:
+        This variable holds the code:"uninterruptible" program parameters, such as code:"-U".
+        This supports code:":option".
+
+      - validate\:
+        This variable holds the code:"validate" program parameters, such as code:"-v".
+        This supports code:":option".

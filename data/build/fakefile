@@ -1,0 +1,51 @@
+# fss-0005 iki-0002
+
+settings:
+  fail exit
+  modes individual individual_thread level monolithic clang test fanalyzer coverage thread threadlesss
+
+  environment PATH LD_LIBRARY_PATH
+  environment LANG LC_ALL LC_COLLATE LC_CTYPE LC_FASTMSG LC_MESSAGES LC_MONETARY LC_NUMERIC LC_TIME LOCPATH NLSPATH
+
+main:
+  build settings
+  build settings.controller
+  build settings.init
+
+build_controller:
+  build settings
+  build settings.controller
+
+build_init:
+  build settings
+  build settings.init
+
+install:
+  shell ./install.sh parameter:'work' parameter:'verbosity' parameter:'color'
+  shell ./install.sh parameter:'work' parameter:'verbosity' parameter:'color' -s data/build/settings.controller
+  shell ./install.sh parameter:'work' parameter:'verbosity' parameter:'color' -s data/build/settings.init
+
+install_controller:
+  shell ./install.sh parameter:'work' parameter:'verbosity' parameter:'color'
+  shell ./install.sh parameter:'work' parameter:'verbosity' parameter:'color' -s data/build/settings.controller
+
+install_init:
+  shell ./install.sh parameter:'work' parameter:'verbosity' parameter:'color'
+  shell ./install.sh parameter:'work' parameter:'verbosity' parameter:'color' -s data/build/settings.init
+
+help:
+  print
+  print context:'title'Fakefile Options for Controller Program.context:'reset'
+
+  print
+  print The following operations are available\:
+  print "  - context:'notable'help:context:'reset'               Perform the help operation, printing this message."
+  print "  - context:'notable'build_controller:context:'reset'   Compilation using the build settings mode for the controller program."
+  print "  - context:'notable'build_init:context:'reset'         Compilation using the build settings mode for the init program."
+  print "  - context:'notable'install:context:'reset'            A helper operation that simply calls the ./install.sh script with default settings."
+  print "  - context:'notable'install_controller:context:'reset' A helper operation that simply calls the ./install.sh script with default settings."
+  print "  - context:'notable'install_init:context:'reset'       A helper operation that simply calls the ./install.sh script with default settings."
+  print "  - context:'notable'main:context:'reset'               The default compilation using the build settings mode."
+
+  print
+  print The context:'notable'install context:'reset'operation supports the context:'notable'work,context:'reset' context:'notable'verbosity,context:'reset' and context:'notable'color context:'reset'parameters.

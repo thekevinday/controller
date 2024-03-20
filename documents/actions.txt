@@ -1,0 +1,83 @@
+# fss-0002 iki-0000
+#
+# license: open-standard-license-1.0
+#
+# This file (assumed to be named actions.txt) can be more easily read using the following iki_read commands:
+#   iki_read actions.txt +Q -w -W code '"' '"'
+#
+# To read the "Actions Documentation" section of this file, use this command sequence:
+#   fss_basic_list_read actions.txt +Q -cn "Actions Documentation" | iki_read +Q -w -W code '"' '"'
+#
+
+Actions Documentation:
+  This describes the intent and purpose of the actions provided for individual Rules (or things related to a Rule).
+
+  Each Action represents a specific intent and purpose but many of these actions are customizable via the rule file.
+  One should expect an Action to operate as described here but the system administrator or distributor is fully capable of doing something different.
+  For those doing something different, appropriate documentation is suggested.
+
+  These actions should be usable by any code:"control" program that communicates with this code:"controller" program.
+  Should any code:"control" or code:"controller" program implementation not support any particular Action for any reason, one should report that the Action is unsupported.
+
+  - Freeze Action\:
+    The Freeze Action is an extension of a Control Group.
+    This is internal to the code:"controller" program and is not customizable via any Rule file.
+    For a customizable code:"freeze"-like capability, look into the Pause and Resume Actions.
+    This is the complement of the Thaw Action.
+
+    This designates that a processes Control Group is to be frozen.
+    All Rules (or any process not controlled by the code:"controller") that is within the same Control Group will be frozen.
+    (@todo consider instead designing this around the Control Groups instead of a code:"rule".)
+    (This documentation will likely change with consideration to the above @todo once this gets implemented.)
+
+    This must not attempt to freeze (or unfreeze) the Control Group that the code:"controller" belongs to.
+    Therefore, if a Rule does not specify a Control Group, then it is likely that the Freeze Action will be unsupported for that Rule/Control Group.
+
+  - Kill Action\:
+    Forcefully terminate some process controlled by the code:"controller".
+    This action cannot be blocked and it is recommended to use a Stop Action instead for a more proper termination.
+
+  - Pause Action\:
+    The Pause Action will pause (or freeze) the process controlled by the Rule.
+    Although similar to the Freeze Action, this is intended to communicate to an individual process and inform to Pause.
+    This is complemented by the Resume Action.
+
+  - Restart Action\:
+    The Restart Action will either perform a Stop Action and then a Restart Action or it will perform the Restart Action designated in some Rule file.
+    Ideally this should inform some process to perform its own restart routines.
+
+  - Resume Action\:
+    The Resume Action will unpause (or unfreeze) the process controlled by the Rule.
+    Although similar to the Thaw Action, this is intended to communicate to an individual process and inform to Resume.
+    This is complemented by the Pause Action.
+
+  - Reload Action\:
+    The Reload Action will perform the Reload Action designated in some Rule file.
+    Ideally this should inform some process to perform its own reload routines.
+    Many programs often differentiate the concept code:"reload" from the concept "restart" in that the program remains running during a code:"reload".
+
+  - Start Action\:
+    The Start Action will perform the Start Action designated in some Rule file.
+    This action should be used to start some program or script.
+    This is the action called by Entry file.
+    This is complemented by the Stop Action.
+
+  - Stop Action\:
+    The Stop Action will perform the Stop Action designated in some Rule file.
+    This action should be used to stop some program or script.
+    This is the action called for all running controlled processes on shutdown.
+    This is complemented by the Start Action.
+
+  - Thaw Action\:
+    The Thaw Action is an extension of a Control Group.
+    This is internal to the code:"controller" program and is not customizable via any Rule file.
+    For a customizable code:"thaw"-like capability, look into the code:"pause" and code:"resume" Actions.
+    This is complemented by the Freeze Action.
+
+    This designates that a processes Control Group is to be unfrozen.
+    All Rules (or any process not controlled by the code:"controller") that is within the same Control Group will be unfrozen.
+    (@todo consider instead designing this around the Control Groups instead of a code:"rule".)
+    (This documentation will likely change with consideration to the above @todo once this gets implemented.)
+
+    This must not attempt to thaw (or unthaw) the Control Group that the code:"controller" belongs to.
+    Therefore, if a Rule does not specify a Control Group, then it is likely that the Thaw Action will be unsupported for that Rule/Control Group.

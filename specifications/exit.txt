@@ -1,0 +1,131 @@
+# fss-0002 iki-0000
+#
+# license: open-standard-license-1.0
+#
+# This file (assumed to be named exit.txt) can be more easily read using the following iki_read commands:
+#   iki_read exit.txt +Q -w -W code '"' '"'
+#
+# To read the "Exit Specification" section of this file, use this command sequence:
+#   fss_basic_list_read exit.txt +Q -cn "Exit Specification" | iki_read +Q -w -W code '"' '"'
+#
+
+Exit Specification:
+  The Exit files follow the code:"FSS-0005 (Somewhat Basic List)" format.
+
+  An Exit file name is expected to have the file extension code:".exit".
+
+  For each Exit file\:
+    - The outer most part is a code:"FSS-0002 (Basic List)".
+    - The Basic List Object is considered the code:"Item".
+    - The Basic List Content are considered the code:"Actions".
+    - The code:"Actions" are code:"FSS-0001 (Extended)".
+    - Each Action Object is the code:"Action Name".
+    - Each Action Content are the code:"Action Parameters".
+
+  The Items\:
+    - code:"main": required.
+
+    - code:"settings": optional, Actions may be one of\:
+      - code:"pid": Exactly one Content that is one of code:"disable", code:"require", or code:"ready".
+      - code:"session": Exactly one Content that is one of  code:"new" or code:"same".
+      - code:"show": Exactly one Content that is one of  code:"normal" or code:"init".
+      - code:"timeout": One or Two content with the first being one of code:"exit", code:"start", code:"stop", or code:"kill" and the (optional) second Content being a positive whole number or 0.
+
+    The Exit file may have any other valid Item Objects, but only the above are reserved.
+
+    The Actions\:
+      - code:"consider": One or more Content.
+        The first Content that is the relative file path (without any leading/trailing slashes and without file extension).
+        The second Content that is the basename for a rule file.
+        The third and beyond may only be one of\:
+          - code:"asynchronous"
+          - code:"require"
+          - code:"wait"
+
+      - code:"failsafe": One Content that is a valid Object name, except for the reserved code:"main".
+
+      - code:"freeze": Two or more Content.
+        The first Content that is the relative directory path (without any leading/trailing slashes).
+        The second Content that is the basename for a rule file.
+        The third and beyond may only be one of\:
+          - code:"asynchronous"
+          - code:"require"
+          - code:"wait"
+
+      - code:"item": One Content that is a valid Object name, except for the reserved code:"main".
+
+      - code:"kill": Two or more Content.
+        The first Content that is the relative directory path (without any leading/trailing slashes).
+        The second Content that is the basename for a rule file.
+        The third and beyond may only be one of\:
+          - code:"asynchronous"
+          - code:"require"
+          - code:"wait"
+
+      - code:"pause": Two or more Content.
+        The first Content that is the relative directory path (without any leading/trailing slashes).
+        The second Content that is the basename for a rule file.
+        The third and beyond may only be one of\:
+          - code:"asynchronous"
+          - code:"require"
+          - code:"wait"
+
+      - code:"ready": Zero or One Content.
+        The first may only be one of\:
+        - code:"wait"
+
+      - code:"reload": Two or more Content.
+        The first Content that is the relative directory path (without any leading/trailing slashes).
+        The second Content that is the basename for a rule file.
+        The third and beyond may only be one of\:
+          - code:"asynchronous"
+          - code:"require"
+          - code:"wait"
+
+      - code:"restart": Two or more Content.
+        The first Content that is the relative directory path (without any leading/trailing slashes).
+        The second Content that is the basename for a rule file.
+        The third and beyond may only be one of\:
+          - code:"asynchronous"
+          - code:"require"
+          - code:"wait"
+
+      - code:"resume": Two or more Content.
+        The first Content that is the relative directory path (without any leading/trailing slashes).
+        The second Content that is the basename for a rule file.
+        The third and beyond may only be one of\:
+          - code:"asynchronous"
+          - code:"require"
+          - code:"wait"
+
+      - code:"start": Two or more Content.
+        The first Content that is the relative directory path (without any leading/trailing slashes).
+        The second Content that is the basename for a rule file.
+        The third and beyond may only be one of\:
+          - code:"asynchronous"
+          - code:"require"
+          - code:"wait"
+
+      - code:"stop": Two or more Content.
+        The first Content that is the relative directory path (without any leading/trailing slashes).
+        The second Content that is the basename for a rule file.
+        The third and beyond may only be one of\:
+          - code:"asynchronous"
+          - code:"require"
+          - code:"wait"
+
+      - code:"thaw": Two or more Content.
+        The first Content that is the relative directory path (without any leading/trailing slashes).
+        The second Content that is the basename for a rule file.
+        The third and beyond may only be one of\:
+          - code:"asynchronous"
+          - code:"require"
+          - code:"wait"
+
+      - code:"timeout": Two Content.
+        The first being one of\:
+          - code:"exit"
+          - code:"start"
+          - code:"stop"
+          - code:"kill"
+        The (optional) second Content being a positive whole number or 0.

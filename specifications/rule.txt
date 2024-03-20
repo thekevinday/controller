@@ -1,0 +1,102 @@
+# fss-0002 iki-0000
+#
+# license: open-standard-license-1.0
+#
+# This file (assumed to be named rule.txt) can be more easily read using the following iki_read commands:
+#   iki_read rule.txt +Q -w -W code '"' '"'
+#
+# To read the "Rule Specification" section of this file, use this command sequence:
+#   fss_basic_list_read rule.txt +Q -cn "Rule Specification" | iki_read +Q -w -W code '"' '"'
+#
+
+Rule Specification:
+  The Rule files follow the code:"FSS-000D (Basic Rule)" format with bold:"IKI-0000 (Unrestricted)".
+
+  A Rule file name is expected to have the file extension code:".rule".
+
+  For each Rule file\:
+    - The outer most part is a code:"FSS-0002 (Basic List)".
+    - The Basic List Object is considered the code:"Rule Type".
+    - The Basic List Content is determined by the specific code:"Rule Type".
+    - The Content for each code:"Rule Type" is called the code:"Item".
+    - Each Item Object is the code:"Item Name".
+    - Each Item Content is either the code:"Action" or the code:"Setting".
+    - Each Action Object is the code:"Action Name".
+    - Each Action Content are the code:"Action Parameters".
+    - Each Setting Object is the code:"Setting Name".
+    - Each Setting Content are the code:"Setting Values".
+
+  The Rule Types\:
+    - code:"command": Follows either code:"FSS-0003 (Extended List)" or code:"FSS-0001 (Extended)".
+    - code:"script": Follows either code:"FSS-0003 (Extended List)" or code:"FSS-0001 (Extended)".
+    - code:"service": Follows either code:"FSS-0003 (Extended List)" or code:"FSS-0001 (Extended)".
+    - code:"settings": Is required and follows either  code:"FSS-0001 (Extended)".
+    - code:"utility": Follows either code:"FSS-0003 (Extended List)" or code:"FSS-0001 (Extended)".
+
+  For the above Rule Types, code:"settings" may be specified only once whereas the others may be specifed multiple times.
+  The code:"settings" Rule Type is always processed first, regardless of position.
+  The other Rule Types are processed top-down.
+
+  The code:"settings" Rule Type has the following code:"FSS-0001 (Extended)"\:
+    - code:"affinity": One or more Content, each must be a 0 or greater whole number.
+    - code:"capability": One Content representing capabilities.
+    - code:"cgroup": Two or more Content, the first Content being either code:"existing" or code:"new" and the remaining representing a valid cgroup (control group) name, must have at least 1 graph character (non white space printing character) (leading and trailing white space are trimmed off).
+    - code:"define": Two Content, the first Content must be a case-sensitive valid environment variable name (alpha-numeric or underscore, but no leading digits).
+    - code:"engine": One or more Content representing a valid program name or path (such as code:"bash" or code:"/bin/bash") and any optional arguments.
+    - code:"environment": Zero or more Content, each must be a case-sensitive valid environment variable name (alpha-numeric or underscore, but no leading digits).
+    - code:"group": One or more Content representing group names or group ids.
+    - code:"limit": Three Content, with the first representing a valid resource type and the second and third being a valid resource limit number (positive whole number or 0).
+    - code:"name": One Content, must have at least 1 graph character (non white space printing character) (leading and trailing white space are trimmed off).
+    - code:"nice": One Content, must be a valid number for process code:"niceness" (Any whole number inclusively between -20 to 19).
+    - code:"on": Four Content, the first being a Rule Action, the second being code:"need", code:"want", or code:"wish", the third being a partial path, and the fourth being a Rule file name without code:".rule" extension.
+    - code:"parameter": Two Content, the first Content must be a case-sensitive valid IKI name and the second being an IKI value.
+    - code:"path": One Content representing a valid code:"PATH" environment string (such as code:"/bin:/sbin:/usr/bin").
+    - code:"scheduler": One or two Content representing a scheduler name and the optional numeric priority (Any whole number inclusively between 0 and 99).
+    - code:"timeout": One or two content with the first being one of code:"exit", code:"start", code:"stop", or code:"kill" and the (optional) second Content being a positive whole number or 0.
+    - code:"user": One Content representing a user name or user id.
+
+  The code:"command" and code:"script" Rule Types allow the following the code:"FSS-0001 (Extended)"\:
+    - code:"freeze": One or more Content representing a program being executed and its arguments.
+    - code:"kill": One or more Content representing a program being executed and its arguments.
+    - code:"pause": One or more Content representing a program being executed and its arguments.
+    - code:"reload": One or more Content representing a program being executed and its arguments.
+    - code:"rerun": Two or more Content representing a Rule type that executes and its properties.
+    - code:"restart": One or more Content representing a program being executed and its arguments.
+    - code:"resume": One or more Content representing a program being executed and its arguments.
+    - code:"start": One or more Content representing a program being executed and its arguments.
+    - code:"stop": One or more Content representing a program being executed and its arguments.
+    - code:"thaw": One or more Content representing a program being executed and its arguments.
+    - code:"with": One or more Content representing special options for the Rule Type.
+
+  The code:"service" and code:"utility" Rule Types allow the following the code:"FSS-0001 (Extended)"\:
+    - code:"pid_file": One Content representing the path to a PID file.
+    - code:"rerun": Two or more Content representing a Rule type that executes and its properties.
+    - code:"with": One or more Content being one of code:"full_path", code:"session_new", or code:"session_same".
+
+  The code:"command" and code:"service" Rule Types allow the following the code:"FSS-0003 (Extended List)"\:
+    - code:"freeze": A list repesenting multiple programs and their respective arguments to execute.
+    - code:"kill": A list repesenting multiple programs and their respective arguments to execute.
+    - code:"pause": A list repesenting multiple programs and their respective arguments to execute.
+    - code:"reload": A list repesenting multiple programs and their respective arguments to execute.
+    - code:"restart": A list repesenting multiple programs and their respective arguments to execute.
+    - code:"resume": A list repesenting multiple programs and their respective arguments to execute.
+    - code:"start": A list repesenting multiple programs and their respective arguments to execute.
+    - code:"stop": A list repesenting multiple programs and their respective arguments to execute.
+    - code:"thaw": A list repesenting multiple programs and their respective arguments to execute.
+
+  The code:"script" and code:"utility" Rule Types allow the following the code:"FSS-0003 (Extended List)"\:
+    - code:"freeze": A list repesenting the contents of a script, such as a GNU Bash shell.
+    - code:"kill": A list repesenting the contents of a script, such as a GNU Bash shell.
+    - code:"pause": A list repesenting the contents of a script, such as a GNU Bash shell.
+    - code:"reload": A list repesenting the contents of a script, such as a GNU Bash shell.
+    - code:"restart": A list repesenting the contents of a script, such as a GNU Bash shell.
+    - code:"resume": A list repesenting the contents of a script, such as a GNU Bash shell.
+    - code:"start": A list repesenting the contents of a script, such as a GNU Bash shell.
+    - code:"stop": A list repesenting the contents of a script, such as a GNU Bash shell.
+    - code:"thaw": A list repesenting the contents of a script, such as a GNU Bash shell.
+
+  The code:"rerun" Rule Type Content has the following structure\:
+    The first Content represents one of: code:"freeze", code:"kill", code:"pause", code:"reload", code:"restart", code:"resume", code:"start", code:"stop", or code:"thaw".
+    The second Content represents one of: code:"success" or code:"failure".
+    The third and more Content represents one of: code:"delay", code:"max", or code:"reset".
+    Where code:"delay" and code:"max" must be followed by a positive number or the number 0.

@@ -1,0 +1,102 @@
+.TH CONTROLLER "1" "January 2023" "FLL - Controller 0.7.0" "User Commands"
+.SH NAME
+controller \- Perform a series of operations in a manner similar to that of an init program.
+.SH SYNOPSIS
+.B controller
+[\fI\,OPTIONS\/\fR] [\fI\,ENTRY\/\fR]
+.SH DESCRIPTION
+.PP
+This program performs a series of operations described by an \fBentry\fR file.
+This includes error handling.
+
+The \fBentry\fR file consists of several rules defined in individual \fBrule\fR files.
+Thee \fBrule\fR file allows for both programs and scripts to be executed.
+Any scripting language whose program supports piping commands to it are effectively supported scripting languages.
+
+Upon completion, this program may optionally process an \fBexit\fR file whose name is identical to the \fBentry\fR used.
+
+When both the \fB\-\-simulate\fR parameter and the \fB\-\-validate\fR parameter are specified, then additional information on each would be executed rule is printed but no simulation is performed.
+
+The default interrupt behavior is to operate as if the \fB\-\-interruptible\fR parameter is passed.
+
+Specify an empty string for the \fB\-\-pid\fR parameter to disable pid file creation for this program.
+.SH OPTIONS
+.TP
+\fB\{\-h, \-\-help\fR
+Print the help message.
+.TP
+\fB+C, ++copyright\fR
+Print the copyright.
+.TP
+\fB+d, ++dark\fR
+Output using colors that show up better on dark backgrounds.
+.TP
+\fB+l, ++light\fR
+Output using colors that show up better on light backgrounds.
+.TP
+\fB+n, ++no_color\fR
+Do not print using color.
+.TP
+\fB+Q, ++quiet\fR
+Decrease verbosity, silencing most output.
+.TP
+\fB+E, ++error\fR
+Decrease verbosity, using only error output.
+.TP
+\fB+N, ++normal\fR
+Set verbosity to normal.
+.TP
+\fB+V, ++verbose\fR
+Increase verbosity beyond normal output.
+.TP
+\fB+D, ++debug\fR
+Enable debugging, significantly increasing verbosity beyond normal output.
+.TP
+\fB+v, ++version\fR
+Print only the version number.
+.TP
+\fB\-c, \-\-cgroup\fR
+Specify a custom control group file path, such as '/sys/fs/cgroup/'.
+.TP
+\fB\-d, \-\-daemon\fR
+Run in daemon only mode (do not process the entry).
+.TP
+\fB\-I, \-\-init\fR
+The program will run as an init replacement.
+.TP
+\fB\-i, \-\-interruptible\fR
+Designate that this program can be interrupted by a signal.
+.TP
+\fB\-p, \-\-pid\fR
+Specify a custom pid file path, such as 'controller/run/default.pid'.
+.TP
+\fB\-s, \-\-settings\fR
+Specify a custom settings path, such as 'controller/'.
+.TP
+\fB\-S, \-\-simulate\fR
+Run as a simulation.
+.TP
+\fB\-k, \-\-socket\fR
+Specify a custom socket file path, such as 'controller/run/default.socket'.
+.TP
+\fB\-U, \-\-uninterruptible\fR
+Designate that this program cannot be interrupted by a signal.
+.TP
+\fB\-v, \-\-validate\fR
+Validate the settings (entry and rules) without running (does not simulate).
+.SH ENTRY
+.TP
+The name of an \fBentry\fR.
+.SH SEE ALSO
+.PP
+\fBcontrol\fR(1),
+\fBcontroller\-actions\fR(5),
+\fBcontroller\-entry\fR(5),
+\fBcontroller\-exit\fR(5),
+\fBcontroller\-packet\fR(5),
+\fBcontroller\-rule\fR(5)
+.SH AUTHOR
+Written by Kevin Day.
+.SH COPYRIGHT
+.PP
+Copyright \(co 2007-2023 Kevin Day, GNU LGPL Version 2.1 or later.

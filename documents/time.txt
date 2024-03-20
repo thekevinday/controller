@@ -1,0 +1,51 @@
+# fss-0002 iki-0000
+#
+# license: cc-by-sa-4.0
+#
+# This file (assumed to be named time.txt) can be more easily read using the following iki_read commands:
+#   iki_read time.txt +Q -r UTC UTC -w -WW character "'" "'" code '"' '"'
+#
+# To read the "Time Documentation" section of this file, use this command sequence:
+#   fss_basic_list_read time.txt +Q -cn "Time Documentation" | iki_read +Q -r UTC UTC -w -WW character "'" "'" code '"' '"'
+#
+
+Time Documentation:
+  This documents a unit of measurement called a bold:"Time", represented with uppercase bold:"T".
+  For comparison, a unit of bold:"Time" is equivalent to a nanosecond, or 10^-9 seconds.
+  A bold:"MegaTime (MT)" is therefore equivalent to a millisecond such that a millisecond is 10^-3 seconds.
+
+  A unit of bold:"Time" is intended to represent some unit of bold:"Time" such that a single 64-bit integer may hold all units of bold:"Time" for a single calendar year.
+  This unit of bold:"Time" does not and must not include bold:"Years" (unlike bold:"Unix time").
+  To convert from bold:"Time" to bold:"Unix time", one must have a year (which could be assumed to be the current year) and then calculate all of those calendar oddities.
+
+  A unit of bold:"Time" by default is assumed to be in UTC:"Coordinated Universal Time".
+    - code:"1 (Earth) year ~= 31536000000000000 Time or 31536000 GT (GigaTime)".
+    - code:"1 (Earth) day = 86400000000000 Time or 86400 GT (GigaTime)".
+    - code:"1 (Earth) hour = 3600000000000 Time or 3600 GT (GigaTime)".
+    - code:"1 (Earth) minute = 60000000000 Time or 60 GT (GigaTime)".
+    - code:"1 (Earth) second = 1000000000 Time or 1 GT (GigaTime)".
+
+  Consequentially, 1 day is easily represented in units of bold:"Time" as code:"86.4 TT (TeraTime)".
+
+  The Time may be stored in its "year string format".
+  In this format, a Year may be prepended to the Time followed by a single colon ':' to associate a year with the Time.
+  This Year has no minimum or maximum but may not have decimals.
+  For example, "2020:86400000000000" would represent: January 02, 2020 0:00 UTC.
+  For example, "2020:86.4 TT" would represent: January 02, 2020 0:00 UTC.
+
+  A second unit of bold:"Time", called bold:"EpochTime", works the same way as bold:"Time" except it represents seconds.
+  This unit is designated code:"ET".
+  The format is similar to bold:"Time", except there are two colons: code:"1970::1620874738" would represent: code:"May 13, 2021 2:58:58 UTC".
+  When the year is not specified, then this is identical to bold:"UNIX Epoch".
+
+  A unit of bold:"EpochTime" by default is assumed to be in UTC:"Coordinated Universal Time".
+    - code:"1 (Earth) year ~= 31536000 EpochTime or 31.536 GE (GigaEpochTime)".
+    - code:"1 (Earth) day = 86400 EpochTime".
+    - code:"1 (Earth) hour = 3600 EpochTime".
+    - code:"1 (Earth) minute = 60 EpochTime".
+    - code:"1 (Earth) second = 1 EpochTime".
+    - code:"1 GT (GigaTime) = 1 EpochTime".
+
+  Consequentially, 1 day is easily represented in units of bold:"EpochTime" as code:"86.4 KE (KiloEpochTime)".
+
+  See the specification file:"time.txt" for more precise technical details.

@@ -1,0 +1,99 @@
+# fss-0001
+#
+# Modes:
+#   - individual:        Compile using per project (individual) libraries, does not handle thread or threadless cases.
+#   - individual_thread: This is required when compiling in individual mode with "thread" mode.
+#   - level:             Compile using per level libraries.
+#   - monolithic:        Compile using per monolithic libraries.
+#   - clang:             Use clang rather than the default, which is generally gcc.
+#   - gcc:               Use gcc specific settings.
+#   - test:              Compile for a test, such as unit testing.
+#   - fanalyzer:         Compile using GCC's -fanalyzer compile time option.
+#   - coverage:          Compile for building coverage.
+#   - thread:            Compile with thread support.
+#   - threadless:        Compile without thread support.
+#
+
+build_name controller
+
+version_major 0
+version_minor 7
+version_micro 0
+version_file micro
+version_target minor
+
+modes individual individual_thread level monolithic clang gcc test fanalyzer coverage thread threadless as_init
+modes_default monolithic thread gcc
+
+build_compiler gcc
+build_compiler-clang clang
+build_indexer ar
+build_indexer_arguments rcs
+build_language c
+
+build_libraries -lc -lcap
+build_libraries-individual -lfll_control_group -lfll_error -lfll_execute -lfll_fss -lfll_print -lfll_program -lfll_status_string
+build_libraries-individual_thread -lf_thread
+build_libraries-individual -lfl_control_group -lfl_conversion -lfl_directory -lfl_environment -lfl_fss -lfl_iki -lfl_path -lfl_print
+build_libraries-individual -lf_account -lf_capability -lf_color -lf_compare -lf_console -lf_control_group -lf_conversion -lf_directory -lf_environment -lf_execute -lf_file -lf_fss -lf_iki -lf_limit -lf_memory -lf_parse -lf_path -lf_pipe -lf_print -lf_rip -lf_signal -lf_socket -lf_status_string -lf_string -lf_type_array -lf_utf
+build_libraries-individual_thread -lf_thread
+build_libraries-level -lfll_2 -lfll_1 -lfll_0
+build_libraries-monolithic -lfll
+
+build_sources_object main/common.c main/common/define.c main/common/enumeration.c main/common/print.c main/common/string.c main/common/type.c
+build_sources_object main/print/data.c main/print/debug.c main/print/error.c main/print/message.c main/print/verbose.c main/print/warning.c
+build_sources_object main/signal.c main/thread.c
+
+build_sources_headers main/common.h main/controller.h main/common/define.h main/common/enumeration.h main/common/print.h main/common/string.h main/common/type.h
+build_sources_headers main/print/data.h main/print/debug.h main/print/error.h main/print/message.h main/print/verbose.h main/print/warning.h
+build_sources_headers main/signal.h main/thread.h
+
+build_sources_documentation man
+
+build_sources_setting controller
+
+build_script yes
+build_shared yes
+build_static no
+
+path_headers program/controller
+path_library_script script
+path_library_shared shared
+path_library_static static
+path_object_script script
+path_object_shared shared
+path_object_static static
+path_program_script script
+path_program_shared shared
+path_program_static static
+
+has_path_standard yes
+preserve_path_headers yes
+
+search_exclusive yes
+search_shared yes
+search_static yes
+
+environment PATH LD_LIBRARY_PATH
+environment LANG LC_ALL LC_COLLATE LC_CTYPE LC_FASTMSG LC_MESSAGES LC_MONETARY LC_NUMERIC LC_TIME LOCPATH NLSPATH
+
+#defines -D_di_libcap_
+defines -D_libcap_legacy_only_
+defines-threadless -D_di_thread_support_
+defines-thread -D_pthread_attr_unsupported_ -D_pthread_sigqueue_unsupported_
+defines-as_init -D_controller_as_init_
+
+flags -O2 -g -fdiagnostics-color=always -Wno-logical-not-parentheses -Wno-parentheses -Wno-missing-braces
+flags -fstack-clash-protection -fno-delete-null-pointer-checks
+flags -D_FORTIFY_SOURCE=3
+flags -Wl,-z,nodlopen -Wl,-z,noexecstack -Wl,-z,relro -Wl,-z,now
+flags-thread -pthread
+flags-clang -Wno-logical-op-parentheses
+flags-gcc_13 -fstrict-flex-arrays=3
+flags-test -O0 -fstack-protector-strong -Wall
+flags-fanalyzer -fanalyzer
+flags-coverage -O0 --coverage -fprofile-abs-path -fprofile-dir=build/coverage/
+
+flags_library -fPIC
+flags_object -fPIC
+flags_program -fPIE

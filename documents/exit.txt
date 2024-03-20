@@ -1,0 +1,178 @@
+# fss-0002 iki-0000
+#
+# license: open-standard-license-1.0
+#
+# This file (assumed to be named exit.txt) can be more easily read using the following iki_read commands:
+#   iki_read exit.txt +Q -w -r PID PID -w -W code '"' '"'
+#
+# To read the "Exit Documentation" section of this file, use this command sequence:
+#   fss_basic_list_read exit.txt +Q -cn "Exit Documentation" | iki_read +Q -r PID PID -w -W code '"' '"'
+#
+
+Exit Documentation:
+  This describes the intent and purpose of an Exit file.
+
+  An Exit file, such as code:"default.exit", is intended to store a set of rules in which the controller will process on execution.
+  These are used to run some set of commands, such as shutting down a system.
+
+  An Exit is a special variation or subset of an Entry.
+
+  - The code:"settings" Item Object\:
+    Represents Exit settings and is not an code:"item" that can be executed.
+    A number of settings are supported, but if this Item Object is not specified, then defaults are used.
+    The following settings are available: code:"pid" and code:"show".
+
+    - The code:"define" setting\:
+      Use this to define an environment variable (this overwrites any existing environment variable with this name).
+      A define is both exported as an environment variable as well as exposed as an IKI variable.
+      Example IKI variable substitution: for code:"define PATH /bin:/sbin", the associated IKI variable would look like: define:"PATH".
+
+      All environment variables, including those defined using this, must be in the code:"environment" list in any given Rule to be exported to the executed process.
+      Environment variables added here that are not added to the environment are still exposed as an IKI variable.
+
+      This is only expanded within any Rule operated on by this Exit.
+
+    - The code:"parameter" setting\:
+      Use this to define an IKI variable name and value.
+      These do not conflict with environment variables and are not exposed as environment variables.
+      Example IKI variable substitution: for code:"parameter hello world", the associated IKI variable would look like: parameter:"hello".
+
+      This is only expanded within any Rule operated on by this Exit.
+
+    - The code:"pid" setting\:
+      Represents how the Exit PID:"Process Identifier" file is generated or not.
+      The following modes are supported: code:"disable", code:"require", and code:"ready".
+      For code:"disable", not PID:"Process Identifier" file representing the Exit is created.
+      For code:"require", check to see if the PID:"Process Identifier" file exists for an Exit at startup and then when code:"ready" create a PID:"Process Identifier" file, display error on PID:"Process Identifier" file already exists or on failure and then fail.
+      For code:"ready", when code:"ready" create a PID:"Process Identifier" file, display error on failure and then fail (does not check if PID:"Process Identifier" file exists).
+
+    - The code:"show" setting\:
+      Represents the way Exit processing presents information to the screen.
+      This applies only to the Exit and Rule processing itself and does not handle the output of programs and scripts being executed by some Exit or Rule.
+      The following show options are supported: code:"normal" and code:"init".
+      For code:"normal", will not report the start or stop of some Exit or Rule execution but will report any errors or warnings as appropriate.
+      For code:"init", will report when starting programs and may include reporting success and failure status.
+
+    - The code:"timeout" setting\:
+      Represents the default timeouts for the Exit.
+      See the code:"timeout" Action below for details.
+
+  - The code:"main" Item Object\:
+    Is always executed first (Therefore code:"main" is both reserved and required).
+    All other Basic List Objects are not executed unless either an code:"item" or a code:"failsafe" specifies a valid Item name.
+    Execution of all Items are top-down.
+
+    Each code:"item" supports the following Action Names: code:"consider", code:"execute", code:"failsafe", code:"freeze", code:"item", code:"kill", code:"pause", code:"reload", code:"restart", code:"ready", code:"resume", code:"start", code:"stop", and code:"timeout".
+    Of those types, the following are considered a code:"rule" Action: code:"freeze", code:"kill", code:"pause", code:"reload", code:"restart", code:"resume", code:"start", code:"stop", and code:"thaw".
+
+    - The code:"consider" Item Action\:
+      A special case of a code:"rule" Action.
+      All Action Parameters are the same as with the code:"rule" Action Parameters.
+      The difference is that code:"consider" is only processed (instead of being processed and executed) and when some code:"rule" Action designates that this consideration is required (via code:"need"), wanted (via code:"want"), or wished for (via code:"wish") from the within the Rule file.
+      If this is determined to be executed, then this is immediately executed when needed, wanted or wished for and applies all properties as appropriate (such as code:"asynchronous", for example).
+      If this is determined not to be executed, then this code:"consider" is ignored as if it was never there in the first place.
+
+    - The code:"execute" Item Action\:
+      Execute into the specified program.
+      On successful execution, the controller program will no longer be running and will be replaced with the designated program.
+      This Item Action is only supported when operating in code:"program" mode.
+
+    - The code:"failsafe" Item Action\:
+      Accepts only a valid Item Name in which will be executed when a failure is detected.
+      Only a single code:"failsafe" Item Action may function at a time.
+      Each successive code:"failsafe" Item Action specified replaces the previously defined code:"failsafe" Item Action (in a top-down manner).
+      When operating in code:"failsafe", the code:"require" Item Action is ignored (given that it is meaningless once operating in code:"failsafe" mode).
+
+    - The code:"freeze" Item Action\:
+      A code:"rule" Action for freezing some Control Group.
+      This Item Action will process the code:"freeze" inner Content of the named Rule.
+      This is specific to Control Groups and is not yet fully implemented.
+      Once implemented this documentation will need to be updated and clarified.
+
+    - The code:"item" Item Action\:
+      Accepts only a valid Item Name in which will be immediately executed.
+      Any valid Item Name, except for the reserved code:"main", may be used.
+
+    - The code:"kill" Item Action\:
+      A code:"rule" Action for forcibly terminating some process.
+      This Item Action will process the code:"kill" inner Content of the named Rule.
+
+    - The code:"pause" Item Action\:
+      A code:"rule" Action for pausing some process.
+      This Item Action will process the code:"pause" inner Content of the named Rule.
+
+    - The code:"reload" Item Action\:
+      A code:"rule" Action for pausing some process.
+      This Item Action will process the code:"reload" inner Content of the named Rule.
+
+    - The code:"restart" Item Action\:
+      A code:"rule" Action for pausing some process.
+      This Item Action will process the code:"restart" inner Content of the named Rule.
+
+    - The code:"resume" Item Action\:
+      A code:"rule" Action for pausing some process.
+      This Item Action will process the code:"resume" inner Content of the named Rule.
+
+    - The code:"ready" Action\:
+      Instructs the controller program when it is safe to perform normal tasks, such as creating the PID:"Process Identifier" file.
+      When not specified, the state is always assumed to be ready.
+      For example, the controller program may be used as a full blown code:"init" replacement and therefore may need to mount the /var/run/ directory.
+      If the PID:"Process Identifier" file is created at program start, then the /var/run/controller.pid would be written before the /var/run/ directory is ready.
+      This could be a problem, such as on a read-only file system the PID:"Process Identifier" creation fails and controller bails out on error.
+      Adding code:"ready" essentially specifies a point in time in the Exit in which things are expected to be safe for such basic operations.
+      When the optional code:"wait" is provided, then code:"ready" will wait for all currently started asynchronous processes to complete before operating.
+
+    - The code:"start" Item Action\:
+      A code:"rule" Action for pausing some process.
+      This Item Action will process the code:"start" inner Content of the named Rule.
+
+    - The code:"stop" Item Action\:
+      A code:"rule" Action for pausing some process.
+      This Item Action will process the code:"stop" inner Content of the named Rule.
+
+    - The code:"thaw" Item Action\:
+      A code:"rule" Action for unfreezing some Control Group.
+      This Item Action will process the code:"thaw" inner Content of the named Rule.
+      This is specific to Control Groups and is not yet fully implemented.
+      Once implemented this documentation will need to be updated and clarified.
+
+    - The code:"timeout" Item Action\:
+      (This is not currently fully implemented, only code:"exit" is implemented.)
+      Provides default global settings for each of the four special situations: code:"exit", code:"kill", code:"start", and code:"stop".
+      Each of these may only have a single one exist at a time (one code:"exit", one code:"kill", one code:"start", and one code:"stop").
+      Each successive code:"timeout" Item Action, specific to each Action Name (such as code:"start"), specified replaces the previously defined code:"timeout" Action (in a top-down manner).
+      The second Content for each of these, when specified, may be a 0 or greater whole number representing the number of MegaTime (MT) (equivalent to milliseconds).
+      For code:"kill", this represents the number of MegaTime to wait after stopping some Rule and that Rule has not yet stopped to forcefully stop the Rule (aka kill the Rule).
+      For code:"start", this represents the number of MegaTime to wait after starting some Rule before assuming something went wrong and the Rule is returned as failed.
+      For code:"stop", this represents the number of MegaTime to wait after stopping some Rule before assuming something went wrong and the Rule is returned as failed.
+      If the second Content is not specified, then this disables the type (prevents the specified timeout action).
+
+      For code:"exit", this represents the number of MegaTime to wait when the Controller program is exiting (such as having received a terminate signal).
+      In this case, a terminate signal is sent to all child processes.
+      The code:"exit" timeout represents the amount of time to wait after sending the terminate signal before sending a kill signal to each child process still running.
+      When disabled, the program will not send a kill signal will continue running until all child processes to terminate.
+      The code:"exit" timeout does not get applied to any Rule.
+
+Exit Rule Documentation:
+  There are multiple Exit Actions that are considered code:"rule" Actions.
+  These are: code:"freeze", code:"kill", code:"pause", code:"reload", code:"restart", code:"resume", code:"start", code:"stop", and code:"thaw".
+
+  The code:"rule" Actions immediately execute a named Rule file.
+    - The first Action Parameter represents the Rule directory, which is a relative directory path the Rule file is to be found.
+      - Do not include leading or trailing slashes.
+      - This is relative to the settings rules directory.
+
+    - The second Action Parameter represents the base name for the Rule file, without the file extension.
+      - This must not have any directory paths.
+
+    - The remaining Action Parameters may be specified in any order\:
+      - code:"asynchronous": Designates that execution will not block (wait).
+      - code:"require": Designates that this Rule must succeed or trigger execution of failsafe.
+      - code:"wait": Designates that this Rule will not execute until all other Actions before this (including code:"asynchronous" ones) finish executing (in a top-down manner).
+
+  The full path to the code:"rule" is relative to the settings, such that if the controller Rule settings are found in code:"/etc/controller/rules/", then for a directory called code:"[directory]" and a Rule base name of code:"[base_name]", the resulting path would be: code:"/etc/controller/rules/[directory]/[base_name].rule"
+
+  It is important to note that for any given code:"rule", execution within that code:"rule" may be internally asynchronous (even if the code:"rule" is synchronous).
+  For example, a service that is often called a daemon will execute in the background.
+  Until that execution succeeds and the daemon goes into the background the representing Rule will block.
+  After the daemon goes into the background, then the representing Rule will no longer block and be fully executed.

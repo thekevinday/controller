@@ -1,0 +1,14 @@
+# fss-0002 iki-0000
+#
+# license: open-standard-license-1.0
+#
+# This file (assumed to be named task.txt) can be more easily read using the following iki_read commands:
+#   iki_read task.txt +Q -w -W code '"' '"'
+#
+# To read the "Task Specification" section of this file, use this command sequence:
+#   fss_basic_list_read task.txt +Q -cn "Task Specification" | iki_read +Q -w -W code '"' '"'
+#
+# A "Task" is not fully implemented but is provided as a proposal for consideration and is subject to completion or removal.
+#
+
+Task Specification:

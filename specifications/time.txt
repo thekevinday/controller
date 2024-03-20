@@ -1,0 +1,155 @@
+# fss-0002 iki-0000
+#
+# license: open-standard-license-1.0
+#
+# This file (assumed to be named time.txt) can be more easily read using the following iki_read commands:
+#   iki_read time.txt +Q -r UTC UTC -w -WW character "'" "'" code '"' '"'
+#
+# To read the "Time Specification" section of this file, use this command sequence:
+#   fss_basic_list_read time.txt +Q -cn "Time Specification" | iki_read +Q -r UTC UTC -w -WW character "'" "'" code '"' '"'
+#
+
+Time Specification:
+  There are two units of bold:"Time", the first is simply called bold:"Time" and the second is called bold:"EpochTime".
+
+  Both bold:"Time" and bold:"EpochTime" are measured without the year but may contain a year to designate the point in the counting begins.
+  These are both represented by a single 64-bit (unsigned) integer.
+  The default timezone is always UTC:"Coordinated Universal Time".
+
+  The common form is intended as the non-technical form that is form common use.
+  This may have a negative value or be more than 64-bit digits long.
+  This is simply not expected to be interpreted as a unit of time on a computer (but nothing stops it from being interpreted).
+
+  The technical forms are limit to 64-bit unsigned for technical use but should technology advance to a point where larger bits are needed then this allows for that.
+  The systems should expect 64-bit and larger bits would have to become common before something larger than 64-bit is the expected or assumed default.
+  Negative signs can be allowed but they must not prevent the full use of the 64-bit.
+  The implementation of how this is done is left to the implementer except that the signs are immediately to the left of the digit.
+  For example code:"2022:-5" would be 5 units after the start of the year 2022.
+  Because the negative is allowed, so must the positive character (such as code:"2022:+5").
+  A positive value is the default interpretation when no sign is valid.
+
+  The unit of time called bold:"Time" is counted increments of a nanosecond, or 10^-9 seconds.
+  A unit of bold:"Time" is, therefore, equivalent to a nanosecond.
+  The default year for bold:"Time" is the current year.
+
+  The unit of time called bold:"EpochTime" is counted increments of a second, or 10^-9 seconds.
+  A unit of bold:"EpochTime" is, therefore, equivalent to a second.
+  The default year for bold:"EpochTime" is the bold:"UNIX Epoch", sometimes called bold:"Unix time".
+
+  The unit bold:"Time" has two technical forms and one common form, with the year and without the year.
+
+  Key\:
+    code:"\s" = White space.
+    code:"\d" = The digits used to represent time (a digit).
+    code:"*" = Zero or more occurrences.
+    code:"+" = One or more occurrences.
+    code:":" = A single colon character:":" (unicode:"U+003A").
+    code:'"' = A single double-quote character:'"' (unicode:"U+003A").
+
+  The common form of bold:"Time"\:
+
+    Before Structure\:
+      code:"".
+
+    Structure\:
+      code:"\s*\d+\s*\U*\s*".
+
+    After Structure\:
+      code:"".
+
+    Example\:
+      code:"86400".
+      code:"86400 T".
+      code:"86400 Time".
+
+  The first technical form of bold:"Time"\:
+
+    Before Structure\:
+      code:"".
+
+    Structure\:
+      code:"\s*\d+:\d+\s*\U*\s*".
+
+    After Structure\:
+      code:"".
+
+    Example\:
+      code:"2022:86400".
+      code:"2022:86400 T".
+      code:"2022:86400 Time".
+      code:"2022:86400 MT".
+      code:"2022:86400 MegaTime".
+
+  The second technical form of bold:"Time"\:
+
+    Before Structure\:
+      code:"".
+
+    Structure\:
+      code:"\s*:\d+\s*\U*\s*".
+
+    After Structure\:
+      code:"".
+
+    Example\:
+      code:":86400".
+      code:":86400 T".
+      code:":86400 Time".
+      code:":86400 MT".
+      code:":86400 MegaTime".
+
+  The unit bold:"EpochTime" has two technical forms and one common form, with the year and without the year.
+
+  The common form of bold:"Time"\:
+
+    Before Structure\:
+      code:"".
+
+    Structure\:
+      code:"\s*\d+\s*\U*\s*".
+
+    After Structure\:
+      code:"".
+
+    Example\:
+      code:"86400".
+      code:"86400 ET".
+      code:"86400 EpochTime".
+      code:"86400 MET".
+      code:"86400 MegaEpochTime".
+
+  The first technical form of bold:"EpochTime"\:
+
+    Before Structure\:
+      code:"".
+
+    Structure\:
+      code:"\s*\d+::\d+\s*\U*\s*".
+
+    After Structure\:
+      code:"".
+
+    Example\:
+      code:"2022::86400".
+      code:"2022::86400 ET".
+      code:"2022::86400 EpochTime".
+      code:"2022::86400 MET".
+      code:"2022::86400 MegaEpochTime".
+
+  The second technical form of bold:"Time"\:
+
+    Before Structure\:
+      code:"".
+
+    Structure\:
+      code:"\s*:\d+\s*\U*\s*".
+
+    After Structure\:
+      code:"".
+
+    Example\:
+      code:"::86400".
+      code:"::86400 ET".
+      code:"::86400 EpochTime".
+      code:"::86400 MET".
+      code:"::86400 MegaEpochTime".

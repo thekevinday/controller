@@ -1,0 +1,35 @@
+# fss-0002 iki-0000
+#
+# license: open-standard-license-1.0
+#
+# This file (assumed to be named simulate.txt) can be more easily read using the following iki_read commands:
+#   iki_read simulate.txt +Q -w -W code '"' '"'
+#
+# To read the "Simulate Documentation" section of this file, use this command sequence:
+#   fss_basic_list_read simulate.txt +Q -cn "Simulate Documentation" | iki_read +Q -w -W code '"' '"'
+#
+
+Simulate Documentation:
+  This describes the intent and purpose of the simulation and validation parameters.
+
+  The code:"controller" program is designed to support being run as an alternative to an init program (such as Sysvinit or SystemD).
+  To help prevent problems, simulation and validation functionality is provided.
+
+  - The code:"validate" functionality\:
+    By itself will simply check the syntax of the Entry and Rule files (for Rule files specified in the Entry or Exit file).
+    Errors are reported and nothing is executed.
+    The code:"controller" program will return 0 on validation success and 1 on validation failure.
+
+  - The code:"simulate" functionality\:
+    By itself will perform a simulated execution of all Rules designated by an Entry or Exit file.
+    The simulation is not a true simulation in that no program is ever called to perform any operations.
+    Furthermore, any code:"script" specified inside a Rule is only simulated as a whole and not its individual parts.
+    Once the Entry file is finished executing, the code:"simulate" will continue to run waiting on code:"control" commands.
+
+  - The code:"simulate" with code:"validate" functionality\:
+    Will perform similar to code:"validate" functionality except that additional information of the Rules to be executed will be printed.
+    There will be neither execution nor simulated execution of any Rule when both code:"simulate" and code:"validate" are used together.
+
+  When a Rule is simulated, an empty script command (generally defaulting to code:"bash") is executed in place of the actual program being executed for each program or script in the Rule file that is to be executed.
+  This allows for testing the designated permissions and other settings that would be applied when calling some program.
+  Control Groups are not simulated but are actually created and the simulating process will actually be placed within the Control Group.

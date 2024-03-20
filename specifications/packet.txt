@@ -1,0 +1,61 @@
+# fss-0002 iki-0000
+#
+# license: open-standard-license-1.0
+#
+# This file (assumed to be named packet.txt) can be more easily read using the following iki_read commands:
+#   iki_read packet.txt +Q -w -W code '"' '"'
+#
+# To read the "Packet Specification" section of this file, use this command sequence:
+#   fss_basic_list_read packet.txt +Q -cn "Packet Specification" | iki_read +Q -w -W code '"' '"'
+#
+
+Packet Specification:
+  The controller program communicates use the code:"FSS-000F (Packet)".
+  This specification declares how the Payload Block, which is in code:"FSS-000E (Payload)" format, is required to be used.
+
+  Only a single code:"header" is allowed.
+  Only a single code:"payload" is allowed.
+
+  Packet Structure\:
+    Packet is grouped into the following blocks\:
+      - code:"control": A single 1-byte block representing control codes.
+      - code:"size": A single 4-byte block representing the size of the entire packet, including the control block.
+
+  The code:"header" Object contains the following code:"FSS-0001 (Extended)" Objects (depending on code:"type")\:
+    - code:"action": A valid action type: code:"freeze", code:"kexec", code:"kill", code:"pause", code:"reboot", code:"reload", code:"rerun", code:"restart", code:"resume", code:"shutdown", code:"start", code:"stop", or code:"thaw".
+    - code:"length": A positive whole number inclusively between 0 and 4294965248 representing the length of the code:"payload" (may be in binary, octal, decimal, duodecimal, or hexidecimal).
+    - code:"status": The status code name or number representing an FSS status code, such as F_okay, F_failure, or 200 (where a number may have error and warning bits and may be in binary, octal, decimal, duodecimal, or hexidecimal).
+    - code:"type": The packet type that is one of code:"controller", code:"error", or code:"init".
+
+  When there are multiple Objects of the same name inside the code:"header"\:
+    - code:"action": The order represents the order in which the actions are performed.
+    - code:"length": There may only be one length Object, all others after the first are ignored (may be in binary, octal, decimal, duodecimal, or hexidecimal).
+    - code:"status": A status for each action, in the same order as the order of the action, such as F_okay, F_failure, or 200 (where a number may have error and warning bits and may be in binary, octal, decimal, duodecimal, or hexidecimal).
+    - code:"type": The first represent the type and all others represents a sub-type.
+
+  There are different headers and payload properties based on the code:"type".
+
+  The code:"controller" type\:
+    Supports the following headers: code:"action", code:"length", code:"status", and code:"type".
+
+    Only a single code:"action" may be provided and must exist for request and response packets.
+    Only a single code:"status" may be provided and must exist for response packets.
+
+    The code:"payload" is dependent on the code:"action".
+
+  The code:"error" type\:
+    Supports the following headers: code:"length", code:"status", and code:"type".
+
+    Only a single code:"status" may be provided and must exist for request and response packets.
+
+    The code:"payload" is a NULL terminated string whose length is defined by the code:"length" code:"header" Content.
+
+  There are different headers and payload properties based on the code:"type".
+
+  The code:"init" type\:
+    Supports the following headers: code:"action", code:"length", code:"status", and code:"type".
+
+    Only a single code:"action" may be provided and must exist for request and response packets.
+    Only a single code:"status" may be provided and must exist for response packets.
+
+    The code:"payload" is dependent on the code:"action".
