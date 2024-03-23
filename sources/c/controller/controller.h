@@ -92,8 +92,8 @@ extern "C" {
   extern void controller_controller_main(controller_main_t * const main);
 #endif // _di_controller_controller_main_
 
-#ifdef _controller_controller_h
+#ifdef __cplusplus
 } // extern "C"
 #endif
 
-#endif // _controller_h
+#endif // _controller_controller_h

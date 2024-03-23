@@ -40,7 +40,9 @@ build_libraries-individual_thread -lf_thread
 build_libraries-level -lfll_2 -lfll_1 -lfll_0
 build_libraries-monolithic -lfll
 
-build_objects_library main/controller.o
+build_objects_library main/common.o main/common/define.o main/common/enumeration.o main/common/print.o main/common/string.o main/common/type.o
+build_objects_library main/print/data.o main/print/debug.o main/print/error.o main/print/message.o main/print/verbose.o main/print/warning.o
+build_objects_library main/signal.o main/thread.o
 
 build_sources_library init/init.c
 

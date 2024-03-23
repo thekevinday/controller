@@ -78,7 +78,7 @@ extern "C" {
       main->setting.status_signal = f_signal_wait(&main->program.signal.set, &information);
 
       if (F_status_is_error(main->setting.status_signal) && F_status_set_fine(main->setting.status_signal) != F_interrupt) {
-        if (++failsafe >= controller_main_signal_check_failsafe_d) break;
+        if (++failsafe >= controller_signal_check_failsafe_d) break;
       }
 
       switch (information.si_signo) {

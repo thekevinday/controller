@@ -36,30 +36,30 @@ int main(const int argc, const f_string_t *argv, const f_string_t *envp) {
     {
       const f_console_arguments_t arguments = macro_f_console_arguments_t_initialize_1(argc, argv, envp);
 
-      controller_setting_load(arguments, &data);
+      controller_main_setting_load(arguments, &data);
     }
 
-    controller_main(&data);
+    controller_init_main(&data);
   #else
     {
       f_thread_id_t id_signal;
 
       memset(&id_signal, 0, sizeof(f_thread_id_t));
 
-      data.setting.state.status = f_thread_create(0, &id_signal, &controller_thread_signal, (void *) &data);
+      data.setting.state.status = f_thread_create(0, &id_signal, &controller_main_thread_signal, (void *) &data);
 
       if (F_status_is_error(data.setting.state.status)) {
-        controller_print_error(&data.program.error, macro_controller_f(f_thread_create));
+        controller_main_print_error(&data.program.error, macro_controller_f(f_thread_create));
       }
       else {
         {
           const f_console_arguments_t arguments = macro_f_console_arguments_t_initialize_1(argc, argv, envp);
 
-          controller_setting_load(arguments, &data);
+          controller_main_setting_load(arguments, &data);
         }
 
-        if (!controller_signal_check(&data)) {
-          controller_main(&data);
+        if (!controller_main_signal_check(&data)) {
+          controller_init_main(&data);
         }
 
         f_thread_cancel(id_signal);

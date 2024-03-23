@@ -89,7 +89,7 @@ extern "C" {
  *     F_parameter (with error bit) if main is NULL or setting is NULL.
  */
 #ifndef _di_controller_init_main_
-  extern void controller_init_main(controller_init_main_t * const main);
+  extern void controller_init_main(controller_main_t * const main);
 #endif // _di_controller_init_main_
 
 #ifdef __cplusplus

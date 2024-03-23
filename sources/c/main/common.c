@@ -34,7 +34,7 @@ extern "C" {
         fll_print_dynamic_raw(f_string_eol_s, main->program.message.to);
       }
 
-      controller_print_error(&main->program.error, macro_controller_f(f_console_parameter_process));
+      controller_main_print_error(&main->program.error, macro_controller_f(f_console_parameter_process));
 
       return;
     }
@@ -46,7 +46,7 @@ extern "C" {
         fll_print_dynamic_raw(f_string_eol_s, main->program.message.to);
       }
 
-      controller_print_error(&main->program.error, macro_controller_f(fll_program_parameter_process_context_standard));
+      controller_main_print_error(&main->program.error, macro_controller_f(fll_program_parameter_process_context_standard));
 
       return;
     }
@@ -58,7 +58,7 @@ extern "C" {
         fll_print_dynamic_raw(f_string_eol_s, main->program.message.to);
       }
 
-      controller_print_error(&main->program.error, macro_controller_f(fll_program_parameter_process_verbosity_standard));
+      controller_main_print_error(&main->program.error, macro_controller_f(fll_program_parameter_process_verbosity_standard));
 
       return;
     }

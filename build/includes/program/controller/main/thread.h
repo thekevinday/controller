@@ -33,7 +33,7 @@
  *
  * @see f_thread_cancel_state_set()
  *
- * @see controller_signal_handler()
+ * @see controller_main_thread_signal()
  */
 #if !defined(_di_controller_main_thread_signal_) && !defined(_di_thread_support_)
   extern void * controller_main_thread_signal(void * const main);
