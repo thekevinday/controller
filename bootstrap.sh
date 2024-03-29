@@ -461,7 +461,7 @@ bootstrap_main() {
       echo -e "${c_highlight}Building:${c_reset} ${c_notice}${project_label}${c_highlight} with modes: ${c_notice}${modes}${c_highlight}.${c_reset}"
     fi
 
-    if [[ ! -f ${project_built}.prepared ]] ; then
+    if [[ ! -f ${project_built}-${settings_name}.prepared ]] ; then
       bootstrap_prepare_build
 
       if [[ ${?} -ne 0 ]] ; then
@@ -679,159 +679,175 @@ bootstrap_id() {
     "path_program_shared") let key=69;;
     "path_program_static") let key=70;;
     "path_sources") let key=71;;
-    "path_sources_object") let key=72;;
-    "preserve_path_headers") let key=73;;
-    "process_post") let key=74;;
-    "process_pre") let key=75;;
-    "search_exclusive") let key=76;;
-    "search_shared") let key=77;;
-    "search_static") let key=78;;
-    "version_file") let key=79;;
-    "version_major") let key=80;;
-    "version_major_prefix") let key=81;;
-    "version_micro") let key=82;;
-    "version_micro_prefix") let key=83;;
-    "version_minor") let key=84;;
-    "version_minor_prefix") let key=85;;
-    "version_nano") let key=86;;
-    "version_nano_prefix") let key=87;;
-    "version_target") let key=88;;
+    "path_sources_headers") let key=72;;
+    "path_sources_library") let key=73;;
+    "path_sources_object") let key=74;;
+    "path_sources_program") let key=75;;
+    "path_sources_script") let key=76;;
+    "preserve_path_headers") let key=77;;
+    "process_post") let key=78;;
+    "process_pre") let key=79;;
+    "search_exclusive") let key=80;;
+    "search_shared") let key=81;;
+    "search_static") let key=82;;
+    "version_file") let key=83;;
+    "version_major") let key=84;;
+    "version_major_prefix") let key=85;;
+    "version_micro") let key=86;;
+    "version_micro_prefix") let key=87;;
+    "version_minor") let key=88;;
+    "version_minor_prefix") let key=89;;
+    "version_nano") let key=90;;
+    "version_nano_prefix") let key=91;;
+    "version_target") let key=92;;
 
-    "build_compiler-mode") let key=89;;
-    "build_indexer-mode") let key=90;;
-    "build_indexer_arguments-mode") let key=91;;
-    "build_language-mode") let key=92;;
-    "build_libraries-mode") let key=93;;
-    "build_libraries_shared-mode") let key=94;;
-    "build_libraries_static-mode") let key=95;;
-    "build_name-mode") let key=96;;
-    "build_objects_library-mode") let key=97;;
-    "build_objects_library_shared-mode") let key=98;;
-    "build_objects_library_static-mode") let key=99;;
-    "build_objects_program-mode") let key=100;;
-    "build_objects_program_shared-mode") let key=101;;
-    "build_objects_program_static-mode") let key=102;;
-    "build_script-mode") let key=103;;
-    "build_shared-mode") let key=104;;
-    "build_sources_documentation-mode") let key=105;;
-    "build_sources_headers-mode") let key=106;;
-    "build_sources_headers_shared-mode") let key=107;;
-    "build_sources_headers_static-mode") let key=108;;
-    "build_sources_library-mode") let key=109;;
-    "build_sources_library_shared-mode") let key=110;;
-    "build_sources_library_static-mode") let key=111;;
-    "build_sources_object-mode") let key=112;;
-    "build_sources_object_shared-mode") let key=113;;
-    "build_sources_object_static-mode") let key=114;;
-    "build_sources_program-mode") let key=115;;
-    "build_sources_program_shared-mode") let key=116;;
-    "build_sources_program_static-mode") let key=117;;
-    "build_sources_script-mode") let key=118;;
-    "build_sources_setting-mode") let key=119;;
-    "build_static-mode") let key=120;;
-    "defines-mode") let key=121;;
-    "defines_library-mode") let key=122;;
-    "defines_library_shared-mode") let key=123;;
-    "defines_library_static-mode") let key=124;;
-    "defines_object-mode") let key=125;;
-    "defines_object_shared-mode") let key=126;;
-    "defines_object_static-mode") let key=127;;
-    "defines_program-mode") let key=128;;
-    "defines_program_shared-mode") let key=129;;
-    "defines_program_static-mode") let key=130;;
-    "defines_shared-mode") let key=131;;
-    "defines_static-mode") let key=132;;
-    "environment-mode") let key=133;;
-    "flags-mode") let key=134;;
-    "flags_library-mode") let key=135;;
-    "flags_library_shared-mode") let key=136;;
-    "flags_library_static-mode") let key=137;;
-    "flags_object-mode") let key=138;;
-    "flags_object_shared-mode") let key=139;;
-    "flags_object_static-mode") let key=140;;
-    "flags_program-mode") let key=141;;
-    "flags_program_shared-mode") let key=142;;
-    "flags_program_static-mode") let key=143;;
-    "flags_shared-mode") let key=144;;
-    "flags_static-mode") let key=145;;
-    "has_path_standard-mode") let key=146;;
-    "path_headers-mode") let key=147;;
-    "path_language-mode") let key=148;;
-    "path_library_script-mode") let key=149;;
-    "path_library_shared-mode") let key=150;;
-    "path_library_static-mode") let key=151;;
-    "path_object_script-mode") let key=152;;
-    "path_object_shared-mode") let key=153;;
-    "path_object_static-mode") let key=154;;
-    "path_program_script-mode") let key=155;;
-    "path_program_shared-mode") let key=156;;
-    "path_program_static-mode") let key=157;;
-    "path_sources-mode") let key=158;;
-    "path_sources_object-mode") let key=159;;
-    "preserve_path_headers-mode") let key=160;;
-    "process_post-mode") let key=161;;
-    "process_pre-mode") let key=162;;
-    "search_exclusive-mode") let key=163;;
-    "search_shared-mode") let key=164;;
-    "search_static-mode") let key=165;;
-    "version_file-mode") let key=166;;
-    "version_major-mode") let key=167;;
-    "version_major_prefix-mode") let key=168;;
-    "version_micro-mode") let key=169;;
-    "version_micro_prefix-mode") let key=170;;
-    "version_minor-mode") let key=171;;
-    "version_minor_prefix-mode") let key=172;;
-    "version_nano-mode") let key=173;;
-    "version_nano_prefix-mode") let key=174;;
-    "version_target-mode") let key=175;;
+    "build_compiler-mode") let key=93;;
+    "build_indexer-mode") let key=94;;
+    "build_indexer_arguments-mode") let key=95;;
+    "build_language-mode") let key=96;;
+    "build_libraries-mode") let key=97;;
+    "build_libraries_shared-mode") let key=98;;
+    "build_libraries_static-mode") let key=99;;
+    "build_name-mode") let key=100;;
+    "build_objects_library-mode") let key=101;;
+    "build_objects_library_shared-mode") let key=102;;
+    "build_objects_library_static-mode") let key=103;;
+    "build_objects_program-mode") let key=104;;
+    "build_objects_program_shared-mode") let key=105;;
+    "build_objects_program_static-mode") let key=106;;
+    "build_script-mode") let key=107;;
+    "build_shared-mode") let key=108;;
+    "build_sources_documentation-mode") let key=109;;
+    "build_sources_headers-mode") let key=110;;
+    "build_sources_headers_shared-mode") let key=111;;
+    "build_sources_headers_static-mode") let key=112;;
+    "build_sources_library-mode") let key=113;;
+    "build_sources_library_shared-mode") let key=114;;
+    "build_sources_library_static-mode") let key=115;;
+    "build_sources_object-mode") let key=116;;
+    "build_sources_object_shared-mode") let key=117;;
+    "build_sources_object_static-mode") let key=118;;
+    "build_sources_program-mode") let key=119;;
+    "build_sources_program_shared-mode") let key=120;;
+    "build_sources_program_static-mode") let key=121;;
+    "build_sources_script-mode") let key=122;;
+    "build_sources_setting-mode") let key=123;;
+    "build_static-mode") let key=124;;
+    "defines-mode") let key=125;;
+    "defines_library-mode") let key=126;;
+    "defines_library_shared-mode") let key=127;;
+    "defines_library_static-mode") let key=128;;
+    "defines_object-mode") let key=129;;
+    "defines_object_shared-mode") let key=130;;
+    "defines_object_static-mode") let key=131;;
+    "defines_program-mode") let key=132;;
+    "defines_program_shared-mode") let key=133;;
+    "defines_program_static-mode") let key=134;;
+    "defines_shared-mode") let key=135;;
+    "defines_static-mode") let key=136;;
+    "environment-mode") let key=137;;
+    "flags-mode") let key=138;;
+    "flags_library-mode") let key=139;;
+    "flags_library_shared-mode") let key=140;;
+    "flags_library_static-mode") let key=141;;
+    "flags_object-mode") let key=142;;
+    "flags_object_shared-mode") let key=143;;
+    "flags_object_static-mode") let key=144;;
+    "flags_program-mode") let key=145;;
+    "flags_program_shared-mode") let key=146;;
+    "flags_program_static-mode") let key=147;;
+    "flags_shared-mode") let key=148;;
+    "flags_static-mode") let key=149;;
+    "has_path_standard-mode") let key=150;;
+    "path_headers-mode") let key=151;;
+    "path_language-mode") let key=152;;
+    "path_library_script-mode") let key=153;;
+    "path_library_shared-mode") let key=154;;
+    "path_library_static-mode") let key=155;;
+    "path_object_script-mode") let key=156;;
+    "path_object_shared-mode") let key=157;;
+    "path_object_static-mode") let key=158;;
+    "path_program_script-mode") let key=159;;
+    "path_program_shared-mode") let key=160;;
+    "path_program_static-mode") let key=161;;
+    "path_sources-mode") let key=162;;
+    "path_sources_headers-mode") let key=163;;
+    "path_sources_library-mode") let key=164;;
+    "path_sources_object-mode") let key=165;;
+    "path_sources_program-mode") let key=166;;
+    "path_sources_script-mode") let key=167;;
+    "preserve_path_headers-mode") let key=168;;
+    "process_post-mode") let key=169;;
+    "process_pre-mode") let key=170;;
+    "search_exclusive-mode") let key=171;;
+    "search_shared-mode") let key=172;;
+    "search_static-mode") let key=173;;
+    "version_file-mode") let key=174;;
+    "version_major-mode") let key=175;;
+    "version_major_prefix-mode") let key=176;;
+    "version_micro-mode") let key=177;;
+    "version_micro_prefix-mode") let key=178;;
+    "version_minor-mode") let key=179;;
+    "version_minor_prefix-mode") let key=180;;
+    "version_nano-mode") let key=181;;
+    "version_nano_prefix-mode") let key=182;;
+    "version_target-mode") let key=183;;
 
-    "has-build_compiler") let key=176;;
-    "has-build_indexer") let key=177;;
-    "has-build_indexer_arguments") let key=178;;
-    "has-build_name") let key=179;;
-    "has-has_path_standard") let key=180;;
-    "has-path_library_script") let key=181;;
-    "has-path_library_shared") let key=182;;
-    "has-path_library_static") let key=183;;
-    "has-path_object_script") let key=184;;
-    "has-path_object_shared") let key=185;;
-    "has-path_object_static") let key=186;;
-    "has-path_program_script") let key=187;;
-    "has-path_program_shared") let key=188;;
-    "has-path_program_static") let key=189;;
-    "has-path_sources") let key=190;;
-    "has-path_sources_object") let key=191;;
-    "has-search_exclusive") let key=192;;
-    "has-search_shared") let key=193;;
-    "has-search_static") let key=194;;
-    "has-version_major_prefix") let key=195;;
-    "has-version_micro_prefix") let key=196;;
-    "has-version_minor_prefix") let key=197;;
-    "has-version_nano_prefix") let key=198;;
+    "has-build_compiler") let key=184;;
+    "has-build_indexer") let key=185;;
+    "has-build_indexer_arguments") let key=186;;
+    "has-build_name") let key=187;;
+    "has-has_path_standard") let key=188;;
+    "has-path_library_script") let key=189;;
+    "has-path_library_shared") let key=190;;
+    "has-path_library_static") let key=191;;
+    "has-path_object_script") let key=192;;
+    "has-path_object_shared") let key=193;;
+    "has-path_object_static") let key=194;;
+    "has-path_program_script") let key=195;;
+    "has-path_program_shared") let key=196;;
+    "has-path_program_static") let key=197;;
+    "has-path_sources") let key=198;;
+    "has-path_sources_headers") let key=199;;
+    "has-path_sources_library") let key=200;;
+    "has-path_sources_object") let key=201;;
+    "has-path_sources_program") let key=202;;
+    "has-path_sources_script") let key=203;;
+    "has-search_exclusive") let key=204;;
+    "has-search_shared") let key=205;;
+    "has-search_static") let key=206;;
+    "has-version_major_prefix") let key=207;;
+    "has-version_micro_prefix") let key=208;;
+    "has-version_minor_prefix") let key=209;;
+    "has-version_nano_prefix") let key=210;;
 
-    "has-build_compiler-mode") let key=199;;
-    "has-build_indexer-mode") let key=200;;
-    "has-build_indexer_arguments-mode") let key=201;;
-    "has-build_name-mode") let key=202;;
-    "has-has_path_standard-mode") let key=203;;
-    "has-path_library_script-mode") let key=204;;
-    "has-path_library_shared-mode") let key=205;;
-    "has-path_library_static-mode") let key=206;;
-    "has-path_object_script-mode") let key=207;;
-    "has-path_object_shared-mode") let key=208;;
-    "has-path_object_static-mode") let key=209;;
-    "has-path_program_script-mode") let key=210;;
-    "has-path_program_shared-mode") let key=211;;
-    "has-path_program_static-mode") let key=212;;
-    "has-path_sources-mode") let key=213;;
-    "has-path_sources_object-mode") let key=214;;
-    "has-search_exclusive-mode") let key=215;;
-    "has-search_shared-mode") let key=216;;
-    "has-search_static-mode") let key=217;;
-    "has-version_major_prefix-mode") let key=218;;
-    "has-version_micro_prefix-mode") let key=219;;
-    "has-version_minor_prefix-mode") let key=220;;
-    "has-version_nano_prefix-mode") let key=221;;
+    "has-build_compiler-mode") let key=207;;
+    "has-build_indexer-mode") let key=208;;
+    "has-build_indexer_arguments-mode") let key=209;;
+    "has-build_name-mode") let key=210;;
+    "has-has_path_standard-mode") let key=211;;
+    "has-path_library_script-mode") let key=212;;
+    "has-path_library_shared-mode") let key=213;;
+    "has-path_library_static-mode") let key=214;;
+    "has-path_object_script-mode") let key=215;;
+    "has-path_object_shared-mode") let key=216;;
+    "has-path_object_static-mode") let key=217;;
+    "has-path_program_script-mode") let key=218;;
+    "has-path_program_shared-mode") let key=219;;
+    "has-path_program_static-mode") let key=220;;
+    "has-path_sources-mode") let key=221;;
+    "has-path_sources_headers-mode") let key=222;;
+    "has-path_sources_library-mode") let key=223;;
+    "has-path_sources_object-mode") let key=224;;
+    "has-path_sources_program-mode") let key=225;;
+    "has-path_sources_script-mode") let key=226;;
+    "has-search_exclusive-mode") let key=227;;
+    "has-search_shared-mode") let key=228;;
+    "has-search_static-mode") let key=229;;
+    "has-version_major_prefix-mode") let key=230;;
+    "has-version_micro_prefix-mode") let key=231;;
+    "has-version_minor_prefix-mode") let key=232;;
+    "has-version_nano_prefix-mode") let key=233;;
   esac
 }
 
@@ -876,7 +892,7 @@ bootstrap_load_settings() {
   fi
 
   # Single value Objects.
-  for i in build_compiler build_indexer build_language build_name build_script build_shared build_sources_object build_sources_object_shared build_sources_object_static build_static has_path_standard path_headers path_language path_library_script path_library_shared path_library_static path_object_script path_object_shared path_object_static path_program_script path_program_shared path_program_static path_sources path_sources_object preserve_path_headers process_post process_pre search_exclusive search_shared search_static version_file version_major version_major_prefix version_micro version_micro_prefix version_minor version_minor_prefix version_nano version_nano_prefix version_target ; do
+  for i in build_compiler build_indexer build_language build_name build_script build_shared build_sources_object build_sources_object_shared build_sources_object_static build_static has_path_standard path_headers path_language path_library_script path_library_shared path_library_static path_object_script path_object_shared path_object_static path_program_script path_program_shared path_program_static path_sources path_sources_headers path_sources_library path_sources_object path_sources_program path_sources_script preserve_path_headers process_post process_pre search_exclusive search_shared search_static version_file version_major version_major_prefix version_micro version_micro_prefix version_minor version_minor_prefix version_nano version_nano_prefix version_target ; do
 
     bootstrap_id "${i}"
 
@@ -971,7 +987,7 @@ bootstrap_load_settings_mode() {
   for m in ${modes} ; do
 
     # Single value Objects.
-    for i in build_compiler build_indexer build_language build_name build_script build_shared build_sources_object build_sources_object_shared build_sources_object_static build_static has_path_standard path_headers path_language path_library_script path_library_shared path_library_static path_object_script path_object_shared path_object_static path_program_script path_program_shared path_program_static path_sources path_sources_object preserve_path_headers process_post process_pre search_exclusive search_shared search_static version_file version_major version_major_prefix version_micro version_micro_prefix version_minor version_minor_prefix version_nano version_nano_prefix version_target ; do
+    for i in build_compiler build_indexer build_language build_name build_script build_shared build_sources_object build_sources_object_shared build_sources_object_static build_static has_path_standard path_headers path_language path_library_script path_library_shared path_library_static path_object_script path_object_shared path_object_static path_program_script path_program_shared path_program_static path_sources path_sources_headers path_sources_library path_sources_object path_sources_program path_sources_script preserve_path_headers process_post process_pre search_exclusive search_shared search_static version_file version_major version_major_prefix version_micro version_micro_prefix version_minor version_minor_prefix version_nano version_nano_prefix version_target ; do
 
       bootstrap_id "${i}-mode"
 
@@ -1260,6 +1276,21 @@ bootstrap_operation_build() {
   bootstrap_id "path_program_static"
   local path_program_static=${variables[${key}]}
 
+  bootstrap_id "path_sources_headers"
+  local path_sources_headers=${variables[${key}]}
+
+  bootstrap_id "path_sources_library"
+  local path_sources_library=${variables[${key}]}
+
+  bootstrap_id "path_sources_object"
+  local path_sources_object=${variables[${key}]}
+
+  bootstrap_id "path_sources_program"
+  local path_sources_program=${variables[${key}]}
+
+  bootstrap_id "path_sources_script"
+  local path_sources_script=${variables[${key}]}
+
   bootstrap_id "has_path_standard"
   local has_path_standard=${variables[${key}]}
 
@@ -1370,14 +1401,6 @@ bootstrap_operation_build() {
 
   bootstrap_operation_build_prepare_remaining
 
-  if [[ ${build_shared} == "yes" && -f ${project_built_shared}.built || ${build_static} == "yes" && -f ${project_built_static}.built ]] ; then
-    if [[ ${verbosity} != "quiet" && ${verbosity} != "error" ]] ; then
-      echo -e "${c_warning}WARNING: This project has already been built.${c_reset}"
-    fi
-
-    return 0
-  fi
-
   local arguments_include="-I${path_build}includes/"
   local arguments_shared="-L${path_build}libraries/${path_library_shared}"
   local arguments_static="-L${path_build}libraries/${path_library_static}"
@@ -1404,7 +1427,13 @@ bootstrap_operation_build() {
 
   if [[ ${sources_documentation} != "" ]] ; then
     for i in ${sources_documentation} ; do
+
       directory=$(dirname ${i})
+      if [[ ${directory} == "." ]] ; then
+        directory=
+      elif [[ ${directory} != "" ]] ; then
+        directory="${directory}/"
+      fi
 
       if [[ ! -e ${path_documentation}${i} ]] ; then
         if [[ ${verbosity} != "quiet" && ${verbosity} != "error" ]] ; then
@@ -1415,30 +1444,32 @@ bootstrap_operation_build() {
         continue;
       fi
 
-      if [[ ${directory} == "." ]] ; then
-        cp ${verbose_common} -R ${path_documentation}${i} ${path_build}documentation/ || failure=1
-      else
+      if [[ ! -d ${path_build}documentation/${directory} ]] ; then
         mkdir ${verbose_common} -p ${path_build}documentation/${directory} || failure=1
+      fi
 
-        if [[ ${failure} -eq 0 ]] ; then
-          cp ${verbose_common} -R ${path_documentation}${i} ${path_build}documentation/${directory}/ || failure=1
-        fi
+      if [[ ${failure} -eq 0 ]] ; then
+        cp ${verbose_common} -R ${path_documentation}${i} ${path_build}documentation/${directory} || failure=1
       fi
     done
   fi
 
   if [[ ${sources_setting} != "" ]] ; then
     for i in ${sources_setting} ; do
+
       directory=$(dirname ${i})
-
       if [[ ${directory} == "." ]] ; then
-        cp ${verbose_common} -R ${path_settings}${i} ${path_build}settings/ || failure=1
-      else
-        mkdir ${verbose_common} -p ${path_build}settings/${directory} || failure=1
+        directory=
+      elif [[ ${directory} != "" ]] ; then
+        directory="${directory}/"
+      fi
 
-        if [[ ${failure} -eq 0 ]] ; then
-          cp ${verbose_common} -R ${path_settings}${i} ${path_build}settings/${directory}/ || failure=1
-        fi
+      if [[ ! -d ${path_build}settings/${directory} ]] ; then
+        mkdir ${verbose_common} -p ${path_build}settings/${directory} || failure=1
+      fi
+
+      if [[ ${failure} -eq 0 ]] ; then
+        cp ${verbose_common} -R ${path_settings}${i} ${path_build}settings/${directory} || failure=1
       fi
     done
   fi
@@ -1446,75 +1477,60 @@ bootstrap_operation_build() {
   if [[ ${failure} -eq 0 && ${sources_headers} != "" ]] ; then
     if [[ ${preserve_path_headers} == "yes" ]] ; then
       for i in ${sources_headers} ; do
+
         directory=$(dirname ${i})
-
         if [[ ${directory} == "." ]] ; then
-          cp ${verbose_common} -f ${path_sources}${path_language}${i} ${path_build}includes/${path_headers} || failure=1
-        else
-          if [[ ! -d ${path_build}includes/${path_headers}${directory} ]] ; then
-            mkdir ${verbose_common} -p ${path_build}includes/${path_headers}${directory} || failure=1
-          fi
+          directory=
+        elif [[ ${directory} != "" ]] ; then
+          directory="${directory}/"
+        fi
 
-          if [[ ${failure} -eq 0 ]] ; then
-            cp ${verbose_common} -f ${path_sources}${path_language}${i} ${path_build}includes/${path_headers}${i} || failure=1
-          fi
+        if [[ ! -d ${path_build}includes/${path_headers}${directory} ]] ; then
+          mkdir ${verbose_common} -p ${path_build}includes/${path_headers}${directory} || failure=1
+        fi
+
+        if [[ ${failure} -eq 0 ]] ; then
+          cp ${verbose_common} -f ${path_sources_headers}${path_language}${i} ${path_build}includes/${path_headers}${directory} || failure=1
         fi
       done
     else
       for i in ${sources_headers} ; do
-        cp ${verbose_common} -f ${path_sources}${path_language}${i} ${path_build}includes/${path_headers} || failure=1
+        cp ${verbose_common} -f ${path_sources_headers}${path_language}${i} ${path_build}includes/${path_headers} || failure=1
       done
     fi
   fi
 
-  if [[ ${failure} -eq 0 && ${build_shared} == "yes" && ! -f ${project_built_shared}.built ]] ; then
+  if [[ ${failure} -eq 0 && ${build_shared} == "yes" && ! -f ${project_built_shared}-${settings_name}.built ]] ; then
     if [[ ${sources_object} != "" || ${sources_object_shared} != "" ]] ; then
-      sources=
-      let count=0
+      for i in ${sources_object} ${sources_object_shared} ; do
 
-      # Sources object only allows for a single value.
-      if [[ ${sources_object_shared} != "" ]] ; then
-        for i in ${sources_object_shared} ; do
-          let count++
-        done
-
-        if [[ ${count} -gt 1 ]] ; then
-          if [[ ${verbosity} != "quiet" && ${verbosity} != "error" ]] ; then
-            echo -e "${c_warning}WARNING: Multiple '${c_notice}sources_object_shared${c_warning}' found, only using the first one found is going to be used.${c_reset}"
-          fi
+        directory=$(dirname ${i})
+        if [[ ${directory} == "." ]] ; then
+          directory=
+        elif [[ ${directory} != "" ]] ; then
+          directory="${directory}/"
         fi
 
-        for i in ${sources_object_shared} ; do
-          sources="${path_sources_object}${path_language}${i} "
-
-          break
-        done
-      else
-        for i in ${sources_object} ; do
-          let count++
-        done
-
-        if [[ ${count} -gt 1 ]] ; then
-          if [[ ${verbosity} != "quiet" && ${verbosity} != "error" ]] ; then
-            echo -e "${c_warning}WARNING: Multiple '${c_notice}sources_object${c_warning}' found, only using the first one found is going to be used.${c_reset}"
-          fi
+        if [[ ! -d ${path_build}objects/${path_object_shared}${directory} ]] ; then
+          mkdir ${verbose_common} -p ${path_build}objects/${path_object_shared}${directory} || failure=1
         fi
 
-        for i in ${sources_object} ; do
-          sources="${path_sources_object}${path_language}${i} "
+        sources="${path_sources_object}${path_language}${i} "
+        n=$(echo $i | sed -e 's|\.[^\.]*$||')
 
+        if [[ ${verbosity} == "verbose" ]] ; then
+          echo ${build_compiler} ${sources} -c -o ${path_build}objects/${path_object_shared}${n}.o ${arguments_shared} ${arguments_include} ${libraries} ${libraries_shared} ${flags} ${flags_shared} ${flags_object} ${flags_object_shared} ${defines} ${defines_shared} ${defines_object} ${defines_object_shared} ${define_extra}
+        fi
+
+        ${build_compiler} ${sources} -c -o ${path_build}objects/${path_object_shared}${n}.o ${arguments_shared} ${arguments_include} ${libraries} ${libraries_shared} ${flags} ${flags_shared} ${flags_object} ${flags_object_shared} ${defines} ${defines_shared} ${defines_object} ${defines_object_shared} ${define_extra} || failure=1
+
+        if [[ ${failure} -ne 0 ]] ; then
           break
-        done
-      fi
-
-      if [[ ${verbosity} == "verbose" ]] ; then
-        echo ${build_compiler} ${sources} -c -o ${path_build}objects/${path_object_shared}${build_name}.o ${arguments_shared} ${arguments_include} ${libraries} ${libraries_shared} ${flags} ${flags_shared} ${flags_object} ${flags_object_shared} ${defines} ${defines_shared} ${defines_object} ${defines_object_shared} ${define_extra}
-      fi
-
-      ${build_compiler} ${sources} -c -o ${path_build}objects/${path_object_shared}${build_name}.o ${arguments_shared} ${arguments_include} ${libraries} ${libraries_shared} ${flags} ${flags_shared} ${flags_object} ${flags_object_shared} ${defines} ${defines_shared} ${defines_object} ${defines_object_shared} ${define_extra} || failure=1
+        fi
+      done
     fi
 
-    if [[ ${sources_library} != "" || ${sources_library_shared} != "" ]] ; then
+    if [[ ${failure} -eq 0 && (${sources_library} != "" || ${sources_library_shared} != "") ]] ; then
       sources=
 
       if [[ ${objects_library} != "" || ${objects_library_shared} != "" ]] ; then
@@ -1524,7 +1540,7 @@ bootstrap_operation_build() {
       fi
 
       for i in ${sources_library} ${sources_library_shared} ; do
-        sources="${sources}${path_sources}${path_language}${i} "
+        sources="${sources}${path_sources_library}${path_language}${i} "
       done
 
       if [[ ${verbosity} == "verbose" ]] ; then
@@ -1560,7 +1576,7 @@ bootstrap_operation_build() {
       fi
     fi
 
-    if [[ ${failure} -eq 0 && ${sources_program} != "" ]] ; then
+    if [[ ${failure} -eq 0 && (${sources_program} != "" ||  ${sources_program_shared} != "") ]] ; then
       sources=
       links=
 
@@ -1575,7 +1591,7 @@ bootstrap_operation_build() {
       fi
 
       for i in ${sources_program} ${sources_program_shared} ; do
-        sources="${sources}${path_sources}${path_language}${i} "
+        sources="${sources}${path_sources_program}${path_language}${i} "
       done
 
       if [[ ${verbosity} == "verbose" ]] ; then
@@ -1590,50 +1606,34 @@ bootstrap_operation_build() {
     fi
   fi
 
-  if [[ ${failure} -eq 0 && ${build_static} == "yes" && ! -f ${project_built_static}.built ]] ; then
+  if [[ ${failure} -eq 0 && ${build_static} == "yes" && ! -f ${project_built_static}-${settings_name}.built ]] ; then
     if [[ ${sources_object} != "" || ${sources_object_static} != "" ]] ; then
-      let count=0
+      for i in ${sources_object} ${sources_object_static} ; do
 
-      # Sources object only allows for a single value.
-      if [[ ${sources_object_static} != "" ]] ; then
-        for i in ${sources_object_static} ; do
-          let count++
-        done
-
-        if [[ ${count} -gt 1 ]] ; then
-          if [[ ${verbosity} != "quiet" && ${verbosity} != "error" ]] ; then
-            echo -e "${c_warning}WARNING: Multiple '${c_notice}sources_object_static${c_warning}' found, only using the first one found is going to be used.${c_reset}"
-          fi
+        directory=$(dirname ${i})
+        if [[ ${directory} == "." ]] ; then
+          directory=
+        elif [[ ${directory} != "" ]] ; then
+          directory="${directory}/"
         fi
 
-        for i in ${sources_object_static} ; do
-          sources="${path_sources_object}${path_language}${i} "
-
-          break
-        done
-      else
-        for i in ${sources_object} ; do
-          let count++
-        done
-
-        if [[ ${count} -gt 1 ]] ; then
-          if [[ ${verbosity} != "quiet" && ${verbosity} != "error" ]] ; then
-            echo -e "${c_warning}WARNING: Multiple '${c_notice}sources_object${c_warning}' found, only using the first one found is going to be used.${c_reset}"
-          fi
+        if [[ ! -d ${path_build}objects/${path_object_shared}${directory} ]] ; then
+          mkdir ${verbose_common} -p ${path_build}objects/${path_object_shared}${directory} || failure=1
         fi
 
-        for i in ${sources_object} ; do
-          sources="${path_sources_object}${path_language}${i} "
+        sources="${path_sources_object}${path_language}${i} "
+        n=$(echo $i | sed -e 's|\.[^\.]*$||')
 
+        if [[ ${verbosity} == "verbose" ]] ; then
+          echo ${build_compiler} ${sources} -c -o ${path_build}objects/${path_object_static}${n}.o ${arguments_static} ${arguments_include} ${libraries} ${libraries_static} ${flags} ${flags_static} ${flags_object} ${flags_object_static} ${defines} ${defines_static} ${defines_object} ${defines_object_static} ${define_extra}
+        fi
+
+        ${build_compiler} ${sources} -c -o ${path_build}objects/${path_object_static}${n}.o ${arguments_static} ${arguments_include} ${libraries} ${libraries_static} ${flags} ${flags_static} ${flags_object} ${flags_object_static} ${defines} ${defines_static} ${defines_object} ${defines_object_static} ${define_extra} || failure=1
+
+        if [[ ${failure} -ne 0 ]] ; then
           break
-        done
-      fi
-
-      if [[ ${verbosity} == "verbose" ]] ; then
-        echo ${build_compiler} ${sources} -c -o ${path_build}objects/${path_object_static}${build_name}.o ${arguments_static} ${arguments_include} ${libraries} ${libraries_static} ${flags} ${flags_static} ${flags_object} ${flags_object_static} ${defines} ${defines_static} ${defines_object} ${defines_object_static} ${define_extra}
-      fi
-
-      ${build_compiler} ${sources} -c -o ${path_build}objects/${path_object_static}${build_name}.o ${arguments_static} ${arguments_include} ${libraries} ${libraries_static} ${flags} ${flags_static} ${flags_object} ${flags_object_static} ${defines} ${defines_static} ${defines_object} ${defines_object_static} ${define_extra} || failure=1
+        fi
+      done
     fi
 
     if [[ ${sources_library} != "" || ${sources_library_static} != "" ]] ; then
@@ -1646,27 +1646,32 @@ bootstrap_operation_build() {
       fi
 
       for i in ${sources_library} ${sources_library_static} ; do
+
         directory=$(dirname ${i})
-        n=$(basename ${i} | sed -e 's|\.c$||')
+        if [[ ${directory} == "." ]] ; then
+          directory=
+        elif [[ ${directory} != "" ]] ; then
+          directory="${directory}/"
+        fi
 
-        if [[ ${directory} != "." && ! -d ${path_build}objects/${directory} ]] ; then
-          mkdir ${verbose_common} -p ${path_build}objects/${directory}
+        n=$(basename ${i} | sed -e 's|\.[^\.]*$||')
 
-          if [[ ${?} -ne 0 ]] ; then
-            let failure=1
+        if [[ ! -d ${path_build}objects/${directory} ]] ; then
+          mkdir ${verbose_common} -p ${path_build}objects/${directory} || failure=1
 
+          if [[ ${failure} -eq 1 ]] ; then
             break;
           fi
         fi
 
         # These are objects created by the static build step rather than objects created by the object build step.
-        sources="${sources}${path_build}objects/${directory}/${n}.o "
+        sources="${sources}${path_build}objects/${directory}${n}.o "
 
         if [[ ${verbosity} == "verbose" ]] ; then
-          echo ${build_compiler} ${path_sources}${path_language}${i} -c -static -o ${path_build}objects/${directory}/${n}.o ${arguments_static} ${arguments_include} ${libraries} ${libraries_static} ${flags} ${flags_static} ${flags_library} ${flags_library_static} ${defines} ${defines_static} ${defines_library} ${defines_library_static} ${define_extra}
+          echo ${build_compiler} ${path_sources_library}${path_language}${i} -c -static -o ${path_build}objects/${directory}${n}.o ${arguments_static} ${arguments_include} ${libraries} ${libraries_static} ${flags} ${flags_static} ${flags_library} ${flags_library_static} ${defines} ${defines_static} ${defines_library} ${defines_library_static} ${define_extra}
         fi
 
-        ${build_compiler} ${path_sources}${path_language}${i} -c -static -o ${path_build}objects/${directory}/${n}.o ${arguments_static} ${arguments_include} ${libraries} ${libraries_static} ${flags} ${flags_static} ${flags_library} ${flags_library_static} ${defines} ${defines_static} ${defines_library} ${defines_library_static} ${define_extra} || failure=1
+        ${build_compiler} ${path_sources_library}${path_language}${i} -c -static -o ${path_build}objects/${directory}${n}.o ${arguments_static} ${arguments_include} ${libraries} ${libraries_static} ${flags} ${flags_static} ${flags_library} ${flags_library_static} ${defines} ${defines_static} ${defines_library} ${defines_library_static} ${define_extra} || failure=1
 
         if [[ ${failure} -eq 1 ]] ; then
           break;
@@ -1683,7 +1688,7 @@ bootstrap_operation_build() {
       fi
     fi
 
-    if [[ ${failure} -eq 0 && ${sources_program} != "" ]] ; then
+    if [[ ${failure} -eq 0 && (${sources_program} != "" || ${sources_program_static} != "") ]] ; then
       sources=
       links=
 
@@ -1698,7 +1703,7 @@ bootstrap_operation_build() {
       fi
 
       for i in ${sources_program} ${sources_program_static} ; do
-        sources="${sources}${path_sources}${path_language}${i} "
+        sources="${sources}${path_sources_program}${path_language}${i} "
       done
 
       if [[ ${verbosity} == "verbose" ]] ; then
@@ -1879,12 +1884,48 @@ bootstrap_operation_build_prepare_defaults() {
     fi
   fi
 
+  bootstrap_id "has-path_sources_headers-mode"
+  if [[ ${variables[${key}]} != "yes" ]] ; then
+
+    bootstrap_id "has-path_sources_headers"
+    if [[ ${variables[${key}]} != "yes" ]] ; then
+      path_sources_headers=${path_sources}
+    fi
+  fi
+
+  bootstrap_id "has-path_sources_library-mode"
+  if [[ ${variables[${key}]} != "yes" ]] ; then
+
+    bootstrap_id "has-path_sources_library"
+    if [[ ${variables[${key}]} != "yes" ]] ; then
+      path_sources_library=${path_sources}
+    fi
+  fi
+
   bootstrap_id "has-path_sources_object-mode"
   if [[ ${variables[${key}]} != "yes" ]] ; then
 
     bootstrap_id "has-path_sources_object"
     if [[ ${variables[${key}]} != "yes" ]] ; then
-      path_sources_object="sources/"
+      path_sources_object=${path_sources}
+    fi
+  fi
+
+  bootstrap_id "has-path_sources_program-mode"
+  if [[ ${variables[${key}]} != "yes" ]] ; then
+
+    bootstrap_id "has-path_sources_program"
+    if [[ ${variables[${key}]} != "yes" ]] ; then
+      path_sources_program=${path_sources}
+    fi
+  fi
+
+  bootstrap_id "has-path_sources_script-mode"
+  if [[ ${variables[${key}]} != "yes" ]] ; then
+
+    bootstrap_id "has-path_sources_script"
+    if [[ ${variables[${key}]} != "yes" ]] ; then
+      path_sources_script=${path_sources}
     fi
   fi
 
@@ -3044,7 +3085,7 @@ bootstrap_operation_clean() {
     fi
   done
 
-  if [[ -f ${project_built}.prepared ]] ; then
+  if [[ -f ${project_built}-${settings_name}.prepared ]] ; then
     rm ${verbose_common} -f ${project_built}-${settings_name}.prepared
   fi
 
