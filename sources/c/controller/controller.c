@@ -25,7 +25,7 @@ extern "C" {
 
     if (main->setting.flag & controller_main_flag_version_copyright_help_e) {
       if (main->setting.flag & controller_main_flag_help_e) {
-        controller_main_print_message_help(&main->program.message);
+        controller_main_print_message_help(&main->program.message, F_false);
       }
       else if (main->setting.flag & controller_main_flag_version_e) {
         fll_program_print_version(&main->program.message, controller_program_version_s);

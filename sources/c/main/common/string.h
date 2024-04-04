@@ -46,34 +46,74 @@ extern "C" {
 #endif // _di_controller_program_version_s_
 
 /**
- * The program name.
- */
-#ifndef _di_controller_program_name_s_
-  #define CONTROLLER_program_name_s      "controller"
-  #define CONTROLLER_program_name_long_s "Controller"
-
-  #define CONTROLLER_program_name_s_length      10
-  #define CONTROLLER_program_name_long_s_length 10
-
-  extern const f_string_static_t controller_program_name_s;
-  extern const f_string_static_t controller_program_name_long_s;
-#endif // _di_controller_program_name_s_
-
-/**
  * The main program parameters.
  */
 #ifndef _di_controller_parameter_s_
-  #define CONTROLLER_short_controller_s "e"
+  #define CONTROLLER_short_cgroup_s          "c"
+  #define CONTROLLER_short_daemon_s          "d"
+  #define CONTROLLER_short_init_s            "I"
+  #define CONTROLLER_short_interruptible_s   "i"
+  #define CONTROLLER_short_pid_s             "p"
+  #define CONTROLLER_short_settings_s        "s"
+  #define CONTROLLER_short_simulate_s        "S"
+  #define CONTROLLER_short_socket_s          "k"
+  #define CONTROLLER_short_uninterruptible_s "U"
+  #define CONTROLLER_short_validate_s        "v"
 
-  #define CONTROLLER_long_controller_s "controller"
+  #define CONTROLLER_long_cgroup_s          "cgroup"
+  #define CONTROLLER_long_daemon_s          "daemon"
+  #define CONTROLLER_long_init_s            "init"
+  #define CONTROLLER_long_interruptible_s   "interruptible"
+  #define CONTROLLER_long_pid_s             "pid"
+  #define CONTROLLER_long_settings_s        "settings"
+  #define CONTROLLER_long_simulate_s        "simulate"
+  #define CONTROLLER_long_socket_s          "socket"
+  #define CONTROLLER_long_uninterruptible_s "uninterruptible"
+  #define CONTROLLER_long_validate_s        "validate"
 
-  #define CONTROLLER_short_controller_s_length 1
+  #define CONTROLLER_short_cgroup_s_length          1
+  #define CONTROLLER_short_daemon_s_length          1
+  #define CONTROLLER_short_init_s_length            1
+  #define CONTROLLER_short_interruptible_s_length   1
+  #define CONTROLLER_short_pid_s_length             1
+  #define CONTROLLER_short_settings_s_length        1
+  #define CONTROLLER_short_simulate_s_length        1
+  #define CONTROLLER_short_socket_s_length          1
+  #define CONTROLLER_short_uninterruptible_s_length 1
+  #define CONTROLLER_short_validate_s_length        1
 
-  #define CONTROLLER_long_controller_s_length 7
+  #define CONTROLLER_long_cgroup_s_length          6
+  #define CONTROLLER_long_daemon_s_length          6
+  #define CONTROLLER_long_init_s_length            4
+  #define CONTROLLER_long_interruptible_s_length   13
+  #define CONTROLLER_long_pid_s_length             3
+  #define CONTROLLER_long_settings_s_length        8
+  #define CONTROLLER_long_simulate_s_length        8
+  #define CONTROLLER_long_socket_s_length          6
+  #define CONTROLLER_long_uninterruptible_s_length 15
+  #define CONTROLLER_long_validate_s_length        8
 
-  extern const f_string_static_t controller_short_controller_s;
+  extern const f_string_static_t controller_short_cgroup_s;
+  extern const f_string_static_t controller_short_daemon_s;
+  extern const f_string_static_t controller_short_init_s;
+  extern const f_string_static_t controller_short_interruptible_s;
+  extern const f_string_static_t controller_short_pid_s;
+  extern const f_string_static_t controller_short_settings_s;
+  extern const f_string_static_t controller_short_simulate_s;
+  extern const f_string_static_t controller_short_socket_s;
+  extern const f_string_static_t controller_short_uninterruptible_s;
+  extern const f_string_static_t controller_short_validate_s;
 
-  extern const f_string_static_t controller_long_controller_s;
+  extern const f_string_static_t controller_long_cgroup_s;
+  extern const f_string_static_t controller_long_daemon_s;
+  extern const f_string_static_t controller_long_init_s;
+  extern const f_string_static_t controller_long_interruptible_s;
+  extern const f_string_static_t controller_long_pid_s;
+  extern const f_string_static_t controller_long_settings_s;
+  extern const f_string_static_t controller_long_simulate_s;
+  extern const f_string_static_t controller_long_socket_s;
+  extern const f_string_static_t controller_long_uninterruptible_s;
+  extern const f_string_static_t controller_long_validate_s;
 #endif // _di_controller_parameter_s_
 
 #ifdef __cplusplus

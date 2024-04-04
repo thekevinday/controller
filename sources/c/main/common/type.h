@@ -42,6 +42,9 @@ extern "C" {
  *
  * status_signal: A status used eclusively by the threaded signal handler.
  * state:         The state data used when processing the FSS data.
+ *
+ * program_name:      The short program name.
+ * program_name_long: The long program name.
  */
 #ifndef _di_controller_setting_t_
   typedef struct {

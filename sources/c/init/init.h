@@ -61,6 +61,7 @@
 #include <program/controller/main/print/warning.h>
 #include <program/controller/main/signal.h>
 #include <program/controller/main/thread.h>
+#include <program/controller/init/string.h>
 
 #ifdef __cplusplus
 extern "C" {

@@ -15,8 +15,8 @@ int main(const int argc, const f_string_t *argv, const f_string_t *envp) {
   data.program.output.custom = (void *) &data;
   data.program.warning.custom = (void *) &data;
 
-  data.setting.program_name = &controller_program_name_s;
-  data.setting.program_name_long = &controller_program_name_long_s;
+  data.setting.program_name = &controller_controller_program_name_s;
+  data.setting.program_name_long = &controller_controller_program_name_long_s;
 
   f_console_parameter_t parameters[] = controller_console_parameter_t_initialize;
 
@@ -71,6 +71,10 @@ int main(const int argc, const f_string_t *argv, const f_string_t *envp) {
   controller_main_delete(&data);
 
   fll_program_standard_set_down(&data.program);
+
+  if (data.setting.state.status == F_child) {
+    exit(data.program.child);
+  }
 
   return (F_status_is_error(data.setting.state.status) || data.setting.state.status == F_false) ? 1 : 0;
 }

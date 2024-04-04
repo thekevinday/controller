@@ -25,6 +25,9 @@ extern "C" {
  *   This requires print.custom to be controller_main_t.
  *
  *   This does not alter print.custom.setting.state.status.
+ * @param uninterrupt
+ *   Set to F_true to print that the default behavior is uninterruptible.
+ *   Otherwise, print that the default behavior is interruptible.
  *
  * @return
  *   F_okay on success.
@@ -41,7 +44,7 @@ extern "C" {
  * @see fll_program_print_help_usage()
  */
 #ifndef _di_controller_main_print_message_help_
-  extern f_status_t controller_main_print_message_help(fl_print_t * const print);
+  extern f_status_t controller_main_print_message_help(fl_print_t * const print, const uint8_t uninterrupt);
 #endif // _di_controller_main_print_message_help_
 
 #ifdef __cplusplus

@@ -26,6 +26,7 @@
 #include <fll/level_0/utf.h>
 #include <fll/level_0/color.h>
 #include <fll/level_0/compare.h>
+#include <fll/level_0/control_group.h>
 #include <fll/level_0/console.h>
 #include <fll/level_0/conversion.h>
 #include <fll/level_0/pipe.h>
