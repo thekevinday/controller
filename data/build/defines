@@ -4,22 +4,15 @@ _di_libcap_ Disable libcap support, allow for compiling and linking without libc
 _di_thread_support_ Disables thread support.
 
 _libcap_legacy_only_ Disable functionality provided by later versions of libcap (2.43 and later).
-_controller_as_init_ Build the program to run as if it were "init" by default, including displaying the program name as "Init Program" or "Init". This changes the main.c file only, leaving the library shareable between both "controller" and "init".
 _override_controller_default_engine_ Provide a custom scripting engine name string to execute (such as php).
 _override_controller_default_engine_length_ The number of bytes representing the string in _override_controller_default_engine_ (not including the terminating NULL).
 _override_controller_path_pid_ Use this as the default custom directory path representing the location of the controller program pid.
-_override_controller_path_pid_init_ Provide a custom init path for the pid file rather than the default.
-_override_controller_path_pid_init_length_ The number of bytes representing the string in _override_controller_path_pid_init_ (not including the terminating NULL).
 _override_controller_path_pid_length_ The number of bytes representing the string in _override_controller_path_pid_ (not including the terminating NULL).
 _override_controller_path_pid_prefix_ Use this as the default custom prefix prepended to the file name of the file representing the controller program pid.
 _override_controller_path_pid_prefix_length_ The number of bytes representing the string in _override_controller_path_pid_prefix_ (not including the terminating NULL).
 _override_controller_path_pid_suffix_ Use this as the default custom prefix prepended to the file name of the file representing the controller program pid.
 _override_controller_path_pid_suffix_length_ The number of bytes representing the string in _override_controller_path_pid_suffix_ (not including the terminating NULL).
-_override_controller_path_settings_init_ Provide a custom init path for the settings file rather than the default.
-_override_controller_path_settings_init_length_ The number of bytes representing the string in _override_controller_path_settings_init_ (not including the terminating NULL).
 _override_controller_path_socket_ Use this as the default custom directory path representing the location of the controller program socket.
-_override_controller_path_socket_init_ Provide a custom init path for the socket file rather than the default.
-_override_controller_path_socket_init_length_ The number of bytes representing the string in _override_controller_path_socket_init_ (not including the terminating NULL).
 _override_controller_path_socket_length_ The number of bytes representing the string in _override_controller_path_socket_ (not including the terminating NULL).
 _override_controller_path_socket_prefix_ Use this as the default custom prefix prepended to the file name of the file representing the controller program socket.
 _override_controller_path_socket_prefix_length_ The number of bytes representing the string in _override_controller_path_socket_prefix_ (not including the terminating NULL).

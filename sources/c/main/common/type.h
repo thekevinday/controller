@@ -42,6 +42,9 @@ extern "C" {
  *
  * status_signal: A status used eclusively by the threaded signal handler.
  * state:         The state data used when processing the FSS data.
+ *
+ * path_pid:     The name of the program.
+ * path_setting: The long name of the program.
  */
 #ifndef _di_controller_setting_t_
   typedef struct {
@@ -49,6 +52,9 @@ extern "C" {
 
     f_status_t status_signal;
     f_state_t state;
+
+    f_string_dynamic_t path_pid;
+    f_string_dynamic_t path_setting;
   } controller_setting_t;
 
   #define controller_setting_t_initialize \
@@ -56,6 +62,8 @@ extern "C" {
       controller_main_flag_none_e, \
       F_okay, \
       f_state_t_initialize, \
+      f_string_dynamic_t_initialize, \
+      f_string_dynamic_t_initialize, \
     }
 #endif // _di_controller_setting_t_
 

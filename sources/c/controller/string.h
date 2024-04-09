@@ -27,6 +27,13 @@ extern "C" {
   #define CONTROLLER_program_name_long_s_length 10
 #endif // _di_controller_program_name_s_
 
+/**
+ * The program defaults.
+ */
+#ifndef _di_controller_default_s_
+  // No custom program defaults.
+#endif // _di_controller_default_s_
+
 #ifdef __cplusplus
 } // extern "C"
 #endif

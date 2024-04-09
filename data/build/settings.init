@@ -74,7 +74,7 @@ environment PATH LD_LIBRARY_PATH
 environment LANG LC_ALL LC_COLLATE LC_CTYPE LC_FASTMSG LC_MESSAGES LC_MONETARY LC_NUMERIC LC_TIME LOCPATH NLSPATH
 
 #defines -D_di_libcap_
-defines -D_controller_as_init_ -D_libcap_legacy_only_
+defines -D_libcap_legacy_only_
 defines-threadless -D_di_thread_support_
 defines-thread -D_pthread_attr_unsupported_ -D_pthread_sigqueue_unsupported_
 

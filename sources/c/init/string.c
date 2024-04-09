@@ -9,6 +9,17 @@ extern "C" {
   const f_string_static_t controller_program_name_long_s = macro_f_string_static_t_initialize_1(CONTROLLER_program_name_long_s, 0, CONTROLLER_program_name_long_s_length);
 #endif // _di_controller_program_name_s_
 
+#ifndef _di_controller_default_s_
+  const f_string_static_t controller_default_engine_s = macro_f_string_static_t_initialize_1(CONTROLLER_default_engine_s, 0, CONTROLLER_default_engine_s_length);
+  const f_string_static_t controller_default_path_pid_s = macro_f_string_static_t_initialize_1(CONTROLLER_init_default_path_pid_s, 0, CONTROLLER_init_default_path_pid_s_length);
+  const f_string_static_t controller_default_path_pid_prefix_s = macro_f_string_static_t_initialize_1(CONTROLLER_init_default_path_pid_prefix_s, 0, CONTROLLER_init_default_path_pid_prefix_s_length);
+  const f_string_static_t controller_default_path_pid_suffix_s = macro_f_string_static_t_initialize_1(CONTROLLER_default_path_pid_suffix_s, 0, CONTROLLER_default_path_pid_suffix_s_length);
+  const f_string_static_t controller_default_path_settings_s = macro_f_string_static_t_initialize_1(CONTROLLER_init_default_path_settings_s, 0, CONTROLLER_init_default_path_settings_s_length);
+  const f_string_static_t controller_default_path_socket_s = macro_f_string_static_t_initialize_1(CONTROLLER_init_default_path_socket_s, 0, CONTROLLER_init_default_path_socket_s_length);
+  const f_string_static_t controller_default_path_socket_prefix_s = macro_f_string_static_t_initialize_1(CONTROLLER_init_default_path_socket_prefix_s, 0, CONTROLLER_init_default_path_socket_prefix_s_length);
+  const f_string_static_t controller_default_path_socket_suffix_s = macro_f_string_static_t_initialize_1(CONTROLLER_default_path_socket_suffix_s, 0, CONTROLLER_default_path_socket_suffix_s_length);
+#endif // _di_controller_default_s_
+
 #ifdef __cplusplus
 } // extern "C"
 #endif
