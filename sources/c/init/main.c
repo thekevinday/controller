@@ -15,9 +15,6 @@ int main(const int argc, const f_string_t *argv, const f_string_t *envp) {
   data.program.output.custom = (void *) &data;
   data.program.warning.custom = (void *) &data;
 
-  data.setting.program_name = &controller_init_program_name_s;
-  data.setting.program_name_long = &controller_init_program_name_long_s;
-
   f_console_parameter_t parameters[] = controller_console_parameter_t_initialize;
 
   data.program.parameters.array = parameters;

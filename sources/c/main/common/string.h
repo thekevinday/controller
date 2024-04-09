@@ -46,6 +46,16 @@ extern "C" {
 #endif // _di_controller_program_version_s_
 
 /**
+ * The program name.
+ *
+ * The implementation for this is defined within the individual programs.
+ */
+#ifndef _di_controller_program_name_s_
+  extern const f_string_static_t controller_program_name_s;
+  extern const f_string_static_t controller_program_name_long_s;
+#endif // _di_controller_program_name_s_
+
+/**
  * The main program parameters.
  */
 #ifndef _di_controller_parameter_s_

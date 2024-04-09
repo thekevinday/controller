@@ -13,7 +13,7 @@ extern "C" {
 
     f_file_stream_lock(print->to);
 
-    fll_program_print_help_header(print, *main->setting.program_name_long, controller_program_version_s);
+    fll_program_print_help_header(print, controller_program_name_long_s, controller_program_version_s);
 
     fll_program_print_help_option_standard(print);
 
@@ -32,7 +32,7 @@ extern "C" {
 
     f_print_dynamic_raw(f_string_eol_s, print->to);
 
-    fll_program_print_help_usage(print, *main->setting.program_name, f_string_empty_s);
+    fll_program_print_help_usage(print, controller_program_name_s, f_string_empty_s);
 
     fl_print_format("%r  When both the %[%r%r%] parameter and the", print->to, f_string_eol_s, print->set->notable, f_console_symbol_long_normal_s, controller_long_simulate_s, print->set->notable);
     fl_print_format(" %[%r%r%] parameter are specified, then additional information on each would be executed rule is printed but no simulation is performed.%r%r", print->to, print->set->notable, f_console_symbol_long_normal_s, controller_long_validate_s, print->set->notable, f_string_eol_s, f_string_eol_s);

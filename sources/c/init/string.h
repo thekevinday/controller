@@ -19,16 +19,13 @@ extern "C" {
 /**
  * The program name.
  */
-#ifndef _di_controller_init_program_name_s_
-  #define CONTROLLER_init_program_name_s      "init"
-  #define CONTROLLER_init_program_name_long_s "Init"
+#ifndef _di_controller_program_name_s_
+  #define CONTROLLER_program_name_s      "init"
+  #define CONTROLLER_program_name_long_s "Init"
 
-  #define CONTROLLER_init_program_name_s_length      4
-  #define CONTROLLER_init_program_name_long_s_length 4
-
-  extern const f_string_static_t controller_init_program_name_s;
-  extern const f_string_static_t controller_init_program_name_long_s;
-#endif // _di_controller_init_program_name_s_
+  #define CONTROLLER_program_name_s_length      4
+  #define CONTROLLER_program_name_long_s_length 4
+#endif // _di_controller_program_name_s_
 
 #ifdef __cplusplus
 } // extern "C"
