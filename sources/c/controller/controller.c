@@ -31,7 +31,7 @@ extern "C" {
         fll_program_print_version(&main->program.message, controller_program_version_s);
       }
       else if (main->setting.flag & controller_main_flag_copyright_e) {
-        fll_program_print_copyright(&main->program.message);
+        fll_program_print_copyright(&main->program.message, fll_program_copyright_year_author_s);
       }
 
       if ((main->setting.flag & controller_main_flag_print_last_e) && main->program.message.verbosity > f_console_verbosity_error_e) {
