@@ -21,7 +21,6 @@ extern "C" {
 
     fll_program_print_help_option(print, controller_short_cgroup_s, controller_long_cgroup_s, f_console_symbol_short_normal_s, f_console_symbol_long_normal_s, "         Specify a custom control group file path, such as '" F_control_group_path_system_prefix_s F_control_group_path_system_default_s "'.");
     fll_program_print_help_option(print, controller_short_daemon_s, controller_long_daemon_s, f_console_symbol_short_normal_s, f_console_symbol_long_normal_s, "         Run in daemon only mode (do not process the entry).");
-    fll_program_print_help_option(print, controller_short_init_s, controller_long_init_s, f_console_symbol_short_normal_s, f_console_symbol_long_normal_s, "           The program will run as an init replacement.");
     fll_program_print_help_option(print, controller_short_interruptible_s, controller_long_interruptible_s, f_console_symbol_short_normal_s, f_console_symbol_long_normal_s, "  Designate that this program can be interrupted by a signal.");
     fll_program_print_help_option(print, controller_short_pid_s, controller_long_pid_s, f_console_symbol_short_normal_s, f_console_symbol_long_normal_s, "            Specify a custom pid file path, such as 'controller/run/default.pid'.");
     fll_program_print_help_option(print, controller_short_settings_s, controller_long_settings_s, f_console_symbol_short_normal_s, f_console_symbol_long_normal_s, "       Specify a custom settings path, such as 'controller/'.");

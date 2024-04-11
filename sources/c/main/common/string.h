@@ -61,8 +61,7 @@ extern "C" {
 #ifndef _di_controller_parameter_s_
   #define CONTROLLER_short_cgroup_s          "c"
   #define CONTROLLER_short_daemon_s          "d"
-  #define CONTROLLER_short_init_s            "I"
-  #define CONTROLLER_short_interruptible_s   "i"
+  #define CONTROLLER_short_interruptible_s   "I"
   #define CONTROLLER_short_pid_s             "p"
   #define CONTROLLER_short_settings_s        "s"
   #define CONTROLLER_short_simulate_s        "S"
@@ -72,7 +71,6 @@ extern "C" {
 
   #define CONTROLLER_long_cgroup_s          "cgroup"
   #define CONTROLLER_long_daemon_s          "daemon"
-  #define CONTROLLER_long_init_s            "init"
   #define CONTROLLER_long_interruptible_s   "interruptible"
   #define CONTROLLER_long_pid_s             "pid"
   #define CONTROLLER_long_settings_s        "settings"
@@ -83,7 +81,6 @@ extern "C" {
 
   #define CONTROLLER_short_cgroup_s_length          1
   #define CONTROLLER_short_daemon_s_length          1
-  #define CONTROLLER_short_init_s_length            1
   #define CONTROLLER_short_interruptible_s_length   1
   #define CONTROLLER_short_pid_s_length             1
   #define CONTROLLER_short_settings_s_length        1
@@ -94,7 +91,6 @@ extern "C" {
 
   #define CONTROLLER_long_cgroup_s_length          6
   #define CONTROLLER_long_daemon_s_length          6
-  #define CONTROLLER_long_init_s_length            4
   #define CONTROLLER_long_interruptible_s_length   13
   #define CONTROLLER_long_pid_s_length             3
   #define CONTROLLER_long_settings_s_length        8
@@ -105,7 +101,6 @@ extern "C" {
 
   extern const f_string_static_t controller_short_cgroup_s;
   extern const f_string_static_t controller_short_daemon_s;
-  extern const f_string_static_t controller_short_init_s;
   extern const f_string_static_t controller_short_interruptible_s;
   extern const f_string_static_t controller_short_pid_s;
   extern const f_string_static_t controller_short_settings_s;

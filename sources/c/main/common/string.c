@@ -11,7 +11,6 @@ extern "C" {
 #ifndef _di_controller_parameter_s_
   const f_string_static_t controller_short_cgroup_s = macro_f_string_static_t_initialize_1(CONTROLLER_short_cgroup_s, 0, CONTROLLER_short_cgroup_s_length);
   const f_string_static_t controller_short_daemon_s = macro_f_string_static_t_initialize_1(CONTROLLER_short_daemon_s, 0, CONTROLLER_short_daemon_s_length);
-  const f_string_static_t controller_short_init_s = macro_f_string_static_t_initialize_1(CONTROLLER_short_init_s, 0, CONTROLLER_short_init_s_length);
   const f_string_static_t controller_short_interruptible_s = macro_f_string_static_t_initialize_1(CONTROLLER_short_interruptible_s, 0, CONTROLLER_short_interruptible_s_length);
   const f_string_static_t controller_short_pid_s = macro_f_string_static_t_initialize_1(CONTROLLER_short_pid_s, 0, CONTROLLER_short_pid_s_length);
   const f_string_static_t controller_short_settings_s = macro_f_string_static_t_initialize_1(CONTROLLER_short_settings_s, 0, CONTROLLER_short_settings_s_length);
@@ -22,7 +21,6 @@ extern "C" {
 
   const f_string_static_t controller_long_cgroup_s = macro_f_string_static_t_initialize_1(CONTROLLER_long_cgroup_s, 0, CONTROLLER_long_cgroup_s_length);
   const f_string_static_t controller_long_daemon_s = macro_f_string_static_t_initialize_1(CONTROLLER_long_daemon_s, 0, CONTROLLER_long_daemon_s_length);
-  const f_string_static_t controller_long_init_s = macro_f_string_static_t_initialize_1(CONTROLLER_long_init_s, 0, CONTROLLER_long_init_s_length);
   const f_string_static_t controller_long_interruptible_s = macro_f_string_static_t_initialize_1(CONTROLLER_long_interruptible_s, 0, CONTROLLER_long_interruptible_s_length);
   const f_string_static_t controller_long_pid_s = macro_f_string_static_t_initialize_1(CONTROLLER_long_pid_s, 0, CONTROLLER_long_pid_s_length);
   const f_string_static_t controller_long_settings_s = macro_f_string_static_t_initialize_1(CONTROLLER_long_settings_s, 0, CONTROLLER_long_settings_s_length);

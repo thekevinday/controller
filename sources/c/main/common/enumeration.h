@@ -64,7 +64,6 @@ extern "C" {
       \
       macro_f_console_parameter_t_initialize_3(controller_short_cgroup_s,          controller_long_cgroup_s,          1, f_console_flag_normal_e), \
       macro_f_console_parameter_t_initialize_3(controller_short_daemon_s,          controller_long_daemon_s,          0, f_console_flag_normal_e), \
-      macro_f_console_parameter_t_initialize_3(controller_short_init_s,            controller_long_init_s,            0, f_console_flag_normal_e), \
       macro_f_console_parameter_t_initialize_3(controller_short_interruptible_s,   controller_long_interruptible_s,   0, f_console_flag_normal_e), \
       macro_f_console_parameter_t_initialize_3(controller_short_pid_s,             controller_long_pid_s,             1, f_console_flag_normal_e), \
       macro_f_console_parameter_t_initialize_3(controller_short_settings_s,        controller_long_settings_s,        1, f_console_flag_normal_e), \
@@ -74,7 +73,7 @@ extern "C" {
       macro_f_console_parameter_t_initialize_3(controller_short_validate_s,        controller_long_validate_s,        0, f_console_flag_normal_e), \
     }
 
-  #define controller_parameter_total_d (f_console_parameter_state_type_total_d + 10)
+  #define controller_parameter_total_d (f_console_parameter_state_type_total_d + 9)
 #endif // _di_controller_parameter_e_
 
 /**

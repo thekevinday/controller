@@ -17,22 +17,6 @@ extern "C" {
 #endif
 
 /**
- * The controller main program cache.
- *
- * buffer: A generic buffer.
- */
-#ifndef _di_controller_cache_t_
-  typedef struct {
-    f_string_dynamic_t buffer;
-  } controller_cache_t;
-
-  #define controller_cache_t_initialize \
-    { \
-      f_string_dynamic_t_initialize, \
-    }
-#endif // _di_controller_cache_t_
-
-/**
  * The controller main program settings.
  *
  * This is passed to the program-specific main entry point to designate program settings.
@@ -87,20 +71,6 @@ extern "C" {
       controller_cache_t_initialize, \
     }
 #endif // _di_controller_main_t_
-
-/**
- * Deallocate main program data.
- *
- * @param cache
- *   The program cache.
- *
- *   Must not be NULL.
- *
- * @see f_memory_array_resize()
- */
-#ifndef _di_controller_cache_delete_
-  extern void controller_cache_delete(controller_cache_t * const cache);
-#endif // _di_controller_cache_delete_
 
 /**
  * Deallocate main program data.

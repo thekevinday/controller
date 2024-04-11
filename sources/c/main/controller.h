@@ -24,15 +24,20 @@
 #include <fll/level_0/memory.h>
 #include <fll/level_0/string.h>
 #include <fll/level_0/utf.h>
+#include <fll/level_0/capability.h>
 #include <fll/level_0/color.h>
 #include <fll/level_0/compare.h>
-#include <fll/level_0/control_group.h>
 #include <fll/level_0/console.h>
+#include <fll/level_0/control_group.h>
 #include <fll/level_0/conversion.h>
+#include <fll/level_0/execute.h>
+#include <fll/level_0/iki.h>
+#include <fll/level_0/limit.h>
 #include <fll/level_0/pipe.h>
 #include <fll/level_0/print.h>
 #include <fll/level_0/rip.h>
 #include <fll/level_0/signal.h>
+#include <fll/level_0/socket.h>
 
 #ifndef _di_thread_support_
   #include <fll/level_0/thread.h>
@@ -52,6 +57,15 @@
 #include <program/controller/main/common/enumeration.h>
 #include <program/controller/main/common/print.h>
 #include <program/controller/main/common/string.h>
+#include <program/controller/main/common/enumeration/control.h>
+#include <program/controller/main/common/enumeration/entry.h>
+#include <program/controller/main/common/enumeration/rule.h>
+#include <program/controller/main/common/enumeration/process.h>
+#include <program/controller/main/common/type/cache.h>
+#include <program/controller/main/common/type/control.h>
+#include <program/controller/main/common/type/entry.h>
+#include <program/controller/main/common/type/rule.h>
+#include <program/controller/main/common/type/process.h>
 #include <program/controller/main/common/type.h>
 #include <program/controller/main/common.h>
 #include <program/controller/main/print/data.h>
