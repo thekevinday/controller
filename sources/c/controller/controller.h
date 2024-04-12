@@ -12,6 +12,11 @@
 #ifndef _controller_controller_h
 #define _controller_controller_h
 
+// Include pre-requirements.
+#ifndef _GNU_SOURCE
+  #define _GNU_SOURCE
+#endif // _GNU_SOURCE
+
 // Libc includes.
 #include <stdio.h>
 #include <stdlib.h>
@@ -57,6 +62,11 @@
 #include <program/controller/main/common/enumeration.h>
 #include <program/controller/main/common/print.h>
 #include <program/controller/main/common/string.h>
+#include <program/controller/main/common/string/general.h>
+#include <program/controller/main/common/string/rule.h>
+#include <program/controller/main/common/define/control.h>
+#include <program/controller/main/common/define/entry.h>
+#include <program/controller/main/common/define/rule.h>
 #include <program/controller/main/common/enumeration/control.h>
 #include <program/controller/main/common/enumeration/entry.h>
 #include <program/controller/main/common/enumeration/rule.h>

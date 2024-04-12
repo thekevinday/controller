@@ -101,6 +101,32 @@ extern "C" {
   }; // enum
 #endif // _di_controller_print_flag_e_
 
+/**
+ * A set of codes for resource limitations.
+ *
+ * This essentally converts the POSIX standard names into a more verbose format.
+ */
+#ifndef _di_controller_resource_limit_type_e_
+  enum {
+    controller_resource_limit_type_as_e = RLIMIT_AS,
+    controller_resource_limit_type_core_e = RLIMIT_CORE,
+    controller_resource_limit_type_cpu_e = RLIMIT_CPU,
+    controller_resource_limit_type_data_e = RLIMIT_DATA,
+    controller_resource_limit_type_fsize_e = RLIMIT_FSIZE,
+    controller_resource_limit_type_locks_e = RLIMIT_LOCKS,
+    controller_resource_limit_type_memlock_e = RLIMIT_MEMLOCK,
+    controller_resource_limit_type_msgqueue_e = RLIMIT_MSGQUEUE,
+    controller_resource_limit_type_nice_e = RLIMIT_NICE,
+    controller_resource_limit_type_nofile_e = RLIMIT_NOFILE,
+    controller_resource_limit_type_nproc_e = RLIMIT_NPROC,
+    controller_resource_limit_type_rss_e = RLIMIT_RSS,
+    controller_resource_limit_type_rtprio_e = RLIMIT_RTPRIO,
+    controller_resource_limit_type_rttime_e = RLIMIT_RTTIME,
+    controller_resource_limit_type_sigpending_e = RLIMIT_SIGPENDING,
+    controller_resource_limit_type_stack_e = RLIMIT_STACK,
+  }; // enum
+#endif // _di_controller_resource_limit_type_e_
+
 #ifdef __cplusplus
 } // extern "C"
 #endif

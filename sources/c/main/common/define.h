@@ -20,16 +20,20 @@ extern "C" {
  * The program allocation defines.
  *
  * controller_allocation_*_d:
- *   - console: An allocation step used for small buffers specifically for console parameter.
- *   - large:   An allocation step used for buffers that are anticipated to have large buffers.
- *   - pipe:    A buffer size used for processing piped data.
- *   - small:   An allocation step used for buffers that are anticipated to have small buffers.
+ *   - console:   An allocation step used for small buffers specifically for console parameter.
+ *   - iki_large: An allocation step used for IKI buffers that are anticipated to have large buffers.
+ *   - iki_small: An allocation step used for IKI buffers that are anticipated to have small buffers.
+ *   - large:     An allocation step used for buffers that are anticipated to have large buffers.
+ *   - pipe:      A buffer size used for processing piped data.
+ *   - small:     An allocation step used for buffers that are anticipated to have small buffers.
  */
 #ifndef _di_controller_allocation_d_
-  #define controller_allocation_console_d 4
-  #define controller_allocation_large_d   256
-  #define controller_allocation_pipe_d    16384
-  #define controller_allocation_small_d   16
+  #define controller_allocation_console_d   4
+  #define controller_allocation_iki_large_d 128
+  #define controller_allocation_iki_small_d 8
+  #define controller_allocation_large_d     256
+  #define controller_allocation_pipe_d      16384
+  #define controller_allocation_small_d     16
 #endif // _di_controller_allocation_d_
 
 /**
@@ -47,6 +51,20 @@ extern "C" {
   #define controller_signal_check_tiny_d     4
   #define controller_signal_check_short_d    16
 #endif // _di_controller_signal_d_
+
+/**
+ * Controller "with" codes.
+ *
+ * controller_with_*_d:
+ *   - full_path:    Using "with" full path.
+ *   - session_new:  Using "with" new session.
+ *   - session_same: Using "with" same session.
+ */
+#ifndef _di_controller_with_d_
+  #define controller_with_full_path_d    0x1
+  #define controller_with_session_new_d  0x2
+  #define controller_with_session_same_d 0x4
+#endif // _di_controller_with_d_
 
 #ifdef __cplusplus
 } // extern "C"
