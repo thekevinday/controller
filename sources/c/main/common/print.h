@@ -40,6 +40,8 @@ extern "C" {
 #ifndef _di_controller_f_e_
   enum {
     controller_f_f_console_parameter_process_e,
+    controller_f_f_path_current_e,
+    controller_f_f_string_dynamic_append_e,
     controller_f_f_thread_create_e,
     controller_f_fll_program_parameter_process_context_standard_e,
     controller_f_fll_program_parameter_process_verbosity_standard_e,

@@ -5,7 +5,7 @@ extern "C" {
 #endif
 
 #ifndef _di_controller_main_setting_load_
-  void controller_main_setting_load(const f_console_arguments_t arguments, controller_main_t * const main) {
+  void controller_main_setting_load(const f_console_arguments_t arguments, controller_main_t * const main, controller_process_t * const process) {
 
     if (!main) return;
 
@@ -86,6 +86,39 @@ extern "C" {
     }
     else {
       main->setting.flag &= ~controller_main_flag_pipe_e;
+    }
+
+    f_string_static_t * const args = main->program.parameters.arguments.array;
+
+    process->control.server.domain = f_socket_protocol_family_local_e;
+    process->control.server.type = f_socket_type_stream_e;
+    process->control.server.form = f_socket_address_form_local_e;
+
+    memset(&process->control.server.address, 0, sizeof(f_socket_address_t));
+
+    // The first remaining argument represents the entry name.
+    main->setting.state.status = f_string_dynamic_append(main->program.parameters.remaining.used ? args[main->program.parameters.remaining.array[0]] : controller_default_s, &process->name_entry);
+
+    if (F_status_is_error(main->setting.state.status)) {
+      if ((main->setting.flag & controller_main_flag_print_first_e) && main->program.message.verbosity > f_console_verbosity_error_e) {
+        fll_print_dynamic_raw(f_string_eol_s, main->program.message.to);
+      }
+
+      controller_main_print_error(&main->program.error, macro_controller_f(fll_program_parameter_process_verbosity_standard));
+
+      return;
+    }
+
+    main->setting.state.status = f_path_current(F_false, &process->path_current);
+
+    if (F_status_is_error(main->setting.state.status)) {
+      if ((main->setting.flag & controller_main_flag_print_first_e) && main->program.message.verbosity > f_console_verbosity_error_e) {
+        fll_print_dynamic_raw(f_string_eol_s, main->program.message.to);
+      }
+
+      controller_main_print_error(&main->program.error, macro_controller_f(f_path_current));
+
+      return;
     }
   }
 #endif // _di_controller_main_setting_load_

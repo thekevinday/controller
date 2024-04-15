@@ -38,6 +38,7 @@
 #include <fll/level_0/execute.h>
 #include <fll/level_0/iki.h>
 #include <fll/level_0/limit.h>
+#include <fll/level_0/path.h>
 #include <fll/level_0/pipe.h>
 #include <fll/level_0/print.h>
 #include <fll/level_0/rip.h>
@@ -67,15 +68,19 @@
 #include <program/controller/main/common/define/control.h>
 #include <program/controller/main/common/define/entry.h>
 #include <program/controller/main/common/define/rule.h>
+#include <program/controller/main/common/define/thread.h>
 #include <program/controller/main/common/enumeration/control.h>
 #include <program/controller/main/common/enumeration/entry.h>
 #include <program/controller/main/common/enumeration/rule.h>
 #include <program/controller/main/common/enumeration/process.h>
+#include <program/controller/main/common/enumeration/thread.h>
 #include <program/controller/main/common/type/cache.h>
 #include <program/controller/main/common/type/control.h>
 #include <program/controller/main/common/type/entry.h>
+#include <program/controller/main/common/type/lock.h>
 #include <program/controller/main/common/type/rule.h>
 #include <program/controller/main/common/type/process.h>
+#include <program/controller/main/common/type/thread.h>
 #include <program/controller/main/common/type.h>
 #include <program/controller/main/common.h>
 #include <program/controller/main/print/data.h>

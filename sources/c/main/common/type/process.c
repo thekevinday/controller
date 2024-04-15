@@ -16,13 +16,12 @@ extern "C" {
     f_memory_array_resize(0, sizeof(f_char_t), (void **) &process->path_pid.string, &process->path_pid.used, &process->path_pid.size);
     f_memory_array_resize(0, sizeof(f_char_t), (void **) &process->path_setting.string, &process->path_setting.used, &process->path_setting.size);
 
-    controller_control_delete(&process->control);
-
     f_memory_arrays_resize(0, sizeof(f_string_map_t), (void **) &process->entry.define.array, &process->entry.define.used, &process->entry.define.size, &f_string_maps_delete_callback);
     f_memory_arrays_resize(0, sizeof(f_string_map_t), (void **) &process->entry.parameter.array, &process->entry.parameter.used, &process->entry.parameter.size, &f_string_maps_delete_callback);
     f_memory_arrays_resize(0, sizeof(f_string_map_t), (void **) &process->exit.define.array, &process->exit.define.used, &process->exit.define.size, &f_string_maps_delete_callback);
     f_memory_arrays_resize(0, sizeof(f_string_map_t), (void **) &process->exit.parameter.array, &process->exit.parameter.used, &process->exit.parameter.size, &f_string_maps_delete_callback);
 
+    controller_control_delete(&process->control);
     controller_entry_items_delete(&process->entry.items);
     controller_entry_items_delete(&process->exit.items);
 

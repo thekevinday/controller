@@ -5,9 +5,9 @@ extern "C" {
 #endif
 
 #ifndef _di_controller_controller_main_
-  void controller_controller_main(controller_main_t * const main) {
+  void controller_controller_main(controller_main_t * const main, controller_process_t * const process) {
 
-    if (!main) return;
+    if (!main || !process) return;
 
     if (F_status_is_error(main->setting.state.status)) {
       if ((main->setting.flag & controller_main_flag_print_last_e) && main->program.message.verbosity > f_console_verbosity_error_e) {

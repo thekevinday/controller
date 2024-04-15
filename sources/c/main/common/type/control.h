@@ -5,7 +5,7 @@
  * API Version: 0.7
  * Licenses: lgpl-2.1-or-later
  *
- * Provides the common type control structures.
+ * Provides the common control type structures.
  *
  * This is auto-included and should not need to be explicitly included.
  */
@@ -19,23 +19,24 @@ extern "C" {
 /**
  * Controller control data.
  *
- * flag:    Flags from controller_control_flag_*_e.
- * user:    The user ID, if specified.
- * group:   The group ID, if specified.
- * mode:    The file mode, if specified.
- * server:  The server socket connection.
- * client:  The client socket connection.
+ * flag:  Flags from controller_control_flag_*_e.
+ * user:  The user ID, if specified.
+ * group: The group ID, if specified.
+ * mode:  The file mode, if specified.
+ *
+ * server: The server socket connection.
+ * client: The client socket connection.
+ *
  * cache_1: A generic buffer used for caching control related data.
  * cache_2: A generic buffer used for caching control related data.
  * cache_3: A generic buffer used for caching control related data.
+ *
  * input:   A buffer used for receiving data from the client.
  * output:  A buffer used for transmitting data to the client.
- * address: The socket address structure.
  */
 #ifndef _di_controller_control_t_
   typedef struct {
     uint8_t flag;
-
     uid_t user;
     gid_t group;
     mode_t mode;
@@ -49,8 +50,6 @@ extern "C" {
 
     f_string_dynamic_t input;
     f_string_dynamic_t output;
-
-    struct sockaddr_un address;
   } controller_control_t;
 
   #define controller_control_t_initialize { \
@@ -65,7 +64,6 @@ extern "C" {
     f_string_dynamic_t_initialize, \
     f_string_dynamic_t_initialize, \
     f_string_dynamic_t_initialize, \
-    { }, \
   }
 #endif // _di_controller_control_t_
 
