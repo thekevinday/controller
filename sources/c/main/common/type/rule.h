@@ -25,7 +25,7 @@ extern "C" {
  */
 #ifndef _di_controller_rule_rerun_item_t_
   typedef struct {
-    bool reset;
+    uint8_t reset;
 
     f_number_unsigned_t count;
     f_number_unsigned_t delay;

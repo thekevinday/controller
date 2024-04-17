@@ -1,23 +1,27 @@
 # fss-0000
 
-_di_libcap_ Disable libcap support, allow for compiling and linking without libcap (-lcap).
+_di_libcap_         Disable libcap support, allow for compiling and linking without libcap (-lcap).
 _di_thread_support_ Disables thread support.
 
 _libcap_legacy_only_ Disable functionality provided by later versions of libcap (2.43 and later).
-_override_controller_default_engine_ Provide a custom scripting engine name string to execute (such as php).
-_override_controller_default_engine_length_ The number of bytes representing the string in _override_controller_default_engine_ (not including the terminating NULL).
-_override_controller_path_pid_ Use this as the default custom directory path representing the location of the controller program pid.
-_override_controller_path_pid_length_ The number of bytes representing the string in _override_controller_path_pid_ (not including the terminating NULL).
-_override_controller_path_pid_prefix_ Use this as the default custom prefix prepended to the file name of the file representing the controller program pid.
-_override_controller_path_pid_prefix_length_ The number of bytes representing the string in _override_controller_path_pid_prefix_ (not including the terminating NULL).
-_override_controller_path_pid_suffix_ Use this as the default custom prefix prepended to the file name of the file representing the controller program pid.
-_override_controller_path_pid_suffix_length_ The number of bytes representing the string in _override_controller_path_pid_suffix_ (not including the terminating NULL).
-_override_controller_path_socket_ Use this as the default custom directory path representing the location of the controller program socket.
-_override_controller_path_socket_length_ The number of bytes representing the string in _override_controller_path_socket_ (not including the terminating NULL).
-_override_controller_path_socket_prefix_ Use this as the default custom prefix prepended to the file name of the file representing the controller program socket.
+
+_override_controller_default_engine_            Provide a custom scripting engine name string to execute (such as php).
+_override_controller_path_pid_                  Use this as the default custom directory path representing the location of the controller program pid.
+_override_controller_path_pid_prefix_           Use this as the default custom prefix prepended to the file name of the file representing the controller program pid.
+_override_controller_path_pid_suffix_           Use this as the default custom prefix prepended to the file name of the file representing the controller program pid.
+_override_controller_path_settings_             Use this as the default custom settings path, such as /etc/settings.
+_override_controller_path_socket_               Use this as the default custom directory path representing the location of the controller program socket.
+_override_controller_path_socket_prefix_        Use this as the default custom prefix prepended to the file name of the file representing the controller program socket.
+_override_controller_path_socket_suffix_        Use this as the default custom prefix prepended to the file name of the file representing the controller program socket.
+
+_override_controller_default_engine_length_     The number of bytes representing the string in _override_controller_default_engine_ (not including the terminating NULL).
+_override_controller_path_pid_length_           The number of bytes representing the string in _override_controller_path_pid_ (not including the terminating NULL).
+_override_controller_path_pid_prefix_length_    The number of bytes representing the string in _override_controller_path_pid_prefix_ (not including the terminating NULL).
+_override_controller_path_pid_suffix_length_    The number of bytes representing the string in _override_controller_path_pid_suffix_ (not including the terminating NULL).
+_override_controller_path_settings_length_      The number of bytes representing the string in _override_controller_path_settings_ (not including the terminating NULL).
+_override_controller_path_socket_length_        The number of bytes representing the string in _override_controller_path_socket_ (not including the terminating NULL).
 _override_controller_path_socket_prefix_length_ The number of bytes representing the string in _override_controller_path_socket_prefix_ (not including the terminating NULL).
-_override_controller_path_socket_suffix_ Use this as the default custom prefix prepended to the file name of the file representing the controller program socket.
 _override_controller_path_socket_suffix_length_ The number of bytes representing the string in _override_controller_path_socket_suffix_ (not including the terminating NULL).
 
-_pthread_attr_unsupported_ Disable non-portable functionality associated with pthread_attr.
+_pthread_attr_unsupported_     Disable non-portable functionality associated with pthread_attr.
 _pthread_sigqueue_unsupported_ Disable GNU specific sigqueue().

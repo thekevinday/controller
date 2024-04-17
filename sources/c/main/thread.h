@@ -26,6 +26,8 @@
  * @param main
  *   The program and settings data.
  *
+ *   Must not be NULL.
+ *
  *   Must be of type controller_main_t.
  *
  * @return

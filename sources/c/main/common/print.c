@@ -6,8 +6,10 @@ extern "C" {
 
 #ifndef _di_controller_f_a_
   const f_string_t controller_f_a[] = {
+    "f_controller_path_canonical_relative",
     "f_console_parameter_process",
     "f_path_current",
+    "f_string_append_assure",
     "f_string_dynamic_append",
     "f_thread_create",
     "fll_program_parameter_process_context_standard",

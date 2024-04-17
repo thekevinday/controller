@@ -33,9 +33,9 @@ extern "C" {
  * id_rule:    The thread ID representing the Rule Process.
  * id_signal:  The thread ID representing the Signal Process.
  *
- * lock:     A r/w lock for operating on this structure.
+ * lock:    A r/w lock for operating on this structure.
  * process: All Rule Process thread data.
- * cache:    A cache used by the main entry/rule processing thread for synchronous operations.
+ * cache:   A cache used by the main entry/rule processing thread for synchronous operations.
  */
 #ifndef _di_controller_thread_t_
   typedef struct {
@@ -75,12 +75,15 @@ extern "C" {
  * @param thread
  *   The thread to deallocate.
  *
+ *   Must not be NULL.
+ *
  * @see controller_asynchronouss_resize()
+ *
  * @see f_thread_mutex_unlock()
  */
-#ifndef _di_controller_thread_delete_simple_
-  extern void controller_thread_delete_simple(controller_thread_t * const thread);
-#endif // _di_controller_thread_delete_simple_
+#ifndef _di_controller_thread_delete_
+  extern void controller_thread_delete(controller_thread_t * const thread);
+#endif // _di_controller_thread_delete_
 
 #ifdef __cplusplus
 } // extern "C"

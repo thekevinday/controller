@@ -47,7 +47,6 @@ extern "C" {
   }
 #endif // _di_controller_main_print_message_help_
 
-
 #ifdef __cplusplus
 } // extern "C"
 #endif

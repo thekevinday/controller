@@ -27,6 +27,7 @@ extern "C" {
  *   - error:                  Check if status is "error".
  *   - fine:                   Check if status is "fine".
  *   - help:                   Print help.
+ *   - interruptible:          The process is interruptible.
  *   - pipe:                   Use the input pipe.
  *   - print_first:            When set, print new line to message output on program begin after loading settings.
  *   - print_last:             When set, print new line to message output on program end.
@@ -41,12 +42,13 @@ extern "C" {
     controller_main_flag_error_e                  = 0x2,
     controller_main_flag_fine_e                   = 0x4,
     controller_main_flag_help_e                   = 0x8,
-    controller_main_flag_pipe_e                   = 0x10,
-    controller_main_flag_print_first_e            = 0x20,
-    controller_main_flag_print_last_e             = 0x40,
-    controller_main_flag_version_e                = 0x80,
-    controller_main_flag_version_copyright_help_e = 0x89,
-    controller_main_flag_warning_e                = 0x100,
+    controller_main_flag_interruptible_e          = 0x10,
+    controller_main_flag_pipe_e                   = 0x20,
+    controller_main_flag_print_first_e            = 0x40,
+    controller_main_flag_print_last_e             = 0x80,
+    controller_main_flag_version_e                = 0x100,
+    controller_main_flag_version_copyright_help_e = 0x181,
+    controller_main_flag_warning_e                = 0x200,
   }; // enum
 #endif // _di_controller_main_flag_e_
 
@@ -55,7 +57,15 @@ extern "C" {
  */
 #ifndef _di_controller_parameter_e_
   enum {
-    controller_parameter_controller_e = f_console_standard_parameter_last_e,
+    controller_parameter_cgroup_e = f_console_standard_parameter_last_e,
+    controller_parameter_daemon_e,
+    controller_parameter_interruptible_e,
+    controller_parameter_pid_e,
+    controller_parameter_settings_e,
+    controller_parameter_simulate_e,
+    controller_parameter_socket_e,
+    controller_parameter_uninterruptible_e,
+    controller_parameter_validate_e,
   }; // enum
 
   #define controller_console_parameter_t_initialize \

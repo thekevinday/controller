@@ -77,7 +77,9 @@ extern "C" {
  * Delete the Controller process data.
  *
  * @param process
- *   The controller process data.
+ *   A pointer to the current process settings.
+ *
+ *   Must not be NULL.
  *
  * @return
  *   F_okay on success.

@@ -51,6 +51,7 @@
 
 // FLL-1 includes.
 #include <fll/level_1/conversion.h>
+#include <fll/level_1/path.h>
 #include <fll/level_1/print.h>
 
 // FLL-2 includes.
@@ -83,9 +84,11 @@
 #include <program/controller/main/common/type/thread.h>
 #include <program/controller/main/common/type.h>
 #include <program/controller/main/common.h>
+#include <program/controller/main/path.h>
 #include <program/controller/main/print/data.h>
 #include <program/controller/main/print/debug.h>
 #include <program/controller/main/print/error.h>
+#include <program/controller/main/print/lock.h>
 #include <program/controller/main/print/message.h>
 #include <program/controller/main/print/verbose.h>
 #include <program/controller/main/print/warning.h>

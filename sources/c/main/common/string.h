@@ -123,6 +123,8 @@ extern "C" {
 
 /**
  * The program defaults.
+ *
+ * These are defines inside the programs utilizing this rather than in the library itself.
  */
 #ifndef _di_controller_default_s_
 
@@ -134,15 +136,6 @@ extern "C" {
     #define CONTROLLER_default_path_pid_s        "./run"
     #define CONTROLLER_default_path_pid_s_length 5
   #endif // defined(_override_controller_path_pid_) && defined(_override_controller_path_pid_length_)
-
-  // The init pid path is a system-specific path and needs to be more easily controlled at compile time.
-  #if defined(_override_controller_path_pid_init_) && defined(_override_controller_path_pid_init_length_)
-    #define CONTROLLER_default_path_pid_init_s        _override_controller_path_pid_init_
-    #define CONTROLLER_default_path_pid_init_s_length _override_controller_path_pid_init_length_
-  #else
-    #define CONTROLLER_default_path_pid_init_s        "/var/run/controller"
-    #define CONTROLLER_default_path_pid_init_s_length 19
-  #endif // defined(_override_controller_path_pid_init_) && defined(_override_controller_path_pid_init_length_)
 
   // The pid prefix is a system-specific path part and needs to be more easily controlled at compile time.
   #if defined(_override_controller_path_pid_prefix_) && defined(_override_controller_path_pid_prefix_length_)
@@ -172,15 +165,6 @@ extern "C" {
     #define CONTROLLER_default_path_settings_s_length 2
   #endif // defined(_override_controller_path_settings_) && defined(_override_controller_path_settings_length_)
 
-  // The init settings path is a system-specific path part and needs to be more easily controlled at compile time.
-  #if defined(_override_controller_path_settings_init_) && defined(_override_controller_path_settings_init_length_)
-    #define CONTROLLER_default_path_settings_init_s        _override_controller_path_settings_init_
-    #define CONTROLLER_default_path_settings_init_s_length _override_controller_path_settings_init_length_
-  #else
-    #define CONTROLLER_default_path_settings_init_s        "/etc/controller"
-    #define CONTROLLER_default_path_settings_init_s_length 15
-  #endif // defined(_override_controller_path_settings_init_) && defined(_override_controller_path_settings_init_length_)
-
   // The socket path is a system-specific path and needs to be more easily controlled at compile time.
   #if defined(_override_controller_path_socket_) && defined(_override_controller_path_socket_length_)
     #define CONTROLLER_default_path_socket_s        _override_controller_path_socket_
@@ -189,15 +173,6 @@ extern "C" {
     #define CONTROLLER_default_path_socket_s        "./run"
     #define CONTROLLER_default_path_socket_s_length 5
   #endif // defined(_override_controller_path_socket_) && defined(_override_controller_path_socket_length_)
-
-  // The socket path is a system-specific path and needs to be more easily controlled at compile time.
-  #if defined(_override_controller_path_socket_init_) && defined(_override_controller_path_socket_init_length_)
-    #define CONTROLLER_default_path_socket_init_s        _override_controller_path_socket_init_
-    #define CONTROLLER_default_path_socket_init_s_length _override_controller_path_socket_init_length_
-  #else
-    #define CONTROLLER_default_path_socket_init_s        "/var/run/controller"
-    #define CONTROLLER_default_path_socket_init_s_length 19
-  #endif // defined(_override_controller_path_socket_init_) && defined(_override_controller_path_socket_init_length_)
 
   // The socket prefix path is a system-specific path part and needs to be more easily controlled at compile time.
   #if defined(_override_controller_path_socket_prefix_) && defined(_override_controller_path_socket_prefix_length_)
@@ -227,13 +202,10 @@ extern "C" {
 
   extern const f_string_static_t controller_default_engine_s;
   extern const f_string_static_t controller_default_path_pid_s;
-  extern const f_string_static_t controller_default_path_pid_init_s;
   extern const f_string_static_t controller_default_path_pid_prefix_s;
   extern const f_string_static_t controller_default_path_pid_suffix_s;
   extern const f_string_static_t controller_default_path_settings_s;
-  extern const f_string_static_t controller_default_path_settings_init_s;
   extern const f_string_static_t controller_default_path_socket_s;
-  extern const f_string_static_t controller_default_path_socket_init_s;
   extern const f_string_static_t controller_default_path_socket_prefix_s;
   extern const f_string_static_t controller_default_path_socket_suffix_s;
 #endif // _di_controller_default_s_

@@ -28,6 +28,8 @@ extern "C" {
  * @param main
  *   The program and settings data.
  *
+ *   Must not be NULL.
+ *
  *   This alters setting.state.status:
  *     F_okay on success.
  *

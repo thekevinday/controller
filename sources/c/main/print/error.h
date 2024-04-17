@@ -22,6 +22,8 @@ extern "C" {
  * @param print
  *   The output structure to print to.
  *
+ *   Must not be NULL.
+ *
  *   This does not alter print.custom.setting.state.status.
  * @param function
  *   The name of the function associated with the error.
@@ -37,6 +39,39 @@ extern "C" {
 #ifndef _di_controller_main_print_error_
   extern f_status_t controller_main_print_error(fl_print_t * const print, const f_string_t function);
 #endif // _di_controller_main_print_error_
+
+/**
+ * Print file related error or warning messages.
+ *
+ * @param print
+ *   The output structure to print to.
+ *
+ *   Must not be NULL.
+ *
+ *   The print.custom is expected to be of type fss_read_main_t.
+ *
+ *   This does not alter print.custom.setting.state.status.
+ * @param function
+ *   The name of the function where the error happened.
+ *   Set to 0 to disable.
+ * @param name
+ *   The name of the file or directory.
+ * @param operation
+ *   The operation that fails, such as 'create' or 'access'.
+ * @param type
+ *   A valid file type code from the fll_error_file_type enum.
+ *
+ * @return
+ *   F_okay on success.
+ *   F_output_not on success, but no printing is performed.
+ *
+ *   F_output_not (with error bit) if a parameter is NULL.
+ *
+ * @see fll_error_file_print()
+ */
+#ifndef _di_controller_main_print_error_file_
+  extern f_status_t controller_main_print_error_file(fl_print_t * const print, const f_string_t function, const f_string_static_t name, const f_string_static_t operation, const uint8_t type);
+#endif // _di_controller_main_print_error_file_
 
 #ifdef __cplusplus
 } // extern "C"
