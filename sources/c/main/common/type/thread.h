@@ -23,7 +23,7 @@ extern "C" {
  *
  * The "enabled" and "signal" utilize the lock: lock.process.
  *
- * enabled: TRUE when threads are active, FALSE when inactive and the program is essentially shutting down, no new threads should be started when FALSE.
+ * enabled: F_true when threads are active, FALSE when inactive and the program is essentially shutting down, no new threads should be started when F_false.
  * signal:  The code of any signal received.
  * status:  A status used by the main entry/rule processing thread for synchronous operations.
  *
@@ -33,12 +33,12 @@ extern "C" {
  * id_rule:    The thread ID representing the Rule Process.
  * id_signal:  The thread ID representing the Signal Process.
  *
- * lock:    A r/w lock for operating on this structure.
- * process: All Rule Process thread data.
- * cache:   A cache used by the main entry/rule processing thread for synchronous operations.
+ * lock:      A r/w lock for operating on this structure.
+ * instances: All Rule Instance thread data.
+ * cache:     A cache used by the main entry/rule processing thread for synchronous operations.
  */
 #ifndef _di_controller_thread_t_
-  typedef struct {
+  typedef struct controller_thread_t_ {
     uint8_t enabled;
     int signal;
     f_status_t status;
@@ -50,7 +50,7 @@ extern "C" {
     f_thread_id_t id_signal;
 
     controller_lock_t lock;
-    controller_process_t process;
+    controller_instances_t instances;
     controller_cache_t cache;
   } controller_thread_t;
 
@@ -64,7 +64,7 @@ extern "C" {
     f_thread_id_t_initialize, \
     f_thread_id_t_initialize, \
     controller_lock_t_initialize, \
-    controller_processs_t_initialize, \
+    controller_instances_t_initialize, \
     controller_cache_t_initialize, \
   }
 #endif // _di_controller_thread_t_

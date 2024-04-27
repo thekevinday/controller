@@ -74,15 +74,18 @@
 #include <program/controller/main/common/enumeration/entry.h>
 #include <program/controller/main/common/enumeration/rule.h>
 #include <program/controller/main/common/enumeration/process.h>
+#include <program/controller/main/common/enumeration/program.h>
 #include <program/controller/main/common/enumeration/thread.h>
 #include <program/controller/main/common/type/cache.h>
 #include <program/controller/main/common/type/control.h>
 #include <program/controller/main/common/type/entry.h>
 #include <program/controller/main/common/type/lock.h>
 #include <program/controller/main/common/type/rule.h>
-#include <program/controller/main/common/type/process.h>
+#include <program/controller/main/common/type/program.h>
+#include <program/controller/main/common/type/instance.h>
 #include <program/controller/main/common/type/thread.h>
 #include <program/controller/main/common/type.h>
+#include <program/controller/main/common/type/global.h>
 #include <program/controller/main/common.h>
 #include <program/controller/main/path.h>
 #include <program/controller/main/print/data.h>
@@ -93,6 +96,8 @@
 #include <program/controller/main/print/verbose.h>
 #include <program/controller/main/print/warning.h>
 #include <program/controller/main/signal.h>
+#include <program/controller/main/thread/is.h>
+#include <program/controller/main/thread/instance.h>
 #include <program/controller/main/thread.h>
 
 #ifdef __cplusplus

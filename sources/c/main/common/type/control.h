@@ -72,14 +72,9 @@ extern "C" {
  *
  * @param control
  *   The controller control data.
- *
- * @return
- *   F_okay on success.
- *
- *   F_parameter (with error bit) if a parameter is invalid.
  */
 #ifndef _di_controller_control_delete_
-  extern f_status_t controller_control_delete(controller_control_t * const control);
+  extern void controller_control_delete(controller_control_t * const control);
 #endif // _di_controller_control_delete_
 
 #ifdef __cplusplus

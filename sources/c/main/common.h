@@ -17,14 +17,14 @@ extern "C" {
 #endif
 
 /**
- * Perform the standard program setting load process.
+ * Perform the standard program setting load settings.
  *
  * This prints error messages as appropriate.
  *
  * If either main or setting is NULL, then this immediately returns without doing anything.
  *
  * @param arguments
- *   The parameters passed to the process (often referred to as command line arguments).
+ *   The parameters passed to the program (often referred to as command line arguments).
  * @param main
  *   The program and settings data.
  *
@@ -35,8 +35,8 @@ extern "C" {
  *
  *     Errors (with error bit) from: f_console_parameter_process().
  *     Errors (with error bit) from: fll_program_parameter_process_context().
- * @param process
- *   A pointer to the current process settings.
+ * @param program
+ *   A pointer to the current program settings.
  *
  *   Must not be NULL.
  *
@@ -44,7 +44,7 @@ extern "C" {
  * @see fll_program_parameter_process_context()
  */
 #ifndef _di_controller_main_setting_load_
-  extern void controller_main_setting_load(const f_console_arguments_t arguments, controller_main_t * const main, controller_process_t * const process);
+  extern void controller_main_setting_load(const f_console_arguments_t arguments, controller_main_t * const main, controller_program_t * const program);
 #endif // _di_controller_main_setting_load_
 
 #ifdef __cplusplus

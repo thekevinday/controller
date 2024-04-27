@@ -274,7 +274,7 @@ extern "C" {
     uid_t user;
     gid_t group;
 
-    f_time_spec_t timestamp;
+    f_time_simple_t timestamp;
 
     f_string_dynamic_t alias;
     f_string_dynamic_t engine;
@@ -323,7 +323,7 @@ extern "C" {
     0, \
     0, \
     0, \
-    f_time_spec_t_initialize, \
+    f_time_simple_t_initialize, \
     f_string_dynamic_t_initialize, \
     f_string_dynamic_t_initialize, \
     f_string_dynamic_t_initialize, \

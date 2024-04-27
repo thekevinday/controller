@@ -185,15 +185,10 @@ extern "C" {
  * @param actions
  *   The Controller Entry Action.
  *
- * @return
- *   F_okay on success.
- *
- *   F_parameter (with error bit) if a parameter is invalid.
- *
  * @see f_memory_arrays_resize()
  */
 #ifndef _di_controller_entry_action_delete_
-  extern f_status_t controller_entry_action_delete(controller_entry_action_t * const action);
+  extern void controller_entry_action_delete(controller_entry_action_t * const action);
 #endif // _di_controller_entry_action_delete_
 
 /**
@@ -202,17 +197,12 @@ extern "C" {
  * @param actions
  *   The Controller Entry Actions.
  *
- * @return
- *   F_okay on success.
- *
- *   F_parameter (with error bit) if a parameter is invalid.
- *
  * @see controller_entry_action_delete()
  *
  * @see f_memory_array_resize()
  */
 #ifndef _di_controller_entry_actions_delete_
-  extern f_status_t controller_entry_actions_delete(controller_entry_actions_t * const actions);
+  extern void controller_entry_actions_delete(controller_entry_actions_t * const actions);
 #endif // _di_controller_entry_actions_delete_
 
 /**
@@ -221,15 +211,10 @@ extern "C" {
  * @param item
  *   The Controller Entry Item.
  *
- * @return
- *   F_okay on success.
- *
- *   F_parameter (with error bit) if a parameter is invalid.
- *
  * @see f_memory_array_resize()
  */
 #ifndef _di_controller_entry_item_delete_
-  extern f_status_t controller_entry_item_delete(controller_entry_item_t * const item);
+  extern void controller_entry_item_delete(controller_entry_item_t * const item);
 #endif // _di_controller_entry_item_delete_
 
 /**
@@ -238,16 +223,11 @@ extern "C" {
  * @param items
  *   The Controller Entry Items.
  *
- * @return
- *   F_okay on success.
- *
- *   F_parameter (with error bit) if a parameter is invalid.
- *
  * @see controller_entry_item_delete()
  * @see f_memory_delete()
  */
 #ifndef _di_controller_entry_items_delete_
-  extern f_status_t controller_entry_items_delete(controller_entry_items_t * const items);
+  extern void controller_entry_items_delete(controller_entry_items_t * const items);
 #endif // _di_controller_entry_items_delete_
 
 #ifdef __cplusplus

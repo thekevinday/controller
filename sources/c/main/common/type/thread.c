@@ -10,8 +10,9 @@ extern "C" {
     if (!thread) return;
 
     controller_lock_delete(&thread->lock);
-    controller_process_delete(&thread->process);
     controller_cache_delete(&thread->cache);
+
+    f_memory_arrays_resize(0, sizeof(controller_instance_t), (void **) &thread->instances.array, &thread->instances.used, &thread->instances.size, &f_instances_delete_callback);
   }
 #endif // _di_controller_thread_delete_
 

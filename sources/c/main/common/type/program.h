@@ -5,19 +5,19 @@
  * API Version: 0.7
  * Licenses: lgpl-2.1-or-later
  *
- * Provides the common process type structures.
+ * Provides the common program type structures.
  *
  * This is auto-included and should not need to be explicitly included.
  */
-#ifndef _controller_main_common_type_process_h
-#define _controller_main_common_type_process_h
+#ifndef _controller_main_common_type_program_h
+#define _controller_main_common_type_program_h
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
 /**
- * Controller process data.
+ * Controller program process data.
  *
  * ready: State representing if the settings are all loaded and is ready to run program operations.
  * mode:  Controller setting mode based on the setting mode enumerator.
@@ -36,7 +36,7 @@ extern "C" {
  * exit:    The Exit settings.
  * rules:   All rules and their respective settings.
  */
-#ifndef _di_controller_process_t_
+#ifndef _di_controller_program_t_
   typedef struct {
     uint8_t ready;
     uint8_t mode;
@@ -54,9 +54,9 @@ extern "C" {
     controller_entry_t entry;
     controller_entry_t exit;
     controller_rules_t rules;
-  } controller_process_t;
+  } controller_program_t;
 
-  #define controller_process_t_initialize { \
+  #define controller_program_t_initialize { \
     0, \
     0, \
     0, \
@@ -71,27 +71,22 @@ extern "C" {
     controller_entry_t_initialize, \
     controller_rules_t_initialize, \
   }
-#endif // _di_controller_process_t_
+#endif // _di_controller_program_t_
 
 /**
- * Delete the Controller process data.
+ * Delete the Controller program data.
  *
- * @param process
- *   A pointer to the current process settings.
+ * @param program
+ *   A pointer to the current program settings.
  *
  *   Must not be NULL.
- *
- * @return
- *   F_okay on success.
- *
- *   F_parameter (with error bit) if a parameter is invalid.
  */
-#ifndef _di_controller_process_delete_
-  extern f_status_t controller_process_delete(controller_process_t * const process);
-#endif // _di_controller_process_delete_
+#ifndef _di_controller_program_delete_
+  extern void controller_program_delete(controller_program_t * const program);
+#endif // _di_controller_program_delete_
 
 #ifdef __cplusplus
 } // extern "C"
 #endif
 
-#endif // _controller_main_common_type_process_h
+#endif // _controller_main_common_type_program_h

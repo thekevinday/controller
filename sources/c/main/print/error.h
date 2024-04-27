@@ -21,7 +21,6 @@ extern "C" {
  *
  * @param print
  *   The output structure to print to.
- *
  *   Must not be NULL.
  *
  *   This does not alter print.custom.setting.state.status.
@@ -45,7 +44,6 @@ extern "C" {
  *
  * @param print
  *   The output structure to print to.
- *
  *   Must not be NULL.
  *
  *   The print.custom is expected to be of type fss_read_main_t.
@@ -72,6 +70,31 @@ extern "C" {
 #ifndef _di_controller_main_print_error_file_
   extern f_status_t controller_main_print_error_file(fl_print_t * const print, const f_string_t function, const f_string_static_t name, const f_string_static_t operation, const uint8_t type);
 #endif // _di_controller_main_print_error_file_
+
+/**
+ * Print generic error message regarding a function failing in some way.
+ *
+ * @param print
+ *   The output structure to print to.
+ *   Must not be NULL.
+ *
+ *   This does not alter print.custom.setting.state.status.
+ * @param function
+ *   The name of the function associated with the error.
+ * @param status
+ *   The status code to print an error message about.
+ *
+ * @return
+ *   F_okay on success.
+ *   F_output_not on success, but no printing is performed.
+ *
+ *   F_output_not (with error bit) if setting is NULL.
+ *
+ * @see fll_error_print()
+ */
+#ifndef _di_controller_main_print_error_status_
+  extern f_status_t controller_main_print_error_status(fl_print_t * const print, const f_string_t function, const f_status_t status);
+#endif // _di_controller_main_print_error_status_
 
 #ifdef __cplusplus
 } // extern "C"

@@ -5,9 +5,9 @@ extern "C" {
 #endif
 
 #ifndef _di_controller_main_setting_load_
-  void controller_main_setting_load(const f_console_arguments_t arguments, controller_main_t * const main, controller_process_t * const process) {
+  void controller_main_setting_load(const f_console_arguments_t arguments, controller_main_t * const main, controller_program_t * const program) {
 
-    if (!main || !process) return;
+    if (!main || !program) return;
 
     main->setting.state.step_small = controller_allocation_console_d;
 
@@ -91,11 +91,11 @@ extern "C" {
     f_string_static_t * const args = main->program.parameters.arguments.array;
     f_number_unsigned_t index = 0;
 
-    process->control.server.domain = f_socket_protocol_family_local_e;
-    process->control.server.type = f_socket_type_stream_e;
-    process->control.server.form = f_socket_address_form_local_e;
+    program->control.server.domain = f_socket_protocol_family_local_e;
+    program->control.server.type = f_socket_type_stream_e;
+    program->control.server.form = f_socket_address_form_local_e;
 
-    memset(&process->control.server.address, 0, sizeof(f_socket_address_t));
+    memset(&program->control.server.address, 0, sizeof(f_socket_address_t));
 
     {
       const uint8_t codes[] = {
@@ -129,7 +129,7 @@ extern "C" {
     }
 
     // The first remaining argument represents the entry name.
-    main->setting.state.status = f_string_dynamic_append(main->program.parameters.remaining.used ? args[main->program.parameters.remaining.array[0]] : controller_default_s, &process->name_entry);
+    main->setting.state.status = f_string_dynamic_append(main->program.parameters.remaining.used ? args[main->program.parameters.remaining.array[0]] : controller_default_s, &program->name_entry);
 
     if (F_status_is_error(main->setting.state.status)) {
       if ((main->setting.flag & controller_main_flag_print_first_e) && main->program.message.verbosity > f_console_verbosity_error_e) {
@@ -141,7 +141,7 @@ extern "C" {
       return;
     }
 
-    main->setting.state.status = f_path_current(F_false, &process->path_current);
+    main->setting.state.status = f_path_current(F_false, &program->path_current);
 
     if (F_status_is_error(main->setting.state.status)) {
       if ((main->setting.flag & controller_main_flag_print_first_e) && main->program.message.verbosity > f_console_verbosity_error_e) {
@@ -153,15 +153,15 @@ extern "C" {
       return;
     }
 
-    process->path_setting.used = 0;
+    program->path_setting.used = 0;
 
     if (main->program.parameters.array[controller_parameter_settings_e].locations.used) {
       index = main->program.parameters.array[controller_parameter_settings_e].values.array[main->program.parameters.array[controller_parameter_settings_e].values.used - 1];
 
-      controller_path_canonical_relative(main, process->path_current, args[index], &process->path_setting);
+      controller_path_canonical_relative(main, program->path_current, args[index], &program->path_setting);
     }
     else {
-      main->setting.state.status = f_string_dynamic_append(controller_default_path_settings_s, &process->path_setting);
+      main->setting.state.status = f_string_dynamic_append(controller_default_path_settings_s, &program->path_setting);
     }
 
     if (F_status_is_error(main->setting.state.status)) {
@@ -179,23 +179,23 @@ extern "C" {
       return;
     }
 
-    if (!process->path_pid.used && !main->program.parameters.array[controller_parameter_pid_e].locations.used) {
-      main->setting.state.status = f_string_dynamic_append(controller_default_path_pid_s, &process->path_pid);
+    if (!program->path_pid.used && !main->program.parameters.array[controller_parameter_pid_e].locations.used) {
+      main->setting.state.status = f_string_dynamic_append(controller_default_path_pid_s, &program->path_pid);
 
       if (F_status_is_error_not(main->setting.state.status)) {
-        main->setting.state.status = f_string_dynamic_append(f_path_separator_s, &process->path_pid);
+        main->setting.state.status = f_string_dynamic_append(f_path_separator_s, &program->path_pid);
       }
 
       if (F_status_is_error_not(main->setting.state.status)) {
-        main->setting.state.status = f_string_dynamic_append(controller_default_path_pid_prefix_s, &process->path_pid);
+        main->setting.state.status = f_string_dynamic_append(controller_default_path_pid_prefix_s, &program->path_pid);
       }
 
       if (F_status_is_error_not(main->setting.state.status)) {
-        main->setting.state.status = f_string_dynamic_append(process->name_entry, &process->path_pid);
+        main->setting.state.status = f_string_dynamic_append(program->name_entry, &program->path_pid);
       }
 
       if (F_status_is_error_not(main->setting.state.status)) {
-        main->setting.state.status = f_string_dynamic_append(controller_default_path_pid_suffix_s, &process->path_pid);
+        main->setting.state.status = f_string_dynamic_append(controller_default_path_pid_suffix_s, &program->path_pid);
       }
 
       if (F_status_is_error(main->setting.state.status)) {
@@ -213,7 +213,7 @@ extern "C" {
       index = main->program.parameters.array[controller_parameter_cgroup_e].values.array[main->program.parameters.array[controller_parameter_cgroup_e].values.used - 1];
 
       if (args[index].used) {
-        controller_path_canonical_relative(main, process->path_current, args[index], &process->path_cgroup);
+        controller_path_canonical_relative(main, program->path_current, args[index], &program->path_cgroup);
 
         if (F_status_is_error(main->setting.state.status)) {
           if ((main->setting.flag & controller_main_flag_print_first_e) && main->program.message.verbosity > f_console_verbosity_error_e) {
@@ -225,7 +225,7 @@ extern "C" {
           return;
         }
 
-        main->setting.state.status = f_string_append_assure(F_path_separator_s, 1, &process->path_cgroup);
+        main->setting.state.status = f_string_append_assure(F_path_separator_s, 1, &program->path_cgroup);
 
         if (F_status_is_error(main->setting.state.status)) {
           if ((main->setting.flag & controller_main_flag_print_first_e) && main->program.message.verbosity > f_console_verbosity_error_e) {

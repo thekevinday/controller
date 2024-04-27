@@ -32,6 +32,18 @@ extern "C" {
   }
 #endif // _di_controller_main_print_error_file_
 
+#ifndef _di_controller_main_print_error_status_
+  f_status_t controller_main_print_error_status(fl_print_t * const print, const f_string_t function, const f_status_t status) {
+
+    if (!print) return F_status_set_error(F_output_not);
+    if (print->verbosity < f_console_verbosity_error_e) return F_output_not;
+
+    fll_error_print(print, status, function, fll_error_file_flag_fallback_e);
+
+    return F_okay;
+  }
+#endif // _di_controller_main_print_error_status_
+
 #ifdef __cplusplus
 } // extern "C"
 #endif

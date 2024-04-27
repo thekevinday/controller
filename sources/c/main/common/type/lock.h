@@ -54,36 +54,6 @@ extern "C" {
 #endif // _di_controller_lock_t_
 
 /**
- * Delete the mutex lock and if the mutex lock is busy, forcibly unlock it and then delete it.
- *
- * @param mutex
- *   The mutex lock to delete.
- *   Will be set to NULL if delete succeeded.
- *
- *   This pointer cannot be "* const" because of pthread_mutex_destroy().
- *
- * @see f_thread_mutex_delete()
- */
-#ifndef _di_controller_lock_delete_mutex_
-  extern void controller_lock_delete_mutex(f_thread_mutex_t *mutex);
-#endif // _di_controller_lock_delete_mutex_
-
-/**
- * Delete the r/w lock and if the r/w lock is busy, forcibly unlock it and then delete it.
- *
- * @param lock
- *   The r/w lock to delete.
- *   Will be set to NULL if delete succeeded.
- *
- *   This pointer cannot be "* const" because of pthread_rwlock_destroy().
- *
- * @see f_thread_lock_delete()
- */
-#ifndef _di_controller_lock_delete_rw_
-  extern void controller_lock_delete_rw(f_thread_lock_t *lock);
-#endif // _di_controller_lock_delete_rw_
-
-/**
  * Fully deallocate all memory for the given lock without caring about return status.
  *
  * @param lock
