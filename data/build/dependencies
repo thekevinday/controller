@@ -28,6 +28,7 @@ f_rip
 f_signal
 f_socket
 f_status_string
+f_time
 f_thread
 
 fl_control_group

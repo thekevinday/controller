@@ -43,6 +43,8 @@
  *   Success from: f_signal_wait_until().
  *   Success from: f_time_of_day_get().
  *
+ *   F_parameter (with error bit) on invalid parameter.
+ *
  *   Errors (with error bit) from: f_signal_wait_until().
  *   Errors (with error bit) from: f_time_of_day_get().
  *

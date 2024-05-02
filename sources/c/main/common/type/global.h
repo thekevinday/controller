@@ -21,7 +21,7 @@ extern "C" {
  *
  * main:    The main program data.
  * program: The program data.
- * thread:  The thread data.
+ * thread:  The thread data for a specific thread.
  */
 #ifndef _di_controller_global_t_
   typedef struct {

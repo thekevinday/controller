@@ -15,19 +15,20 @@
 #ifdef __cplusplus
 extern "C" {
 #endif
+
 /**
  * A structure for sharing mutexes globally between different threads.
  *
  * The alert lock is intended for a generic waiting on alerts operations.
  * The cancel lock is intended for preventing double cancellation calls (which can happen due to interrupts).
  * The print lock is intended to lock any activity printing to stdout/stderr.
- * The process lock is intended to lock any activity on the process structure.
+ * The instance lock is intended to lock any activity on the instance structure.
  * The rule lock is intended to lock any activity on the rules structure.
  *
  * alert:           The alert mutex lock for waking up on alerts.
  * cancel:          The cancel mutex lock for locking the cancel operation.
  * print:           The print mutex lock.
- * process:         The process r/w lock.
+ * instance:        The instance r/w lock.
  * rule:            The rule r/w lock.
  * alert_condition: The condition used to trigger alerts.
  */
@@ -37,7 +38,7 @@ extern "C" {
     f_thread_mutex_t cancel;
     f_thread_mutex_t print;
 
-    f_thread_lock_t process;
+    f_thread_lock_t instance;
     f_thread_lock_t rule;
 
     f_thread_condition_t alert_condition;

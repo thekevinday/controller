@@ -210,6 +210,23 @@ extern "C" {
   extern const f_string_static_t controller_default_path_socket_suffix_s;
 #endif // _di_controller_default_s_
 
+/**
+ * Special strings used for rules.
+ */
+#ifndef _di_controller_rule_s_
+  #define CONTROLLER_rule_needed_s "needed"
+  #define CONTROLLER_rule_wanted_s "wanted"
+  #define CONTROLLER_rule_wished_s "wished for"
+
+  #define CONTROLLER_rule_needed_s_length 6
+  #define CONTROLLER_rule_wanted_s_length 6
+  #define CONTROLLER_rule_wished_s_length 10
+
+  extern const f_string_static_t controller_rule_needed_s;
+  extern const f_string_static_t controller_rule_wanted_s;
+  extern const f_string_static_t controller_rule_wished_s;
+#endif // _di_controller_rule_s_
+
 #ifdef __cplusplus
 } // extern "C"
 #endif

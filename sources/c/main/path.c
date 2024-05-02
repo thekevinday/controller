@@ -34,7 +34,6 @@ extern "C" {
   }
 #endif // _di_controller_path_canonical_relative_
 
-
 #ifdef __cplusplus
 } // extern "C"
 #endif

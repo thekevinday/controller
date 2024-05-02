@@ -87,7 +87,7 @@ extern "C" {
 #endif // _di_controller_main_thread_signal_normal_
 
 #ifndef _di_controller_main_thread_signal_other_
-  void * controller_main_thread_signal_other(void * const arguments) {
+  void * controller_main_thread_signal_other(void * const global) {
 
     f_thread_cancel_state_set(PTHREAD_CANCEL_DEFERRED, 0);
 

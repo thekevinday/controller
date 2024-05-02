@@ -64,8 +64,8 @@
 /**
  * Thread for handling signals/interrupts during normal operations.
  *
- * @param arguments
- *   The thread arguments.
+ * @param global
+ *   The global structure.
  *   Must be of type controller_global_t.
  *
  * @return
@@ -74,14 +74,14 @@
  * @see controller_main_thread_signal()
  */
 #ifndef _di_controller_main_thread_signal_normal_
-  extern void * controller_main_thread_signal_normal(void * const arguments);
+  extern void * controller_main_thread_signal_normal(void * const global);
 #endif // _di_controller_main_thread_signal_normal_
 
 /**
  * Thread for handling signals/interrupts during other operations.
  *
- * @param arguments
- *   The thread arguments.
+ * @param global
+ *   The global structure.
  *   Must be of type controller_global_t.
  *
  * @return
@@ -90,7 +90,7 @@
  * @see controller_main_thread_signal()
  */
 #ifndef _di_controller_main_thread_signal_other_
-  extern void * controller_main_thread_signal_other(void * const arguments);
+  extern void * controller_main_thread_signal_other(void * const global);
 #endif // _di_controller_main_thread_signal_other_
 
 #ifdef __cplusplus

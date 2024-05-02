@@ -20,8 +20,8 @@ extern "C" {
  * Check to see if thread is enabled for the normal operations like entry and control or for exit operations.
  *
  * @param is_normal
- *   If TRUE, then process as if this operates during a normal operation (entry and control).
- *   If FALSE, then process as if this operates during a an exit operation.
+ *   If TRUE, then instance as if this operates during a normal operation (entry and control).
+ *   If FALSE, then instance as if this operates during a an exit operation.
  * @param thread
  *   The thread data.
  *
@@ -34,7 +34,7 @@ extern "C" {
 #endif // _di_controller_main_thread_is_enabled_
 
 /**
- * Check to see if thread is enabled for the normal operations like entry and control or for exit operations for some process.
+ * Check to see if thread is enabled for the normal operations like entry and control or for exit operations for some instance.
  *
  * @param instance
  *   The instance to use when checking if thread is enabled.
@@ -45,11 +45,11 @@ extern "C" {
  *   F_true when enabled.
  *   F_false when disabled or when parameter is invalid..
  *
- * @see controller_main_thread_is_enabled_process_type()
+ * @see controller_main_thread_is_enabled_instance_type()
  */
-#ifndef _di_controller_main_thread_is_enabled_process_
-  extern f_status_t controller_main_thread_is_enabled_process(controller_instance_t * const instance, controller_thread_t * const thread);
-#endif // _di_controller_main_thread_is_enabled_process_
+#ifndef _di_controller_main_thread_is_enabled_instance_
+  extern f_status_t controller_main_thread_is_enabled_instance(controller_instance_t * const instance, controller_thread_t * const thread);
+#endif // _di_controller_main_thread_is_enabled_instance_
 
 #ifdef __cplusplus
 } // extern "C"

@@ -44,6 +44,7 @@
 #include <fll/level_0/rip.h>
 #include <fll/level_0/signal.h>
 #include <fll/level_0/socket.h>
+#include <fll/level_0/time.h>
 
 #ifndef _di_thread_support_
   #include <fll/level_0/thread.h>
@@ -96,9 +97,13 @@
 #include <program/controller/main/print/verbose.h>
 #include <program/controller/main/print/warning.h>
 #include <program/controller/main/signal.h>
+#include <program/controller/main/time.h>
 #include <program/controller/main/thread/is.h>
 #include <program/controller/main/thread/instance.h>
 #include <program/controller/main/thread.h>
+#include <program/controller/main/instance.h>
+#include <program/controller/main/rule.h>
+#include <program/controller/main/rule/instance.h>
 
 #ifdef __cplusplus
 extern "C" {

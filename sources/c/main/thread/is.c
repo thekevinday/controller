@@ -13,21 +13,21 @@ extern "C" {
   }
 #endif // _di_controller_main_thread_is_enabled_
 
-#ifndef _di_controller_main_thread_is_enabled_process_
-  f_status_t controller_main_thread_is_enabled_process(controller_instance_t * const instance, controller_thread_t * const thread) {
+#ifndef _di_controller_main_thread_is_enabled_instance_
+  f_status_t controller_main_thread_is_enabled_instance(controller_instance_t * const instance, controller_thread_t * const thread) {
 
     if (!instance) return F_false;
 
-    return controller_main_thread_is_enabled_process_type(instance->type, thread);
+    return controller_main_thread_is_enabled_instance_type(instance->type, thread);
   }
-#endif // _di_controller_main_thread_is_enabled_process_
+#endif // _di_controller_main_thread_is_enabled_instance_
 
-#ifndef _di_controller_main_thread_is_enabled_process_type_
-  f_status_t controller_main_thread_is_enabled_process_type(const uint8_t type, controller_thread_t * const thread) {
+#ifndef _di_controller_main_thread_is_enabled_instance_type_
+  f_status_t controller_main_thread_is_enabled_instance_type(const uint8_t type, controller_thread_t * const thread) {
 
     return controller_main_thread_is_enabled(type != controller_data_type_exit_e, thread);
   }
-#endif // _di_controller_main_thread_is_enabled_process_type_
+#endif // _di_controller_main_thread_is_enabled_instance_type_
 
 #ifdef __cplusplus
 } // extern "C"

@@ -8,7 +8,7 @@ extern "C" {
   void controller_thread_instance(const uint8_t is_normal, controller_instance_t * const instance) {
 
     if (!instance) return;
-    if (!controller_thread_is_enabled(is_normal, instance->main_thread)) return;
+    if (!controller_main_thread_is_enabled(is_normal, (controller_thread_t *) instance->thread)) return;
 
     const f_status_t status = controller_rule_process_do(controller_process_option_asynchronous_d, instance);
 
@@ -34,7 +34,7 @@ extern "C" {
     f_thread_mutex_lock(&global->thread->lock.cancel);
 
     // Only cancel when enabled.
-    if (!controller_thread_is_enabled(is_normal, global->thread)) {
+    if (!controller_main_thread_is_enabled(is_normal, global->thread)) {
       f_thread_mutex_unlock(&global->thread->lock.cancel);
 
       return;
