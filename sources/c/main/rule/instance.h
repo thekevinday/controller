@@ -30,6 +30,9 @@ extern "C" {
  *
  * @param global
  *   The global data.
+ *   Must not be NULL.
+ *
+ *   This does not alter global.main.setting.state.status.
  * @param instance
  *   The instance data for processing this rule.
  *
@@ -45,7 +48,7 @@ extern "C" {
  *   Errors (with error bit) from: controller_lock_write().
  */
 #ifndef _di_controller_rule_instance_
-  extern f_status_t controller_rule_instance(const controller_global_t global, controller_instance_t * const instance);
+  extern f_status_t controller_rule_instance(controller_global_t * const global, controller_instance_t * const instance);
 #endif // _di_controller_rule_instance_
 
 /**
@@ -53,6 +56,9 @@ extern "C" {
  *
  * @param global
  *   The global data.
+ *   Must not be NULL.
+ *
+ *   This does not alter global.main.setting.state.status.
  * @param options_force
  *   Force the given instance options, only supporting a subset of instance options.
  *
@@ -91,7 +97,7 @@ extern "C" {
  * @see f_thread_create()
  */
 #ifndef _di_controller_rule_instance_begin_
-  extern f_status_t controller_rule_instance_begin(const controller_global_t global, const uint8_t options_force, const f_string_static_t alias_rule, const uint8_t action, const uint8_t options, const uint8_t type, const f_number_unsigneds_t stack, const controller_cache_t cache);
+  extern f_status_t controller_rule_instance_begin(controller_global_t * const global, const uint8_t options_force, const f_string_static_t alias_rule, const uint8_t action, const uint8_t options, const uint8_t type, const f_number_unsigneds_t stack, const controller_cache_t cache);
 #endif // _di_controller_rule_instance_begin_
 
 /**

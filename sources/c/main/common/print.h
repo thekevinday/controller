@@ -39,12 +39,25 @@ extern "C" {
  */
 #ifndef _di_controller_f_e_
   enum {
+    controller_f_controller_rule_actions_increase_by_e,
     controller_f_controller_path_canonical_relative_e,
     controller_f_f_console_parameter_process_e,
+    controller_f_f_fss_apply_delimit_e,
+    controller_f_f_fss_count_lines_e,
+    controller_f_f_memory_array_increase_e,
     controller_f_f_path_current_e,
+    controller_f_f_rip_dynamic_partial_e,
     controller_f_f_string_append_assure_e,
     controller_f_f_string_dynamic_append_e,
+    controller_f_f_string_dynamic_partial_append_nulless_e,
+    controller_f_f_string_dynamic_partial_mash_nulless_e,
     controller_f_f_thread_create_e,
+    controller_f_fl_conversion_dynamic_partial_to_signed_detect_e,
+    controller_f_fl_fss_extended_list_content_read_e,
+    controller_f_fl_iki_read_e,
+    controller_f_fll_fss_extended_read_e,
+    controller_f_fll_fss_extended_content_read_e,
+    controller_f_fll_fss_extended_list_content_read_e,
     controller_f_fll_program_parameter_process_context_standard_e,
     controller_f_fll_program_parameter_process_verbosity_standard_e,
   }; // enum

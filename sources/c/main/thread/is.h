@@ -24,6 +24,7 @@ extern "C" {
  *   If FALSE, then instance as if this operates during a an exit operation.
  * @param thread
  *   The thread data.
+ *   Must not be NULL.
  *
  * @return
  *   F_true when enabled.
@@ -38,8 +39,10 @@ extern "C" {
  *
  * @param instance
  *   The instance to use when checking if thread is enabled.
+ *   Must not be NULL.
  * @param thread
  *   The thread data.
+ *   Must not be NULL.
  *
  * @return
  *   F_true when enabled.
@@ -50,6 +53,24 @@ extern "C" {
 #ifndef _di_controller_main_thread_is_enabled_instance_
   extern f_status_t controller_main_thread_is_enabled_instance(controller_instance_t * const instance, controller_thread_t * const thread);
 #endif // _di_controller_main_thread_is_enabled_instance_
+
+/**
+ * Check to see if thread is enabled for the normal operations like entry and control or for exit operations for some instance type.
+ *
+ * @param type
+ *   The instance type to use when checking if thread is enabled.
+ * @param thread
+ *   The thread data.
+ *   Must not be NULL.
+ *
+ * @return
+ *   Success from controller_main_thread_is_enabled().
+ *
+ * @see controller_main_thread_is_enabled()
+ */
+#ifndef _di_controller_main_thread_is_enabled_instance_type_
+  extern f_status_t controller_main_thread_is_enabled_instance_type(const uint8_t type, controller_thread_t * const thread);
+#endif // _di_controller_main_thread_is_enabled_instance_type_
 
 #ifdef __cplusplus
 } // extern "C"

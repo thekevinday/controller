@@ -43,8 +43,9 @@ build_libraries-monolithic -lfll
 build_sources_library main/common.c main/common/define.c main/common/enumeration.c main/common/print.c main/common/string.c main/common/type.c
 build_sources_library main/common/type/cache.c main/common/type/control.c main/common/type/entry.c main/common/type/global.c main/common/type/lock.c main/common/type/instance.c main/common/type/program.c main/common/type/rule.c main/common/type/thread.c
 build_sources_library main/common/string/general.c main/common/string/rule.c
-build_sources_library main/path.c main/rule.c main/rule/instance.c
-build_sources_library main/print/data.c main/print/debug.c main/print/error.c main/print/lock.c main/print/message.c main/print/verbose.c main/print/warning.c
+build_sources_library main/instance.c main/path.c
+build_sources_library main/rule.c main/rule/action.c main/rule/execute.c main/rule/expand.c main/rule/instance.c main/rule/is.c main/rule/item.c main/rule/parameter.c main/rule/read.c main/rule/setting.c main/rule/validate.c main/rule/wait.c
+build_sources_library main/print/data.c main/print/debug.c main/print/error.c main/print/lock.c main/print/message.c main/print/rule.c main/print/verbose.c main/print/warning.c
 build_sources_library main/signal.c main/time.c main/thread.c main/thread/instance.c main/thread/is.c
 
 build_sources_headers main/common.h main/controller.h main/common/define.h main/common/enumeration.h main/common/print.h main/common/string.h main/common/thread.h main/common/type.h
@@ -52,8 +53,9 @@ build_sources_headers main/common/define/control.h main/common/define/entry.h ma
 build_sources_headers main/common/enumeration/control.h main/common/enumeration/entry.h main/common/enumeration/instance.h main/common/enumeration/program.h main/common/enumeration/rule.h main/common/enumeration/thread.h
 build_sources_headers main/common/string/general.h main/common/string/rule.h
 build_sources_headers main/common/type/cache.h main/common/type/control.h main/common/type/entry.h main/common/type/global.h main/common/type/lock.h main/common/type/instance.h main/common/type/program.h main/common/type/rule.h main/common/type/thread.h
-build_sources_headers main/path.h main/rule.h main/rule/instance.h
-build_sources_headers main/print/data.h main/print/debug.h main/print/error.h main/print/lock.h main/print/message.h main/print/verbose.h main/print/warning.h
+build_sources_headers main/instance.h main/path.h
+build_sources_headers main/rule.h main/rule/action.h main/rule/execute.h main/rule/expand.h main/rule/instance.h main/rule/is.h main/rule/item.h main/rule/parameter.h main/rule/read.h main/rule/setting.h main/rule/validate.h main/rule/wait.h
+build_sources_headers main/print/data.h main/print/debug.h main/print/error.h main/print/lock.h main/print/message.h main/print/rule.h main/print/verbose.h main/print/warning.h
 build_sources_headers main/signal.h main/time.h main/thread.h main/thread/instance.h main/thread/is.h
 
 build_sources_documentation man

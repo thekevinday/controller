@@ -94,6 +94,7 @@
 #include <program/controller/main/print/error.h>
 #include <program/controller/main/print/lock.h>
 #include <program/controller/main/print/message.h>
+#include <program/controller/main/print/rule.h>
 #include <program/controller/main/print/verbose.h>
 #include <program/controller/main/print/warning.h>
 #include <program/controller/main/signal.h>
@@ -103,7 +104,17 @@
 #include <program/controller/main/thread.h>
 #include <program/controller/main/instance.h>
 #include <program/controller/main/rule.h>
+#include <program/controller/main/rule/action.h>
+#include <program/controller/main/rule/execute.h>
+#include <program/controller/main/rule/expand.h>
 #include <program/controller/main/rule/instance.h>
+#include <program/controller/main/rule/is.h>
+#include <program/controller/main/rule/item.h>
+#include <program/controller/main/rule/parameter.h>
+#include <program/controller/main/rule/read.h>
+#include <program/controller/main/rule/setting.h>
+#include <program/controller/main/rule/validate.h>
+#include <program/controller/main/rule/wait.h>
 
 #ifdef __cplusplus
 extern "C" {
