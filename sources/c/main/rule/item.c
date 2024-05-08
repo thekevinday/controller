@@ -10,8 +10,8 @@ extern "C" {
     if (!global || !cache || !item) return F_status_set_error(F_parameter);
 
     f_status_t status = F_okay;
-    controller_state_interrupt_t custom = macro_controller_state_interrupt_t_initialize_1(is_normal, global->thread);
-    f_state_t state = macro_f_state_t_initialize_1(controller_common_allocation_large_d, controller_common_allocation_small_d, F_okay, 0, 0, 0, &controller_thread_signal_state_fss, 0, (void *) &custom, 0);
+    controller_interrupt_t custom = macro_controller_interrupt_t_initialize_1(is_normal, global->thread);
+    f_state_t state = macro_f_state_t_initialize_1(controller_allocation_large_d, controller_allocation_small_d, F_okay, 0, 0, 0, &controller_thread_signal_state_fss, 0, (void *) &custom, 0);
     f_range_t range = macro_f_range_t_initialize_2(cache->buffer_item.used);
     f_number_unsigned_t last = 0;
 
@@ -26,7 +26,7 @@ extern "C" {
       fl_fss_extended_list_object_read(cache->buffer_item, &range, &cache->range_action, &cache->delimits, &state);
 
       if (F_status_is_error(status)) {
-        controller_print_error(global->thread, &global->main->program.error, F_status_set_fine(status), "fl_fss_extended_list_object_read", F_true);
+        controller_main_print_error_status(&global->main->program.error, macro_controller_f(fl_fss_extended_list_object_read), F_status_set_fine(status));
 
         break;
       }
@@ -43,7 +43,7 @@ extern "C" {
         fl_fss_extended_object_read(cache->buffer_item, &range, &cache->range_action, 0, &cache->delimits, &state);
 
         if (F_status_is_error(status)) {
-          controller_print_error(global->thread, &global->main->program.error, F_status_set_fine(status), "fl_fss_extended_object_read", F_true);
+          controller_main_print_error_status(&global->main->program.error, macro_controller_f(fl_fss_extended_object_read), F_status_set_fine(status));
 
           break;
         }
@@ -55,7 +55,7 @@ extern "C" {
       f_fss_apply_delimit(cache->delimits, &cache->buffer_item, &state);
 
       if (F_status_is_error(status)) {
-        controller_print_error(global->thread, &global->main->program.error, F_status_set_fine(status), "f_fss_apply_delimit", F_true);
+        controller_main_print_error_status(&global->main->program.error, macro_controller_f(f_fss_apply_delimit), F_status_set_fine(status));
 
         break;
       }
@@ -63,7 +63,7 @@ extern "C" {
       f_fss_count_lines(cache->buffer_item, cache->range_action.start, &cache->action.line_action, &state);
 
       if (F_status_is_error(status)) {
-        controller_print_error(global->thread, &global->main->program.error, F_status_set_fine(status), "f_fss_count_lines", F_true);
+        controller_main_print_error_status(&global->main->program.error, macro_controller_f(f_fss_count_lines), F_status_set_fine(status));
 
         break;
       }
@@ -74,7 +74,7 @@ extern "C" {
       status = f_rip_dynamic_partial_nulless(cache->buffer_item, cache->range_action, &cache->action.name_action);
 
       if (F_status_is_error(status)) {
-        controller_print_error(global->thread, &global->main->program.error, F_status_set_fine(status), "f_rip_dynamic_partial_nulless", F_true);
+        controller_main_print_error_status(&global->main->program.error, macro_controller_f(f_rip_dynamic_partial_nulless), F_status_set_fine(status));
 
         break;
       }
@@ -160,10 +160,10 @@ extern "C" {
         method = controller_rule_action_method_extended_e;
       }
 
-      status = controller_rule_actions_increase_by(controller_common_allocation_small_d, &item->actions);
+      status = controller_rule_actions_increase_by(controller_allocation_small_d, &item->actions);
 
       if (F_status_is_error(status)) {
-        controller_print_error(global->thread, &global->main->program.error, F_status_set_fine(status), "controller_rule_actions_increase_by", F_true);
+        controller_main_print_error_status(&global->main->program.error, macro_controller_f(controller_rule_actions_increase_by), F_status_set_fine(status));
 
         break;
       }

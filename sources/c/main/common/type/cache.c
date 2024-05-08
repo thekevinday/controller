@@ -28,7 +28,7 @@ extern "C" {
     f_memory_arrays_resize(0, sizeof(f_ranges_t), (void **) &cache->content_actions.array, &cache->content_actions.used, &cache->content_actions.size, &f_rangess_delete_callback);
     f_memory_arrays_resize(0, sizeof(f_ranges_t), (void **) &cache->content_items.array, &cache->content_items.used, &cache->content_items.size, &f_rangess_delete_callback);
 
-    controller_cache_action_delete_simple(&cache->action);
+    controller_cache_action_delete(&cache->action);
   }
 #endif // _di_controller_cache_delete_
 

@@ -41,7 +41,7 @@ extern "C" {
         status = fll_control_group_prepare(process->rule.cgroup);
 
         if (F_status_is_error(status)) {
-          controller_print_error_file(global->thread, &global->main->program.error, F_status_set_fine(status), "fll_control_group_prepare", F_true, process->rule.cgroup.path, controller_rule_print_control_groups_prepare_s, fll_error_file_type_directory_e);
+          controller_main_print_error_file(&main->program.error, macro_controller_f(fll_control_group_prepare), process->rule.cgroup.path, controller_rule_print_control_groups_prepare_s, fll_error_file_type_directory_e);
 
           return status;
         }
@@ -76,7 +76,7 @@ extern "C" {
       status = fl_environment_load_names(process->rule.environment, &environment);
 
       if (F_status_is_error(status)) {
-        controller_print_error(global->thread, &global->main->program.error, F_status_set_fine(status), "fl_environment_load_names", F_true);
+        controller_main_print_error_status(&global->main->program.error, macro_controller_f(fl_environment_load_names), F_status_set_fine(status));
 
         return status;
       }
@@ -107,7 +107,7 @@ extern "C" {
                   status = f_string_dynamic_append(entry->define.array[i].value, &environment.array[k].value);
 
                   if (F_status_is_error(status)) {
-                    controller_print_error(global->thread, &global->main->program.error, F_status_set_fine(status), "f_string_dynamic_append", F_true);
+                    controller_main_print_error_status(&global->main->program.error, macro_controller_f(f_string_dynamic_append), F_status_set_fine(status));
 
                     return status;
                   }
@@ -120,7 +120,7 @@ extern "C" {
                 status = f_string_maps_append(entry->define.array[i], &environment);
 
                 if (F_status_is_error(status)) {
-                  controller_print_error(global->thread, &global->main->program.error, F_status_set_fine(status), "f_string_maps_append", F_true);
+                  controller_main_print_error_status(&global->main->program.error, macro_controller_f(f_string_maps_append), F_status_set_fine(status));
 
                   return status;
                 }
@@ -148,7 +148,7 @@ extern "C" {
                 status = f_string_dynamic_append(process->rule.define.array[i].value, &environment.array[k].value);
 
                 if (F_status_is_error(status)) {
-                  controller_print_error(global->thread, &global->main->program.error, F_status_set_fine(status), "f_string_dynamic_append", F_true);
+                  controller_main_print_error_status(&global->main->program.error, macro_controller_f(f_string_dynamic_append), F_status_set_fine(status));
 
                   return status;
                 }
@@ -161,7 +161,7 @@ extern "C" {
               status = f_string_maps_append(process->rule.define.array[i], &environment);
 
               if (F_status_is_error(status)) {
-                controller_print_error(global->thread, &global->main->program.error, F_status_set_fine(status), "f_string_maps_append", F_true);
+                controller_main_print_error_status(&global->main->program.error, macro_controller_f(f_string_maps_append), F_status_set_fine(status));
 
                 return status;
               }
@@ -189,7 +189,7 @@ extern "C" {
         status = f_environment_get_all(&environment);
 
         if (F_status_is_error(status)) {
-          controller_print_error(global->thread, &global->main->program.error, F_status_set_fine(status), "f_environment_get_all", F_true);
+          controller_main_print_error_status(&global->main->program.error, macro_controller_f(f_environment_get_all), F_status_set_fine(status));
 
           return status;
         }
@@ -199,7 +199,7 @@ extern "C" {
           status = f_string_maps_append(entry->define.array[i], &environment);
 
           if (F_status_is_error(status)) {
-            controller_print_error(global->thread, &global->main->program.error, F_status_set_fine(status), "f_string_maps_append", F_true);
+            controller_main_print_error_status(&global->main->program.error, macro_controller_f(f_string_maps_append), F_status_set_fine(status));
 
             return status;
           }
@@ -210,7 +210,7 @@ extern "C" {
           status = f_string_maps_append(process->rule.define.array[i], &environment);
 
           if (F_status_is_error(status)) {
-            controller_print_error(global->thread, &global->main->program.error, F_status_set_fine(status), "f_string_maps_append", F_true);
+            controller_main_print_error_status(&global->main->program.error, macro_controller_f(f_string_maps_append), F_status_set_fine(status));
 
             return status;
           }
@@ -471,7 +471,7 @@ extern "C" {
     status = controller_pids_increase(&process->childs);
 
     if (F_status_is_error(status)) {
-      controller_print_error(thread, &global->main->program.error, F_status_set_fine(status), "controller_pids_increase", F_true);
+      controller_main_print_error_status(&global->main->program.error, macro_controller_f(controller_pids_increase), F_status_set_fine(status));
 
       return status;
     }
@@ -660,7 +660,7 @@ extern "C" {
         controller_rule_item_print_error_execute(type == controller_rule_item_type_script_e, program.used ? program : arguments.array[0], status, process);
       }
       else {
-        controller_print_error(thread, &global->main->program.error, F_status_set_fine(status), "fll_execute_program", F_true);
+        controller_main_print_error_status(&global->main->program.error, macro_controller_f(fll_execute_program), F_status_set_fine(status));
       }
 
       status = F_status_set_error(status);
@@ -686,15 +686,15 @@ extern "C" {
     status = controller_pids_increase(&process->childs);
 
     if (F_status_is_error(status)) {
-      controller_print_error(thread, &global->main->program.error, F_status_set_fine(status), "controller_pids_increase", F_true);
+      controller_main_print_error_status(&global->main->program.error, macro_controller_f(controller_pids_increase), F_status_set_fine(status));
 
       return status;
     }
 
-    status = f_memory_array_increase(controller_common_allocation_small_d, sizeof(f_string_dynamic_t), (void **) &process->path_pids.array, &process->path_pids.used, &process->path_pids.size);
+    status = f_memory_array_increase(controller_allocation_small_d, sizeof(f_string_dynamic_t), (void **) &process->path_pids.array, &process->path_pids.used, &process->path_pids.size);
 
     if (F_status_is_error(status)) {
-      controller_print_error(thread, &global->main->program.error, F_status_set_fine(status), "f_memory_array_increase", F_true);
+      controller_main_print_error_status(&global->main->program.error, macro_controller_f(f_memory_array_increase), F_status_set_fine(status));
 
       return status;
     }
@@ -730,22 +730,16 @@ extern "C" {
 
     status = f_file_exists(pid_file, F_true);
 
-    if (F_status_is_error(status)) {
-      controller_print_error_file(thread, &global->main->program.error, F_status_set_fine(status), "f_file_exists", F_true, pid_file, f_file_operation_find_s, fll_error_file_type_file_e);
+    if (F_status_is_error(status) || status == F_true) {
+      controller_main_print_error_file_status(&global->main->program.error, macro_controller_f(f_file_exists), status == F_true ? F_file_found : F_status_set_fine(status), pid_file, f_file_operation_find_s, fll_error_file_type_file_e);
 
       return status;
-    }
-
-    if (status == F_true) {
-      controller_print_error_file(thread, &global->main->program.error, F_file_found, "f_file_exists", F_true, pid_file, f_file_operation_find_s, fll_error_file_type_file_e);
-
-      return F_status_set_error(F_file_found);
     }
 
     status = f_string_dynamic_append_nulless(pid_file, child_pid_file);
 
     if (F_status_is_error(status)) {
-      controller_print_error(thread, &global->main->program.error, F_status_set_fine(status), "f_string_dynamic_append_nulless", F_true);
+      controller_main_print_error_status(&global->main->program.error, macro_controller_f(f_string_dynamic_append_nulless), F_status_set_fine(status));
 
       return status;
     }
@@ -919,7 +913,7 @@ extern "C" {
         controller_rule_item_print_error_execute(type == controller_rule_item_type_utility_e, program.used ? program : arguments.array[0], status, process);
       }
       else {
-        controller_print_error(thread, &global->main->program.error, F_status_set_fine(status), "fll_execute_program", F_true);
+        controller_main_print_error_status(&global->main->program.error, macro_controller_f(fll_execute_program), F_status_set_fine(status));
       }
 
       return F_status_set_error(status);

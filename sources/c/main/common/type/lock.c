@@ -11,7 +11,7 @@ extern "C" {
     f_thread_mutex_delete(&lock->cancel);
     f_thread_mutex_delete(&lock->print);
 
-    f_thread_lock_delete(&lock->process);
+    f_thread_lock_delete(&lock->instance);
     f_thread_lock_delete(&lock->rule);
 
     f_thread_condition_delete(&lock->alert_condition);
@@ -20,7 +20,7 @@ extern "C" {
     memset(&lock->cancel, 0, sizeof(f_thread_mutex_t));
     memset(&lock->print, 0, sizeof(f_thread_mutex_t));
 
-    memset(&lock->process, 0, sizeof(f_thread_lock_t));
+    memset(&lock->instance, 0, sizeof(f_thread_lock_t));
     memset(&lock->rule, 0, sizeof(f_thread_lock_t));
 
     memset(&lock->alert_condition, 0, sizeof(f_thread_condition_t));

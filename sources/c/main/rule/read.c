@@ -168,7 +168,7 @@ extern "C" {
     status = f_string_dynamic_append_nulless(alias, &rule->alias);
 
     if (F_status_is_error(status)) {
-      controller_print_error(global->thread, &global->main->program.error, F_status_set_fine(status), "f_string_dynamic_append_nulless", F_true);
+      controller_main_print_error_status(&global->main->program.error, macro_controller_f(f_string_dynamic_append_nulless), F_status_set_fine(status));
     }
     else {
       status = controller_file_load(global, F_true, controller_rules_s, rule->alias, controller_rule_s, cache);
@@ -178,30 +178,32 @@ extern "C" {
       rule->timestamp = cache->timestamp;
 
       if (cache->buffer_file.used) {
-        controller_state_interrupt_t custom = macro_controller_state_interrupt_t_initialize_1(is_normal, global->thread);
-        f_state_t state = macro_f_state_t_initialize_1(controller_common_allocation_large_d, controller_common_allocation_small_d, F_okay, 0, 0, 0, &controller_thread_signal_state_fss, 0, (void *) &custom, 0);
+        controller_interrupt_t custom = macro_controller_interrupt_t_initialize_1(is_normal, global->thread);
+        f_state_t state = macro_f_state_t_initialize_1(controller_allocation_large_d, controller_allocation_small_d, F_okay, 0, 0, 0, &controller_thread_signal_state_fss, 0, (void *) &custom, 0);
         f_range_t range = macro_f_range_t_initialize_2(cache->buffer_file.used);
 
         fll_fss_basic_list_read(cache->buffer_file, &range, &cache->object_items, &cache->content_items, &cache->delimits, 0, &cache->comments, &state);
 
         if (F_status_is_error(status)) {
-          controller_print_error(global->thread, &global->main->program.error, F_status_set_fine(status), "fll_fss_basic_list_read", F_true);
+          controller_main_print_error_status(&global->main->program.error, macro_controller_f(fll_fss_basic_list_read), F_status_set_fine(status));
         }
         else {
           f_fss_apply_delimit(cache->delimits, &cache->buffer_file, &state);
 
           if (F_status_is_error(status)) {
-            controller_print_error(global->thread, &global->main->program.error, F_status_set_fine(status), "f_fss_apply_delimit", F_true);
+            controller_main_print_error_status(&global->main->program.error, macro_controller_f(f_fss_apply_delimit), F_status_set_fine(status));
           }
         }
       }
     }
 
     if (F_status_is_error_not(status) && cache->object_items.used) {
-      status = controller_rule_items_increase_by(cache->object_items.used, &rule->items);
+      if (rule->items.size < cache->object_items.size) {
+        status = f_memory_arrays_resize(cache->object_items.size, sizeof(controller_rule_item_t), (void **) &&rule->items.array, &rule->items.used, &rule->items.size, &controller_rule_items_delete_callback);
+      }
 
       if (F_status_is_error(status)) {
-        controller_print_error(global->thread, &global->main->program.error, F_status_set_fine(status), "controller_rule_items_increase_by", F_true);
+        controller_main_print_error_status(&global->main->program.error, macro_controller_f(controller_rule_items_increase_by), F_status_set_fine(status));
       }
       else {
         f_number_unsigned_t i = 0;
@@ -239,7 +241,7 @@ extern "C" {
           f_fss_count_lines(cache->buffer_file, cache->object_items.array[i].start, &cache->action.line_item, &global->main->setting.state);
 
           if (F_status_is_error(status)) {
-            controller_print_error(global->thread, &global->main->program.error, F_status_set_fine(status), "f_fss_count_lines", F_true);
+            controller_main_print_error_status(&global->main->program.error, macro_controller_f(f_fss_count_lines), F_status_set_fine(status));
 
             break;
           }
@@ -249,7 +251,7 @@ extern "C" {
           status = f_rip_dynamic_partial_nulless(cache->buffer_file, cache->object_items.array[i], &cache->action.name_item);
 
           if (F_status_is_error(status)) {
-            controller_print_error(global->thread, &global->main->program.error, F_status_set_fine(status), "f_rip_dynamic_partial_nulless", F_true);
+            controller_main_print_error_status(&global->main->program.error, macro_controller_f(f_rip_dynamic_partial_nulless), F_status_set_fine(status));
 
             break;
           }
@@ -288,7 +290,7 @@ extern "C" {
           status = f_string_dynamic_partial_append(cache->buffer_file, cache->content_items.array[i].array[0], &cache->buffer_item);
 
           if (F_status_is_error(status)) {
-            controller_print_error(global->thread, &global->main->program.error, F_status_set_fine(status), "f_string_dynamic_partial_append", F_true);
+            controller_main_print_error_status(&global->main->program.error, macro_controller_f(f_rip_dynamic_partial_nulless), F_status_set_fine(status));
 
             break;
           }

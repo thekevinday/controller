@@ -705,7 +705,7 @@ extern "C" {
       }
 
       if (F_status_is_error(status)) {
-        controller_print_error(global->thread, &global->main->program.error, F_status_set_fine(status), "f_memory_array_resize", F_true);
+        controller_main_print_error_status(&global->main->program.error, macro_controller_f(f_memory_array_resize), F_status_set_fine(status));
       }
       else {
         for (f_number_unsigned_t i = 0; i < stack.used; ++i) {
@@ -727,7 +727,7 @@ extern "C" {
         status = f_string_dynamic_append(cache.action.name_item, &instance->cache.action.name_item);
       }
       else {
-        controller_print_error(global->thread, &global->main->program.error, F_status_set_fine(status), "f_string_dynamic_append", F_true);
+        controller_main_print_error_status(&global->main->program.error, macro_controller_f(f_string_dynamic_append), F_status_set_fine(status));
       }
     }
 
@@ -743,7 +743,7 @@ extern "C" {
         }
 
         if (F_status_is_error(status)) {
-          controller_print_error(global->thread, &global->main->program.error, F_status_set_fine(status), "f_thread_create", F_true);
+          controller_main_print_error_status(&global->main->program.error, macro_controller_f(f_thread_create), F_status_set_fine(status));
         }
       }
       else {
@@ -886,7 +886,7 @@ extern "C" {
       f_thread_unlock(&global->thread->lock.rule);
 
       if (F_status_is_error(status)) {
-        controller_print_error(global->thread, &global->main->program.error, F_status_set_fine(status), "controller_rule_copy", F_true);
+        controller_main_print_error_status(&global->main->program.error, macro_controller_f(controller_rule_copy), F_status_set_fine(status));
       }
       else if (!instance->action) {
 
@@ -933,10 +933,10 @@ extern "C" {
         }
 
         if (F_status_is_error_not(status)) {
-          status = f_memory_array_increase(controller_common_allocation_small_d, sizeof(f_number_unsigned_t), (void **) &instance->stack.array, &instance->stack.used, &instance->stack.size);
+          status = f_memory_array_increase(controller_allocation_small_d, sizeof(f_number_unsigned_t), (void **) &instance->stack.array, &instance->stack.used, &instance->stack.size);
 
           if (F_status_is_error(status)) {
-            controller_print_error(global->thread, &global->main->program.error, F_status_set_fine(status), "f_memory_array_increase", F_true);
+            controller_main_print_error_status(&global->main->program.error, macro_controller_f(f_memory_array_increase), F_status_set_fine(status));
           }
           else {
             f_thread_unlock(&instance->lock);

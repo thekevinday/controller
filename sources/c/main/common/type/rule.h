@@ -371,9 +371,6 @@ extern "C" {
  * @param rule
  *   The rule to deallocate.
  *
- * @see controller_rule_items_delete()
- * @see controller_rule_ons_delete()
- *
  * @see f_capability_delete()
  * @see f_memory_array_resize()
  * @see f_memory_arrays_resize()
@@ -396,18 +393,30 @@ extern "C" {
 #endif // _di_controller_rule_action_delete_
 
 /**
- * Delete the Controller Rule Actions data.
+ * A callback intended to be passed to f_memory_arrays_resize() for an controller_rule_actions_t structure.
  *
- * @param actions
- *   The Rule Actions data.
+ * This is only called when shrinking the array and generally should perform de-allocations.
+ *
+ * This does not do parameter checking.
+ *
+ * @param start
+ *   The inclusive start position in the array to start deleting.
+ * @param stop
+ *   The exclusive stop position in the array to stop deleting.
+ * @param array
+ *   The array structure to delete all values of.
+ *   Must not be NULL.
+ *
+ * @return
+ *   F_okay on success.
+ *
+ *   F_parameter (with error bit) if a parameter is invalid.
  *
  * @see controller_rule_action_delete()
- *
- * @see f_memory_array_resize()
  */
-#ifndef _di_controller_rule_actions_delete_
-  extern void controller_rule_actions_delete(controller_rule_actions_t * const actions);
-#endif // _di_controller_rule_actions_delete_
+#ifndef _di_controller_rule_actions_delete_callback_
+  extern f_status_t controller_rule_actions_delete_callback(const f_number_unsigned_t start, const f_number_unsigned_t stop, void * const array);
+#endif // _di_controller_rule_actions_delete_callback_
 
 /**
  * Delete the Controller Rule Item data.
@@ -422,20 +431,31 @@ extern "C" {
 #ifndef _di_controller_rule_item_delete_
   extern void controller_rule_item_delete(controller_rule_item_t * const item);
 #endif // _di_controller_rule_item_delete_
-
 /**
- * Delete the Controller Rule Items data.
+ * A callback intended to be passed to f_memory_arrays_resize() for an controller_rule_items_t structure.
  *
- * @param items
- *   The Rule Items data.
+ * This is only called when shrinking the array and generally should perform de-allocations.
+ *
+ * This does not do parameter checking.
+ *
+ * @param start
+ *   The inclusive start position in the array to start deleting.
+ * @param stop
+ *   The exclusive stop position in the array to stop deleting.
+ * @param array
+ *   The array structure to delete all values of.
+ *   Must not be NULL.
+ *
+ * @return
+ *   F_okay on success.
+ *
+ *   F_parameter (with error bit) if a parameter is invalid.
  *
  * @see controller_rule_item_delete()
- *
- * @see f_memory_array_resize()
  */
-#ifndef _di_controller_rule_items_delete_
-  extern void controller_rule_items_delete(controller_rule_items_t * const items);
-#endif // _di_controller_rule_items_delete_
+#ifndef _di_controller_rule_items_delete_callback_
+  extern f_status_t controller_rule_items_delete_callback(const f_number_unsigned_t start, const f_number_unsigned_t stop, void * const array);
+#endif // _di_controller_rule_items_delete_callback_
 
 /**
  * Delete the Controller Rule "on" data.
@@ -450,18 +470,30 @@ extern "C" {
 #endif // _di_controller_rule_on_delete_
 
 /**
- * Delete the Controller Rule "ons" data.
+ * A callback intended to be passed to f_memory_arrays_resize() for an controller_rule_ons_t structure.
  *
- * @param ons
- *   The Rule "ons" data.
+ * This is only called when shrinking the array and generally should perform de-allocations.
+ *
+ * This does not do parameter checking.
+ *
+ * @param start
+ *   The inclusive start position in the array to start deleting.
+ * @param stop
+ *   The exclusive stop position in the array to stop deleting.
+ * @param array
+ *   The array structure to delete all values of.
+ *   Must not be NULL.
+ *
+ * @return
+ *   F_okay on success.
+ *
+ *   F_parameter (with error bit) if a parameter is invalid.
  *
  * @see controller_rule_on_delete()
- *
- * @see f_memory_delete()
  */
-#ifndef _di_controller_rule_ons_delete_
-  extern void controller_rule_ons_delete(controller_rule_ons_t * const ons);
-#endif // _di_controller_rule_ons_delete_
+#ifndef _di_controller_rule_ons_delete_callback_
+  extern f_status_t controller_rule_ons_delete_callback(const f_number_unsigned_t start, const f_number_unsigned_t stop, void * const array);
+#endif // _di_controller_rule_ons_delete_callback_
 
 /**
  * Delete the Controller Rules data.

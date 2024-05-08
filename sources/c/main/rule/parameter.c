@@ -19,24 +19,20 @@ extern "C" {
         status = f_memory_array_increase_by(content->used + 1, sizeof(f_string_dynamic_t), (void **) &action->parameters.array, &action->parameters.used, &action->parameters.size);
       }
       else {
-        status = f_memory_array_increase(controller_common_allocation_small_d, sizeof(f_string_dynamic_t), (void **) &action->parameters.array, &action->parameters.used, &action->parameters.size);
+        status = f_memory_array_increase(controller_allocation_small_d, sizeof(f_string_dynamic_t), (void **) &action->parameters.array, &action->parameters.used, &action->parameters.size);
+      }
+
+      if (F_status_is_error_not(status)) {
+        if (content) {
+          status = f_memory_array_increase_by(content->used + 1, sizeof(f_iki_data_t), (void **) &action->ikis.array, &action->ikis.used, &action->ikis.size);
+        }
+        else {
+          status = f_memory_array_increase(controller_allocation_small_d, sizeof(f_iki_data_t), (void **) &action->ikis.array, &action->ikis.used, &action->ikis.size);
+        }
       }
 
       if (F_status_is_error(status)) {
-        controller_print_error(global->thread, &global->main->program.error, F_status_set_fine(status), content ? "f_memory_array_increase_by" : "f_memory_array_increase", F_true);
-
-        return status;
-      }
-
-      if (content) {
-        status = f_memory_array_increase_by(content->used + 1, sizeof(f_iki_data_t), (void **) &action->ikis.array, &action->ikis.used, &action->ikis.size);
-      }
-      else {
-        status = f_memory_array_increase(controller_common_allocation_small_d, sizeof(f_iki_data_t), (void **) &action->ikis.array, &action->ikis.used, &action->ikis.size);
-      }
-
-      if (F_status_is_error(status)) {
-        controller_print_error(global->thread, &global->main->program.error, F_status_set_fine(status), content ? "f_memory_array_increase_by" : "f_memory_array_increase", F_true);
+        controller_main_print_error_status(&global->main->program.error, content ? macro_controller_f(f_memory_array_increase_by) : macro_controller_f(f_memory_array_increase), F_status_set_fine(status));
 
         return status;
       }
@@ -50,7 +46,7 @@ extern "C" {
       status = f_string_dynamic_partial_append_nulless(buffer, *object, &action->parameters.array[0]);
 
       if (F_status_is_error(status)) {
-        controller_print_error(global->thread, &global->main->program.error, F_status_set_fine(status), "f_string_dynamic_partial_append_nulless", F_true);
+        controller_main_print_error_status(&global->main->program.error, macro_controller_f(f_string_dynamic_partial_append_nulless), F_status_set_fine(status));
 
         return status;
       }
@@ -62,16 +58,12 @@ extern "C" {
     if (content && content->used) {
       status = f_memory_array_increase_by(content->used, sizeof(f_string_dynamic_t), (void **) &action->parameters.array, &action->parameters.used, &action->parameters.size);
 
-      if (F_status_is_error(status)) {
-        controller_print_error(global->thread, &global->main->program.error, F_status_set_fine(status), "f_memory_array_increase_by", F_true);
-
-        return status;
+      if (F_status_is_error_not(status)) {
+        status = f_memory_array_increase_by(content->used, sizeof(f_iki_data_t), (void **) &action->ikis.array, &action->ikis.used, &action->ikis.size);
       }
 
-      status = f_memory_array_increase_by(content->used, sizeof(f_iki_data_t), (void **) &action->ikis.array, &action->ikis.used, &action->ikis.size);
-
       if (F_status_is_error(status)) {
-        controller_print_error(global->thread, &global->main->program.error, F_status_set_fine(status), "f_memory_array_increase_by", F_true);
+        controller_main_print_error_status(&global->main->program.error, macro_controller_f(f_memory_array_increase_by), F_status_set_fine(status));
 
         return status;
       }
@@ -91,7 +83,7 @@ extern "C" {
         status = f_string_dynamic_partial_append_nulless(buffer, content->array[i], &action->parameters.array[action->parameters.used]);
 
         if (F_status_is_error(status)) {
-          controller_print_error(global->thread, &global->main->program.error, F_status_set_fine(status), "f_string_dynamic_partial_append_nulless", F_true);
+          controller_main_print_error_status(&global->main->program.error, macro_controller_f(f_string_dynamic_partial_append_nulless), F_status_set_fine(status));
 
           return status;
         }
@@ -103,7 +95,7 @@ extern "C" {
           fl_iki_read(&action->parameters.array[action->parameters.used], &range, &action->ikis.array[action->ikis.used], state);
 
           if (F_status_is_error(status)) {
-            controller_print_error(global->thread, &global->main->program.error, F_status_set_fine(status), "fl_iki_read", F_true);
+            controller_main_print_error_status(&global->main->program.error, macro_controller_f(fl_iki_read), F_status_set_fine(status));
 
             action->parameters.array[action->parameters.used].used = 0;
 

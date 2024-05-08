@@ -90,7 +90,7 @@ extern "C" {
 
     if (source.ons.used) {
       if (destination->ons.used < source.ons.used) {
-        status = controller_rule_ons_resize(source.ons.used, &destination->ons);
+        status = f_memory_array_resize(source.ons.used, sizeof(controller_rule_on_t), (void **) &destination->ons.array, &destination->ons.used, &destination->ons.size);
         if (F_status_is_error(status)) return status;
       }
 
@@ -149,7 +149,7 @@ extern "C" {
       controller_rule_action_t *action_destination = 0;
 
       if (source.items.used > destination->items.size) {
-        status = controller_rule_items_increase_by(source.items.used - destination->items.size, &destination->items);
+        status = f_memory_arrays_resize(source.items.used, sizeof(controller_rule_item_t), (void **) &destination->items.array, &destination->items.used, &destination->items.size, &controller_rule_items_delete_callback);
         if (F_status_is_error(status)) return status;
       }
 
@@ -161,7 +161,7 @@ extern "C" {
         item_destination = &destination->items.array[i];
 
         if (item_source->actions.used > item_destination->actions.size) {
-          status = controller_rule_actions_increase_by(item_source->actions.used - item_destination->actions.size, &item_destination->actions);
+          status = f_memory_arrays_resize(item_source->actions.used, sizeof(controller_rule_action_t), (void **) &item_destination->actions.array, &item_destination->actions.used, &item_destination->actions.size, &controller_rule_actions_delete_callback);
           if (F_status_is_error(status)) return status;
         }
 
@@ -237,14 +237,12 @@ extern "C" {
 
     if (!global || !global->main || !global->thread) return F_status_set_error(F_parameter);
 
-    f_status_t status = F_okay;
-
     alias->used = 0;
 
-    status = f_string_dynamic_partial_append_nulless(source, directory, alias);
+    f_status_t status = f_string_dynamic_partial_append_nulless(source, directory, alias);
 
     if (F_status_is_error(status)) {
-      controller_main_print_error(&main->program.error, macro_controller_f(f_string_dynamic_partial_append_nulless));
+      controller_main_print_error_status(&global->main->program.error, macro_controller_f(f_string_dynamic_partial_append_nulless), F_status_set_fine(status));
 
       return status;
     }
@@ -252,7 +250,7 @@ extern "C" {
     status = f_string_dynamic_append(f_path_separator_s, alias);
 
     if (F_status_is_error(status)) {
-      controller_main_print_error(&main->program.error, macro_controller_f(f_string_dynamic_append));
+      controller_main_print_error_status(&global->main->program.error, macro_controller_f(f_string_dynamic_append), F_status_set_fine(status));
 
       return status;
     }
@@ -260,7 +258,7 @@ extern "C" {
     status = f_string_dynamic_partial_append_nulless(source, basename, alias);
 
     if (F_status_is_error(status)) {
-      controller_main_print_error(&main->program.error, macro_controller_f(f_string_dynamic_partial_append_nulless));
+      controller_main_print_error_status(&global->main->program.error, macro_controller_f(f_string_dynamic_partial_append_nulless), F_status_set_fine(status));
 
       return status;
     }

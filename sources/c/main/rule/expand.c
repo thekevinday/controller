@@ -32,7 +32,7 @@ extern "C" {
         iki_data = &action.ikis.array[process->cache.expanded.used];
 
         // Allocate enough room plus an extra buffer to help reduce reallocations.
-        status = f_memory_array_increase_by(action.parameters.array[process->cache.expanded.used].used + controller_common_allocation_large_d, sizeof(f_char_t), (void **) &buffer->string, &buffer->used, &buffer->size);
+        status = f_memory_array_increase_by(action.parameters.array[process->cache.expanded.used].used + controller_allocation_large_d, sizeof(f_char_t), (void **) &buffer->string, &buffer->used, &buffer->size);
 
         // Apply the IKI delimits.
         for (i = 0; i < iki_data->delimits.used; ++i) {

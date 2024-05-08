@@ -15,8 +15,8 @@ extern "C" {
     f_range_t range = macro_f_range_t_initialize_2(cache->buffer_item.used);
     f_range_t range2 = f_range_t_initialize;
 
-    controller_state_interrupt_t custom = macro_controller_state_interrupt_t_initialize_1(is_normal, global->thread);
-    f_state_t state = macro_f_state_t_initialize_1(controller_common_allocation_large_d, controller_common_allocation_small_d, F_okay, 0, 0, 0, &controller_thread_signal_state_fss, 0, (void *) &custom, 0);
+    controller_interrupt_t custom = macro_controller_interrupt_t_initialize_1(is_normal, global->thread);
+    f_state_t state = macro_f_state_t_initialize_1(controller_allocation_large_d, controller_allocation_small_d, F_okay, 0, 0, 0, &controller_thread_signal_state_fss, 0, (void *) &custom, 0);
 
     fll_fss_extended_read(cache->buffer_item, &range, &cache->object_actions, &cache->content_actions, 0, 0, &cache->delimits, 0, &state);
 
@@ -223,7 +223,7 @@ extern "C" {
 
         for (j = 0; j < cache->content_actions.array[i].used; ++j, number = 0) {
 
-          status = f_memory_array_increase(controller_common_allocation_small_d, sizeof(int32_t), (void **) &rule->affinity.array, &rule->affinity.used, &rule->affinity.size);
+          status = f_memory_array_increase(controller_allocation_small_d, sizeof(int32_t), (void **) &rule->affinity.array, &rule->affinity.used, &rule->affinity.size);
 
           if (F_status_is_error(status)) {
             controller_rule_print_error(global->thread, &global->main->program.error, cache->action, F_status_set_fine(status), "f_memory_array_increase", F_true, F_false);
@@ -301,7 +301,7 @@ extern "C" {
           setting_maps = &rule->parameter;
         }
 
-        status = f_memory_array_increase(controller_common_allocation_small_d, sizeof(f_string_map_t), (void **) &setting_maps->array, &setting_maps->used, &setting_maps->size);
+        status = f_memory_array_increase(controller_allocation_small_d, sizeof(f_string_map_t), (void **) &setting_maps->array, &setting_maps->used, &setting_maps->size);
 
         if (F_status_is_error(status)) {
           controller_rule_print_error(global->thread, &global->main->program.error, cache->action, F_status_set_fine(status), "f_memory_array_increase", F_true, F_false);
@@ -427,7 +427,7 @@ extern "C" {
 
           for (j = 1; j < cache->content_actions.array[i].used; ++j) {
 
-            status = f_memory_array_increase(controller_common_allocation_small_d, sizeof(f_string_dynamic_t), (void **) &rule->cgroup.groups.array, &rule->cgroup.groups.used, &rule->cgroup.groups.size);
+            status = f_memory_array_increase(controller_allocation_small_d, sizeof(f_string_dynamic_t), (void **) &rule->cgroup.groups.array, &rule->cgroup.groups.used, &rule->cgroup.groups.size);
 
             if (F_status_is_error(status)) {
               controller_rule_print_error(global->thread, &global->main->program.error, cache->action, F_status_set_fine(status), "f_memory_array_increase", F_true, F_false);
@@ -595,7 +595,7 @@ extern "C" {
 
         if (F_status_is_error(status)) continue;
 
-        status = f_memory_array_increase(controller_common_allocation_small_d, sizeof(f_limit_set_t), (void **) &rule->limits.array, &rule->limits.used, &rule->limits.size);
+        status = f_memory_array_increase(controller_allocation_small_d, sizeof(f_limit_set_t), (void **) &rule->limits.array, &rule->limits.used, &rule->limits.size);
 
         if (F_status_is_error(status)) {
           controller_rule_print_error(global->thread, &global->main->program.error, cache->action, F_status_set_fine(status), "f_memory_array_increase", F_true, F_false);
@@ -1070,7 +1070,7 @@ extern "C" {
             status = f_rip_dynamic_partial_nulless(cache->buffer_item, cache->content_actions.array[i].array[1], &cache->action.generic);
 
             if (F_status_is_error(status)) {
-              controller_print_error(global->thread, &global->main->program.error, F_status_set_fine(status), "f_rip_dynamic_partial_nulless", F_true);
+              controller_main_print_error_status(&global->main->program.error, macro_controller_f(f_rip_dynamic_partial_nulless), F_status_set_fine(status));
 
               break;
             }
@@ -1324,7 +1324,7 @@ extern "C" {
 
         for (j = 0; j < cache->content_actions.array[i].used; ++j) {
 
-          status = f_memory_array_increase(controller_common_allocation_small_d, sizeof(f_int32s_t), (void **) &rule->groups.array, &rule->groups.used, &rule->groups.size);
+          status = f_memory_array_increase(controller_allocation_small_d, sizeof(f_int32s_t), (void **) &rule->groups.array, &rule->groups.used, &rule->groups.size);
 
           if (F_status_is_error(status)) {
             controller_rule_print_error(global->thread, &global->main->program.error, cache->action, F_status_set_fine(status), "f_memory_array_increase", F_true, F_false);
@@ -1402,7 +1402,7 @@ extern "C" {
 
         for (j = 0; j < cache->content_actions.array[i].used; ++j) {
 
-          status = f_memory_array_increase(controller_common_allocation_small_d, sizeof(f_string_dynamic_t), (void **) &setting_values->array, &setting_values->used, &setting_values->size);
+          status = f_memory_array_increase(controller_allocation_small_d, sizeof(f_string_dynamic_t), (void **) &setting_values->array, &setting_values->used, &setting_values->size);
 
           if (F_status_is_error(status)) {
             controller_rule_print_error(global->thread, &global->main->program.error, cache->action, F_status_set_fine(status), "f_memory_array_increase", F_true, F_false);
@@ -1639,7 +1639,7 @@ extern "C" {
           continue;
         }
 
-        status = f_memory_array_increase_by(controller_common_allocation_small_d, sizeof(f_string_dynamic_t), (void **) &setting_values->array, &setting_values->used, &setting_values->size);
+        status = f_memory_array_increase_by(controller_allocation_small_d, sizeof(f_string_dynamic_t), (void **) &setting_values->array, &setting_values->used, &setting_values->size);
 
         if (F_status_is_error(status)) {
           controller_rule_print_error(global->thread, &global->main->program.error, cache->action, F_status_set_fine(status), "f_memory_array_increase_by", F_true, F_false);

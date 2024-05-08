@@ -7,8 +7,8 @@ extern "C" {
 #ifndef _di_controller_rule_action_method_name_
   f_string_static_t controller_rule_action_method_name(const uint8_t type) {
 
-    if (type == controller_rule_action_method_extended_e) return controller_rule_action_method_string_extended_s;
-    if (type == controller_rule_action_method_extended_list_e) return controller_rule_action_method_string_extended_list_s;
+    if (type == controller_rule_action_method_extended_e) return controller_rule_action_method_extended_s;
+    if (type == controller_rule_action_method_extended_list_e) return controller_rule_action_method_extended_list_s;
 
     return f_string_empty_s;
   }
@@ -38,8 +38,8 @@ extern "C" {
 
     f_status_t status = F_okay;
 
-    controller_state_interrupt_t custom = macro_controller_state_interrupt_t_initialize_1(is_normal, global->thread);
-    f_state_t state = macro_f_state_t_initialize_1(controller_common_allocation_large_d, controller_common_allocation_small_d, F_okay, 0, 0, 0, &controller_thread_signal_state_fss, 0, (void *) &custom, 0);
+    controller_interrupt_t custom = macro_controller_interrupt_t_initialize_1(is_normal, global->thread);
+    f_state_t state = macro_f_state_t_initialize_1(controller_allocation_large_d, controller_allocation_small_d, F_okay, 0, 0, 0, &controller_thread_signal_state_fss, 0, (void *) &custom, 0);
 
     f_number_unsigned_t i = 0;
 
@@ -85,7 +85,7 @@ extern "C" {
         if (item->type == controller_rule_item_type_script_e || item->type == controller_rule_item_type_utility_e) {
           actions->array[actions->used].parameters.used = 0;
 
-          status = f_memory_array_increase(controller_common_allocation_small_d, sizeof(f_string_dynamic_t), (void **) &actions->array[actions->used].parameters.array, &actions->array[actions->used].parameters.used, &actions->array[actions->used].parameters.size);
+          status = f_memory_array_increase(controller_allocation_small_d, sizeof(f_string_dynamic_t), (void **) &actions->array[actions->used].parameters.array, &actions->array[actions->used].parameters.used, &actions->array[actions->used].parameters.size);
 
           if (F_status_is_error(status)) {
             controller_main_print_error(&global->main->program.error, macro_controller_f(f_memory_array_increase));
@@ -93,7 +93,7 @@ extern "C" {
             return status;
           }
 
-          status = f_memory_array_increase(controller_common_allocation_small_d, sizeof(f_iki_data_t), (void **) &actions->array[actions->used].ikis.array, &actions->array[actions->used].ikis.used, &actions->array[actions->used].ikis.size);
+          status = f_memory_array_increase(controller_allocation_small_d, sizeof(f_iki_data_t), (void **) &actions->array[actions->used].ikis.array, &actions->array[actions->used].ikis.used, &actions->array[actions->used].ikis.size);
 
           if (F_status_is_error(status)) {
             controller_main_print_error(&global->main->program.error, macro_controller_f(f_memory_array_increase));
@@ -160,7 +160,7 @@ extern "C" {
 
         for (i = 0; i < cache->object_actions.used; ++i) {
 
-          status = controller_rule_actions_increase_by(controller_common_allocation_small_d, actions);
+          status = controller_rule_actions_increase_by(controller_allocation_small_d, actions);
 
           if (F_status_is_error(status)) {
             controller_main_print_error(&global->main->program.error, macro_controller_f(controller_rule_actions_increase_by));
@@ -321,7 +321,7 @@ extern "C" {
           } // for
         }
         else if (item->type == controller_rule_item_type_script_e || item->type == controller_rule_item_type_utility_e) {
-          status = f_memory_array_increase(controller_common_allocation_small_d, sizeof(f_string_dynamic_t), (void **) &actions->array[actions->used].parameters.array, &actions->array[actions->used].parameters.used, &actions->array[actions->used].parameters.size);
+          status = f_memory_array_increase(controller_allocation_small_d, sizeof(f_string_dynamic_t), (void **) &actions->array[actions->used].parameters.array, &actions->array[actions->used].parameters.used, &actions->array[actions->used].parameters.size);
 
           if (F_status_is_error(status)) {
             controller_main_print_error(&global->main->program.error, macro_controller_f(f_memory_array_increase));
@@ -329,7 +329,7 @@ extern "C" {
             return status;
           }
 
-          status = f_memory_array_increase(controller_common_allocation_small_d, sizeof(f_iki_data_t), (void **) &actions->array[actions->used].ikis.array, &actions->array[actions->used].ikis.used, &actions->array[actions->used].ikis.size);
+          status = f_memory_array_increase(controller_allocation_small_d, sizeof(f_iki_data_t), (void **) &actions->array[actions->used].ikis.array, &actions->array[actions->used].ikis.used, &actions->array[actions->used].ikis.size);
 
           if (F_status_is_error(status)) {
             controller_main_print_error(&global->main->program.error, macro_controller_f(f_memory_array_increase));

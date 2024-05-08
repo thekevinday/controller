@@ -52,6 +52,7 @@
 
 // FLL-1 includes.
 #include <fll/level_1/conversion.h>
+#include <fll/level_1/execute.h>
 #include <fll/level_1/path.h>
 #include <fll/level_1/print.h>
 
@@ -80,6 +81,7 @@
 #include <program/controller/main/common/type/cache.h>
 #include <program/controller/main/common/type/control.h>
 #include <program/controller/main/common/type/entry.h>
+#include <program/controller/main/common/type/execute.h>
 #include <program/controller/main/common/type/lock.h>
 #include <program/controller/main/common/type/rule.h>
 #include <program/controller/main/common/type/program.h>

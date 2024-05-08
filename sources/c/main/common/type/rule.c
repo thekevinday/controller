@@ -29,8 +29,8 @@ extern "C" {
       f_capability_delete(&rule->capability);
     }
 
-    controller_rule_ons_delete(&rule->ons);
-    controller_rule_items_delete(&rule->items);
+    f_memory_arrays_resize(0, sizeof(controller_rule_on_t), (void **) &rule->ons.array, &rule->ons.used, &rule->ons.size, &controller_rule_ons_delete_callback);
+    f_memory_arrays_resize(0, sizeof(controller_rule_item_t), (void **) &rule->items.array, &rule->items.used, &rule->items.size, &controller_rule_items_delete_callback);
   }
 #endif // _di_controller_rule_delete_
 
@@ -45,20 +45,20 @@ extern "C" {
   }
 #endif // _di_controller_rule_action_delete_
 
-#ifndef _di_controller_rule_actions_delete_
-  void controller_rule_actions_delete(controller_rule_actions_t * const actions) {
+#ifndef _di_controller_rule_actions_delete_callback_
+  f_status_t controller_rule_actions_delete_callback(const f_number_unsigned_t start, const f_number_unsigned_t stop, void * const void_array) {
 
-    if (!actions) return;
+    {
+      controller_rule_action_t * const controller_rule_actions = (controller_rule_action_t *) void_array;
 
-    actions->used = actions->size;
+      for (f_number_unsigned_t i = start; i < stop; ++i) {
+        controller_rule_action_delete(&controller_rule_actions[i]);
+      } // for
+    }
 
-    while (actions->used) {
-      controller_rule_action_delete(&actions->array[--actions->used]);
-    } // while
-
-    f_memory_array_resize(0, sizeof(controller_rule_action_t), (void **) &actions->array, &actions->used, &actions->size);
+    return F_okay;
   }
-#endif // _di_controller_rule_actions_delete_
+#endif // _di_controller_rule_actions_delete_callback_
 
 #ifndef _di_controller_rule_item_delete_
   void controller_rule_item_delete(controller_rule_item_t * const item) {
@@ -66,25 +66,24 @@ extern "C" {
     if (!item) return;
 
     f_memory_array_resize(0, sizeof(f_char_t), (void **) &item->pid_file.string, &item->pid_file.used, &item->pid_file.size);
-
-    controller_rule_actions_delete(&item->actions);
+    f_memory_arrays_resize(0, sizeof(controller_rule_action_t), (void **) &item->actions.array, &item->actions.used, &item->actions.size, &controller_rule_actions_delete_callback);
   }
 #endif // _di_controller_rule_item_delete_
 
-#ifndef _di_controller_rule_items_delete_
-  void controller_rule_items_delete(controller_rule_items_t * const items) {
+#ifndef _di_controller_rule_items_delete_callback_
+  f_status_t controller_rule_items_delete_callback(const f_number_unsigned_t start, const f_number_unsigned_t stop, void * const void_array) {
 
-    if (!items) return;
+    {
+      controller_rule_item_t * const controller_rule_items = (controller_rule_item_t *) void_array;
 
-    items->used = items->size;
+      for (f_number_unsigned_t i = start; i < stop; ++i) {
+        controller_rule_item_delete(&controller_rule_items[i]);
+      } // for
+    }
 
-    while (items->used) {
-      controller_rule_item_delete(&items->array[--items->used]);
-    } // while
-
-    f_memory_array_resize(0, sizeof(controller_rule_item_t), (void **) &items->array, &items->used, &items->size);
+    return F_okay;
   }
-#endif // _di_controller_rule_items_delete_
+#endif // _di_controller_rule_items_delete_callback_
 
 #ifndef _di_controller_rule_on_delete_
   void controller_rule_on_delete(controller_rule_on_t * const on) {
@@ -97,20 +96,20 @@ extern "C" {
   }
 #endif // _di_controller_rule_on_delete_
 
-#ifndef _di_controller_rule_ons_delete_
-  void controller_rule_ons_delete(controller_rule_ons_t * const ons) {
+#ifndef _di_controller_rule_ons_delete_callback_
+  f_status_t controller_rule_ons_delete_callback(const f_number_unsigned_t start, const f_number_unsigned_t stop, void * const void_array) {
 
-    if (!ons) return;
+    {
+      controller_rule_on_t * const controller_rule_ons = (controller_rule_on_t *) void_array;
 
-    ons->used = ons->size;
+      for (f_number_unsigned_t i = start; i < stop; ++i) {
+        controller_rule_on_delete(&controller_rule_ons[i]);
+      } // for
+    }
 
-    while (ons->used) {
-      controller_rule_on_delete(&ons->array[--ons->used]);
-    } // while
-
-    f_memory_array_resize(0, sizeof(controller_rule_on_t), (void **) &ons->array, &ons->used, &ons->size);
+    return F_okay;
   }
-#endif // _di_controller_rule_ons_delete_
+#endif // _di_controller_rule_ons_delete_callback_
 
 #ifndef _di_controller_rules_delete_
   void controller_rules_delete(controller_rules_t * const rules) {
