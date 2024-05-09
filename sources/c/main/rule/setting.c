@@ -40,7 +40,7 @@ extern "C" {
     const f_number_unsigned_t line_item = cache->action.line_item;
     const f_number_unsigned_t length_name_item = cache->action.name_item.used;
 
-    f_char_t name_item[length_name_item];
+    f_char_t name_item[length_name_item + 1];
     name_item[length_name_item] = 0;
 
     memcpy(name_item, cache->action.name_item.string, sizeof(f_char_t) * length_name_item);
