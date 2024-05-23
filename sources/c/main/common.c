@@ -15,25 +15,7 @@ extern "C" {
 
     main->setting.state.step_small = controller_allocation_small_d;
 
-    if (main->program.parameters.array[f_console_standard_parameter_line_first_no_e].result & f_console_result_found_e) {
-      main->setting.flag &= ~controller_main_flag_print_first_e;
-    }
-    else {
-      main->setting.flag |= controller_main_flag_print_first_e;
-    }
-
-    if (main->program.parameters.array[f_console_standard_parameter_line_last_no_e].result & f_console_result_found_e) {
-      main->setting.flag &= ~controller_main_flag_print_last_e;
-    }
-    else {
-      main->setting.flag |= controller_main_flag_print_last_e;
-    }
-
     if (F_status_is_error(main->setting.state.status)) {
-      if ((main->setting.flag & controller_main_flag_print_first_e) && main->program.message.verbosity > f_console_verbosity_error_e) {
-        fll_print_dynamic_raw(f_string_eol_s, main->program.message.to);
-      }
-
       controller_main_print_error(&main->program.error, macro_controller_f(f_console_parameter_process));
 
       return;
@@ -42,10 +24,6 @@ extern "C" {
     main->setting.state.status = fll_program_parameter_process_context_standard(F_true, &main->program);
 
     if (F_status_is_error(main->setting.state.status)) {
-      if ((main->setting.flag & controller_main_flag_print_first_e) && main->program.message.verbosity > f_console_verbosity_error_e) {
-        fll_print_dynamic_raw(f_string_eol_s, main->program.message.to);
-      }
-
       controller_main_print_error(&main->program.error, macro_controller_f(fll_program_parameter_process_context_standard));
 
       return;
@@ -54,10 +32,6 @@ extern "C" {
     main->setting.state.status = fll_program_parameter_process_verbosity_standard(F_true, &main->program);
 
     if (F_status_is_error(main->setting.state.status)) {
-      if ((main->setting.flag & controller_main_flag_print_first_e) && main->program.message.verbosity > f_console_verbosity_error_e) {
-        fll_print_dynamic_raw(f_string_eol_s, main->program.message.to);
-      }
-
       controller_main_print_error(&main->program.error, macro_controller_f(fll_program_parameter_process_verbosity_standard));
 
       return;
@@ -117,10 +91,6 @@ extern "C" {
         if (main->program.parameters.array[controller_parameter_settings_e].result & codes[index]) {
           main->setting.state.status = F_status_set_error(F_parameter);
 
-          if ((main->setting.flag & controller_main_flag_print_first_e) && main->program.message.verbosity > f_console_verbosity_error_e) {
-            fll_print_dynamic_raw(f_string_eol_s, main->program.message.to);
-          }
-
           fll_program_print_error_parameter_missing_value(&main->program.error, f_console_symbol_long_normal_s, strings[index]);
 
           return;
@@ -132,10 +102,6 @@ extern "C" {
     main->setting.state.status = f_string_dynamic_append(main->program.parameters.remaining.used ? args[main->program.parameters.remaining.array[0]] : controller_default_s, &program->name_entry);
 
     if (F_status_is_error(main->setting.state.status)) {
-      if ((main->setting.flag & controller_main_flag_print_first_e) && main->program.message.verbosity > f_console_verbosity_error_e) {
-        fll_print_dynamic_raw(f_string_eol_s, main->program.message.to);
-      }
-
       controller_main_print_error(&main->program.error, macro_controller_f(fll_program_parameter_process_verbosity_standard));
 
       return;
@@ -144,10 +110,6 @@ extern "C" {
     main->setting.state.status = f_path_current(F_false, &program->path_current);
 
     if (F_status_is_error(main->setting.state.status)) {
-      if ((main->setting.flag & controller_main_flag_print_first_e) && main->program.message.verbosity > f_console_verbosity_error_e) {
-        fll_print_dynamic_raw(f_string_eol_s, main->program.message.to);
-      }
-
       controller_main_print_error(&main->program.error, macro_controller_f(f_path_current));
 
       return;
@@ -165,10 +127,6 @@ extern "C" {
     }
 
     if (F_status_is_error(main->setting.state.status)) {
-      if ((main->setting.flag & controller_main_flag_print_first_e) && main->program.message.verbosity > f_console_verbosity_error_e) {
-        fll_print_dynamic_raw(f_string_eol_s, main->program.message.to);
-      }
-
       if (main->program.parameters.array[controller_parameter_settings_e].locations.used) {
         controller_main_print_error_file(&main->program.error, macro_controller_f(controller_path_canonical_relative), args[index], f_file_operation_verify_s, fll_error_file_type_path_e);
       }
@@ -199,10 +157,6 @@ extern "C" {
       }
 
       if (F_status_is_error(main->setting.state.status)) {
-        if ((main->setting.flag & controller_main_flag_print_first_e) && main->program.message.verbosity > f_console_verbosity_error_e) {
-          fll_print_dynamic_raw(f_string_eol_s, main->program.message.to);
-        }
-
         controller_main_print_error(&main->program.error, macro_controller_f(f_string_dynamic_append));
 
         return;
@@ -216,10 +170,6 @@ extern "C" {
         controller_path_canonical_relative(main, program->path_current, args[index], &program->path_cgroup);
 
         if (F_status_is_error(main->setting.state.status)) {
-          if ((main->setting.flag & controller_main_flag_print_first_e) && main->program.message.verbosity > f_console_verbosity_error_e) {
-            fll_print_dynamic_raw(f_string_eol_s, main->program.message.to);
-          }
-
           controller_main_print_error_file(&main->program.error, macro_controller_f(controller_path_canonical_relative), args[index], f_file_operation_verify_s, fll_error_file_type_path_e);
 
           return;
@@ -228,10 +178,6 @@ extern "C" {
         main->setting.state.status = f_string_append_assure(F_path_separator_s, 1, &program->path_cgroup);
 
         if (F_status_is_error(main->setting.state.status)) {
-          if ((main->setting.flag & controller_main_flag_print_first_e) && main->program.message.verbosity > f_console_verbosity_error_e) {
-            fll_print_dynamic_raw(f_string_eol_s, main->program.message.to);
-          }
-
           controller_main_print_error(&main->program.error, macro_controller_f(f_string_append_assure));
 
           return;

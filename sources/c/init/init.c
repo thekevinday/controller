@@ -7,19 +7,7 @@ extern "C" {
 #ifndef _di_controller_init_main_
   void controller_init_main(controller_main_t * const main, controller_program_t * const program) {
 
-    if (!main || !program) return;
-
-    if (F_status_is_error(main->setting.state.status)) {
-      if ((main->setting.flag & controller_main_flag_print_last_e) && main->program.message.verbosity > f_console_verbosity_error_e) {
-        fll_print_dynamic_raw(f_string_eol_s, main->program.message.to);
-      }
-
-      return;
-    }
-
-    if ((main->setting.flag & controller_main_flag_print_first_e) && main->program.message.verbosity > f_console_verbosity_error_e) {
-      fll_print_dynamic_raw(f_string_eol_s, main->program.message.to);
-    }
+    if (!main || !program || F_status_is_error(main->setting.state.status)) return;
 
     main->setting.state.status = F_okay;
 
@@ -34,10 +22,6 @@ extern "C" {
         fll_program_print_copyright(&main->program.message, fll_program_copyright_year_author_s);
       }
 
-      if ((main->setting.flag & controller_main_flag_print_last_e) && main->program.message.verbosity > f_console_verbosity_error_e) {
-        fll_print_dynamic_raw(f_string_eol_s, main->program.message.to);
-      }
-
       return;
     }
 
@@ -46,10 +30,6 @@ extern "C" {
 
     if (main->setting.state.status == F_status_set_error(F_interrupt)) {
       fll_program_print_signal_received(&main->program.warning, main->program.signal_received);
-    }
-
-    if ((main->setting.flag & controller_main_flag_print_last_e) && main->program.message.verbosity > f_console_verbosity_error_e) {
-      fll_print_dynamic_raw(f_string_eol_s, main->program.message.to);
     }
   }
 #endif // _di_controller_init_main_

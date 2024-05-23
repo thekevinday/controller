@@ -29,8 +29,6 @@ extern "C" {
  *   - help:                   Print help.
  *   - interruptible:          The process is interruptible.
  *   - pipe:                   Use the input pipe.
- *   - print_first:            When set, print new line to message output on program begin after loading settings.
- *   - print_last:             When set, print new line to message output on program end.
  *   - version:                Print version.
  *   - version_copyright_help: A helper flag representing version, copyright, and help flag bits being set.
  *   - warning:                Check if status is "warning".
@@ -44,11 +42,9 @@ extern "C" {
     controller_main_flag_help_e                   = 0x8,
     controller_main_flag_interruptible_e          = 0x10,
     controller_main_flag_pipe_e                   = 0x20,
-    controller_main_flag_print_first_e            = 0x40,
-    controller_main_flag_print_last_e             = 0x80,
-    controller_main_flag_version_e                = 0x100,
-    controller_main_flag_version_copyright_help_e = 0x181,
-    controller_main_flag_warning_e                = 0x200,
+    controller_main_flag_version_e                = 0x40,
+    controller_main_flag_version_copyright_help_e = 0x49,
+    controller_main_flag_warning_e                = 0x80,
   }; // enum
 #endif // _di_controller_main_flag_e_
 
