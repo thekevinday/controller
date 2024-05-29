@@ -39,7 +39,7 @@ extern "C" {
     f_status_t status = F_okay;
 
     controller_interrupt_t custom = macro_controller_interrupt_t_initialize_1(is_normal, global->thread);
-    f_state_t state = macro_f_state_t_initialize_1(controller_allocation_large_d, controller_allocation_small_d, F_okay, 0, 0, 0, &controller_thread_signal_state_fss, 0, (void *) &custom, 0);
+    f_state_t state = macro_f_state_t_initialize_1(controller_allocation_large_d, controller_allocation_small_d, F_okay, 0, 0, 0, &controller_main_thread_signal_state_fss, 0, (void *) &custom, 0);
 
     f_number_unsigned_t i = 0;
 
@@ -118,7 +118,7 @@ extern "C" {
           if (actions->array[actions->used].parameters.array[0].used) {
             state.step_large = controller_common_allocation_iki_large_d;
             state.step_small = controller_common_allocation_iki_small_d;
-            state.interrupt = &controller_thread_signal_state_iki;
+            state.interrupt = &controller_main_thread_signal_state_iki;
 
             f_range_t range_iki = macro_f_range_t_initialize_2(actions->array[actions->used].parameters.array[0].used);
 
@@ -359,7 +359,7 @@ extern "C" {
           if (actions->array[actions->used].parameters.array[0].used) {
             state.step_large = controller_common_allocation_iki_large_d;
             state.step_small = controller_common_allocation_iki_small_d;
-            state.interrupt = &controller_thread_signal_state_iki;
+            state.interrupt = &controller_main_thread_signal_state_iki;
 
             f_range_t range_iki = macro_f_range_t_initialize_2(actions->array[actions->used].parameters.array[0].used);
 

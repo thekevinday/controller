@@ -43,7 +43,7 @@ extern "C" {
 
     for (i = 0; i < instance_total; ++i) {
 
-      if (!controller_thread_is_enabled(is_normal, global->thread)) break;
+      if (!controller_main_thread_is_enabled(is_normal, global->thread)) break;
 
       // Re-establish global instance read lock to wait for or protect from the cleanup thread while checking the read instance.
       status_lock = controller_lock_read(is_normal, global->thread, &global->thread->lock.instance);
@@ -199,7 +199,7 @@ extern "C" {
       return status_lock;
     }
 
-    if (!controller_thread_is_enabled(is_normal, global->thread)) return F_status_set_error(F_interrupt);
+    if (!controller_main_thread_is_enabled(is_normal, global->thread)) return F_status_set_error(F_interrupt);
     if (F_status_set_fine(status) == F_require) return status;
     if (required_not_run) return F_require;
 

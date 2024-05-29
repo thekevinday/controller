@@ -32,16 +32,13 @@
  *
  * @param state
  *   The state data.
+ *
+ *   Must not be NULL.
  * @param internal
  *   Not used.
- *
- * @return
- *   F_interrupt_not if not interrupted.
- *
- *   F_interrupt (with error bit) if interrupted.
  */
 #ifndef _di_controller_main_thread_signal_state_fss_
-  extern f_status_t controller_main_thread_signal_state_fss(f_state_t * const state, void * const internal);
+  extern void controller_main_thread_signal_state_fss(f_state_t * const state, void * const internal);
 #endif // _di_controller_main_thread_signal_state_fss_
 
 /**
@@ -49,16 +46,13 @@
  *
  * @param state
  *   The state data.
+ *
+ *   Must not be NULL.
  * @param internal
  *   Not used.
- *
- * @return
- *   F_interrupt_not if not interrupted.
- *
- *   F_interrupt (with error bit) if interrupted.
  */
 #ifndef _di_controller_main_thread_signal_state_iki_
-  extern f_status_t controller_main_thread_signal_state_iki(f_state_t * const state, void * const internal);
+  extern void controller_main_thread_signal_state_iki(f_state_t * const state, void * const internal);
 #endif // _di_controller_main_thread_signal_state_iki_
 
 /**
@@ -67,6 +61,8 @@
  * @param global
  *   The global structure.
  *   Must be of type controller_global_t.
+ *
+ *   Must not be NULL.
  *
  * @return
  *   0, always.
@@ -83,6 +79,8 @@
  * @param global
  *   The global structure.
  *   Must be of type controller_global_t.
+ *
+ *   Must not be NULL.
  *
  * @return
  *   0, always.

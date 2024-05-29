@@ -53,11 +53,19 @@
 // FLL-1 includes.
 #include <fll/level_1/conversion.h>
 #include <fll/level_1/execute.h>
+#include <fll/level_1/fss.h>
+#include <fll/level_1/fss/extended.h>
+#include <fll/level_1/fss/extended_list.h>
 #include <fll/level_1/path.h>
 #include <fll/level_1/print.h>
 
 // FLL-2 includes.
 #include <fll/level_2/error.h>
+#include <fll/level_2/fss.h>
+#include <fll/level_2/fss/basic_list.h>
+#include <fll/level_2/fss/extended.h>
+#include <fll/level_2/fss/extended_list.h>
+#include <fll/level_2/fss/payload.h>
 #include <fll/level_2/print.h>
 #include <fll/level_2/program.h>
 
@@ -100,8 +108,11 @@
 #include <program/controller/main/print/warning.h>
 #include <program/controller/main/signal.h>
 #include <program/controller/main/time.h>
+#include <program/controller/main/thread/control.h>
+#include <program/controller/main/thread/entry.h>
 #include <program/controller/main/thread/is.h>
 #include <program/controller/main/thread/instance.h>
+#include <program/controller/main/thread/rule.h>
 #include <program/controller/main/thread.h>
 #include <program/controller/main/instance.h>
 #include <program/controller/main/rule.h>

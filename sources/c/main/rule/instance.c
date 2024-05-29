@@ -736,10 +736,10 @@ extern "C" {
     if (F_status_is_error_not(status)) {
       if (instance->action && (options_force & controller_instance_option_asynchronous_d)) {
         if (instance->type == controller_instance_type_exit_e) {
-          status = f_thread_create(0, &instance->id_thread, controller_thread_instance_other, (void *) instance);
+          status = f_thread_create(0, &instance->id_thread, controller_main_thread_instance_other, (void *) instance);
         }
         else {
-          status = f_thread_create(0, &instance->id_thread, controller_thread_instance_normal, (void *) instance);
+          status = f_thread_create(0, &instance->id_thread, controller_main_thread_instance_normal, (void *) instance);
         }
 
         if (F_status_is_error(status)) {

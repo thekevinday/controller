@@ -16,7 +16,7 @@ extern "C" {
     f_range_t range2 = f_range_t_initialize;
 
     controller_interrupt_t custom = macro_controller_interrupt_t_initialize_1(is_normal, global->thread);
-    f_state_t state = macro_f_state_t_initialize_1(controller_allocation_large_d, controller_allocation_small_d, F_okay, 0, 0, 0, &controller_thread_signal_state_fss, 0, (void *) &custom, 0);
+    f_state_t state = macro_f_state_t_initialize_1(controller_allocation_large_d, controller_allocation_small_d, F_okay, 0, 0, 0, &controller_main_thread_signal_state_fss, 0, (void *) &custom, 0);
 
     fll_fss_extended_read(cache->buffer_item, &range, &cache->object_actions, &cache->content_actions, 0, 0, &cache->delimits, 0, &state);
 
@@ -441,6 +441,7 @@ extern "C" {
 
             if (F_status_is_error(status)) {
               controller_rule_print_error(global->thread, &global->main->program.error, cache->action, F_status_set_fine(status), "f_string_dynamic_partial_append_nulless", F_true, F_false);
+
               break;
             }
 
@@ -1675,6 +1676,7 @@ extern "C" {
 
         if (F_status_set_fine(status) == F_memory_not) {
           status_return = status;
+
           break;
         }
 

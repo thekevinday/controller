@@ -22,13 +22,13 @@ extern "C" {
 #ifndef _di_controller_thread_d_
   #define controller_thread_cleanup_interval_long_d     3600      // 1 hour in seconds.
   #define controller_thread_cleanup_interval_short_d    180       // 3 minutes in seconds.
-  #define controller_thread_exit_timeout_d              500       // 0.5 seconds in milliseconds.
-  #define controller_thread_exit_process_cancel_wait_d  600000000 // 0.6 seconds in nanoseconds.
-  #define controller_thread_exit_process_cancel_total_d 150       // 90 seconds in multiples of wait.
+  #define controller_main_thread_exit_timeout_d              500       // 0.5 seconds in milliseconds.
+  #define controller_main_thread_exit_process_cancel_wait_d  600000000 // 0.6 seconds in nanoseconds.
+  #define controller_main_thread_exit_process_cancel_total_d 150       // 90 seconds in multiples of wait.
   #define controller_thread_simulation_timeout_d        200       // 0.2 seconds in milliseconds.
 
-  #define controller_thread_signal_wait_timeout_seconds_d     70
-  #define controller_thread_signal_wait_timeout_nanoseconds_d 0
+  #define controller_main_thread_signal_wait_timeout_seconds_d     70
+  #define controller_main_thread_signal_wait_timeout_nanoseconds_d 0
 
   #define controller_thread_lock_read_timeout_seconds_d      3
   #define controller_thread_lock_read_timeout_nanoseconds_d  0
@@ -48,11 +48,11 @@ extern "C" {
   #define controller_thread_wait_timeout_4_seconds_d     20
   #define controller_thread_wait_timeout_4_nanoseconds_d 0
 
-  #define controller_thread_exit_helper_timeout_seconds_d     0
-  #define controller_thread_exit_helper_timeout_nanoseconds_d 100000000 // 0.1 seconds in nanoseconds.
+  #define controller_main_thread_exit_helper_timeout_seconds_d     0
+  #define controller_main_thread_exit_helper_timeout_nanoseconds_d 100000000 // 0.1 seconds in nanoseconds.
 
-  #define controller_thread_exit_ready_timeout_seconds_d     0
-  #define controller_thread_exit_ready_timeout_nanoseconds_d 500000000 // 0.5 seconds in nanoseconds.
+  #define controller_main_thread_exit_ready_timeout_seconds_d     0
+  #define controller_main_thread_exit_ready_timeout_nanoseconds_d 500000000 // 0.5 seconds in nanoseconds.
 #endif // _di_controller_thread_d_
 
 #ifdef __cplusplus

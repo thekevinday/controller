@@ -11,7 +11,7 @@ extern "C" {
 
     f_status_t status = F_okay;
     controller_interrupt_t custom = macro_controller_interrupt_t_initialize_1(is_normal, global->thread);
-    f_state_t state = macro_f_state_t_initialize_1(controller_allocation_large_d, controller_allocation_small_d, F_okay, 0, 0, 0, &controller_thread_signal_state_fss, 0, (void *) &custom, 0);
+    f_state_t state = macro_f_state_t_initialize_1(controller_allocation_large_d, controller_allocation_small_d, F_okay, 0, 0, 0, &controller_main_thread_signal_state_fss, 0, (void *) &custom, 0);
     f_range_t range = macro_f_range_t_initialize_2(cache->buffer_item.used);
     f_number_unsigned_t last = 0;
 
@@ -151,6 +151,7 @@ extern "C" {
           }
 
           status = F_status_set_error(F_support_not);
+
           break;
         }
 
