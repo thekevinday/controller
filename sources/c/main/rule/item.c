@@ -161,10 +161,10 @@ extern "C" {
         method = controller_rule_action_method_extended_e;
       }
 
-      status = controller_rule_actions_increase_by(controller_allocation_small_d, &item->actions);
+      status = f_memory_array_increase_by(controller_allocation_small_d, sizeof(controller_rule_action_t), (void **) &item->actions.array, &item->actions.used, &item->actions.size);
 
       if (F_status_is_error(status)) {
-        controller_main_print_error_status(&global->main->program.error, macro_controller_f(controller_rule_actions_increase_by), F_status_set_fine(status));
+        controller_main_print_error_status(&global->main->program.error, macro_controller_f(f_memory_array_increase_by), F_status_set_fine(status));
 
         break;
       }

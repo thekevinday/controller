@@ -30,9 +30,10 @@ extern "C" {
   const f_string_static_t controller_long_validate_s = macro_f_string_static_t_initialize_1(CONTROLLER_long_validate_s, 0, CONTROLLER_long_validate_s_length);
 #endif // _di_controller_parameter_s_
 
-/**
- * Special strings used for rules.
- */
+#ifndef _di_controller_print_rule_s_
+  const f_string_static_t controller_print_rule_control_groups_prepare_s = macro_f_string_static_t_initialize_1(CONTROLLER_print_rule_control_groups_prepare_s, 0, CONTROLLER_print_rule_control_groups_prepare_s_length);
+#endif // _di_controller_print_rule_s_
+
 #ifndef _di_controller_rule_s_
   const f_string_static_t controller_rule_needed_s = macro_f_string_static_t_initialize_1(CONTROLLER_rule_needed_s, 0, CONTROLLER_rule_needed_s_length);
   const f_string_static_t controller_rule_wanted_s = macro_f_string_static_t_initialize_1(CONTROLLER_rule_wanted_s, 0, CONTROLLER_rule_wanted_s_length);

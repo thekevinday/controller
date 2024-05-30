@@ -211,6 +211,16 @@ extern "C" {
 #endif // _di_controller_default_s_
 
 /**
+ * Special strings used for printing.
+ */
+#ifndef _di_controller_print_rule_s_
+  #define CONTROLLER_print_rule_control_groups_prepare_s "prepare control groups for"
+  #define CONTROLLER_print_rule_control_groups_prepare_s_length 24
+
+  extern const f_string_static_t controller_print_rule_control_groups_prepare_s;
+#endif // _di_controller_print_rule_s_
+
+/**
  * Special strings used for rules.
  */
 #ifndef _di_controller_rule_s_

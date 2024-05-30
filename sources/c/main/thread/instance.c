@@ -10,7 +10,7 @@ extern "C" {
     if (!instance) return;
     if (!controller_main_thread_is_enabled(is_normal, (controller_thread_t * const) instance->thread)) return;
 
-    const f_status_t status = controller_rule_process_do(controller_process_option_asynchronous_d, instance);
+    const f_status_t status = controller_rule_process_do(controller_instance_option_asynchronous_e, instance);
 
     // A forked child instance should deallocate memory on exit.
     // It seems that this function doesn't return to the calling thread for a forked child instance, even with the "return 0;" below.
@@ -39,7 +39,7 @@ extern "C" {
       return;
     }
 
-    controller_entry_t * const entry = is_normal ? &global->setting->entry : &global->setting->exit;
+    controller_entry_t * const entry = is_normal ? &global->program->entry : &global->program->exit;
     controller_instance_t *instance = 0;
 
     f_time_spec_t time = f_time_spec_t_initialize;
@@ -55,7 +55,7 @@ extern "C" {
     time.tv_sec = 0;
     time.tv_nsec = interval_nanoseconds;
 
-    if (global->setting->mode == controller_setting_mode_helper_e && global->main->program.parameters.array[controller_parameter_validate_e].result == f_console_result_none_e) {
+    if (global->program->mode == controller_setting_mode_helper_e && global->main->program.parameters.array[controller_parameter_validate_e].result == f_console_result_none_e) {
       int value = 0;
       f_number_unsigned_t lapsed = 0;
 
@@ -118,7 +118,7 @@ extern "C" {
       global->thread->id_signal = 0;
     }
 
-    if (global->setting->mode == controller_setting_mode_helper_e && global->main->program.parameters.array[controller_parameter_validate_e].result == f_console_result_none_e) {
+    if (global->program->mode == controller_setting_mode_helper_e && global->main->program.parameters.array[controller_parameter_validate_e].result == f_console_result_none_e) {
       f_thread_mutex_unlock(&global->thread->lock.cancel);
 
       return;
@@ -131,7 +131,7 @@ extern "C" {
       instance = global->thread->instances.array[i];
 
       // Do not cancel exit instances, when not performing "execute" during exit.
-      if (instance->type == controller_data_type_exit_e && global->thread->enabled != controller_thread_enabled_exit_execute_e) {
+      if (instance->type == controller_instance_type_exit_e && global->thread->enabled != controller_thread_enabled_exit_execute_e) {
         continue;
       }
 
@@ -164,7 +164,7 @@ extern "C" {
         instance = global->thread->instances.array[i];
 
         // Do not wait for instances, when not performing "execute" during exit.
-        if (instance->type == controller_data_type_exit_e && global->thread->enabled != controller_thread_enabled_exit_execute_e) {
+        if (instance->type == controller_instance_type_exit_e && global->thread->enabled != controller_thread_enabled_exit_execute_e) {
           continue;
         }
 
@@ -225,7 +225,7 @@ extern "C" {
       instance = global->thread->instances.array[i];
 
       // Do not kill exit instances, when not performing "execute" during exit.
-      if (instance->type == controller_data_type_exit_e && global->thread->enabled != controller_thread_enabled_exit_execute_e) continue;
+      if (instance->type == controller_instance_type_exit_e && global->thread->enabled != controller_thread_enabled_exit_execute_e) continue;
 
       if (instance->id_thread) {
         if (instance->childs.used) {
@@ -253,7 +253,7 @@ extern "C" {
         for (j = 0; j < instance->childs.size; ++j) {
 
           // Do not kill exit processes, when not performing "execute" during exit.
-          if (instance->type == controller_data_type_exit_e && global->thread->enabled != controller_thread_enabled_exit_execute_e) continue;
+          if (instance->type == controller_instance_type_exit_e && global->thread->enabled != controller_thread_enabled_exit_execute_e) continue;
 
           if (instance->childs.array[j]) {
 
@@ -271,7 +271,7 @@ extern "C" {
         for (j = 0; j < instance->path_pids.used; ++j) {
 
           // Do not kill exit processes, when not performing "execute" during exit.
-          if (instance->type == controller_data_type_exit_e && global->thread->enabled != controller_thread_enabled_exit_execute_e) continue;
+          if (instance->type == controller_instance_type_exit_e && global->thread->enabled != controller_thread_enabled_exit_execute_e) continue;
 
           if (f_file_exists(instance->path_pids.array[j], F_true) == F_true) {
             status = controller_file_pid_read(instance->path_pids.array[j], &pid);
@@ -290,7 +290,7 @@ extern "C" {
       while (instance->childs.used) {
 
         // Do not shrink below an exit instances, when not performing "execute" during exit.
-        if (instance->type == controller_data_type_exit_e && global->thread->enabled != controller_thread_enabled_exit_execute_e) break;
+        if (instance->type == controller_instance_type_exit_e && global->thread->enabled != controller_thread_enabled_exit_execute_e) break;
         if (instance->childs.array[j] > 0) break;
 
         --instance->childs.used;
@@ -300,7 +300,7 @@ extern "C" {
       while (instance->path_pids.used) {
 
         // Do not shrink below an exit instances, when not performing "execute" during exit.
-        if (instance->type == controller_data_type_exit_e && global->thread->enabled != controller_thread_enabled_exit_execute_e) break;
+        if (instance->type == controller_instance_type_exit_e && global->thread->enabled != controller_thread_enabled_exit_execute_e) break;
         if (instance->path_pids.array[j].used) break;
 
         --instance->path_pids.used;
@@ -318,7 +318,7 @@ extern "C" {
 
     if (global->thread->enabled != controller_thread_enabled_exit_e) return;
 
-    if (global->setting->ready == controller_setting_ready_done_e) {
+    if (global->program->ready == controller_setting_ready_done_e) {
 
       // The exit processing runs using the entry thread.
       if (global->thread->id_entry) {

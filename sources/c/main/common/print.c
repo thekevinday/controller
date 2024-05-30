@@ -6,7 +6,6 @@ extern "C" {
 
 #ifndef _di_controller_f_a_
   const f_string_t controller_f_a[] = {
-    "controller_rule_actions_increase_by",
     "controller_rule_copy",
     "controller_rule_items_increase_by",
     "controller_path_canonical_relative",
@@ -33,6 +32,7 @@ extern "C" {
     "fl_fss_extended_list_content_read",
     "fl_fss_extended_list_object_read",
     "fl_iki_read",
+    "fll_control_group_prepare",
     "fll_execute_program",
     "fll_fss_basic_list_read",
     "fll_fss_extended_read",

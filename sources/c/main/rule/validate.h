@@ -35,8 +35,8 @@ extern "C" {
  * @param options
  *   A number using bits to represent specific boolean options.
  *   If no bits set, then operate normally in a synchronous manner.
- *   If bit controller_process_option_simulate_d, then the rule execution is in simulation mode (printing a message that the rule would be executed but does not execute the rule).
- *   If bit controller_process_option_asynchronous_d, then run asynchronously.
+ *   If bit controller_instance_option_simulate_e, then the rule execution is in simulation mode (printing a message that the rule would be executed but does not execute the rule).
+ *   If bit controller_instance_option_asynchronous_e, then run asynchronously.
  * @param cache
  *   A structure for containing and caching relevant data.
  */

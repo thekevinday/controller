@@ -31,7 +31,7 @@ extern "C" {
           fl_print_format(f_string_format_r_single_s.string, main->program.error.to, main->program.error.notable, controller_rule_action_type_name(action), main->program.error.notable);
           fl_print_format("%[' while attempting to validate rule execution.%]%r", main->program.error.to, main->program.error.context, main->program.error.context, f_string_eol_s);
 
-          controller_rule_print_rule_message_cache(&global->main->program.error, cache->action, F_true);
+          controller_rule_print_rule_message_cache(&global->main->program.error, &cache->action, F_true);
 
           controller_unlock_print_flush(main->program.error.to, global->thread);
         }
@@ -65,8 +65,8 @@ extern "C" {
           fl_print_format("%rRule '", main->program.output.to, f_string_eol_s);
           fl_print_format("%[%Q%]' has no '", main->program.output.to, main->program.context.set.title, rule.name, main->program.context.set.title);
           fl_print_format("%[%r%]' action to execute and would '", main->program.output.to, main->program.context.set.title, controller_rule_action_type_name(action), main->program.context.set.title);
-          fl_print_format("%[%r%]' because it is '", main->program.output.to, main->program.context.set.important, options & controller_process_option_require_d ? controller_fail_s : controller_succeed_s, main->program.context.set.important);
-          fl_print_format("%[%r%]'.%r", main->program.output.to, main->program.context.set.important, options & controller_process_option_require_d ? controller_required_s : controller_optional_s, main->program.context.set.important, f_string_eol_s);
+          fl_print_format("%[%r%]' because it is '", main->program.output.to, main->program.context.set.important, options & controller_instance_option_require_e ? controller_fail_s : controller_succeed_s, main->program.context.set.important);
+          fl_print_format("%[%r%]'.%r", main->program.output.to, main->program.context.set.important, options & controller_instance_option_require_e ? controller_required_s : controller_optional_s, main->program.context.set.important, f_string_eol_s);
         }
         else {
           fl_print_format("%rRule '", main->program.output.to, f_string_eol_s);
@@ -76,8 +76,8 @@ extern "C" {
           fl_print_format("'%[%r%]', ", main->program.output.to, main->program.context.set.title, controller_service_s, main->program.context.set.title);
           fl_print_format("'%[%r%]', or ", main->program.output.to, main->program.context.set.title, controller_script_s, main->program.context.set.title);
           fl_print_format("'%[%r%]'", main->program.output.to, main->program.context.set.title, controller_utility_s, main->program.context.set.title);
-          fl_print_format(") and would '%[%r%]' because it is '", main->program.output.to, main->program.context.set.important, options & controller_process_option_require_d ? controller_fail_s : controller_succeed_s, main->program.context.set.important);
-          fl_print_format("%[%r%]'.%r", main->program.output.to, main->program.context.set.important, options & controller_process_option_require_d ? controller_required_s : controller_optional_s, main->program.context.set.important, f_string_eol_s);
+          fl_print_format(") and would '%[%r%]' because it is '", main->program.output.to, main->program.context.set.important, options & controller_instance_option_require_e ? controller_fail_s : controller_succeed_s, main->program.context.set.important);
+          fl_print_format("%[%r%]'.%r", main->program.output.to, main->program.context.set.important, options & controller_instance_option_require_e ? controller_required_s : controller_optional_s, main->program.context.set.important, f_string_eol_s);
         }
 
         controller_unlock_print_flush(main->program.output.to, global->thread);
@@ -126,7 +126,7 @@ extern "C" {
     f_print_dynamic_raw(f_string_eol_s, main->program.output.to);
 
     // How.
-    fl_print_format("  %[%r%] %r%r", main->program.output.to, main->program.context.set.important, controller_how_s, main->program.context.set.important, options & controller_process_option_asynchronous_d ? controller_asynchronous_s : controller_synchronous_s, f_string_eol_s);
+    fl_print_format("  %[%r%] %r%r", main->program.output.to, main->program.context.set.important, controller_how_s, main->program.context.set.important, options & controller_instance_option_asynchronous_e ? controller_asynchronous_s : controller_synchronous_s, f_string_eol_s);
 
     // Nice.
     fl_print_format("  %[%r%]", main->program.output.to, main->program.context.set.important, controller_nice_s, main->program.context.set.important);
@@ -194,7 +194,7 @@ extern "C" {
     f_print_dynamic_raw(f_string_eol_s, main->program.output.to);
 
     // Wait.
-    fl_print_format("  %[%r%] %r%r", main->program.output.to, main->program.context.set.important, controller_wait_s, main->program.context.set.important, options & controller_process_option_wait_d ? controller_yes_s : controller_no_s, f_string_eol_s);
+    fl_print_format("  %[%r%] %r%r", main->program.output.to, main->program.context.set.important, controller_wait_s, main->program.context.set.important, options & controller_instance_option_wait_e ? controller_yes_s : controller_no_s, f_string_eol_s);
 
     // Affinity.
     fl_print_format("  %[%r%] {%r", main->program.output.to, main->program.context.set.important, controller_affinity_s, main->program.context.set.important, f_string_eol_s);

@@ -17,6 +17,39 @@ extern "C" {
 #endif
 
 /**
+ * Given a wide range of status codes (that are errors), simplify them down to a small subset.
+ *
+ * @param status
+ *   The status code (without the error bit set) to simplify.
+ *
+ * @return
+ *   A subset of status codes (with error bit set).
+ */
+#ifndef _di_controller_main_error_simplify_
+  extern f_status_t controller_main_error_simplify(const f_status_t status) F_attribute_visibility_internal_d;
+#endif // _di_controller_main_error_simplify_
+
+/**
+ * Given a string whose range represents a number, seek past the first positive or negative sign.
+ *
+ * This will stop at the first non-NULL, non-'+' and non-'-' characters.
+ *
+ * Only the first '+' or '-' are processed.
+ *
+ * @param buffer
+ *   The string referenced by the range.
+ * @param range
+ *   The range within the buffer to process.
+ *
+ * @return
+ *   The string range.
+ *   The start range will be past the stop range on overflow or on any failure.
+ */
+#ifndef _di_controller_main_range_after_number_sign_
+  extern f_range_t controller_main_range_after_number_sign(const f_string_static_t buffer, const f_range_t range) F_attribute_visibility_internal_d;
+#endif // _di_controller_main_range_after_number_sign_
+
+/**
  * Perform the standard program setting load settings.
  *
  * This prints error messages as appropriate.

@@ -110,14 +110,14 @@ extern "C" {
           if (F_status_is_error(status)) {
             controller_main_print_error(&global->main->program.error, macro_controller_f(f_string_dynamic_append_nulless));
 
-            actions->array[actions->used++].status = controller_status_simplify_error(F_status_set_fine(status));
+            actions->array[actions->used++].status = controller_main_error_simplify(F_status_set_fine(status));
 
             return status;
           }
 
           if (actions->array[actions->used].parameters.array[0].used) {
-            state.step_large = controller_common_allocation_iki_large_d;
-            state.step_small = controller_common_allocation_iki_small_d;
+            state.step_large = controller_allocation_iki_large_d;
+            state.step_small = controller_allocation_iki_small_d;
             state.interrupt = &controller_main_thread_signal_state_iki;
 
             f_range_t range_iki = macro_f_range_t_initialize_2(actions->array[actions->used].parameters.array[0].used);
@@ -127,7 +127,7 @@ extern "C" {
             if (F_status_is_error(status)) {
               controller_main_print_error(&global->main->program.error, macro_controller_f(fl_iki_read));
 
-              actions->array[actions->used++].status = controller_status_simplify_error(F_status_set_fine(status));
+              actions->array[actions->used++].status = controller_main_error_simplify(F_status_set_fine(status));
 
               return status;
             }
@@ -160,10 +160,10 @@ extern "C" {
 
         for (i = 0; i < cache->object_actions.used; ++i) {
 
-          status = controller_rule_actions_increase_by(controller_allocation_small_d, actions);
+          status = f_memory_array_increase_by(controller_allocation_small_d, sizeof(controller_rule_action_t), (void **) &actions->array, &actions->used, &actions->size);
 
           if (F_status_is_error(status)) {
-            controller_main_print_error(&global->main->program.error, macro_controller_f(controller_rule_actions_increase_by));
+            controller_main_print_error(&global->main->program.error, macro_controller_f(f_memory_array_increase_by));
 
             return status;
           }
@@ -183,7 +183,7 @@ extern "C" {
           status = controller_rule_parameters_read(global, cache->buffer_item, &cache->object_actions.array[i], &cache->content_actions.array[i], &actions->array[actions->used], &state);
 
           if (F_status_is_error(status)) {
-            actions->array[actions->used++].status = controller_status_simplify_error(F_status_set_fine(status));
+            actions->array[actions->used++].status = controller_main_error_simplify(F_status_set_fine(status));
 
             return status;
           }
@@ -351,14 +351,14 @@ extern "C" {
           if (F_status_is_error(status)) {
             controller_main_print_error(&global->main->program.error, macro_controller_f(f_string_dynamic_partial_mash_nulless));
 
-            actions->array[actions->used++].status = controller_status_simplify_error(F_status_set_fine(status));
+            actions->array[actions->used++].status = controller_main_error_simplify(F_status_set_fine(status));
 
             return status;
           }
 
           if (actions->array[actions->used].parameters.array[0].used) {
-            state.step_large = controller_common_allocation_iki_large_d;
-            state.step_small = controller_common_allocation_iki_small_d;
+            state.step_large = controller_allocation_iki_large_d;
+            state.step_small = controller_allocation_iki_small_d;
             state.interrupt = &controller_main_thread_signal_state_iki;
 
             f_range_t range_iki = macro_f_range_t_initialize_2(actions->array[actions->used].parameters.array[0].used);
@@ -368,7 +368,7 @@ extern "C" {
             if (F_status_is_error(status)) {
               controller_main_print_error(&global->main->program.error, macro_controller_f(fl_iki_read));
 
-              actions->array[actions->used++].status = controller_status_simplify_error(F_status_set_fine(status));
+              actions->array[actions->used++].status = controller_main_error_simplify(F_status_set_fine(status));
 
               return status;
             }
@@ -393,7 +393,7 @@ extern "C" {
           status = controller_rule_parameters_read(global, cache->buffer_item, 0, &cache->content_action, &actions->array[actions->used], &state);
 
           if (F_status_is_error(status)) {
-            actions->array[actions->used++].status = controller_status_simplify_error(F_status_set_fine(status));
+            actions->array[actions->used++].status = controller_main_error_simplify(F_status_set_fine(status));
 
             return status;
           }
@@ -407,9 +407,7 @@ extern "C" {
     }
 
     if (F_status_is_error_not(status) && status == F_data_not) {
-      if (global->main->program.warning.verbosity == f_console_verbosity_debug_e) {
-        controller_main_print_rule_debug_item_action_empty(&global->main->program.debug);
-      }
+      controller_main_print_rule_debug_item_action_empty(&global->main->program.debug, cache);
     }
 
     return status;
@@ -429,7 +427,7 @@ extern "C" {
       status = fl_conversion_dynamic_partial_to_signed_detect(fl_conversion_data_base_10_c, cache->buffer_item, cache->content_action.array[++(*index)], &parsed);
 
       if (F_status_set_fine(status) == F_number_positive) {
-        status = fl_conversion_dynamic_partial_to_signed_detect(fl_conversion_data_base_10_c, cache->buffer_item, controller_range_after_number_sign(cache->buffer_item, cache->content_action.array[*index]), &parsed);
+        status = fl_conversion_dynamic_partial_to_signed_detect(fl_conversion_data_base_10_c, cache->buffer_item, controller_main_range_after_number_sign(cache->buffer_item, cache->content_action.array[*index]), &parsed);
       }
 
       if (status == F_data_not) {
@@ -470,7 +468,7 @@ extern "C" {
             }
           }
 
-          controller_rule_print_rule_message_cache(&global->main->program.error, cache->action, F_true);
+          controller_rule_print_rule_message_cache(&global->main->program.error, &cache->action, F_true);
 
           controller_unlock_print_flush(global->main->program.error.to, global->thread);
         }

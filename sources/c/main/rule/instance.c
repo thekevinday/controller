@@ -76,7 +76,7 @@ extern "C" {
       return status;
     }
 
-    if ((instance->options & controller_instance_option_simulate_d) && (instance->options & controller_instance_option_validate_d)) {
+    if ((instance->options & controller_instance_option_simulate_e) && (instance->options & controller_instance_option_validate_e)) {
       controller_rule_validate(global, instance->rule, instance->action, instance->options, &instance->cache);
     }
 
@@ -182,7 +182,7 @@ extern "C" {
                 status = F_false;
               }
               else {
-                status = controller_rule_find(dynamics[i]->array[j], global->setting->rules, &id_rule);
+                status = controller_rule_find(dynamics[i]->array[j], global->program->rules, &id_rule);
 
                 f_thread_unlock(&global->thread->lock.rule);
               }
@@ -206,7 +206,7 @@ extern "C" {
 
               status = F_status_set_error(F_found_not);
 
-              if (!(instance->options & controller_instance_option_simulate_d)) {
+              if (!(instance->options & controller_instance_option_simulate_e)) {
                 if (dependency) {
                   f_thread_unlock(&dependency->active);
                 }
@@ -241,12 +241,12 @@ extern "C" {
 
             // The dependency may have write locks, which needs to be avoided, so copy the alias from the rule.
             f_string_static_t alias_other_buffer = f_string_static_t_initialize;
-            alias_other_buffer.used = global->setting->rules.array[id_rule].alias.used;
+            alias_other_buffer.used = global->program->rules.array[id_rule].alias.used;
 
             f_char_t alias_other_buffer_string[alias_other_buffer.used + 1];
             alias_other_buffer.string = alias_other_buffer_string;
 
-            memcpy(alias_other_buffer_string, global->setting->rules.array[id_rule].alias.string, sizeof(f_char_t) * alias_other_buffer.used);
+            memcpy(alias_other_buffer_string, global->program->rules.array[id_rule].alias.string, sizeof(f_char_t) * alias_other_buffer.used);
             alias_other_buffer_string[alias_other_buffer.used] = 0;
 
             f_thread_unlock(&global->thread->lock.rule);
@@ -263,7 +263,7 @@ extern "C" {
 
               status = controller_instance_wait(global, dependency);
 
-              if (F_status_is_error(status) && !(instance->options & controller_instance_option_simulate_d)) break;
+              if (F_status_is_error(status) && !(instance->options & controller_instance_option_simulate_e)) break;
 
               status = dependency->rule.status[instance->action];
             }
@@ -277,18 +277,18 @@ extern "C" {
 
                 status = status_lock;
               }
-              else if (controller_rule_status_is_available(instance->action, global->setting->rules.array[id_rule])) {
+              else if (controller_rule_status_is_available(instance->action, global->program->rules.array[id_rule])) {
                 f_thread_unlock(&global->thread->lock.rule);
                 f_thread_unlock(&dependency->lock);
 
                 options_instance = 0;
 
                 if (global->main->program.parameters.array[controller_parameter_simulate_e].result & f_console_result_found_e) {
-                  options_instance |= controller_instance_option_simulate_d;
+                  options_instance |= controller_instance_option_simulate_e;
                 }
 
-                if (instance->options & controller_instance_option_validate_d) {
-                  options_instance |= controller_instance_option_validate_d;
+                if (instance->options & controller_instance_option_validate_e) {
+                  options_instance |= controller_instance_option_validate_e;
                 }
 
                 // Synchronously execute dependency.
@@ -309,7 +309,7 @@ extern "C" {
 
                     controller_unlock_print_flush(global->main->program.error.to, global->thread);
 
-                    if (!(dependency->options & controller_instance_option_simulate_d) || F_status_set_fine(status) == F_memory_not) {
+                    if (!(dependency->options & controller_instance_option_simulate_e) || F_status_set_fine(status) == F_memory_not) {
                       f_thread_unlock(&dependency->active);
 
                       break;
@@ -329,7 +329,7 @@ extern "C" {
                 }
               }
               else {
-                status = global->setting->rules.array[id_rule].status[instance->action];
+                status = global->program->rules.array[id_rule].status[instance->action];
 
                 f_thread_unlock(&global->thread->lock.rule);
                 f_thread_unlock(&dependency->lock);
@@ -357,7 +357,7 @@ extern "C" {
 
               status = status_lock;
             }
-            else if (controller_rule_status_is_error(instance->action, global->setting->rules.array[id_rule])) {
+            else if (controller_rule_status_is_error(instance->action, global->program->rules.array[id_rule])) {
               f_thread_unlock(&global->thread->lock.rule);
 
               if (i == 0 || i == 1) {
@@ -371,7 +371,7 @@ extern "C" {
 
                 status = F_status_set_error(F_found_not);
 
-                if (!(dependency->options & controller_instance_option_simulate_d)) {
+                if (!(dependency->options & controller_instance_option_simulate_e)) {
                   f_thread_unlock(&dependency->active);
 
                   break;
@@ -401,7 +401,7 @@ extern "C" {
 
         if (status == F_child || F_status_set_fine(status) == F_interrupt) break;
 
-        if (F_status_is_error(status) && !(instance->options & controller_instance_option_simulate_d)) break;
+        if (F_status_is_error(status) && !(instance->options & controller_instance_option_simulate_e)) break;
       } // for
     }
 
@@ -413,7 +413,7 @@ extern "C" {
       return F_status_set_error(F_interrupt);
     }
 
-    if ((instance->options & controller_instance_option_wait_d) && F_status_is_error_not(status) && (instance->options & controller_instance_option_validate_d)) {
+    if ((instance->options & controller_instance_option_wait_e) && F_status_is_error_not(status) && (instance->options & controller_instance_option_validate_e)) {
       status_lock = controller_rule_wait_all_instance_type(global, instance->type, F_false);
 
       if (F_status_set_fine(status_lock) == F_interrupt) {
@@ -421,10 +421,10 @@ extern "C" {
       }
     }
 
-    if (!(instance->options & controller_instance_option_validate_d) && F_status_is_error_not(status)) {
+    if (!(instance->options & controller_instance_option_validate_e) && F_status_is_error_not(status)) {
 
       // Find at least one of the requested action when the rule is required.
-      if (instance->options & controller_instance_option_require_d) {
+      if (instance->options & controller_instance_option_require_e) {
         bool missing = F_true;
 
         f_number_unsigned_t j = 0;
@@ -508,7 +508,7 @@ extern "C" {
     }
 
     if (F_status_is_error(status)) {
-      instance->rule.status[instance->action] = controller_status_simplify_error(F_status_set_fine(status));
+      instance->rule.status[instance->action] = controller_main_error_simplify(F_status_set_fine(status));
     }
     else {
       instance->rule.status[instance->action] = status;
@@ -528,8 +528,8 @@ extern "C" {
     }
 
     // Update the global rule status, which is stored separately from the rule status for this instance.
-    if (controller_rule_find(instance->rule.alias, global->setting->rules, &id_rule) == F_true) {
-      controller_rule_t *rule = &global->setting->rules.array[id_rule];
+    if (controller_rule_find(instance->rule.alias, global->program->rules, &id_rule) == F_true) {
+      controller_rule_t *rule = &global->program->rules.array[id_rule];
 
       rule->status[instance->action] = instance->rule.status[instance->action];
 
@@ -734,7 +734,7 @@ extern "C" {
     f_thread_unlock(&instance->lock);
 
     if (F_status_is_error_not(status)) {
-      if (instance->action && (options_force & controller_instance_option_asynchronous_d)) {
+      if (instance->action && (options_force & controller_instance_option_asynchronous_e)) {
         if (instance->type == controller_instance_type_exit_e) {
           status = f_thread_create(0, &instance->id_thread, controller_main_thread_instance_other, (void *) instance);
         }
@@ -770,7 +770,7 @@ extern "C" {
         }
       }
 
-      if (!action || (options_force & controller_instance_option_asynchronous_d)) {
+      if (!action || (options_force & controller_instance_option_asynchronous_e)) {
         instance->state = controller_instance_state_done_e;
       }
       else {
@@ -801,10 +801,22 @@ extern "C" {
 
     f_status_t status_lock = F_okay;
 
-    controller_global_t * const global = macro_controller_global_t_initialize_1((controller_main_t *) instance->main_data, (controller_instance_t *) instance->main_setting, (controller_thread_t *) instance->main_thread);
+    controller_global_t global = macro_controller_global_t_initialize((controller_main_t *) instance->main_data, (controller_instance_t *) instance->main_setting, (controller_thread_t *) instance->main_thread);
+
+    global->message = global->main->program.message;
+    global->output = global->main->program.output;
+    global->error = global->main->program.error;
+    global->warning = global->main->program.warning;
+    global->debug = global->main->program.debug;
+
+    global->message.custom = (void *) &global;
+    global->output.custom = (void *) &global;
+    global->error.custom = (void *) &global;
+    global->warning.custom = (void *) &global;
+    global->debug.custom = (void *) &global;
 
     // The instance and active locks shall be held for the duration of this instanceing (aside from switching between read to/from write).
-    if (options_force & controller_instance_option_asynchronous_d) {
+    if (options_force & controller_instance_option_asynchronous_e) {
       status_lock = controller_lock_read_instance(instance, global->thread, &instance->active);
 
       if (F_status_is_error(status_lock)) {
@@ -819,7 +831,7 @@ extern "C" {
     if (F_status_is_error(status_lock)) {
       controller_lock_print_error_critical(&global->main->program.error, F_status_set_fine(status_lock), F_true, global->thread);
 
-      if (options_force & controller_instance_option_asynchronous_d) {
+      if (options_force & controller_instance_option_asynchronous_e) {
         f_thread_unlock(&instance->active);
       }
 
@@ -839,14 +851,14 @@ extern "C" {
 
       f_thread_unlock(&instance->lock);
 
-      if (options_force & controller_instance_option_asynchronous_d) {
+      if (options_force & controller_instance_option_asynchronous_e) {
         f_thread_unlock(&instance->active);
       }
 
       return status_lock;
     }
 
-    if (controller_rule_find(instance->rule.alias, global->setting->rules, &id_rule) == F_true) {
+    if (controller_rule_find(instance->rule.alias, global->program->rules, &id_rule) == F_true) {
       f_thread_unlock(&instance->lock);
 
       status_lock = controller_lock_write_instance(instance, global->thread, &instance->lock);
@@ -856,7 +868,7 @@ extern "C" {
 
         f_thread_unlock(&global->thread->lock.rule);
 
-        if (options_force & controller_instance_option_asynchronous_d) {
+        if (options_force & controller_instance_option_asynchronous_e) {
           f_thread_unlock(&instance->active);
         }
 
@@ -865,7 +877,7 @@ extern "C" {
 
       controller_rule_delete(&instance->rule);
 
-      status = controller_rule_copy(global->setting->rules.array[id_rule], &instance->rule);
+      status = controller_rule_copy(global->program->rules.array[id_rule], &instance->rule);
 
       f_thread_unlock(&instance->lock);
 
@@ -876,7 +888,7 @@ extern "C" {
 
         f_thread_unlock(&global->thread->lock.rule);
 
-        if (options_force & controller_instance_option_asynchronous_d) {
+        if (options_force & controller_instance_option_asynchronous_e) {
           f_thread_unlock(&instance->active);
         }
 
@@ -893,7 +905,7 @@ extern "C" {
         // This is a "consider" Action, so do not actually execute the rule.
         f_thread_unlock(&instance->lock);
 
-        if (options_force & controller_instance_option_asynchronous_d) {
+        if (options_force & controller_instance_option_asynchronous_e) {
           f_thread_unlock(&instance->active);
         }
 
@@ -925,7 +937,7 @@ extern "C" {
         if (!controller_thread_is_enabled_instance(instance, global->thread)) {
           f_thread_unlock(&instance->lock);
 
-          if (options_force & controller_instance_option_asynchronous_d) {
+          if (options_force & controller_instance_option_asynchronous_e) {
             f_thread_unlock(&instance->active);
           }
 
@@ -946,7 +958,7 @@ extern "C" {
             if (F_status_is_error(status_lock)) {
               controller_lock_print_error_critical(&global->main->program.error, F_status_set_fine(status_lock), F_false, global->thread);
 
-              if (options_force & controller_instance_option_asynchronous_d) {
+              if (options_force & controller_instance_option_asynchronous_e) {
                 f_thread_unlock(&instance->active);
               }
 
@@ -962,7 +974,7 @@ extern "C" {
             if (F_status_is_error(status_lock)) {
               controller_lock_print_error_critical(&global->main->program.error, F_status_set_fine(status_lock), F_true, global->thread);
 
-              if (options_force & controller_instance_option_asynchronous_d) {
+              if (options_force & controller_instance_option_asynchronous_e) {
                 f_thread_unlock(&instance->active);
               }
 
@@ -994,7 +1006,7 @@ extern "C" {
     if (status == F_child) {
       f_thread_unlock(&instance->lock);
 
-      if (options_force & controller_instance_option_asynchronous_d) {
+      if (options_force & controller_instance_option_asynchronous_e) {
         f_thread_unlock(&instance->active);
       }
 
@@ -1010,7 +1022,7 @@ extern "C" {
         f_thread_unlock(&instance->lock);
       }
 
-      if (options_force & controller_instance_option_asynchronous_d) {
+      if (options_force & controller_instance_option_asynchronous_e) {
         f_thread_unlock(&instance->active);
       }
 
@@ -1018,8 +1030,8 @@ extern "C" {
     }
 
     if (F_status_set_fine(status) == F_lock) {
-      if (controller_rule_find(instance->rule.alias, global->setting->rules, &id_rule) == F_true) {
-        global->setting->rules.array[id_rule].status[instance->action] = status;
+      if (controller_rule_find(instance->rule.alias, global->program->rules, &id_rule) == F_true) {
+        global->program->rules.array[id_rule].status[instance->action] = status;
       }
     }
 
@@ -1030,7 +1042,7 @@ extern "C" {
     }
 
     if (F_status_set_fine(status) == F_interrupt || F_status_set_fine(status) == F_lock && !controller_thread_is_enabled_instance(instance, global->thread)) {
-      if (options_force & controller_instance_option_asynchronous_d) {
+      if (options_force & controller_instance_option_asynchronous_e) {
         f_thread_unlock(&instance->active);
       }
 
@@ -1042,14 +1054,14 @@ extern "C" {
     if (F_status_is_error(status_lock)) {
       controller_lock_print_error_critical(&global->main->program.error, F_status_set_fine(status_lock), F_false, global->thread);
 
-      if (options_force & controller_instance_option_asynchronous_d) {
+      if (options_force & controller_instance_option_asynchronous_e) {
         f_thread_unlock(&instance->active);
       }
 
       return status_lock;
     }
 
-    if (options_force & controller_instance_option_asynchronous_d) {
+    if (options_force & controller_instance_option_asynchronous_e) {
       instance->state = controller_instance_state_done_e;
     }
     else {
@@ -1065,7 +1077,7 @@ extern "C" {
 
     f_thread_unlock(&instance->lock);
 
-    if (options_force & controller_instance_option_asynchronous_d) {
+    if (options_force & controller_instance_option_asynchronous_e) {
       f_thread_unlock(&instance->active);
     }
 

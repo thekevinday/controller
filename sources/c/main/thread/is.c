@@ -25,7 +25,7 @@ extern "C" {
 #ifndef _di_controller_main_thread_is_enabled_instance_type_
   f_status_t controller_main_thread_is_enabled_instance_type(const uint8_t type, controller_thread_t * const thread) {
 
-    return controller_main_thread_is_enabled(type != controller_data_type_exit_e, thread);
+    return controller_main_thread_is_enabled(type != controller_instance_type_exit_e, thread);
   }
 #endif // _di_controller_main_thread_is_enabled_instance_type_
 

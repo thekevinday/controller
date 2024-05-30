@@ -62,8 +62,8 @@ extern "C" {
  * @param options_force
  *   Force the given instance options, only supporting a subset of instance options.
  *
- *   If controller_instance_option_asynchronous_d, then asynchronously execute.
- *   If not controller_instance_option_asynchronous_d, then synchronously execute.
+ *   If controller_instance_option_asynchronous_e, then asynchronously execute.
+ *   If not controller_instance_option_asynchronous_e, then synchronously execute.
  * @param alias_rule
  *   The alias of the rule, such as "boot/init".
  * @param action
@@ -71,7 +71,7 @@ extern "C" {
  * @param options
  *   The instance options to pass to the instance.
  * @param type
- *   The instance type, such as controller_data_type_entry_e.
+ *   The instance type, such as controller_instance_type_entry_e.
  * @param stack
  *   A stack representing the instances already running in this rule instance dependency tree.
  *   This is used to prevent circular dependencies.
@@ -109,8 +109,8 @@ extern "C" {
  * @param options_force
  *   Force the given instance options, only supporting a subset of instance options.
  *
- *   If controller_instance_option_asynchronous_d, then asynchronously execute.
- *   If not controller_instance_option_asynchronous_d, then synchronously execute.
+ *   If controller_instance_option_asynchronous_e, then asynchronously execute.
+ *   If not controller_instance_option_asynchronous_e, then synchronously execute.
  * @param instance
  *   The instance data.
  *

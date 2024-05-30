@@ -30,7 +30,7 @@ extern "C" {
  * action:  The action being performed.
  * options: Configuration options for this thread.
  * state:   The state of the process.
- * type:    The currently active process type (from the controller_data_type_*_e).
+ * type:    The currently active process type (from the controller_instance_type_*_e).
  * result:  The last return code from an execution of a process.
  *
  * active:    A read/write lock representing that something is currently using this (read locks = in use, write lock = begin deleting).

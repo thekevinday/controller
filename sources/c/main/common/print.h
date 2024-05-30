@@ -39,7 +39,6 @@ extern "C" {
  */
 #ifndef _di_controller_f_e_
   enum {
-    controller_f_controller_rule_actions_increase_by_e,
     controller_f_controller_rule_copy_e,
     controller_f_controller_rule_items_increase_by_e,
     controller_f_controller_path_canonical_relative_e,
@@ -66,6 +65,7 @@ extern "C" {
     controller_f_fl_fss_extended_list_content_read_e,
     controller_f_fl_fss_extended_list_object_read_e,
     controller_f_fl_iki_read_e,
+    controller_f_fll_control_group_prepare_e,
     controller_f_fll_execute_program_e,
     controller_f_fll_fss_basic_list_read_e,
     controller_f_fll_fss_extended_read_e,

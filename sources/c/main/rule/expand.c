@@ -111,7 +111,7 @@ extern "C" {
       } // for
 
       if (i == process->rule.define.used) {
-        controller_entry_t * const entry = process->type == controller_data_type_entry_e ? &((controller_process_t *) process->main_setting)->entry : &((controller_process_t *) process->main_setting)->exit;
+        controller_entry_t * const entry = process->type == controller_instance_type_entry_e ? &((controller_process_t *) process->main_setting)->entry : &((controller_process_t *) process->main_setting)->exit;
 
         for (i = 0; i < entry->define.used; ++i) {
 
@@ -160,7 +160,7 @@ extern "C" {
       } // for
 
       if (i == process->rule.parameter.used) {
-        controller_entry_t * const entry = process->type == controller_data_type_entry_e ? &((controller_process_t *) process->main_setting)->entry : &((controller_process_t *) process->main_setting)->exit;
+        controller_entry_t * const entry = process->type == controller_instance_type_entry_e ? &((controller_process_t *) process->main_setting)->entry : &((controller_process_t *) process->main_setting)->exit;
 
         for (i = 0; i < entry->parameter.used; ++i) {
 
@@ -185,7 +185,6 @@ extern "C" {
         f_console_standard_long_normal_s,
         f_console_standard_long_verbose_s,
         f_console_standard_long_debug_s,
-        controller_long_init_s,
         controller_long_interruptible_s,
         controller_long_daemon_s,
         controller_long_simulate_s,
@@ -207,9 +206,8 @@ extern "C" {
         f_console_symbol_short_inverse_s, // normal.
         f_console_symbol_short_inverse_s, // verbose.
         f_console_symbol_short_inverse_s, // debug.
-        f_console_symbol_short_normal_s,  // daemon.
-        f_console_symbol_short_normal_s,  // init.
         f_console_symbol_short_normal_s,  // interruptible.
+        f_console_symbol_short_normal_s,  // daemon.
         f_console_symbol_short_normal_s,  // simulate.
         f_console_symbol_short_normal_s,  // uninterruptible.
         f_console_symbol_short_normal_s,  // validate.
@@ -229,7 +227,6 @@ extern "C" {
         f_console_standard_short_normal_s,
         f_console_standard_short_verbose_s,
         f_console_standard_short_debug_s,
-        controller_short_init_s,
         controller_short_interruptible_s,
         controller_short_daemon_s,
         controller_short_simulate_s,
@@ -244,14 +241,13 @@ extern "C" {
       };
 
       const uint8_t codes[] = {
-        f_console_standard_parameter_help_e,
+        f_console_standard_parameter_light_e,
         f_console_standard_parameter_dark_e,
         f_console_standard_parameter_no_color_e,
         f_console_standard_parameter_verbosity_quiet_e,
         f_console_standard_parameter_verbosity_normal_e,
         f_console_standard_parameter_verbosity_verbose_e,
         f_console_standard_parameter_verbosity_debug_e,
-        controller_parameter_init_e,
         controller_parameter_interruptible_e,
         controller_parameter_daemon_e,
         controller_parameter_simulate_e,
@@ -274,9 +270,8 @@ extern "C" {
         F_false, // normal.
         F_false, // verbose.
         F_false, // debug.
-        F_false, // daemon.
-        F_false, // init.
         F_false, // interruptible.
+        F_false, // daemon.
         F_false, // simulate.
         F_false, // uninterruptible.
         F_false, // validate.
@@ -288,7 +283,7 @@ extern "C" {
         F_true, // socket.
       };
 
-      for (f_number_unsigned_t i = 0; i < 17; ++i) {
+      for (f_number_unsigned_t i = 0; i < 16; ++i) {
 
         if (f_compare_dynamic_partial_string(options[i].string, source, options[i].used, content) == F_equal_to) {
           if (values[i]) {

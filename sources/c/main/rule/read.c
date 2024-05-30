@@ -328,7 +328,7 @@ extern "C" {
     if (F_status_is_error(status)) {
       controller_rule_item_print_error(global->thread, &global->main->program.error, cache->action, for_item, F_status_set_fine(status));
 
-      rule->status[0] = controller_status_simplify_error(F_status_set_fine(status));
+      rule->status[0] = controller_main_error_simplify(F_status_set_fine(status));
 
       return rule->status[0];
     }

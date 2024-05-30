@@ -4,6 +4,61 @@
 extern "C" {
 #endif
 
+#ifndef _di_controller_main_error_simplify_
+  f_status_t controller_main_error_simplify(const f_status_t status) {
+
+    if (status == F_memory_not) {
+      return F_status_set_error(F_memory);
+    }
+
+    if (status == F_file_open_max || status == F_space_not || status == F_busy) {
+      return F_status_set_error(F_resource);
+    }
+
+    if (status == F_access_denied || status == F_filesystem_quota_block || status == F_prohibited || status == F_input_output) {
+      return F_status_set_error(F_access);
+    }
+
+    if (status == F_complete_not_utf || status == F_complete_not_utf_block || status == F_complete_not_utf_eof || status == F_complete_not_utf_eol || status == F_complete_not_utf_eos || status == F_complete_not_utf_stop) {
+      return F_status_set_error(F_encoding);
+    }
+
+    if (status == F_number || status == F_number_negative || status == F_number_positive || status == F_number_overflow) {
+      return F_status_set_error(F_number);
+    }
+
+    if (status == F_parameter || status == F_found_not || status == F_interrupt || status == F_support_not || status == F_critical) {
+      return F_status_set_error(status);
+    }
+
+    if (status == F_valid_not) {
+      return F_status_set_error(F_valid_not);
+    }
+
+    return F_status_set_error(F_failure);
+  }
+#endif // _di_controller_main_error_simplify_
+
+#ifndef _di_controller_main_range_after_number_sign_
+  f_range_t controller_main_range_after_number_sign(const f_string_static_t buffer, const f_range_t range) {
+
+    f_range_t result = range;
+
+    for (; result.start <= result.stop; ++result.start) {
+
+      if (!buffer.string[result.start]) continue;
+
+      if (buffer.string[result.start] == f_string_ascii_minus_s.string[0] || buffer.string[result.start] == f_string_ascii_plus_s.string[0]) {
+        ++result.start;
+      }
+
+      break;
+    } // for
+
+    return result;
+  }
+#endif // _di_controller_main_range_after_number_sign_
+
 #ifndef _di_controller_main_setting_load_
   void controller_main_setting_load(const f_console_arguments_t arguments, controller_main_t * const main, controller_program_t * const program) {
 

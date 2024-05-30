@@ -39,7 +39,7 @@ extern "C" {
  *   - controller_rule_action_type_stop_e
  * @param options
  *   Process options to consider when executing.
- *   If bit controller_process_option_simulate_d, then the rule execution is in simulation mode (printing a message that the rule would be executed but does not execute the rule).
+ *   If bit controller_instance_option_simulate_e, then the rule execution is in simulation mode (printing a message that the rule would be executed but does not execute the rule).
  * @param process
  *   The process data for processing this rule.
  *
@@ -73,7 +73,7 @@ extern "C" {
  *   The arguments to pass to the program.
  * @param options
  *   Process options to consider when executing.
- *   If bit controller_process_option_simulate_d, then the rule execution is in simulation mode (printing a message that the rule would be executed but does not execute the rule).
+ *   If bit controller_instance_option_simulate_e, then the rule execution is in simulation mode (printing a message that the rule would be executed but does not execute the rule).
  * @param execute_set
  *   The execute parameter and as settings.
  * @param process
@@ -112,7 +112,7 @@ extern "C" {
  *   The arguments to pass to the program.
  * @param options
  *   Process options to consider when executing.
- *   If bit controller_process_option_simulate_d, then the rule execution is in simulation mode (printing a message that the rule would be executed but does not execute the rule).
+ *   If bit controller_instance_option_simulate_e, then the rule execution is in simulation mode (printing a message that the rule would be executed but does not execute the rule).
  * @param with
  *   The "with" option flags.
  * @param execute_set

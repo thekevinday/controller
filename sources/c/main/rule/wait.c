@@ -75,7 +75,7 @@ extern "C" {
       }
 
       if (required) {
-        if (!(instance_list[i]->options & controller_instance_option_require_d)) {
+        if (!(instance_list[i]->options & controller_instance_option_require_e)) {
           f_thread_unlock(&instance_list[i]->lock);
           f_thread_unlock(&instance_list[i]->active);
 
@@ -128,7 +128,7 @@ extern "C" {
           if (F_status_is_error(status_lock)) break;
         }
 
-        if (instance_list[i]->options & controller_instance_option_require_d) {
+        if (instance_list[i]->options & controller_instance_option_require_e) {
           if (controller_rule_status_is_error(instance_list[i]->action, instance_list[i]->rule)) {
             status = F_status_set_error(F_require);
 
@@ -169,7 +169,7 @@ extern "C" {
           break;
         }
 
-        if ((instance_list[i]->options & controller_instance_option_require_d)) {
+        if ((instance_list[i]->options & controller_instance_option_require_e)) {
           f_thread_unlock(&instance_list[i]->lock);
 
           if (controller_rule_status_is_error(instance_list[i]->action, instance_list[i]->rule)) {
@@ -212,7 +212,7 @@ extern "C" {
 
     if (!global) return F_status_set_error(F_parameter);
 
-    return controller_rule_wait_all(global, type != controller_data_type_exit_e, required);
+    return controller_rule_wait_all(global, type != controller_instance_type_exit_e, required);
   }
 #endif // _di_controller_rule_wait_all_instance_type_
 

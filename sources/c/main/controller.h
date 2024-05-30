@@ -21,6 +21,7 @@
 #include <stdio.h>
 #include <stdlib.h>
 #include <string.h>
+#include <sys/wait.h>
 #include <unistd.h>
 
 // FLL-0 includes.
@@ -52,15 +53,18 @@
 
 // FLL-1 includes.
 #include <fll/level_1/conversion.h>
+#include <fll/level_1/environment.h>
 #include <fll/level_1/execute.h>
 #include <fll/level_1/fss.h>
 #include <fll/level_1/fss/extended.h>
 #include <fll/level_1/fss/extended_list.h>
+#include <fll/level_1/iki.h>
 #include <fll/level_1/path.h>
 #include <fll/level_1/print.h>
 
 // FLL-2 includes.
 #include <fll/level_2/error.h>
+#include <fll/level_2/control_group.h>
 #include <fll/level_2/fss.h>
 #include <fll/level_2/fss/basic_list.h>
 #include <fll/level_2/fss/extended.h>
@@ -82,6 +86,7 @@
 #include <program/controller/main/common/define/thread.h>
 #include <program/controller/main/common/enumeration/control.h>
 #include <program/controller/main/common/enumeration/entry.h>
+#include <program/controller/main/common/enumeration/instance.h>
 #include <program/controller/main/common/enumeration/rule.h>
 #include <program/controller/main/common/enumeration/program.h>
 #include <program/controller/main/common/enumeration/thread.h>
@@ -98,6 +103,7 @@
 #include <program/controller/main/common/type/global.h>
 #include <program/controller/main/common.h>
 #include <program/controller/main/path.h>
+#include <program/controller/main/print/action.h>
 #include <program/controller/main/print/data.h>
 #include <program/controller/main/print/debug.h>
 #include <program/controller/main/print/error.h>
