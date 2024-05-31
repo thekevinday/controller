@@ -26,7 +26,7 @@ extern "C" {
  *   A subset of status codes (with error bit set).
  */
 #ifndef _di_controller_main_error_simplify_
-  extern f_status_t controller_main_error_simplify(const f_status_t status) F_attribute_visibility_internal_d;
+  extern f_status_t controller_main_error_simplify(const f_status_t status);
 #endif // _di_controller_main_error_simplify_
 
 /**
@@ -46,7 +46,7 @@ extern "C" {
  *   The start range will be past the stop range on overflow or on any failure.
  */
 #ifndef _di_controller_main_range_after_number_sign_
-  extern f_range_t controller_main_range_after_number_sign(const f_string_static_t buffer, const f_range_t range) F_attribute_visibility_internal_d;
+  extern f_range_t controller_main_range_after_number_sign(const f_string_static_t buffer, const f_range_t range);
 #endif // _di_controller_main_range_after_number_sign_
 
 /**

@@ -110,6 +110,9 @@
 #include <program/controller/main/print/lock.h>
 #include <program/controller/main/print/message.h>
 #include <program/controller/main/print/rule.h>
+#include <program/controller/main/print/rule/action.h>
+#include <program/controller/main/print/rule/item.h>
+#include <program/controller/main/print/rule/setting.h>
 #include <program/controller/main/print/verbose.h>
 #include <program/controller/main/print/warning.h>
 #include <program/controller/main/signal.h>

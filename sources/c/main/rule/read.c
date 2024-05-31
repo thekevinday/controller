@@ -279,7 +279,7 @@ extern "C" {
               fl_print_format(f_string_format_Q_single_s.string, global->main->program.warning.to, global->main->program.warning.notable, cache->action.name_item, global->main->program.warning.notable);
               fl_print_format(f_string_format_sentence_end_quote_s.string, global->main->program.warning.to, global->main->program.warning.context, global->main->program.warning.context, f_string_eol_s);
 
-              controller_rule_print_rule_message_cache(&global->main->program.warning, cache->action, F_true);
+              controller_main_print_rule_error_cache(&global->main->program.warning, cache->action, F_true);
 
               controller_unlock_print_flush(global->main->program.warning.to, global->thread);
             }
@@ -326,7 +326,7 @@ extern "C" {
     }
 
     if (F_status_is_error(status)) {
-      controller_rule_item_print_error(global->thread, &global->main->program.error, cache->action, for_item, F_status_set_fine(status));
+      controller_main_print_rule_item_error(global->error, cache->action, for_item, F_status_set_fine(status));
 
       rule->status[0] = controller_main_error_simplify(F_status_set_fine(status));
 

@@ -72,6 +72,9 @@ extern "C" {
     controller_rule_t rule;
     controller_cache_t cache;
 
+    // @fixme change this to void *global where global is controller_global_t??
+    // @fixme each instance probably needs its own thread data and this likely needs to be backported if it do-able in a non-breaking-change manner!
+    // @fixme I may want to instead replace the controller_global_t with controller_instance_t during printing calls (maybe more??).
     void *main;
     controller_program_t *program;
     void *thread;

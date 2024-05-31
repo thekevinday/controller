@@ -252,7 +252,7 @@ extern "C" {
           }
 
           if (!type_rerun) {
-            controller_main_print_rule_error_item_action_first(&global->main->program.error, cache);
+            controller_main_print_rule_item_error_action_first(&global->main->program.error, cache);
 
             return F_status_set_error(F_valid_not);
           }
@@ -270,7 +270,7 @@ extern "C" {
             }
           }
           else {
-            controller_main_print_rule_error_item_action_second(&global->main->program.error, cache);
+            controller_main_print_rule_item_error_action_second(&global->main->program.error, cache);
 
             return F_status_set_error(F_valid_not);
           }
@@ -287,7 +287,7 @@ extern "C" {
               item->reruns[type_rerun].is |= rerun_item == &item->reruns[type_rerun].failure ? controller_rule_rerun_is_failure_reset_d : controller_rule_rerun_is_success_reset_d;
             }
             else {
-              controller_main_print_rule_error_item_action_unknown(&global->main->program.error, cache, controller_rerun_s, i);
+              controller_main_print_rule_item_error_action_unknown(&global->main->program.error, cache, controller_rerun_s, i);
 
               return F_status_set_error(F_valid_not);
             }
@@ -312,7 +312,7 @@ extern "C" {
               item->with &= ~controller_with_session_new_d;
             }
             else {
-              controller_main_print_rule_error_item_action_unknown(&global->main->program.error, cache, controller_with_s, i);
+              controller_main_print_rule_item_error_action_unknown(&global->main->program.error, cache, controller_with_s, i);
 
               status = F_status_set_error(F_valid_not);
 
@@ -407,7 +407,7 @@ extern "C" {
     }
 
     if (F_status_is_error_not(status) && status == F_data_not) {
-      controller_main_print_rule_debug_item_action_empty(&global->main->program.debug, cache);
+      controller_main_print_rule_item_debug_action_empty(&global->debug, cache);
     }
 
     return status;
@@ -468,7 +468,7 @@ extern "C" {
             }
           }
 
-          controller_rule_print_rule_message_cache(&global->main->program.error, &cache->action, F_true);
+          controller_main_print_rule_error_cache(&global->error, &cache->action, F_true);
 
           controller_unlock_print_flush(global->main->program.error.to, global->thread);
         }

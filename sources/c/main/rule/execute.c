@@ -252,7 +252,7 @@ extern "C" {
           status = controller_rule_expand(global, instance->rule.items.array[i].actions.array[j], instance);
 
           if (F_status_is_error(status)) {
-            controller_rule_print_error(global->thread, &global->main->program.error, instance->cache.action, F_status_set_fine(status), "controller_rule_expand", F_true, F_false);
+            controller_main_print_rule_error(&global->error, instance->cache.action, F_status_set_fine(status), "controller_rule_expand", F_true, F_false);
 
             break;
           }
@@ -282,7 +282,7 @@ extern "C" {
           status = controller_rule_expand(global, instance->rule.items.array[i].actions.array[j], instance);
 
           if (F_status_is_error(status)) {
-            controller_rule_print_error(global->thread, &global->main->program.error, instance->cache.action, F_status_set_fine(status), "controller_rule_expand", F_true, F_false);
+            controller_main_print_rule_error(&global->error, instance->cache.action, F_status_set_fine(status), "controller_rule_expand", F_true, F_false);
 
             break;
           }
@@ -324,7 +324,7 @@ extern "C" {
           status = controller_rule_expand(global, instance->rule.items.array[i].actions.array[j], instance);
 
           if (F_status_is_error(status)) {
-            controller_rule_print_error(global->thread, &global->main->program.error, instance->cache.action, F_status_set_fine(status), "controller_rule_expand", F_true, F_false);
+            controller_main_print_rule_error(&global->error, instance->cache.action, F_status_set_fine(status), "controller_rule_expand", F_true, F_false);
 
             break;
           }
@@ -354,7 +354,7 @@ extern "C" {
           else {
             success = F_status_set_error(F_failure);
 
-            controller_rule_action_print_error_missing_pid(&global->main->program.error, instance->rule.alias);
+            controller_main_print_rule_action_error_missing_pid(&global->error, instance->rule.alias);
           }
         }
         else if (instance->rule.items.array[i].type == controller_rule_item_type_utility_e) {
@@ -362,7 +362,7 @@ extern "C" {
             status = controller_rule_expand(global, instance->rule.items.array[i].actions.array[j], instance);
 
             if (F_status_is_error(status)) {
-              controller_rule_print_error(global->thread, &global->main->program.error, instance->cache.action, F_status_set_fine(status), "controller_rule_expand", F_true, F_false);
+              controller_main_print_rule_error(&global->error, instance->cache.action, F_status_set_fine(status), "controller_rule_expand", F_true, F_false);
 
               break;
             }
@@ -398,7 +398,7 @@ extern "C" {
           else {
             success = F_status_set_error(F_failure);
 
-            controller_rule_action_print_error_missing_pid(&global->main->program.error, instance->rule.alias);
+            controller_main_print_rule_action_error_missing_pid(&global->error, instance->rule.alias);
           }
         }
         else {
@@ -407,7 +407,7 @@ extern "C" {
 
             fl_print_format("%r%[%QAction type is unknown, ignoring.%]%r", global->main->program.warning.to, f_string_eol_s, global->main->program.warning.context, global->main->program.warning.prefix, global->main->program.warning.context, f_string_eol_s);
 
-            controller_rule_print_rule_message_cache(&global->main->program.warning, instance->cache.action, F_true);
+            controller_main_print_rule_error_cache(&global->main->program.warning, instance->cache.action, F_true);
 
             controller_unlock_print_flush(global->main->program.warning.to, global->thread);
           }
@@ -463,8 +463,8 @@ extern "C" {
     f_status_t status = F_okay;
     f_status_t status_lock = F_okay;
 
-    controller_main_t * const main = (controller_main_t *) instance->main_data;
-    controller_thread_t * const thread = (controller_thread_t *) instance->main_thread;
+    controller_main_t * const main = ((controller_global_t *) instance->global)->main;
+    controller_thread_t * const thread = ((controller_global_t *) instance->global)->thread;
 
     f_execute_result_t result = f_execute_result_t_initialize;
 
@@ -526,7 +526,7 @@ extern "C" {
       {
         const f_time_spec_t delay = controller_time_milliseconds(controller_thread_simulation_timeout_d);
 
-        if (controller_time_sleep_nanoseconds(main, (controller_process_t *) instance->main_setting, delay) == -1) {
+        if (controller_time_sleep_nanoseconds((controller_global_t *) instance->global, delay) == -1) {
           status = F_status_set_error(F_interrupt);
         }
       }
@@ -581,11 +581,7 @@ extern "C" {
       }
 
       if (F_status_set_fine(status_lock) == F_interrupt || !controller_main_thread_is_enabled_instance(instance, thread)) {
-        if (status_lock == F_okay) {
-          return F_status_set_error(F_interrupt);
-        }
-
-        return F_status_set_error(F_lock);
+        return status_lock == F_okay ? F_status_set_error(F_interrupt) : F_status_set_error(F_lock);
       }
 
       if (status_lock == F_okay) {
@@ -657,10 +653,10 @@ extern "C" {
       status = F_status_set_fine(status);
 
       if ((WIFEXITED(instance->result) && WEXITSTATUS(instance->result)) || status == F_control_group || status == F_failure || status == F_limit || status == F_processor || status == F_schedule) {
-        controller_rule_item_print_error_execute(type == controller_rule_item_type_script_e, program.used ? program : arguments.array[0], status, instance);
+        controller_main_print_rule_item_error_execute(&global->error, instance, type == controller_rule_item_type_script_e, program.used ? program : arguments.array[0], status);
       }
       else {
-        controller_main_print_error_status(&main->program.error, macro_controller_f(fll_execute_program), F_status_set_fine(status));
+        controller_main_print_error_status(&global->error, macro_controller_f(fll_execute_program), F_status_set_fine(status));
       }
 
       status = F_status_set_error(status);
@@ -678,8 +674,8 @@ extern "C" {
     f_status_t status = F_okay;
     f_status_t status_lock = F_okay;
 
-    controller_main_t * const main = (controller_main_t *) instance->main_data;
-    controller_thread_t * const thread = (controller_thread_t *) instance->main_thread;
+    controller_main_t * const main = ((controller_global_t *) instance->global)->main;
+    controller_thread_t * const thread = ((controller_global_t *) instance->global)->thread;
 
     f_execute_result_t result = f_execute_result_t_initialize;
 
@@ -778,7 +774,7 @@ extern "C" {
       {
         const f_time_spec_t delay = controller_time_milliseconds(controller_thread_simulation_timeout_d);
 
-        if (controller_time_sleep_nanoseconds(main, (controller_process_t *) instance->main_setting, delay) == -1) {
+        if (controller_time_sleep_nanoseconds((controller_global_t *) instance->global, delay) == -1) {
           status = F_status_set_error(F_interrupt);
         }
       }
@@ -910,10 +906,10 @@ extern "C" {
       status = F_status_set_fine(status);
 
       if ((WIFEXITED(instance->result) && WEXITSTATUS(instance->result)) || status == F_control_group || status == F_failure || status == F_limit || status == F_processor || status == F_schedule) {
-        controller_rule_item_print_error_execute(type == controller_rule_item_type_utility_e, program.used ? program : arguments.array[0], status, instance);
+        controller_main_print_rule_item_error_execute(&global->error, instance, type == controller_rule_item_type_utility_e, program.used ? program : arguments.array[0], status);
       }
       else {
-        controller_main_print_error_status(&main->program.error, macro_controller_f(fll_execute_program), F_status_set_fine(status));
+        controller_main_print_error_status(&global->error, macro_controller_f(fll_execute_program), F_status_set_fine(status));
       }
 
       return F_status_set_error(status);
@@ -931,8 +927,8 @@ extern "C" {
     const int result = WIFEXITED(instance->result) ? WEXITSTATUS(instance->result) : 0;
 
     if (item->reruns[action].is & (result ? controller_rule_rerun_is_failure_d : controller_rule_rerun_is_success_d)) {
-      controller_main_t * const main = (controller_main_t *) instance->main_data;
-      controller_thread_t * const thread = (controller_thread_t *) instance->main_thread;
+      controller_main_t * const main = ((controller_global_t *) instance->global)->main;
+      controller_thread_t * const thread = ((controller_global_t *) instance->global)->thread;
       controller_rule_rerun_item_t *rerun_item = result ? &item->reruns[action].failure : &item->reruns[action].success;
 
       if (!controller_main_thread_is_enabled_instance(instance, thread)) return -2;

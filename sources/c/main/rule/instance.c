@@ -29,7 +29,7 @@ extern "C" {
           fl_print_format(f_string_format_r_single_s.string, global->main->program.error.to, global->main->program.error.notable, controller_rule_action_type_name(instance->action), global->main->program.error.notable);
           fl_print_format("%[' while attempting to execute rule.%]%r", global->main->program.error.to, global->main->program.error.context, global->main->program.error.context, f_string_eol_s);
 
-          controller_rule_print_rule_message_cache(&global->main->program.error, instance->cache.action, F_true);
+          controller_main_print_rule_error_cache(&global->error, instance->cache.action, F_true);
 
           controller_unlock_print_flush(global->main->program.error.to, global->thread);
         }
@@ -51,7 +51,7 @@ extern "C" {
     }
 
     if (F_status_is_error(status)) {
-      controller_rule_print_error(global->thread, &global->main->program.error, instance->cache.action, F_status_set_fine(status), "f_string_dynamic_append", F_true, F_true);
+      controller_main_print_rule_error(&global->error, instance->cache.action, F_status_set_fine(status), "f_string_dynamic_append", F_true, F_true);
 
       return status;
     }
@@ -59,7 +59,7 @@ extern "C" {
     status = f_string_dynamic_append(instance->rule.alias, &instance->cache.action.name_file);
 
     if (F_status_is_error(status)) {
-      controller_rule_print_error(global->thread, &global->main->program.error, instance->cache.action, F_status_set_fine(status), "f_string_dynamic_append", F_true, F_true);
+      controller_main_print_rule_error(&global->error, instance->cache.action, F_status_set_fine(status), "f_string_dynamic_append", F_true, F_true);
 
       return status;
     }
@@ -71,7 +71,7 @@ extern "C" {
     }
 
     if (F_status_is_error(status)) {
-      controller_rule_print_error(global->thread, &global->main->program.error, instance->cache.action, F_status_set_fine(status), "f_string_dynamic_append", F_true, F_true);
+      controller_main_print_rule_error(&global->error, instance->cache.action, F_status_set_fine(status), "f_string_dynamic_append", F_true, F_true);
 
       return status;
     }
@@ -144,8 +144,8 @@ extern "C" {
               if (global->main->program.error.verbosity > f_console_verbosity_quiet_e) {
                 controller_lock_print(global->main->program.error.to, global->thread);
 
-                controller_rule_item_print_error_rule_not_loaded(&global->main->program.error, dynamics[i]->array[j]);
-                controller_rule_print_rule_message_cache(&global->main->program.error, instance->cache.action, F_false);
+                controller_main_print_rule_item_error_rule_not_loaded(&global->main->program.error, dynamics[i]->array[j]);
+                controller_main_print_rule_error_cache(&global->error, instance->cache.action, F_false);
 
                 controller_unlock_print_flush(global->main->program.error.to, global->thread);
               }
@@ -199,8 +199,8 @@ extern "C" {
             if (i == 0) {
               controller_lock_print(global->main->program.error.to, global->thread);
 
-              controller_rule_item_print_error_need_want_wish(&global->main->program.error, strings[i], dynamics[i]->array[j], "is not found");
-              controller_rule_print_rule_message_cache(&global->main->program.error, instance->cache.action, F_true);
+              controller_main_print_rule_item_error_need_want_wish(&global->main->program.error, strings[i], dynamics[i]->array[j], "is not found");
+              controller_main_print_rule_error_cache(&global->error, instance->cache.action, F_true);
 
               controller_unlock_print_flush(global->main->program.error.to, global->thread);
 
@@ -218,9 +218,9 @@ extern "C" {
               if (global->main->program.warning.verbosity == f_console_verbosity_debug_e) {
                 controller_lock_print(global->main->program.warning.to, global->thread);
 
-                controller_rule_item_print_error_need_want_wish(&global->main->program.warning, strings[i], dynamics[i]->array[j], "is not found");
+                controller_main_print_rule_item_error_need_want_wish(&global->main->program.warning, strings[i], dynamics[i]->array[j], "is not found");
 
-                controller_rule_print_rule_message_cache(&global->main->program.warning, instance->cache.action, F_true);
+                controller_main_print_rule_error_cache(&global->main->program.warning, instance->cache.action, F_true);
 
                 controller_unlock_print_flush(global->main->program.warning.to, global->thread);
               }
@@ -304,8 +304,8 @@ extern "C" {
                   if (i == 0 || i == 1 || F_status_set_fine(status) == F_memory_not) {
                     controller_lock_print(global->main->program.error.to, global->thread);
 
-                    controller_rule_item_print_error_need_want_wish(&global->main->program.error, strings[i], alias_other_buffer, "failed during execution");
-                    controller_rule_print_rule_message_cache(&global->main->program.error, instance->cache.action, F_true);
+                    controller_main_print_rule_item_error_need_want_wish(&global->main->program.error, strings[i], alias_other_buffer, "failed during execution");
+                    controller_main_print_rule_error_cache(&global->error, instance->cache.action, F_true);
 
                     controller_unlock_print_flush(global->main->program.error.to, global->thread);
 
@@ -319,9 +319,9 @@ extern "C" {
                     if (global->main->program.warning.verbosity == f_console_verbosity_debug_e) {
                       controller_lock_print(global->main->program.warning.to, global->thread);
 
-                      controller_rule_item_print_error_need_want_wish(&global->main->program.warning, strings[i], alias_other_buffer, "failed during execution");
+                      controller_main_print_rule_item_error_need_want_wish(&global->main->program.warning, strings[i], alias_other_buffer, "failed during execution");
 
-                      controller_rule_print_rule_message_cache(&global->main->program.warning, instance->cache.action, F_true);
+                      controller_main_print_rule_error_cache(&global->main->program.warning, instance->cache.action, F_true);
 
                       controller_unlock_print_flush(global->main->program.warning.to, global->thread);
                     }
@@ -352,7 +352,7 @@ extern "C" {
 
             if (F_status_is_error(status_lock)) {
               if (F_status_is_error(status_lock)) {
-                controller_rule_item_print_error_need_want_wish(&global->main->program.error, strings[i], alias_other_buffer, "due to lock failure");
+                controller_main_print_rule_item_error_need_want_wish(&global->main->program.error, strings[i], alias_other_buffer, "due to lock failure");
               }
 
               status = status_lock;
@@ -363,9 +363,9 @@ extern "C" {
               if (i == 0 || i == 1) {
                 controller_lock_print(global->main->program.error.to, global->thread);
 
-                controller_rule_item_print_error_need_want_wish(&global->main->program.error, strings[i], alias_other_buffer, "is in a failed state");
+                controller_main_print_rule_item_error_need_want_wish(&global->main->program.error, strings[i], alias_other_buffer, "is in a failed state");
 
-                controller_rule_print_rule_message_cache(&global->main->program.error, instance->cache.action, F_true);
+                controller_main_print_rule_error_cache(&global->error, instance->cache.action, F_true);
 
                 controller_unlock_print_flush(global->main->program.error.to, global->thread);
 
@@ -381,9 +381,9 @@ extern "C" {
                 if (global->main->program.warning.verbosity == f_console_verbosity_debug_e) {
                   controller_lock_print(global->main->program.warning.to, global->thread);
 
-                  controller_rule_item_print_error_need_want_wish(&global->main->program.warning, strings[i], alias_other_buffer, "is in a failed state");
+                  controller_main_print_rule_item_error_need_want_wish(&global->main->program.warning, strings[i], alias_other_buffer, "is in a failed state");
 
-                  controller_rule_print_rule_message_cache(&global->main->program.warning, instance->cache.action, F_true);
+                  controller_main_print_rule_error_cache(&global->main->program.warning, instance->cache.action, F_true);
 
                   controller_unlock_print_flush(global->main->program.warning.to, global->thread);
                 }
@@ -468,7 +468,7 @@ extern "C" {
               fl_print_format("%[') to execute.%]%r", global->main->program.error.to, global->main->program.error.context, global->main->program.error.context, f_string_eol_s);
             }
 
-            controller_rule_print_rule_message_cache(&global->main->program.error, instance->cache.action, F_true);
+            controller_main_print_rule_error_cache(&global->error, instance->cache.action, F_true);
 
             controller_unlock_print_flush(global->main->program.error.to, global->thread);
           }
@@ -485,7 +485,7 @@ extern "C" {
         }
 
         if (F_status_is_error(status)) {
-          controller_rule_item_print_error(global->thread, &global->main->program.error, instance->cache.action, F_true, F_status_set_fine(status));
+          controller_main_print_rule_item_error(global->error, instance->cache.action, F_true, F_status_set_fine(status));
         }
       }
     }
@@ -596,8 +596,8 @@ extern "C" {
         if (global->main->program.error.verbosity > f_console_verbosity_quiet_e) {
           controller_lock_print(global->main->program.error.to, global->thread);
 
-          controller_rule_item_print_error_rule_not_loaded(&global->main->program.error, alias_rule);
-          controller_rule_print_rule_message_cache(&global->main->program.error, cache.action, F_false);
+          controller_main_print_rule_item_error_rule_not_loaded(&global->main->program.error, alias_rule);
+          controller_main_print_rule_error_cache(&global->error, cache.action, F_false);
 
           controller_unlock_print_flush(global->main->program.error.to, global->thread);
         }
@@ -611,7 +611,7 @@ extern "C" {
 
       if (F_status_is_error(status)) {
         controller_lock_print_error_critical(&global->main->program.error, F_status_set_fine(status), F_true, global->thread);
-        controller_rule_item_print_error(global->thread, &global->main->program.error, cache.action, F_false, F_status_set_fine(status));
+        controller_main_print_rule_item_error(global->error, cache.action, F_false, F_status_set_fine(status));
 
         f_thread_unlock(&global->thread->lock.instance);
 
@@ -695,9 +695,7 @@ extern "C" {
 
     instance->stack.used = 0;
 
-    instance->main_data = (void *) global->main;
-    instance->main_setting = (void *) global->setting;
-    instance->main_thread = (void *) global->thread;
+    instance->global = (void *) global;
 
     if (F_status_is_error_not(status) && stack.used) {
       if (instance->stack.size < stack.used) {
@@ -922,7 +920,7 @@ extern "C" {
               fl_print_format(f_string_format_Q_single_s.string, global->main->program.error.to, global->main->program.error.notable, instance->rule.alias, global->main->program.error.notable);
               fl_print_format("%[' is already on the execution dependency stack, this recursion is prohibited.%]%r", global->main->program.error.to, global->main->program.error.context, global->main->program.error.context, f_string_eol_s);
 
-              controller_rule_print_rule_message_cache(&global->main->program.error, instance->cache.action, F_true);
+              controller_main_print_rule_error_cache(&global->error, instance->cache.action, F_true);
 
               controller_unlock_print_flush(global->main->program.error.to, global->thread);
             }
@@ -996,8 +994,8 @@ extern "C" {
       if (global->main->program.error.verbosity > f_console_verbosity_quiet_e) {
         controller_lock_print(global->main->program.error.to, global->thread);
 
-        controller_rule_item_print_error_rule_not_loaded(&global->main->program.error, instance->rule.alias);
-        controller_rule_print_rule_message_cache(&global->main->program.error, instance->cache.action, F_false);
+        controller_main_print_rule_item_error_rule_not_loaded(&global->main->program.error, instance->rule.alias);
+        controller_main_print_rule_error_cache(&global->error, instance->cache.action, F_false);
 
         controller_unlock_print_flush(global->main->program.error.to, global->thread);
       }

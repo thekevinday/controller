@@ -26,7 +26,7 @@ extern "C" {
  *   The instance data.
  *   Must not be NULL.
  *
- * @see controller_rule_process_do()
+ * @see controller_rule_instance_do()
  */
 #ifndef _di_controller_main_thread_instance_
   extern void controller_main_thread_instance(const uint8_t is_normal, controller_instance_t * const instance);

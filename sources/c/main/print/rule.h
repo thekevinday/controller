@@ -17,144 +17,57 @@ extern "C" {
 #endif
 
 /**
- * Print rule debug message about the rule item action being empty.
+ * Print generic error/warning information.
+ *
+ * This is essentially a wrapper to fll_error_print() that includes locking.
  *
  * @param print
- *   The output structure to print to.
- *   Must not be NULL.
+ *   Designates how printing is to be performed.
  * @param cache
- *   A structure for containing and caching relevant data.
- *   Must not be NULL.
+ *   The action cache.
+ * @param status
+ *   The status code to process.
+ *   Make sure this has F_status_set_fine() called if the status code has any error or warning bits.
+ * @param function
+ *   The name of the function where the error happened.
+ *   Set to 0 to disable.
+ * @param fallback
+ *   Set to F_true to print the fallback error message for unknown errors.
+ * @param item
+ *   If TRUE, then this error is associated with an item.
+ *   If FALSE, then this error is associated with a rule setting.
  *
- * @return
- *   F_okay on success.
- *   F_output_not on success, but no printing is performed.
- *
- *   F_output_not (with error bit) if setting is NULL.
- *
- * @see fl_print_format()
  * @see fll_error_print()
- *
- * @see controller_lock_print()
- * @see controller_rule_print_rule_message_cache()
- * @see controller_unlock_print_flush()
+ * @see controller_main_print_rule_error_cache()
  */
-#ifndef _di_controller_main_print_rule_debug_item_action_empty_
-  extern f_status_t controller_main_print_rule_debug_item_action_empty(fl_print_t * const print, controller_cache_t * const cache);
-#endif // _di_controller_main_print_rule_debug_item_action_empty_
+#ifndef _di_controller_main_print_rule_error_
+  extern void controller_main_print_rule_error(fl_print_t * const print, const controller_cache_action_t cache, const f_status_t status, const f_string_t function, const bool fallback, const bool item);
+#endif // _di_controller_main_print_rule_error_
 
 /**
- * Print rule error message about the first rule item action parameter being invalid.
+ * Print additional error/warning information in addition to existing error.
+ *
+ * This is explicitly intended to be used in addition to the error message.
+ *
+ * This neither locks the thread nor does it check to see if output is enabled or disabled.
  *
  * @param print
- *   The output structure to print to.
- *   Must not be NULL.
+ *   The error or warning output structure.
  * @param cache
  *   A structure for containing and caching relevant data.
- *   Must not be NULL.
+ * @param item
+ *   If TRUE, then this error is associated with an item.
+ *   If FALSE, then this error is associated with a rule setting.
  *
- * @return
- *   F_okay on success.
- *   F_output_not on success, but no printing is performed.
- *
- *   F_output_not (with error bit) if setting is NULL.
- *
- * @see fl_print_format()
- * @see fll_error_print()
- *
- * @see controller_lock_print()
- * @see controller_rule_print_rule_message_cache()
- * @see controller_unlock_print_flush()
+ * @see controller_rule_action_read()
+ * @see controller_rule_item_read()
+ * @see controller_rule_items_read()
+ * @see controller_rule_read()
+ * @see controller_rule_setting_read()
  */
-#ifndef _di_controller_main_print_rule_error_item_action_first_
-  extern f_status_t controller_main_print_rule_error_item_action_first(fl_print_t * const print, controller_cache_t * const cache);
-#endif // _di_controller_main_print_rule_error_item_action_first_
-
-/**
- * Print rule error message about the second rule item action parameter being invalid.
- *
- * @param print
- *   The output structure to print to.
- *   Must not be NULL.
- * @param cache
- *   A structure for containing and caching relevant data.
- *   Must not be NULL.
- *
- * @return
- *   F_okay on success.
- *   F_output_not on success, but no printing is performed.
- *
- *   F_output_not (with error bit) if setting is NULL.
- *
- * @see fl_print_format()
- * @see fll_error_print()
- *
- * @see controller_lock_print()
- * @see controller_rule_print_rule_message_cache()
- * @see controller_unlock_print_flush()
- */
-#ifndef _di_controller_main_print_rule_error_item_action_second_
-  extern f_status_t controller_main_print_rule_error_item_action_second(fl_print_t * const print, controller_cache_t * const cache);
-#endif // _di_controller_main_print_rule_error_item_action_second_
-
-/**
- * Print rule error message about the rule item action being unknown.
- *
- * @param print
- *   The output structure to print to.
- *   Must not be NULL.
- * @param cache
- *   A structure for containing and caching relevant data.
- *   Must not be NULL.
- * @param name
- *   The parameter name whose value is unknown.
- * @param index
- *   The index in the content action cache representing the unknown value.
- *
- * @return
- *   F_okay on success.
- *   F_output_not on success, but no printing is performed.
- *
- *   F_output_not (with error bit) if setting is NULL.
- *
- * @see fl_print_format()
- * @see fll_error_print()
- *
- * @see controller_lock_print()
- * @see controller_rule_print_rule_message_cache()
- * @see controller_unlock_print_flush()
- */
-#ifndef _di_controller_main_print_rule_error_item_action_unknown_
-  extern f_status_t controller_main_print_rule_error_item_action_unknown(fl_print_t * const print, controller_cache_t * const cache, const f_string_static_t name, const f_number_unsigned_t index);
-#endif // _di_controller_main_print_rule_error_item_action_unknown_
-
-/**
- * Print rule error message about the rule item action being unknown.
- *
- * @param print
- *   The output structure to print to.
- *   Must not be NULL.
- *
- *   This does not lock the stream.
- * @param cache
- *   A structure for containing and caching relevant data.
- *   Must not be NULL.
- * @param name
- *   The parameter name related to the message.
- * @param index
- *   The index in the content action cache representing the parameter value related to the message.
- *
- * @return
- *   F_okay on success.
- *   F_output_not on success, but no printing is performed.
- *
- *   F_output_not (with error bit) if setting is NULL.
- *
- * @see fl_print_format()
- */
-#ifndef _di_controller_rule_print_rule_message_cache_
-  extern f_status_t controller_rule_print_rule_message_cache(fl_print_t * const print, controller_cache_action_t * const cache, const bool item);
-#endif // _di_controller_rule_print_rule_message_cache_
+#ifndef _di_controller_main_print_rule_error_cache_
+  extern void controller_main_print_rule_error_cache(fl_print_t * const print, const controller_cache_action_t cache, const bool item);
+#endif // _di_controller_main_print_rule_error_cache_
 
 #ifdef __cplusplus
 } // extern "C"
