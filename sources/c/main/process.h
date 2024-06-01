@@ -17,7 +17,7 @@ extern "C" {
 #endif
 
 /**
- * Execute main program process.
+ * Execute main program process, starting all threads, waiting on threads, and handling requests.
  *
  * If main.signal is non-zero, then this blocks and handles the following signals:
  *   - F_signal_abort

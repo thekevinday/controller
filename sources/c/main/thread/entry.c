@@ -20,10 +20,10 @@ extern "C" {
     *status = controller_main_entry_read(global, F_true);
 
     if (F_status_set_fine(*status) == F_interrupt) {
-      global->program->ready = controller_setting_ready_abort_e;
+      global->program->ready = controller_program_ready_abort_e;
     }
     else if (F_status_is_error(*status)) {
-      global->program->ready = controller_setting_ready_fail_e;
+      global->program->ready = controller_program_ready_fail_e;
     }
     else if (*status != F_child) {
       *status = controller_main_entry_preprocess(global, F_true);
@@ -38,7 +38,7 @@ extern "C" {
 
         if (global->program->entry.pid == controller_entry_pid_require_e && f_file_exists(global->program->path_pid, F_true) == F_true) {
           *status = F_status_set_error(F_available_not);
-          global->program->ready = controller_setting_ready_fail_e;
+          global->program->ready = controller_program_ready_fail_e;
 
           controller_main_print_error_file_pid_exists(&global->main->program.error, global->thread, global->program->path_pid);
         }
@@ -46,7 +46,7 @@ extern "C" {
           *status = controller_main_entry_process(global, F_false, F_true);
 
           if (F_status_is_error(*status)) {
-            global->program->ready = controller_setting_ready_fail_e;
+            global->program->ready = controller_program_ready_fail_e;
 
             if ((F_status_set_fine(*status) == F_execute || F_status_set_fine(*status) == F_require) && (program->flag & controller_setting_flag_failsafe_e)) {
               const uint8_t original_enabled = global->thread->enabled;
@@ -88,31 +88,31 @@ extern "C" {
             }
           }
           else if (F_status_set_fine(*status) == F_interrupt) {
-            global->program->ready = controller_setting_ready_abort_e;
+            global->program->ready = controller_program_ready_abort_e;
           }
           else if (*status != F_child) {
-            global->program->ready = controller_setting_ready_done_e;
+            global->program->ready = controller_program_ready_done_e;
           }
         }
 
-        if (F_status_is_error_not(*status) && *status != F_child && global->main->program.parameters.array[controller_parameter_validate_e].result == f_console_result_none_e && global->program->mode == controller_setting_mode_helper_e) {
+        if (F_status_is_error_not(*status) && *status != F_child && global->main->program.parameters.array[controller_parameter_validate_e].result == f_console_result_none_e && global->program->mode == controller_program_mode_helper_e) {
           f_time_spec_t time;
           time.tv_sec = controller_main_thread_exit_helper_timeout_seconds_d;
           time.tv_nsec = controller_main_thread_exit_helper_timeout_nanoseconds_d;
 
           nanosleep(&time, 0);
 
-          controller_main_thread_process_cancel(global, F_true, controller_thread_cancel_exit_e);
+          controller_main_thread_instance_cancel(global, F_true, controller_thread_cancel_exit_e);
         }
       }
     }
 
     if (*status == F_child) {
 
-      // A forked child process should deallocate memory on exit.
+      // A forked child process should de-allocate memory on exit.
       // It seems that this function doesn't return to the calling thread for a forked child process, even with the "return 0;" below.
-      controller_main_thread_delete(global->thread);
-      controller_main_program_delete(global->program);
+      controller_thread_delete(global->thread);
+      controller_program_delete(global->program);
       controller_main_delete(global->main);
 
       // According to the manpages, pthread_exit() calls exit(0), which the value of global->main->program.child should be returned instead.
@@ -143,13 +143,13 @@ extern "C" {
     *status = controller_entry_read(global, F_false);
 
     if (F_status_set_fine(*status) == F_interrupt) {
-      global->program->ready = controller_setting_ready_abort_e;
+      global->program->ready = controller_program_ready_abort_e;
     }
     else if (F_status_is_error(*status)) {
-      global->program->ready = controller_setting_ready_fail_e;
+      global->program->ready = controller_program_ready_fail_e;
     }
     else if (*status == F_file_found_not) {
-      global->program->ready = controller_setting_ready_done_e;
+      global->program->ready = controller_program_ready_done_e;
     }
     else if (*status != F_child) {
       *status = controller_entry_preprocess(global, F_false, cache);
@@ -165,7 +165,7 @@ extern "C" {
         *status = controller_entry_process(global, F_false, F_false);
 
         if (F_status_is_error(*status)) {
-          global->program->ready = controller_setting_ready_fail_e;
+          global->program->ready = controller_program_ready_fail_e;
 
           if ((F_status_set_fine(*status) == F_execute || F_status_set_fine(*status) == F_require) && (global->program->flag & controller_setting_flag_failsafe_e)) {
 
@@ -210,17 +210,17 @@ extern "C" {
           }
         }
         else if (F_status_set_fine(*status) == F_interrupt) {
-          global->program->ready = controller_setting_ready_abort_e;
+          global->program->ready = controller_program_ready_abort_e;
         }
         else if (*status != F_child) {
-          global->program->ready = controller_setting_ready_done_e;
+          global->program->ready = controller_program_ready_done_e;
         }
       }
     }
 
     if (*status == F_child) {
 
-      // A forked child process should deallocate memory on exit.
+      // A forked child process should de-allocate memory on exit.
       // It seems that this function doesn't return to the calling thread for a forked child process, even with the "return 0;" below.
       controller_thread_delete_simple(global->thread);
       controller_process_delete(global->program);

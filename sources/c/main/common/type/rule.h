@@ -19,9 +19,10 @@ extern "C" {
 /**
  * The Rule "rerun" item for controlling re-execution.
  *
- * count: A count of the number of executions.
- * delay: The time to wait before attempting to re-run.
- * max:   The maximum number of times to re-run (with 0 representing re-run infinitely) for executions.
+ * Properties:
+ *   - count: A count of the number of executions.
+ *   - delay: The time to wait before attempting to re-run.
+ *   - max:   The maximum number of times to re-run (with 0 representing re-run infinitely) for executions.
  */
 #ifndef _di_controller_rule_rerun_item_t_
   typedef struct {
@@ -49,13 +50,14 @@ extern "C" {
 /**
  * The Rule "rerun" values for controlling re-execution.
  *
- * is:            A bitwise set of options to designate whether rerun is enabled or not and other options.
- * count_failure: A count of the number of failed executions.
- * count_success: A count of the number of successful executions.
- * delay_failure: The time to wait before attempting to "rerun" for failed executions.
- * delay_success: The time to wait before attempting to "rerun" for successful executions.
- * max_failure:   The maximum number of times to "rerun" (with 0 representing "rerun" infinitely) for failed executions.
- * max_success:   The maximum number of times to "rerun" (with 0 representing "rerun" infinitely) for successful executions.
+ * Properties:
+ *   - is:            A bitwise set of options to designate whether rerun is enabled or not and other options.
+ *   - count_failure: A count of the number of failed executions.
+ *   - count_success: A count of the number of successful executions.
+ *   - delay_failure: The time to wait before attempting to "rerun" for failed executions.
+ *   - delay_success: The time to wait before attempting to "rerun" for successful executions.
+ *   - max_failure:   The maximum number of times to "rerun" (with 0 representing "rerun" infinitely) for failed executions.
+ *   - max_success:   The maximum number of times to "rerun" (with 0 representing "rerun" infinitely) for successful executions.
  */
 #ifndef _di_controller_rule_rerun_t_
   typedef struct {
@@ -75,12 +77,13 @@ extern "C" {
 /**
  * Controller Rule Action.
  *
- * type:       The Rule Action type.
- * line:       The line number where the Rule Action begins.
- * status:     The last execution status of the Rule Action.
- * parameters: All parameters associated with the Rule Action.
+ * Properties:
+ *   - type:       The Rule Action type.
+ *   - line:       The line number where the Rule Action begins.
+ *   - status:     The last execution status of the Rule Action.
+ *   - parameters: All parameters associated with the Rule Action.
  */
-#ifndef _di_controller_rule_action_t_
+#ifndef _di_controller_main_rule_action_t_
   typedef struct {
     uint8_t type;
     f_number_unsigned_t line;
@@ -88,47 +91,49 @@ extern "C" {
 
     f_string_dynamics_t parameters;
     f_iki_datas_t ikis;
-  } controller_rule_action_t;
+  } controller_main_rule_action_t;
 
-  #define controller_rule_action_t_initialize { \
+  #define controller_main_rule_action_t_initialize { \
     0, \
     0, \
     F_known_not, \
     f_string_dynamics_t_initialize, \
     f_iki_datas_t_initialize, \
   }
-#endif // _di_controller_rule_action_t_
+#endif // _di_controller_main_rule_action_t_
 
 /**
  * Controller Rule Actions.
  *
- * array: An array of Rule Actions.
- * size:  Total amount of allocated space.
- * used:  Total number of allocated spaces used.
+ * Properties:
+ *   - array: An array of Rule Actions.
+ *   - size:  Total amount of allocated space.
+ *   - used:  Total number of allocated spaces used.
  */
-#ifndef _di_controller_rule_actions_t_
+#ifndef _di_controller_main_rule_actions_t_
   typedef struct {
-    controller_rule_action_t *array;
+    controller_main_rule_action_t *array;
 
     f_number_unsigned_t size;
     f_number_unsigned_t used;
-  } controller_rule_actions_t;
+  } controller_main_rule_actions_t;
 
-  #define controller_rule_actions_t_initialize { \
+  #define controller_main_rule_actions_t_initialize { \
     0, \
     0, \
     0, \
   }
-#endif // _di_controller_rule_actions_t_
+#endif // _di_controller_main_rule_actions_t_
 
 /**
  * Controller Rule Item.
  *
- * type:    The type of the Rule Item.
- * with:    A bitwise number representing execute "with" options.
- * line:    The line number where the Rule Item begins.
- * reruns:  An array designating rerun settings for each execution type available.
- * actions: The actions associated with the Rule Item.
+ * Properties:
+ *   - type:    The type of the Rule Item.
+ *   - with:    A bitwise number representing execute "with" options.
+ *   - line:    The line number where the Rule Item begins.
+ *   - reruns:  An array designating rerun settings for each execution type available.
+ *   - actions: The actions associated with the Rule Item.
  */
 #ifndef _di_controller_rule_item_t_
   typedef struct {
@@ -137,8 +142,8 @@ extern "C" {
     f_number_unsigned_t line;
 
     f_string_dynamic_t pid_file;
-    controller_rule_rerun_t reruns[controller_rule_action_execute_type__enum_size_e];
-    controller_rule_actions_t actions;
+    controller_rule_rerun_t reruns[controller_main_rule_action_execute_type__enum_size_e];
+    controller_main_rule_actions_t actions;
   } controller_rule_item_t;
 
   #define controller_rule_item_t_initialize \
@@ -158,16 +163,17 @@ extern "C" {
         controller_rule_rerun_t_initialize, \
         controller_rule_rerun_t_initialize, \
       }, \
-      controller_rule_actions_t_initialize, \
+      controller_main_rule_actions_t_initialize, \
     }
 #endif // _di_controller_rule_item_t_
 
 /**
  * Controller Rule Items.
  *
- * array: An array of Rule Items.
- * size:  Total amount of allocated space.
- * used:  Total number of allocated spaces used.
+ * Properties:
+ *   - array: An array of Rule Items.
+ *   - size:  Total amount of allocated space.
+ *   - used:  Total number of allocated spaces used.
  */
 #ifndef _di_controller_rule_items_t_
   typedef struct {
@@ -187,10 +193,11 @@ extern "C" {
 /**
  * The Rule "on" values for designating dependencies.
  *
- * action: The Rule Action type this "on" dependencies are associated with.
- * need:   The Rule Alias for a required Rule.
- * want:   The Rule Alias for an optional Rule that is required to succeed if found.
- * wish:   The Rule Alias for an optional Rule that is not required.
+ * Properties:
+ *   - action: The Rule Action type this "on" dependencies are associated with.
+ *   - need:   The Rule Alias for a required Rule.
+ *   - want:   The Rule Alias for an optional Rule that is required to succeed if found.
+ *   - wish:   The Rule Alias for an optional Rule that is not required.
  */
 #ifndef _di_controller_rule_on_t_
   typedef struct {
@@ -212,9 +219,10 @@ extern "C" {
 /**
  * The Rule "on" array.
  *
- * array: An array of Rule "on" values.
- * size:  Total amount of allocated space.
- * used:  Total number of allocated spaces used.
+ * Properties:
+ *   - array: An array of Rule "on" values.
+ *   - size:  Total amount of allocated space.
+ *   - used:  Total number of allocated spaces used.
  */
 #ifndef _di_controller_rule_ons_t_
   typedef struct {
@@ -234,36 +242,37 @@ extern "C" {
 /**
  * Controller Rule.
  *
- * affinity:         The cpu affinity to be used when executing the Rule.
- * alias:            The distinct ID (machine name) of the Rule, such as "service/ssh".
- * capability:       The capability setting if the Rule "has" a capability.
- * cgroup:           The control group setting if the Rule "has" a control group.
- * define:           Any defines (environment variables) made available to the Rule for IKI substitution or just as environment variables.
- * engine:           The program or path to the program of the scripting engine to use when processing scripts in this Rule.
- * engine_arguments: Any arguments to pass to the engine program.
- * environment:      All environment variables allowed to be exposed to the Rule when processing.
- * group:            The group ID if the Rule "has" a group.
- * groups:           A set of group IDs to run the process with (first specified group is the primary group).
- * has:              Bitwise set of "has" codes representing what the Rule has.
- * items:            All items associated with the Rule.
- * limits:           The cpu/resource limits to use when executing the Rule.
- * name:             A human name for the Rule (does not have to be distinct), such as "Bash Script".
- * nice:             The niceness value if the Rule "has" nice.
- * on:               A set of parameters for defining dependencies and how they are needed, wanted, or wished for.
- * parameter:        Any parameters made available to the Rule for IKI substitution.
- * path:             The path to the Rule file.
- * scheduler:        The scheduler setting if the Rule "has" a scheduler.
- * status:           A set of action-specific success/failure status of the Rule. Each index represents a controller_rule_action_type_* enum value. Index 0 represents a global status.
- * timeout_exit:     The timeout to wait when exiting the Controller program after sending the terminate signal to send the kill signal.
- * timeout_kill:     The timeout to wait relating to using a kill signal.
- * timeout_start:    The timeout to wait relating to starting a process.
- * timeout_stop:     The timeout to wait relating to stopping a process.
- * timestamp:        The timestamp when the Rule was loaded.
- * user:             The User ID if the Rule "has" a user.
+ * Properties:
+ *   - affinity:         The cpu affinity to be used when executing the Rule.
+ *   - alias:            The distinct ID (machine name) of the Rule, such as "service/ssh".
+ *   - capability:       The capability setting if the Rule "has" a capability.
+ *   - cgroup:           The control group setting if the Rule "has" a control group.
+ *   - define:           Any defines (environment variables) made available to the Rule for IKI substitution or just as environment variables.
+ *   - engine:           The program or path to the program of the scripting engine to use when processing scripts in this Rule.
+ *   - engine_arguments: Any arguments to pass to the engine program.
+ *   - environment:      All environment variables allowed to be exposed to the Rule when processing.
+ *   - group:            The group ID if the Rule "has" a group.
+ *   - groups:           A set of group IDs to run the process with (first specified group is the primary group).
+ *   - has:              Bitwise set of "has" codes representing what the Rule has.
+ *   - items:            All items associated with the Rule.
+ *   - limits:           The cpu/resource limits to use when executing the Rule.
+ *   - name:             A human name for the Rule (does not have to be distinct), such as "Bash Script".
+ *   - nice:             The niceness value if the Rule "has" nice.
+ *   - on:               A set of parameters for defining dependencies and how they are needed, wanted, or wished for.
+ *   - parameter:        Any parameters made available to the Rule for IKI substitution.
+ *   - path:             The path to the Rule file.
+ *   - scheduler:        The scheduler setting if the Rule "has" a scheduler.
+ *   - status:           A set of action-specific success/failure status of the Rule. Each index represents a controller_main_rule_action_type_* enum value. Index 0 represents a global status.
+ *   - timeout_exit:     The timeout to wait when exiting the Controller program after sending the terminate signal to send the kill signal.
+ *   - timeout_kill:     The timeout to wait relating to using a kill signal.
+ *   - timeout_start:    The timeout to wait relating to starting a process.
+ *   - timeout_stop:     The timeout to wait relating to stopping a process.
+ *   - timestamp:        The timestamp when the Rule was loaded.
+ *   - user:             The User ID if the Rule "has" a user.
  */
 #ifndef _di_controller_rule_t_
   typedef struct {
-    f_status_t status[controller_rule_action_type__enum_size_e];
+    f_status_t status[controller_main_rule_action_type__enum_size_e];
 
     f_number_unsigned_t timeout_kill;
     f_number_unsigned_t timeout_start;
@@ -346,9 +355,10 @@ extern "C" {
 /**
  * Controller Rules.
  *
- * array: An array of Rules.
- * size:  Total amount of allocated space.
- * used:  Total number of allocated spaces used.
+ * Properties:
+ *   - array: An array of Rules.
+ *   - size:  Total amount of allocated space.
+ *   - used:  Total number of allocated spaces used.
  */
 #ifndef _di_controller_rules_t_
   typedef struct {
@@ -366,10 +376,10 @@ extern "C" {
 #endif // _di_controller_rules_t_
 
 /**
- * Fully deallocate all memory for the given Rule without caring about return status.
+ * Fully de-allocate all memory for the given Rule without caring about return status.
  *
  * @param rule
- *   The rule to deallocate.
+ *   The rule to de-allocate.
  *
  * @see f_capability_delete()
  * @see f_memory_array_resize()
@@ -388,12 +398,12 @@ extern "C" {
  * @see f_memory_array_resize()
  * @see f_memory_arrays_resize()
  */
-#ifndef _di_controller_rule_action_delete_
-  extern void controller_rule_action_delete(controller_rule_action_t * const action);
-#endif // _di_controller_rule_action_delete_
+#ifndef _di_controller_main_rule_action_delete_
+  extern void controller_main_rule_action_delete(controller_main_rule_action_t * const action);
+#endif // _di_controller_main_rule_action_delete_
 
 /**
- * A callback intended to be passed to f_memory_arrays_resize() for an controller_rule_actions_t structure.
+ * A callback intended to be passed to f_memory_arrays_resize() for an controller_main_rule_actions_t structure.
  *
  * This is only called when shrinking the array and generally should perform de-allocations.
  *
@@ -405,6 +415,7 @@ extern "C" {
  *   The exclusive stop position in the array to stop deleting.
  * @param array
  *   The array structure to delete all values of.
+ *
  *   Must not be NULL.
  *
  * @return
@@ -412,11 +423,11 @@ extern "C" {
  *
  *   F_parameter (with error bit) if a parameter is invalid.
  *
- * @see controller_rule_action_delete()
+ * @see controller_main_rule_action_delete()
  */
-#ifndef _di_controller_rule_actions_delete_callback_
-  extern f_status_t controller_rule_actions_delete_callback(const f_number_unsigned_t start, const f_number_unsigned_t stop, void * const array);
-#endif // _di_controller_rule_actions_delete_callback_
+#ifndef _di_controller_main_rule_actions_delete_callback_
+  extern f_status_t controller_main_rule_actions_delete_callback(const f_number_unsigned_t start, const f_number_unsigned_t stop, void * const array);
+#endif // _di_controller_main_rule_actions_delete_callback_
 
 /**
  * Delete the Controller Rule Item data.
@@ -424,7 +435,7 @@ extern "C" {
  * @param item
  *   The Rule Item data.
  *
- * @see controller_rule_actions_delete()
+ * @see controller_main_rule_actions_delete()
  *
  * @see f_memory_array_resize()
  */
@@ -444,6 +455,7 @@ extern "C" {
  *   The exclusive stop position in the array to stop deleting.
  * @param array
  *   The array structure to delete all values of.
+ *
  *   Must not be NULL.
  *
  * @return
@@ -482,6 +494,7 @@ extern "C" {
  *   The exclusive stop position in the array to stop deleting.
  * @param array
  *   The array structure to delete all values of.
+ *
  *   Must not be NULL.
  *
  * @return

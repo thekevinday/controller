@@ -24,9 +24,10 @@ extern "C" {
  *   If F_false, then process as if this operates during a an exit operation.
  * @param instance
  *   The instance data.
+ *
  *   Must not be NULL.
  *
- * @see controller_rule_instance_do()
+ * @see controller_main_rule_instance_do()
  */
 #ifndef _di_controller_main_thread_instance_
   extern void controller_main_thread_instance(const uint8_t is_normal, controller_instance_t * const instance);
@@ -37,6 +38,7 @@ extern "C" {
  *
  * @param global
  *   The global data.
+ *
  *   Must not be NULL.
  *
  *   This does not alter global.main.setting.state.status.
@@ -59,6 +61,7 @@ extern "C" {
  *
  * @param global
  *   The global data.
+ *
  *   Must not be NULL.
  *
  *   This does not alter global.main.setting.state.status.
@@ -73,6 +76,7 @@ extern "C" {
  * @param arguments
  *   The thread arguments.
  *   Must be of type controller_global_t.
+ *
  *   Must not be NULL.
  *
  * @return
@@ -89,6 +93,7 @@ extern "C" {
  *
  * @param arguments
  *   The thread arguments.
+ *
  *   Must not be NULL.
  *   Must be of type controller_instance_t.
  *

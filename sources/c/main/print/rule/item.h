@@ -21,9 +21,11 @@ extern "C" {
  *
  * @param print
  *   The output structure to print to.
+ *
  *   Must not be NULL.
  * @param cache
  *   A structure for containing and caching relevant data.
+ *
  *   Must not be NULL.
  *
  * @return
@@ -69,9 +71,11 @@ extern "C" {
  *
  * @param print
  *   The output structure to print to.
+ *
  *   Must not be NULL.
  * @param cache
  *   A structure for containing and caching relevant data.
+ *
  *   Must not be NULL.
  *
  * @return
@@ -96,9 +100,11 @@ extern "C" {
  *
  * @param print
  *   The output structure to print to.
+ *
  *   Must not be NULL.
  * @param cache
  *   A structure for containing and caching relevant data.
+ *
  *   Must not be NULL.
  *
  * @return
@@ -123,9 +129,11 @@ extern "C" {
  *
  * @param print
  *   The output structure to print to.
+ *
  *   Must not be NULL.
  * @param cache
  *   A structure for containing and caching relevant data.
+ *
  *   Must not be NULL.
  * @param name
  *   The parameter name whose value is unknown.

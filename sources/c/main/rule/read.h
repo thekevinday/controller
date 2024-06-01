@@ -21,6 +21,7 @@ extern "C" {
  *
  * @param global
  *   The global data.
+ *
  *   Must not be NULL.
  *
  *   This does not alter global.main.setting.state.status.
@@ -45,16 +46,16 @@ extern "C" {
  *   Simplified status (with error bit) from controller_main_error_simplify() on failure.
  *
  * @see controller_rule_items_increase_by().
- * @see controller_rule_item_read().
+ * @see controller_main_rule_item_read().
  * @see f_fss_count_lines().
  * @see f_fss_apply_delimit().
  * @see f_string_dynamic_partial_append().
  * @see f_string_dynamic_partial_append_nulless().
  * @see fll_fss_basic_list_read().
  */
-#ifndef _di_controller_rule_read_
-  extern f_status_t controller_rule_read(controller_global_t * const global, const bool is_normal, const f_string_static_t alias, controller_cache_t * const cache, controller_entry_t * const entry, controller_rule_t * const rule);
-#endif // _di_controller_rule_read_
+#ifndef _di_controller_main_rule_read_
+  extern f_status_t controller_main_rule_read(controller_global_t * const global, const bool is_normal, const f_string_static_t alias, controller_cache_t * const cache, controller_entry_t * const entry, controller_rule_t * const rule);
+#endif // _di_controller_main_rule_read_
 
 
 #ifdef __cplusplus

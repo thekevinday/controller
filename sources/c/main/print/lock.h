@@ -49,6 +49,7 @@ extern "C" {
  *   The file stream to lock.
  * @param thread
  *   (optonal) The thread containing the print mutex to lock.
+ *
  *   Set to NULL to not use.
  *
  * @see f_file_stream_lock()
@@ -72,6 +73,7 @@ extern "C" {
  *   The file stream to unlock and flush.
  * @param thread
  *   (optonal) The thread containing the print mutex to unlock.
+ *
  *   Set to NULL to not use.
  *
  * @see f_file_stream_unlock()

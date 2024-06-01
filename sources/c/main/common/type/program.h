@@ -19,25 +19,28 @@ extern "C" {
 /**
  * Controller program process data.
  *
- * ready: State representing if the settings are all loaded and is ready to run program operations.
- * mode:  Controller setting mode based on the setting mode enumerator.
+ * The typedef for this is located in the defs.h header.
  *
- * failsafe_item_id: The Entry Item ID to execute when failsafe execution is enabled.
+ * Properties:
+ *   - ready: State representing if the settings are all loaded and is ready to run program operations.
+ *   - mode:  Controller setting mode based on the setting mode enumerator.
  *
- * name_entry:   The name of the entry file.
- * path_cgroup:  Directory path to the cgroup directory.
- * path_control: File path to the control socket (used for printing the path).
- * path_current: The current path.
- * path_pid:     File path to the PID file.
- * path_setting: File path to the setting directory.
+ *   - failsafe_item_id: The Entry Item ID to execute when failsafe execution is enabled.
  *
- * control: The control socket data.
- * entry:   The Entry settings.
- * exit:    The Exit settings.
- * rules:   All rules and their respective settings.
+ *   - name_entry:   The name of the entry file.
+ *   - path_cgroup:  Directory path to the cgroup directory.
+ *   - path_control: File path to the control socket (used for printing the path).
+ *   - path_current: The current path.
+ *   - path_pid:     File path to the PID file.
+ *   - path_setting: File path to the setting directory.
+ *
+ *   - control: The control socket data.
+ *   - entry:   The Entry settings.
+ *   - exit:    The Exit settings.
+ *   - rules:   All rules and their respective settings.
  */
 #ifndef _di_controller_program_t_
-  typedef struct {
+  struct controller_program_t_ {
     uint8_t ready;
     uint8_t mode;
 
@@ -54,7 +57,7 @@ extern "C" {
     controller_entry_t entry;
     controller_entry_t exit;
     controller_rules_t rules;
-  } controller_program_t;
+  };
 
   #define controller_program_t_initialize { \
     0, \

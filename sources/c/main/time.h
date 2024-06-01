@@ -24,15 +24,16 @@
  *
  * @see f_time_of_day_get()
  */
-#ifndef _di_controller_time_now_
-  extern void controller_time_now(const time_t seconds, const long nanoseconds, f_time_spec_t * const time);
-#endif // _di_controller_time_now_
+#ifndef _di_controller_main_time_now_
+  extern void controller_main_time_now(const time_t seconds, const long nanoseconds, f_time_spec_t * const time);
+#endif // _di_controller_main_time_now_
 
 /**
  * Sleep for the given time.
  *
  * @param global
  *   The global data.
+ *
  *   Must not be NULL.
  *
  *   This does not alter global.main.setting.state.status.
@@ -43,16 +44,16 @@
  *   Success from: f_signal_wait_until().
  *   Success from: f_time_of_day_get().
  *
- *   F_parameter (with error bit) on invalid parameter.
+ *   F_parameter (with error bit) if a parameter is invalid.
  *
  *   Errors (with error bit) from: f_signal_wait_until().
  *   Errors (with error bit) from: f_time_of_day_get().
  *
  * @see f_time_of_day_get()
  */
-#ifndef _di_controller_time_sleep_nanoseconds_
-  extern f_status_t controller_time_sleep_nanoseconds(controller_global_t * const global, const f_time_spec_t time);
-#endif // _di_controller_time_sleep_nanoseconds_
+#ifndef _di_controller_main_time_sleep_nanoseconds_
+  extern f_status_t controller_main_time_sleep_nanoseconds(controller_global_t * const global, const f_time_spec_t time);
+#endif // _di_controller_main_time_sleep_nanoseconds_
 
 #ifdef __cplusplus
 } // extern "C"

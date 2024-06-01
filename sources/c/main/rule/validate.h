@@ -25,6 +25,7 @@ extern "C" {
  *
  * @param global
  *   The global data.
+ *
  *   Must not be NULL.
  *
  *   This does not alter global.main.setting.state.status.
@@ -40,9 +41,9 @@ extern "C" {
  * @param cache
  *   A structure for containing and caching relevant data.
  */
-#ifndef _di_controller_rule_validate_
-  extern void controller_rule_validate(controller_global_t * const global, const controller_rule_t rule, const uint8_t action, const uint8_t options, controller_cache_t * const cache);
-#endif // _di_controller_rule_validate_
+#ifndef _di_controller_main_rule_validate_
+  extern void controller_main_rule_validate(controller_global_t * const global, const controller_rule_t rule, const uint8_t action, const uint8_t options, controller_cache_t * const cache);
+#endif // _di_controller_main_rule_validate_
 
 #ifdef __cplusplus
 } // extern "C"

@@ -23,22 +23,25 @@ extern "C" {
  *
  * The "enabled" and "signal" utilize the lock: lock.process.
  *
- * enabled: F_true when threads are active, FALSE when inactive and the program is essentially shutting down, no new threads should be started when F_false.
- * signal:  The code of any signal received.
- * status:  A status used by the main entry/rule processing thread for synchronous operations.
+ * The typedef for this is located in the defs.h header.
  *
- * id_cleanup: The thread ID representing the Cleanup Process.
- * id_control: The thread ID representing the Control Process.
- * id_entry:   The thread ID representing the Entry or Exit Process.
- * id_rule:    The thread ID representing the Rule Process.
- * id_signal:  The thread ID representing the Signal Process.
+ * Properties:
+ *   - enabled: F_true when threads are active, FALSE when inactive and the program is essentially shutting down, no new threads should be started when F_false.
+ *   - signal:  The code of any signal received.
+ *   - status:  A status used by the main entry/rule processing thread for synchronous operations.
  *
- * lock:      A r/w lock for operating on this structure.
- * instances: All Rule Instance thread data.
- * cache:     A cache used by the main entry/rule processing thread for synchronous operations.
+ *   - id_cleanup: The thread ID representing the Cleanup Process.
+ *   - id_control: The thread ID representing the Control Process.
+ *   - id_entry:   The thread ID representing the Entry or Exit Process.
+ *   - id_rule:    The thread ID representing the Rule Process.
+ *   - id_signal:  The thread ID representing the Signal Process.
+ *
+ *   - lock:      A r/w lock for operating on this structure.
+ *   - instances: All Rule Instance thread data.
+ *   - cache:     A cache used by the main entry/rule processing thread for synchronous operations.
  */
 #ifndef _di_controller_thread_t_
-  typedef struct {
+  struct controller_thread_t_ {
     uint8_t enabled;
     int signal;
     f_status_t status;
@@ -52,7 +55,7 @@ extern "C" {
     controller_lock_t lock;
     controller_instances_t instances;
     controller_cache_t cache;
-  } controller_thread_t;
+  };
 
   #define controller_thread_t_initialize { \
     controller_thread_enabled_e, \
@@ -70,10 +73,10 @@ extern "C" {
 #endif // _di_controller_thread_t_
 
 /**
- * Fully deallocate all memory for the given setting without caring about return status.
+ * Fully de-allocate all memory for the given setting without caring about return status.
  *
  * @param thread
- *   The thread to deallocate.
+ *   The thread to de-allocate.
  *
  *   Must not be NULL.
  *

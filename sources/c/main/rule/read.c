@@ -4,8 +4,8 @@
 extern "C" {
 #endif
 
-#ifndef _di_controller_rule_read_
-  f_status_t controller_rule_read(controller_global_t * const global, const bool is_normal, const f_string_static_t alias, controller_cache_t * const cache, controller_entry_t * const entry, controller_rule_t * const rule) {
+#ifndef _di_controller_main_rule_read_
+  f_status_t controller_main_rule_read(controller_global_t * const global, const bool is_normal, const f_string_static_t alias, controller_cache_t * const cache, controller_entry_t * const entry, controller_rule_t * const rule) {
 
     if (!global || !cache || !entry || !rule) return F_status_set_error(F_parameter);
 
@@ -86,7 +86,7 @@ extern "C" {
         rule->cgroup.groups.array[i].used = 0;
       } // for
 
-      for (; i < controller_rule_action_type__enum_size_e; ++i) {
+      for (; i < controller_main_rule_action_type__enum_size_e; ++i) {
         rule->status[i] = F_known_not;
       } // for
 
@@ -112,7 +112,7 @@ extern "C" {
         rule->items.array[i].pid_file.used = 0;
         rule->items.array[i].actions.used = 0;
 
-        for (j = 0; j < controller_rule_action_execute_type__enum_size_e; ++j) {
+        for (j = 0; j < controller_main_rule_action_execute_type__enum_size_e; ++j) {
 
           rule->items.array[i].reruns[j].is = 0;
 
@@ -307,7 +307,7 @@ extern "C" {
               rule->items.array[rule->items.used].with |= controller_with_session_same_d;
             }
 
-            status = controller_rule_item_read(global, is_normal, cache, &rule->items.array[rule->items.used]);
+            status = controller_main_rule_item_read(global, is_normal, cache, &rule->items.array[rule->items.used]);
             if (F_status_is_error(status)) break;
 
             ++rule->items.used;
@@ -315,7 +315,7 @@ extern "C" {
           else {
             for_item = F_false;
 
-            status = controller_rule_setting_read(global, is_normal, *global->setting, cache, rule);
+            status = controller_main_rule_setting_read(global, is_normal, *global->setting, cache, rule);
 
             if (F_status_is_error(status)) {
               if (F_status_set_fine(status) == F_memory_not) break;
@@ -335,7 +335,7 @@ extern "C" {
 
     return F_okay;
   }
-#endif // _di_controller_rule_read_
+#endif // _di_controller_main_rule_read_
 
 #ifdef __cplusplus
 } // extern "C"

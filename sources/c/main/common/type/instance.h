@@ -24,30 +24,33 @@ extern "C" {
  * The "cache" should only be used by the function processing/executing the process and as such should not require a write lock normally needed for thread-safety.
  * There must only be a single thread running any given Instance at a time, guaranteeing that the cache does not need read/write locks.
  *
- * id:        The ID of this process relative to the processes array.
- * id_thread: The thread ID, a valid ID when state is "active", and an invalid ID when the state is "busy".
+ * The typedef for this is located in the defs.h header.
  *
- * action:  The action being performed.
- * options: Configuration options for this thread.
- * state:   The state of the process.
- * type:    The currently active process type (from the controller_instance_type_*_e).
- * result:  The last return code from an execution of a process.
+ * Properties:
+ *   - id:        The ID of this process relative to the processes array.
+ *   - id_thread: The thread ID, a valid ID when state is "active", and an invalid ID when the state is "busy".
  *
- * active:    A read/write lock representing that something is currently using this (read locks = in use, write lock = begin deleting).
- * lock:      A read/write lock on the structure.
- * wait:      A thread condition to tell a process waiting process that the rule has is done being processed.
- * wait_lock: A mutex lock for working with "wait".
+ *   - action:  The action being performed.
+ *   - options: Configuration options for this thread.
+ *   - state:   The state of the process.
+ *   - type:    The currently active process type (from the controller_instance_type_*_e).
+ *   - result:  The last return code from an execution of a process.
  *
- * child:     The process id of a child process, if one is running (when forking to execute a child process).
- * path_pids: An array of paths representing PID files.
- * stack:     A stack used to represent dependencies as Rule ID's to avoid circular Rule dependencies (If Rule A waits on Rule B, then Rule B must not wait on Rule A).
+ *   - active:    A read/write lock representing that something is currently using this (read locks = in use, write lock = begin deleting).
+ *   - lock:      A read/write lock on the structure.
+ *   - wait:      A thread condition to tell a process waiting process that the rule has is done being processed.
+ *   - wait_lock: A mutex lock for working with "wait".
  *
- * rule:   A copy of the rule actively being executed.
- * cache:  The cache used by this Instance.
- * global: The global data.
+ *   - child:     The process id of a child process, if one is running (when forking to execute a child process).
+ *   - path_pids: An array of paths representing PID files.
+ *   - stack:     A stack used to represent dependencies as Rule ID's to avoid circular Rule dependencies (If Rule A waits on Rule B, then Rule B must not wait on Rule A).
+ *
+ *   - rule:   A copy of the rule actively being executed.
+ *   - cache:  The cache used by this Instance.
+ *   - global: The global data.
  */
 #ifndef _di_controller_instance_t_
-  typedef struct {
+  struct controller_instance_t_ {
     f_number_unsigned_t id;
     f_thread_id_t id_thread;
 
@@ -69,7 +72,7 @@ extern "C" {
     controller_rule_t rule;
     controller_cache_t cache;
     controller_global_t global;
-  } controller_instance_t;
+  };
 
   #define controller_instance_t_initialize { \
     0, \
@@ -95,19 +98,20 @@ extern "C" {
 /**
  * An array of Controller Instances.
  *
- * This has a circular dependency with controller_thread_t.
+ * The typedef for this is located in the defs.h header.
  *
- * array: An array of Instances.
- * size:  Total amount of allocated space.
- * used:  Total number of allocated spaces used.
+ * Properties:
+ *   - array: An array of Instances.
+ *   - size:  Total amount of allocated space.
+ *   - used:  Total number of allocated spaces used.
  */
 #ifndef _di_controller_instances_t_
-  typedef struct {
+  struct controller_instances_t_ {
     controller_instance_t **array;
 
     f_number_unsigned_t size;
     f_number_unsigned_t used;
-  } controller_instances_t;
+  };
 
   #define controller_instances_t_initialize { \
     0, \
@@ -143,6 +147,7 @@ extern "C" {
  *   The exclusive stop position in the array to stop deleting.
  * @param array
  *   The array structure to delete all values of.
+ *
  *   Must not be NULL.
  *
  * @return

@@ -19,6 +19,8 @@ extern "C" {
 /**
  * A wrapper used for passing a common set of all data, particularly for sharing between threads.
  *
+ * The typedef for this is located in the defs.h header.
+ *
  * Properties:
  *   - main:    The main program data.
  *   - program: The program data.
@@ -31,7 +33,7 @@ extern "C" {
  *   - debug:   The output file for debug output messages, but with custom set to (controller_global_t *).
  */
 #ifndef _di_controller_global_t_
-  typedef struct {
+  struct controller_global_t_ {
     controller_main_t *main;
     controller_program_t *program;
     controller_thread_t *thread;
@@ -41,7 +43,7 @@ extern "C" {
     fl_print_t *error;
     fl_print_t *warning;
     fl_print_t *debug;
-  } controller_global_t;
+  };
 
   #define controller_global_t_initialize { 0, 0, 0, 0, 0, 0, 0, 0 }
 
@@ -60,8 +62,9 @@ extern "C" {
 /**
  * A structure for passing data to the interrupt state function.
  *
- * is_normal: Boolean designating if this is operating in a normal state.
- * thread:    The thread data.
+ * Properties:
+ *   - is_normal: Boolean designating if this is operating in a normal state.
+ *   - thread:    The thread data.
  */
 #ifndef _di_controller_interrupt_t_
   typedef struct {

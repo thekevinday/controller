@@ -19,7 +19,7 @@ extern "C" {
 /**
  * Print a message about a rule setting problem.
  *
- * This is intended to be explicitly called by controller_rule_setting_read().
+ * This is intended to be explicitly called by controller_main_rule_setting_read().
  * This is intended only to be used for simple messages.
  *
  * @param print
@@ -35,7 +35,7 @@ extern "C" {
  * @param cache
  *   A structure for containing and caching relevant data.
  *
- * @see controller_rule_setting_read()
+ * @see controller_main_rule_setting_read()
  */
 #ifndef _di_controller_main_print_rule_setting_read_error_
   extern void controller_main_print_rule_setting_read_error(fl_print_t * const print, const f_string_t message, const f_number_unsigned_t index, const f_number_unsigned_t line_item, controller_thread_t * const thread, controller_cache_t * const cache);
@@ -44,7 +44,7 @@ extern "C" {
 /**
  * Print a message about a rule setting problem, with additional messages about the value.
  *
- * This is intended to be explicitly called by controller_rule_setting_read().
+ * This is intended to be explicitly called by controller_main_rule_setting_read().
  * This is intended only to be used for simple messages.
  *
  * @param print
@@ -64,7 +64,7 @@ extern "C" {
  * @param cache
  *   A structure for containing and caching relevant data.
  *
- * @see controller_rule_setting_read()
+ * @see controller_main_rule_setting_read()
  */
 #ifndef _di_controller_main_print_rule_setting_read_error_with_range_
   extern void controller_main_print_rule_setting_read_error_with_range(fl_print_t * const print, const f_string_t before, const f_range_t range, const f_string_t after, const f_number_unsigned_t index, const f_number_unsigned_t line_item, controller_thread_t * const thread, controller_cache_t * const cache);

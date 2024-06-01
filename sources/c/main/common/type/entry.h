@@ -19,13 +19,14 @@ extern "C" {
 /**
  * Controller Entry Item Action.
  *
- * type:       The type of Action.
- * code:       A single code or sub-type associated with the Action.
- * flag:       A set of flags to describe special behavior for the given type and code (flags may be different per type and code).
- * line:       The line number where the Entry Item begins.
- * number:     The unsigned number that some types use instead of the "parameters".
- * status:     The overall status.
- * parameters: The values associated with the Action.
+ * Properties:
+ *   - type:       The type of Action.
+ *   - code:       A single code or sub-type associated with the Action.
+ *   - flag:       A set of flags to describe special behavior for the given type and code (flags may be different per type and code).
+ *   - line:       The line number where the Entry Item begins.
+ *   - number:     The unsigned number that some types use instead of the "parameters".
+ *   - status:     The overall status.
+ *   - parameters: The values associated with the Action.
  */
 #ifndef _di_controller_entry_action_t_
   typedef struct {
@@ -55,9 +56,10 @@ extern "C" {
 /**
  * Controller Entry Item Actions.
  *
- * array: An array of Entry Item Actions.
- * size:  Total amount of allocated space.
- * used:  Total number of allocated spaces used.
+ * Properties:
+ *   - array: An array of Entry Item Actions.
+ *   - size:  Total amount of allocated space.
+ *   - used:  Total number of allocated spaces used.
  */
 #ifndef _di_controller_entry_actions_t_
   typedef struct {
@@ -77,9 +79,10 @@ extern "C" {
 /**
  * Controller Entry Item.
  *
- * line:    The line number where the Entry Item begins.
- * name:    The name of the Entry Item.
- * actions: The Actions associated with the Entry Item.
+ * Properties:
+ *   - line:    The line number where the Entry Item begins.
+ *   - name:    The name of the Entry Item.
+ *   - actions: The Actions associated with the Entry Item.
  */
 #ifndef _di_controller_entry_item_t_
   typedef struct {
@@ -100,9 +103,10 @@ extern "C" {
 /**
  * Controller Entry Items.
  *
- * array: An array of Entry Items.
- * size:  Total amount of allocated space.
- * used:  Total number of allocated spaces used.
+ * Properties:
+ *   - array: An array of Entry Items.
+ *   - size:  Total amount of allocated space.
+ *   - used:  Total number of allocated spaces used.
  */
 #ifndef _di_controller_entry_items_t_
   typedef struct {
@@ -130,18 +134,19 @@ extern "C" {
  * Entry and Exit files are essentially the same structure with minor differences in settings and behavior.
  * The structure is identical and due to lacking any particularly good name to represent both "entry" or "exit", the name "entry" is being used for both.
  *
- * define:        Any defines (environment variables) made available to all Rules in this entry for IKI substitution or just as environment variables.
- * flag:          A set of flags, primarily used to designate that timeouts are disabled.
- * items:         The array of entry items.
- * parameter:     Any parameters made available to all Rules in this entry for IKI substitution.
- * pid:           The PID file generation setting.
- * session:       The default session settings (when NULL, no default is specified).
- * show:          The show setting for controlling what to show when executing entry items and rules.
- * status:        The overall status.
- * timeout_exit:  The timeout to wait when exiting the Controller program after sending the terminate signal to send the kill signal.
- * timeout_kill:  The timeout to wait relating to using a kill signal.
- * timeout_start: The timeout to wait relating to starting a process.
- * timeout_stop:  The timeout to wait relating to stopping a process.
+ * Properties:
+ *   - define:        Any defines (environment variables) made available to all Rules in this entry for IKI substitution or just as environment variables.
+ *   - flag:          A set of flags, primarily used to designate that timeouts are disabled.
+ *   - items:         The array of entry items.
+ *   - parameter:     Any parameters made available to all Rules in this entry for IKI substitution.
+ *   - pid:           The PID file generation setting.
+ *   - session:       The default session settings (when NULL, no default is specified).
+ *   - show:          The show setting for controlling what to show when executing entry items and rules.
+ *   - status:        The overall status.
+ *   - timeout_exit:  The timeout to wait when exiting the Controller program after sending the terminate signal to send the kill signal.
+ *   - timeout_kill:  The timeout to wait relating to using a kill signal.
+ *   - timeout_start: The timeout to wait relating to starting a process.
+ *   - timeout_stop:  The timeout to wait relating to stopping a process.
  */
 #ifndef _di_controller_entry_t_
   typedef struct {

@@ -22,13 +22,14 @@ extern "C" {
  * This is passed to the program-specific main entry point to designate program settings.
  * These program settings are often processed from the program arguments (often called the command line arguments).
  *
- * flag: Flags passed to the main function.
+ * Properties:
+ *   - flag: Flags passed to the main function.
  *
- * status_signal: A status used eclusively by the threaded signal handler.
- * state:         The state data used when processing the FSS data.
+ *   - status_signal: A status used eclusively by the threaded signal handler.
+ *   - state:         The state data used when processing the FSS data.
  *
- * path_pid:     The name of the program.
- * path_setting: The long name of the program.
+ *   - path_pid:     The name of the program.
+ *   - path_setting: The long name of the program.
  */
 #ifndef _di_controller_setting_t_
   typedef struct {
@@ -54,15 +55,18 @@ extern "C" {
 /**
  * The main program data as a single structure.
  *
- * program: The main program data.
- * setting: The settings data.
+ * The typedef for this is located in the defs.h header.
+ *
+ * Properties:
+ *   - program: The main program data.
+ *   - setting: The settings data.
  */
 #ifndef _di_controller_main_t_
-  typedef struct {
+  struct controller_main_t_ {
     fll_program_data_t program;
     controller_setting_t setting;
     controller_cache_t cache;
-  } controller_main_t;
+  };
 
   #define controller_main_t_initialize \
     { \
@@ -73,7 +77,7 @@ extern "C" {
 #endif // _di_controller_main_t_
 
 /**
- * Deallocate main program data.
+ * De-allocate main program data.
  *
  * @param main
  *   The main program data.

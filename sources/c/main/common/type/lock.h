@@ -25,12 +25,13 @@ extern "C" {
  * The instance lock is intended to lock any activity on the instance structure.
  * The rule lock is intended to lock any activity on the rules structure.
  *
- * alert:           The alert mutex lock for waking up on alerts.
- * cancel:          The cancel mutex lock for locking the cancel operation.
- * print:           The print mutex lock.
- * instance:        The instance r/w lock.
- * rule:            The rule r/w lock.
- * alert_condition: The condition used to trigger alerts.
+ * Properties:
+ *   - alert:           The alert mutex lock for waking up on alerts.
+ *   - cancel:          The cancel mutex lock for locking the cancel operation.
+ *   - print:           The print mutex lock.
+ *   - instance:        The instance r/w lock.
+ *   - rule:            The rule r/w lock.
+ *   - alert_condition: The condition used to trigger alerts.
  */
 #ifndef _di_controller_lock_t_
   typedef struct {
@@ -55,10 +56,10 @@ extern "C" {
 #endif // _di_controller_lock_t_
 
 /**
- * Fully deallocate all memory for the given lock without caring about return status.
+ * Fully de-allocate all memory for the given lock without caring about return status.
  *
  * @param lock
- *   The lock to deallocate.
+ *   The lock to de-allocate.
  *
  * @see f_thread_lock_delete()
  * @see f_thread_mutex_delete()

@@ -22,6 +22,7 @@ extern "C" {
  * @param arguments
  *   The global data.
  *   Must be of type controller_global_t.
+ *
  *   Must not be NULL.
  *
  * @return

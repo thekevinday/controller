@@ -39,6 +39,7 @@ extern "C" {
  */
 #ifndef _di_controller_f_e_
   enum {
+    controller_f_controller_main_lock_create_e,
     controller_f_controller_rule_copy_e,
     controller_f_controller_rule_items_increase_by_e,
     controller_f_controller_path_canonical_relative_e,

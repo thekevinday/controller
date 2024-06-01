@@ -26,6 +26,7 @@ extern "C" {
  *
  * @param global
  *   The global data.
+ *
  *   Must not be NULL.
  *
  *   This does not alter global.main.setting.state.status.
@@ -56,9 +57,9 @@ extern "C" {
  *
  * @see controller_path_canonical_relative()
  */
-#ifndef _di_controller_rule_setting_read_
-  extern f_status_t controller_rule_setting_read(controller_global_t * const global, const bool is_normal, controller_cache_t * const cache, controller_rule_t * const rule);
-#endif // _di_controller_rule_setting_read_
+#ifndef _di_controller_main_rule_setting_read_
+  extern f_status_t controller_main_rule_setting_read(controller_global_t * const global, const bool is_normal, controller_cache_t * const cache, controller_rule_t * const rule);
+#endif // _di_controller_main_rule_setting_read_
 
 #ifdef __cplusplus
 } // extern "C"

@@ -4,8 +4,8 @@
 extern "C" {
 #endif
 
-#ifndef _di_controller_rule_parameters_read_
-  f_status_t controller_rule_parameters_read(controller_global_t * const global, const f_string_static_t buffer, f_range_t * const object, f_ranges_t * const content, controller_rule_action_t * const action, f_state_t * const state) {
+#ifndef _di_controller_main_rule_parameters_read_
+  f_status_t controller_main_rule_parameters_read(controller_global_t * const global, const f_string_static_t buffer, f_range_t * const object, f_ranges_t * const content, controller_main_rule_action_t * const action, f_state_t * const state) {
 
     if (!global || !object || !content || !action || !state) return F_status_set_error(F_parameter);
 
@@ -110,7 +110,7 @@ extern "C" {
 
     return F_okay;
   }
-#endif // _di_controller_rule_parameters_read_
+#endif // _di_controller_main_rule_parameters_read_
 
 #ifdef __cplusplus
 } // extern "C"

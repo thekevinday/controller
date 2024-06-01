@@ -63,7 +63,7 @@ extern "C" {
 #endif // _di_controller_main_print_error_file_status_
 
 #ifndef _di_controller_main_print_error_file_pid_exists_
-  f_status_t controller_main_print_error_file_pid_exists(fl_print_t * const print, controller_thread_t * const thread, f_string_dynamic_t * const path) {
+  f_status_t controller_main_print_error_file_pid_exists(fl_print_t * const print, controller_thread_t * const thread, const f_string_dynamic_t path) {
 
     if (!print) return F_status_set_error(F_output_not);
     if (print->verbosity < f_console_verbosity_error_e) return F_output_not;

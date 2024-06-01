@@ -19,20 +19,21 @@ extern "C" {
 /**
  * Controller control data.
  *
- * flag:  Flags from controller_control_flag_*_e.
- * user:  The user ID, if specified.
- * group: The group ID, if specified.
- * mode:  The file mode, if specified.
+ * Properties:
+ *   - flag:  Flags from controller_control_flag_*_e.
+ *   - user:  The user ID, if specified.
+ *   - group: The group ID, if specified.
+ *   - mode:  The file mode, if specified.
  *
- * server: The server socket connection.
- * client: The client socket connection.
+ *   - server: The server socket connection.
+ *   - client: The client socket connection.
  *
- * cache_1: A generic buffer used for caching control related data.
- * cache_2: A generic buffer used for caching control related data.
- * cache_3: A generic buffer used for caching control related data.
+ *   - cache_1: A generic buffer used for caching control related data.
+ *   - cache_2: A generic buffer used for caching control related data.
+ *   - cache_3: A generic buffer used for caching control related data.
  *
- * input:   A buffer used for receiving data from the client.
- * output:  A buffer used for transmitting data to the client.
+ *   - input:   A buffer used for receiving data from the client.
+ *   - output:  A buffer used for transmitting data to the client.
  */
 #ifndef _di_controller_control_t_
   typedef struct {

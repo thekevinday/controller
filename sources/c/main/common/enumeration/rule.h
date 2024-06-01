@@ -21,7 +21,7 @@ extern "C" {
  *
  * Execute type starts at 0 because it is intended to be used as an index within a static array.
  *
- * controller_rule_action_execute_type_*_e:
+ * controller_main_rule_action_execute_type_*_e:
  *   - freeze:   The Freeze execution instructions.
  *   - kill:     The Kill execution instructions.
  *   - pause:    The Pause execution instructions.
@@ -32,43 +32,43 @@ extern "C" {
  *   - stop:     The Stop execution instructions.
  *   - thaw:     The Thaw execution instructions.
  */
-#ifndef _di_controller_rule_action_execute_type_e_
+#ifndef _di_controller_main_rule_action_execute_type_e_
   enum {
-    controller_rule_action_execute_type_freeze_e = 0,
-    controller_rule_action_execute_type_kill_e,
-    controller_rule_action_execute_type_pause_e,
-    controller_rule_action_execute_type_reload_e,
-    controller_rule_action_execute_type_restart_e,
-    controller_rule_action_execute_type_resume_e,
-    controller_rule_action_execute_type_start_e,
-    controller_rule_action_execute_type_stop_e,
-    controller_rule_action_execute_type_thaw_e,
+    controller_main_rule_action_execute_type_freeze_e = 0,
+    controller_main_rule_action_execute_type_kill_e,
+    controller_main_rule_action_execute_type_pause_e,
+    controller_main_rule_action_execute_type_reload_e,
+    controller_main_rule_action_execute_type_restart_e,
+    controller_main_rule_action_execute_type_resume_e,
+    controller_main_rule_action_execute_type_start_e,
+    controller_main_rule_action_execute_type_stop_e,
+    controller_main_rule_action_execute_type_thaw_e,
 
     // Designate the largest value in the enum, the '__' is intentional.
-    controller_rule_action_execute_type__enum_size_e,
+    controller_main_rule_action_execute_type__enum_size_e,
   }; // enum
-#endif // _di_controller_rule_action_execute_type_e_
+#endif // _di_controller_main_rule_action_execute_type_e_
 
 /**
  * Controller Rule Action method enumeration.
  *
- * controller_rule_action_method_*_e:
+ * controller_main_rule_action_method_*_e:
  *   - none:          Nothing set.
  *   - extended:      Designate that this Action is represented using FSS Extended.
  *   - extended_list: Designate that this Action is represented using FSS Extended List.
  */
-#ifndef _di_controller_rule_action_method_e_
+#ifndef _di_controller_main_rule_action_method_e_
   enum {
-    controller_rule_action_method_none_e = 0,
-    controller_rule_action_method_extended_e,
-    controller_rule_action_method_extended_list_e,
+    controller_main_rule_action_method_none_e = 0,
+    controller_main_rule_action_method_extended_e,
+    controller_main_rule_action_method_extended_list_e,
   }; // enum
-#endif // _di_controller_rule_action_method_e_
+#endif // _di_controller_main_rule_action_method_e_
 
 /**
  * Controller Rule Action type enumeration.
  *
- * controller_rule_action_type_*_e:
+ * controller_main_rule_action_type_*_e:
  *   - none:     Nothing set.
  *   - freeze:   The Freeze execution instructions.
  *   - group:    The Group setting.
@@ -85,28 +85,28 @@ extern "C" {
  *   - user:     The User setting.
  *   - with:     The With flags.
  */
-#ifndef _di_controller_rule_action_type_e_
+#ifndef _di_controller_main_rule_action_type_e_
   enum {
-    controller_rule_action_type_none_e = 0,
-    controller_rule_action_type_freeze_e,
-    controller_rule_action_type_group_e,
-    controller_rule_action_type_kill_e,
-    controller_rule_action_type_pause_e,
-    controller_rule_action_type_pid_file_e,
-    controller_rule_action_type_reload_e,
-    controller_rule_action_type_rerun_e,
-    controller_rule_action_type_restart_e,
-    controller_rule_action_type_resume_e,
-    controller_rule_action_type_start_e,
-    controller_rule_action_type_stop_e,
-    controller_rule_action_type_thaw_e,
-    controller_rule_action_type_user_e,
-    controller_rule_action_type_with_e,
+    controller_main_rule_action_type_none_e = 0,
+    controller_main_rule_action_type_freeze_e,
+    controller_main_rule_action_type_group_e,
+    controller_main_rule_action_type_kill_e,
+    controller_main_rule_action_type_pause_e,
+    controller_main_rule_action_type_pid_file_e,
+    controller_main_rule_action_type_reload_e,
+    controller_main_rule_action_type_rerun_e,
+    controller_main_rule_action_type_restart_e,
+    controller_main_rule_action_type_resume_e,
+    controller_main_rule_action_type_start_e,
+    controller_main_rule_action_type_stop_e,
+    controller_main_rule_action_type_thaw_e,
+    controller_main_rule_action_type_user_e,
+    controller_main_rule_action_type_with_e,
 
     // Designate the largest value in the enum, the '__' is intentional.
-    controller_rule_action_type__enum_size_e,
+    controller_main_rule_action_type__enum_size_e,
   }; // enum
-#endif // _di_controller_rule_action_type_e_
+#endif // _di_controller_main_rule_action_type_e_
 
 /**
  * Controller Rule Item type enumeration.

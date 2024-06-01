@@ -12,84 +12,51 @@
 #ifndef _controller_main_thread_h
 #define _controller_main_thread_h
 
-/**
- * Thread for handling signals/interrupts.
+/***
+ * Detach a thread, assigning id to NULL on success.
  *
- * @param global
- *   The global data.
+ * If the ID is not found, then it is also set to NULL.
  *
- *   Must not be NULL.
- * @param is_normal
- *   If TRUE, then process as if this operates during a normal operation (entry and control).
- *   If FALSE, then process as if this operates during a an exit operation.
- */
-#ifndef _di_controller_main_thread_signal_
-  extern void controller_main_thread_signal(controller_global_t * const global, const bool is_normal);
-#endif // _di_controller_main_thread_signal_
-
-/**
- * Callback passed to FSS functions for checking for interrupts.
+ * This should be called for asynchronous processes.
  *
- * @param state
- *   The state data.
- *
- *   Must not be NULL.
- * @param internal
- *   Not used.
- */
-#ifndef _di_controller_main_thread_signal_state_fss_
-  extern void controller_main_thread_signal_state_fss(f_state_t * const state, void * const internal);
-#endif // _di_controller_main_thread_signal_state_fss_
-
-/**
- * Callback passed to IKI functions for checking for interrupts.
- *
- * @param state
- *   The state data.
- *
- *   Must not be NULL.
- * @param internal
- *   Not used.
- */
-#ifndef _di_controller_main_thread_signal_state_iki_
-  extern void controller_main_thread_signal_state_iki(f_state_t * const state, void * const internal);
-#endif // _di_controller_main_thread_signal_state_iki_
-
-/**
- * Thread for handling signals/interrupts during normal operations.
- *
- * @param global
- *   The global structure.
- *   Must be of type controller_global_t.
- *
- *   Must not be NULL.
+ * @param id
+ *   The thread ID.
  *
  * @return
- *   0, always.
+ *   F_okay on success.
+ *   F_data_not if id is NULL or the value of id is 0.
  *
- * @see controller_main_thread_signal()
+ *   Success from: f_thread_detach().
+ *
+ *   Errors (with error bit) from: f_thread_detach().
+ *
+ * @see f_thread_detach()
  */
-#ifndef _di_controller_main_thread_signal_normal_
-  extern void * controller_main_thread_signal_normal(void * const global);
-#endif // _di_controller_main_thread_signal_normal_
+#ifndef _di_controller_main_thread_detach_
+  extern f_status_t controller_main_thread_detach(f_thread_id_t * const id);
+#endif // _di_controller_main_thread_detach_
 
-/**
- * Thread for handling signals/interrupts during other operations.
+/***
+ * Join a thread, assigning id to NULL on success.
  *
- * @param global
- *   The global structure.
- *   Must be of type controller_global_t.
+ * If the ID is not found, then it is also set to NULL.
  *
- *   Must not be NULL.
+ * @param id
+ *   The thread ID.
  *
  * @return
- *   0, always.
+ *   F_okay on success.
+ *   F_data_not if id is NULL or the value of id is 0.
  *
- * @see controller_main_thread_signal()
+ *   Success from: f_thread_join().
+ *
+ *   Errors (with error bit) from: f_thread_join().
+ *
+ * @see f_thread_join()
  */
-#ifndef _di_controller_main_thread_signal_other_
-  extern void * controller_main_thread_signal_other(void * const global);
-#endif // _di_controller_main_thread_signal_other_
+#ifndef _di_controller_main_thread_join_
+  extern f_status_t controller_main_thread_join(f_thread_id_t * const id);
+#endif // _di_controller_main_thread_join_
 
 #ifdef __cplusplus
 } // extern "C"

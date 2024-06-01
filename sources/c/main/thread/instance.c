@@ -10,9 +10,9 @@ extern "C" {
     if (!instance) return;
     if (!controller_main_thread_is_enabled(is_normal, (controller_thread_t * const) instance->thread)) return;
 
-    const f_status_t status = controller_rule_instance_do(controller_instance_option_asynchronous_e, instance);
+    const f_status_t status = controller_main_rule_instance_do(controller_instance_option_asynchronous_e, instance);
 
-    // A forked child instance should deallocate memory on exit.
+    // A forked child instance should de-allocate memory on exit.
     // It seems that this function doesn't return to the calling thread for a forked child instance, even with the "return 0;" below.
     if (status == F_child) {
       controller_thread_delete_simple(instance->main_thread);
@@ -55,7 +55,7 @@ extern "C" {
     time.tv_sec = 0;
     time.tv_nsec = interval_nanoseconds;
 
-    if (global->program->mode == controller_setting_mode_helper_e && global->main->program.parameters.array[controller_parameter_validate_e].result == f_console_result_none_e) {
+    if (global->program->mode == controller_program_mode_helper_e && global->main->program.parameters.array[controller_parameter_validate_e].result == f_console_result_none_e) {
       int value = 0;
       f_number_unsigned_t lapsed = 0;
 
@@ -67,7 +67,7 @@ extern "C" {
 
         if (!instance->id_thread) continue;
 
-        controller_thread_detach(&instance->id_thread);
+        controller_main_thread_detach(&instance->id_thread);
 
         instance->id_thread = 0;
       } // for
@@ -118,7 +118,7 @@ extern "C" {
       global->thread->id_signal = 0;
     }
 
-    if (global->program->mode == controller_setting_mode_helper_e && global->main->program.parameters.array[controller_parameter_validate_e].result == f_console_result_none_e) {
+    if (global->program->mode == controller_program_mode_helper_e && global->main->program.parameters.array[controller_parameter_validate_e].result == f_console_result_none_e) {
       f_thread_mutex_unlock(&global->thread->lock.cancel);
 
       return;
@@ -318,7 +318,7 @@ extern "C" {
 
     if (global->thread->enabled != controller_thread_enabled_exit_e) return;
 
-    if (global->program->ready == controller_setting_ready_done_e) {
+    if (global->program->ready == controller_program_ready_done_e) {
 
       // The exit processing runs using the entry thread.
       if (global->thread->id_entry) {
@@ -363,7 +363,7 @@ extern "C" {
             break;
           }
 
-          controller_time(controller_main_thread_exit_ready_timeout_seconds_d, controller_main_thread_exit_ready_timeout_nanoseconds_d, &time);
+          controller_main_time_now(controller_main_thread_exit_ready_timeout_seconds_d, controller_main_thread_exit_ready_timeout_nanoseconds_d, &time);
 
           status = f_thread_condition_wait_timed(&time, &global->thread->lock.alert_condition, &global->thread->lock.alert);
 

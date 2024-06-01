@@ -23,6 +23,7 @@ extern "C" {
  *
  * @param global
  *   The global data.
+ *
  *   Must not be NULL.
  *
  *   This does not alter global.main.setting.state.status.
@@ -30,13 +31,13 @@ extern "C" {
  *   The action to perform based on the action type codes.
  *
  *   Only subset of the action type codes are supported:
- *   - controller_rule_action_type_kill_e
- *   - controller_rule_action_type_pause_e
- *   - controller_rule_action_type_reload_e
- *   - controller_rule_action_type_restart_e
- *   - controller_rule_action_type_resume_e
- *   - controller_rule_action_type_start_e
- *   - controller_rule_action_type_stop_e
+ *   - controller_main_rule_action_type_kill_e
+ *   - controller_main_rule_action_type_pause_e
+ *   - controller_main_rule_action_type_reload_e
+ *   - controller_main_rule_action_type_restart_e
+ *   - controller_main_rule_action_type_resume_e
+ *   - controller_main_rule_action_type_start_e
+ *   - controller_main_rule_action_type_stop_e
  * @param options
  *   Process options to consider when executing.
  *   If bit controller_instance_option_simulate_e, then the rule execution is in simulation mode (printing a message that the rule would be executed but does not execute the rule).
@@ -56,9 +57,9 @@ extern "C" {
  *   On success and the rule is run asynchronously, then the individual status for the rule is set to F_busy.
  *   On failure, the individual status for the rule is set to an appropriate error status.
  */
-#ifndef _di_controller_rule_execute_
-  extern f_status_t controller_rule_execute(controller_global_t * const global, const uint8_t action, const uint8_t options, controller_instance_t * const instance);
-#endif // _di_controller_rule_execute_
+#ifndef _di_controller_main_rule_execute_
+  extern f_status_t controller_main_rule_execute(controller_global_t * const global, const uint8_t action, const uint8_t options, controller_instance_t * const instance);
+#endif // _di_controller_main_rule_execute_
 
 /**
  * Perform an execution of the given rule in the foreground.
@@ -90,9 +91,9 @@ extern "C" {
  *
  * @see fll_execute_program()
  */
-#ifndef _di_controller_rule_execute_foreground_
-  extern f_status_t controller_rule_execute_foreground(const uint8_t type, const f_string_static_t program, const f_string_statics_t arguments, const uint8_t options, controller_execute_set_t * const execute_set, controller_instance_t * const instance);
-#endif // _di_controller_rule_execute_foreground_
+#ifndef _di_controller_main_rule_execute_foreground_
+  extern f_status_t controller_main_rule_execute_foreground(const uint8_t type, const f_string_static_t program, const f_string_statics_t arguments, const uint8_t options, controller_execute_set_t * const execute_set, controller_instance_t * const instance);
+#endif // _di_controller_main_rule_execute_foreground_
 
 /**
  * Perform an execution of the given rule in the foreground or background and creating a PID file.
@@ -132,9 +133,9 @@ extern "C" {
  *
  * @see fll_execute_program()
  */
-#ifndef _di_controller_rule_execute_pid_with_
-  extern f_status_t controller_rule_execute_pid_with(const f_string_dynamic_t pid_file, const uint8_t type, const f_string_static_t program, const f_string_statics_t arguments, const uint8_t options, const uint8_t with, controller_execute_set_t * const execute_set, controller_instance_t * const instance);
-#endif // _di_controller_rule_execute_pid_with_
+#ifndef _di_controller_main_rule_execute_pid_with_
+  extern f_status_t controller_main_rule_execute_pid_with(const f_string_dynamic_t pid_file, const uint8_t type, const f_string_static_t program, const f_string_statics_t arguments, const uint8_t options, const uint8_t with, controller_execute_set_t * const execute_set, controller_instance_t * const instance);
+#endif // _di_controller_main_rule_execute_pid_with_
 
 /**
  * Determine whether or not an execute rule should be re-run, applying a delay as requested.
@@ -155,9 +156,9 @@ extern "C" {
  *     - EINVAL: Consider this having returned F_status_set_error(F_parameter);
  *   -2 to designate exit due to signal/disabled thread.
  */
-#ifndef _di_controller_rule_execute_rerun_
-  extern int8_t controller_rule_execute_rerun(const uint8_t action, controller_instance_t * const instance, controller_rule_item_t * const item);
-#endif // _di_controller_rule_execute_rerun_
+#ifndef _di_controller_main_rule_execute_rerun_
+  extern int8_t controller_main_rule_execute_rerun(const uint8_t action, controller_instance_t * const instance, controller_rule_item_t * const item);
+#endif // _di_controller_main_rule_execute_rerun_
 
 #ifdef __cplusplus
 } // extern "C"

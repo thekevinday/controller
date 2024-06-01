@@ -4,8 +4,8 @@
 extern "C" {
 #endif
 
-#ifndef _di_controller_rule_expand_
-  f_status_t controller_rule_expand(controller_global_t * const global, const controller_rule_action_t action, controller_instance_t * const instance) {
+#ifndef _di_controller_main_rule_expand_
+  f_status_t controller_main_rule_expand(controller_global_t * const global, const controller_main_rule_action_t action, controller_instance_t * const instance) {
 
     if (!global || !instance) return F_status_set_error(F_parameter);
 
@@ -51,7 +51,7 @@ extern "C" {
               if (F_status_is_error(status)) break;
             }
 
-            status = controller_rule_expand_iki(process, action.parameters.array[process->cache.expanded.used], iki_data->vocabulary.array[i], iki_data->content.array[i], buffer);
+            status = controller_main_rule_expand_iki(process, action.parameters.array[process->cache.expanded.used], iki_data->vocabulary.array[i], iki_data->content.array[i], buffer);
             if (F_status_is_error(status)) break;
 
             first = iki_data->variable.array[i].stop + 1;
@@ -85,10 +85,10 @@ extern "C" {
 
     return F_okay;
   }
-#endif // _di_controller_rule_expand_
+#endif // _di_controller_main_rule_expand_
 
-#ifndef _di_controller_rule_expand_iki_
-  f_status_t controller_rule_expand_iki(controller_instance_t * const instance, const f_string_static_t source, const f_range_t vocabulary, const f_range_t content, f_string_dynamic_t * const destination) {
+#ifndef _di_controller_main_rule_expand_iki_
+  f_status_t controller_main_rule_expand_iki(controller_instance_t * const instance, const f_string_static_t source, const f_range_t vocabulary, const f_range_t content, f_string_dynamic_t * const destination) {
 
     if (!instance || !destination) return F_status_set_error(F_parameter);
     if (vocabulary.start > vocabulary.stop) return F_okay;
@@ -374,7 +374,7 @@ extern "C" {
 
     return F_okay;
   }
-#endif // _di_controller_rule_expand_iki_
+#endif // _di_controller_main_rule_expand_iki_
 
 #ifdef __cplusplus
 } // extern "C"

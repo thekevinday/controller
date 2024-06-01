@@ -21,6 +21,7 @@ extern "C" {
  *
  * @param global
  *   The global data.
+ *
  *   Must not be NULL.
  *
  *   This does not alter global.main.setting.state.status.
@@ -40,15 +41,16 @@ extern "C" {
  *   F_interrupt (with error bit) on receiving a process signal, such as an interrupt signal.
  *   F_require (with error bit set) if a required process is in failed status when required is TRUE.
  */
-#ifndef _di_controller_rule_wait_all_
-  extern f_status_t controller_rule_wait_all(controller_global_t * const global, const bool is_normal, const bool required);
-#endif // _di_controller_rule_wait_all_
+#ifndef _di_controller_main_rule_wait_all_
+  extern f_status_t controller_main_rule_wait_all(controller_global_t * const global, const bool is_normal, const bool required);
+#endif // _di_controller_main_rule_wait_all_
 
 /**
  * Wait until all currently running Rule processes are complete for some process type.
  *
  * @param global
  *   The global data.
+ *
  *   Must not be NULL.
  *
  *   This does not alter global.main.setting.state.status.
@@ -59,15 +61,15 @@ extern "C" {
  *   If FALSE, process all waits, returning normally.
  *
  * @return
- *   Success from controller_rule_wait_all().
+ *   Success from controller_main_rule_wait_all().
  *
- *   Errors (with error bit) from: controller_rule_wait_all().
+ *   Errors (with error bit) from: controller_main_rule_wait_all().
  *
- * @see controller_rule_wait_all()
+ * @see controller_main_rule_wait_all()
  */
-#ifndef _di_controller_rule_wait_all_instance_type_
-  extern f_status_t controller_rule_wait_all_instance_type(controller_global_t * const global, const uint8_t type, const bool required);
-#endif // _di_controller_rule_wait_all_instance_type_
+#ifndef _di_controller_main_rule_wait_all_instance_type_
+  extern f_status_t controller_main_rule_wait_all_instance_type(controller_global_t * const global, const uint8_t type, const bool required);
+#endif // _di_controller_main_rule_wait_all_instance_type_
 
 #ifdef __cplusplus
 } // extern "C"

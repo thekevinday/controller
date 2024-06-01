@@ -61,30 +61,31 @@ extern "C" {
 /**
  * A cache intended for re-using memory while loading and processing rules whenever possible.
  *
- * timestamp: The timestamp.
+ * Properties:
+ *   - timestamp: The timestamp.
  *
- * range_action: The Range for some Action.
+ *   - range_action: The Range for some Action.
  *
- * ats:   Locations.
- * stack: Locations within a items history used as a history stack for circular recursion prevention.
+ *   - ats:   Locations.
+ *   - stack: Locations within a items history used as a history stack for circular recursion prevention.
  *
- * comments: Comments associated with a buffer string.
- * delimits: Delimits associated with a buffer string.
+ *   - comments: Comments associated with a buffer string.
+ *   - delimits: Delimits associated with a buffer string.
  *
- * content_action:  The specific Content for some Action.
- * content_actions: Content for some Action.
- * content_items:   Content for some Item.
- * object_actions:  Objects for some Action.
- * object_items:    Objects for some Item.
+ *   - content_action:  The specific Content for some Action.
+ *   - content_actions: Content for some Action.
+ *   - content_items:   Content for some Item.
+ *   - object_actions:  Objects for some Action.
+ *   - object_items:    Objects for some Item.
  *
- * buffer:      A generic buffer.
- * buffer_file: A generic file related buffer.
- * buffer_item: A generic item related buffer.
- * buffer_path: A generic path related buffer.
+ *   - buffer:      A generic buffer.
+ *   - buffer_file: A generic file related buffer.
+ *   - buffer_item: A generic item related buffer.
+ *   - buffer_path: A generic path related buffer.
  *
- * expanded: An array of expanded strings, generally used by the execute functions.
+ *   - expanded: An array of expanded strings, generally used by the execute functions.
  *
- * action: A cache for some Action, often used by error printing for reporting where an error happened.
+ *   - action: A cache for some Action, often used by error printing for reporting where an error happened.
  */
 #ifndef _di_controller_cache_t_
   typedef struct {
@@ -137,10 +138,11 @@ extern "C" {
 #endif // _di_controller_cache_t_
 
 /**
- * Deallocate the Controller cache.
+ * De-allocate the Controller cache.
  *
  * @param cache
  *   The cache.
+ *
  *   Must not be NULL.
  *
  * @see f_memory_array_resize()
@@ -150,10 +152,11 @@ extern "C" {
 #endif // _di_controller_cache_delete_
 
 /**
- * Deallocate the Controller action cache.
+ * De-allocate the Controller action cache.
  *
  * @param cache
  *   The action cache.
+ *
  *   Must not be NULL.
  *
  * @see f_memory_array_resize()

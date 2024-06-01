@@ -19,8 +19,9 @@ extern "C" {
 /**
  * A structure for passing execution arguments to the execute functions.
  *
- * parameter: All parameters sent to the program on execution.
- * as:        All special properties to apply, such as cpu affinity.
+ * Properties:
+ *   - parameter: All parameters sent to the program on execution.
+ *   - as:        All special properties to apply, such as cpu affinity.
  */
 #ifndef _di_controller_execute_set_t_
   typedef struct {

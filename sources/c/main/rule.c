@@ -15,7 +15,7 @@ extern "C" {
 
     f_number_unsigned_t i = 0;
 
-    for (; i < controller_rule_action_type__enum_size_e; ++i) {
+    for (; i < controller_main_rule_action_type__enum_size_e; ++i) {
       destination->status[i] = source.status[i];
     } // for
 
@@ -145,8 +145,8 @@ extern "C" {
       controller_rule_item_t *item_source = 0;
       controller_rule_item_t *item_destination = 0;
 
-      controller_rule_action_t *action_source = 0;
-      controller_rule_action_t *action_destination = 0;
+      controller_main_rule_action_t *action_source = 0;
+      controller_main_rule_action_t *action_destination = 0;
 
       if (source.items.used > destination->items.size) {
         status = f_memory_arrays_resize(source.items.used, sizeof(controller_rule_item_t), (void **) &destination->items.array, &destination->items.used, &destination->items.size, &controller_rule_items_delete_callback);
@@ -161,7 +161,7 @@ extern "C" {
         item_destination = &destination->items.array[i];
 
         if (item_source->actions.used > item_destination->actions.size) {
-          status = f_memory_arrays_resize(item_source->actions.used, sizeof(controller_rule_action_t), (void **) &item_destination->actions.array, &item_destination->actions.used, &item_destination->actions.size, &controller_rule_actions_delete_callback);
+          status = f_memory_arrays_resize(item_source->actions.used, sizeof(controller_main_rule_action_t), (void **) &item_destination->actions.array, &item_destination->actions.used, &item_destination->actions.size, &controller_main_rule_actions_delete_callback);
           if (F_status_is_error(status)) return status;
         }
 
@@ -173,7 +173,7 @@ extern "C" {
         status = f_string_dynamic_append(item_source->pid_file, &item_destination->pid_file);
         if (F_status_is_error(status)) return status;
 
-        for (j = 0; j < controller_rule_action_execute_type__enum_size_e; ++j) {
+        for (j = 0; j < controller_main_rule_action_execute_type__enum_size_e; ++j) {
 
           item_destination->reruns[j].is = item_source->reruns[j].is;
           item_destination->reruns[j].failure.count = item_source->reruns[j].failure.count;

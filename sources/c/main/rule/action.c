@@ -4,35 +4,35 @@
 extern "C" {
 #endif
 
-#ifndef _di_controller_rule_action_method_name_
-  f_string_static_t controller_rule_action_method_name(const uint8_t type) {
+#ifndef _di_controller_main_rule_action_method_name_
+  f_string_static_t controller_main_rule_action_method_name(const uint8_t type) {
 
-    if (type == controller_rule_action_method_extended_e) return controller_rule_action_method_extended_s;
-    if (type == controller_rule_action_method_extended_list_e) return controller_rule_action_method_extended_list_s;
+    if (type == controller_main_rule_action_method_extended_e) return controller_main_rule_action_method_extended_s;
+    if (type == controller_main_rule_action_method_extended_list_e) return controller_main_rule_action_method_extended_list_s;
 
     return f_string_empty_s;
   }
-#endif // _di_controller_rule_action_method_name_
+#endif // _di_controller_main_rule_action_method_name_
 
-#ifndef _di_controller_rule_action_type_to_action_execute_type_
-  uint8_t controller_rule_action_type_to_action_execute_type(const uint8_t type) {
+#ifndef _di_controller_main_rule_action_type_to_action_execute_type_
+  uint8_t controller_main_rule_action_type_to_action_execute_type(const uint8_t type) {
 
-    if (type == controller_rule_action_type_freeze_e) return controller_rule_action_execute_type_freeze_e;
-    if (type == controller_rule_action_type_kill_e) return controller_rule_action_execute_type_kill_e;
-    if (type == controller_rule_action_type_pause_e) return controller_rule_action_execute_type_pause_e;
-    if (type == controller_rule_action_type_reload_e) return controller_rule_action_execute_type_reload_e;
-    if (type == controller_rule_action_type_restart_e) return controller_rule_action_execute_type_restart_e;
-    if (type == controller_rule_action_type_resume_e) return controller_rule_action_execute_type_resume_e;
-    if (type == controller_rule_action_type_start_e) return controller_rule_action_execute_type_start_e;
-    if (type == controller_rule_action_type_stop_e) return controller_rule_action_execute_type_stop_e;
-    if (type == controller_rule_action_type_thaw_e) return controller_rule_action_execute_type_thaw_e;
+    if (type == controller_main_rule_action_type_freeze_e) return controller_main_rule_action_execute_type_freeze_e;
+    if (type == controller_main_rule_action_type_kill_e) return controller_main_rule_action_execute_type_kill_e;
+    if (type == controller_main_rule_action_type_pause_e) return controller_main_rule_action_execute_type_pause_e;
+    if (type == controller_main_rule_action_type_reload_e) return controller_main_rule_action_execute_type_reload_e;
+    if (type == controller_main_rule_action_type_restart_e) return controller_main_rule_action_execute_type_restart_e;
+    if (type == controller_main_rule_action_type_resume_e) return controller_main_rule_action_execute_type_resume_e;
+    if (type == controller_main_rule_action_type_start_e) return controller_main_rule_action_execute_type_start_e;
+    if (type == controller_main_rule_action_type_stop_e) return controller_main_rule_action_execute_type_stop_e;
+    if (type == controller_main_rule_action_type_thaw_e) return controller_main_rule_action_execute_type_thaw_e;
 
-    return controller_rule_action_execute_type__enum_size_e;
+    return controller_main_rule_action_execute_type__enum_size_e;
   }
-#endif // _di_controller_rule_action_type_to_action_execute_type_
+#endif // _di_controller_main_rule_action_type_to_action_execute_type_
 
-#ifndef _di_controller_rule_action_read_
-  f_status_t controller_rule_action_read(controller_global_t * const global, const bool is_normal, const uint8_t type, const uint8_t method, controller_cache_t * const cache, controller_rule_item_t * const item, controller_rule_actions_t * const actions, f_range_t * const range) {
+#ifndef _di_controller_main_rule_action_read_
+  f_status_t controller_main_rule_action_read(controller_global_t * const global, const bool is_normal, const uint8_t type, const uint8_t method, controller_cache_t * const cache, controller_rule_item_t * const item, controller_main_rule_actions_t * const actions, f_range_t * const range) {
 
     if (!global || !item || !actions || !range) return F_status_set_error(F_parameter);
 
@@ -63,7 +63,7 @@ extern "C" {
     cache->delimits.used = 0;
     cache->content_action.used = 0;
 
-    if (method == controller_rule_action_method_extended_list_e) {
+    if (method == controller_main_rule_action_method_extended_list_e) {
       fl_fss_extended_list_content_read(cache->buffer_item, range, &cache->content_action, &cache->delimits, &cache->comments, &state);
 
       if (F_status_is_error(status)) {
@@ -160,7 +160,7 @@ extern "C" {
 
         for (i = 0; i < cache->object_actions.used; ++i) {
 
-          status = f_memory_array_increase_by(controller_allocation_small_d, sizeof(controller_rule_action_t), (void **) &actions->array, &actions->used, &actions->size);
+          status = f_memory_array_increase_by(controller_allocation_small_d, sizeof(controller_main_rule_action_t), (void **) &actions->array, &actions->used, &actions->size);
 
           if (F_status_is_error(status)) {
             controller_main_print_error(&global->main->program.error, macro_controller_f(f_memory_array_increase_by));
@@ -180,7 +180,7 @@ extern "C" {
           actions->array[actions->used].line += ++item->line;
           actions->array[actions->used].status = F_known_not;
 
-          status = controller_rule_parameters_read(global, cache->buffer_item, &cache->object_actions.array[i], &cache->content_actions.array[i], &actions->array[actions->used], &state);
+          status = controller_main_rule_parameters_read(global, cache->buffer_item, &cache->object_actions.array[i], &cache->content_actions.array[i], &actions->array[actions->used], &state);
 
           if (F_status_is_error(status)) {
             actions->array[actions->used++].status = controller_main_error_simplify(F_status_set_fine(status));
@@ -209,7 +209,7 @@ extern "C" {
         if (F_status_is_error(status)) {
           controller_main_print_error(&global->main->program.error, macro_controller_f(f_fss_apply_delimit));
         }
-        else if (type == controller_rule_action_type_pid_file_e) {
+        else if (type == controller_main_rule_action_type_pid_file_e) {
           item->pid_file.used = 0;
 
           status = f_rip_dynamic_partial(cache->buffer_item, cache->content_action.array[0], &item->pid_file);
@@ -218,36 +218,36 @@ extern "C" {
             controller_main_print_error(&global->main->program.error, macro_controller_f(f_rip_dynamic_partial));
           }
         }
-        else if (type == controller_rule_action_type_rerun_e) {
+        else if (type == controller_main_rule_action_type_rerun_e) {
           uint8_t type_rerun = 0;
 
           if (cache->content_action.used) {
             if (f_compare_dynamic_partial_string(controller_freeze_s.string, cache->buffer_item, controller_freeze_s.used, cache->content_action.array[0]) == F_equal_to) {
-              type_rerun = controller_rule_action_execute_type_freeze_e;
+              type_rerun = controller_main_rule_action_execute_type_freeze_e;
             }
             if (f_compare_dynamic_partial_string(controller_kill_s.string, cache->buffer_item, controller_kill_s.used, cache->content_action.array[0]) == F_equal_to) {
-              type_rerun = controller_rule_action_execute_type_kill_e;
+              type_rerun = controller_main_rule_action_execute_type_kill_e;
             }
             else if (f_compare_dynamic_partial_string(controller_pause_s.string, cache->buffer_item, controller_pause_s.used, cache->content_action.array[0]) == F_equal_to) {
-              type_rerun = controller_rule_action_execute_type_pause_e;
+              type_rerun = controller_main_rule_action_execute_type_pause_e;
             }
             else if (f_compare_dynamic_partial_string(controller_reload_s.string, cache->buffer_item, controller_reload_s.used, cache->content_action.array[0]) == F_equal_to) {
-              type_rerun = controller_rule_action_execute_type_reload_e;
+              type_rerun = controller_main_rule_action_execute_type_reload_e;
             }
             else if (f_compare_dynamic_partial_string(controller_restart_s.string, cache->buffer_item, controller_restart_s.used, cache->content_action.array[0]) == F_equal_to) {
-              type_rerun = controller_rule_action_execute_type_restart_e;
+              type_rerun = controller_main_rule_action_execute_type_restart_e;
             }
             else if (f_compare_dynamic_partial_string(controller_resume_s.string, cache->buffer_item, controller_resume_s.used, cache->content_action.array[0]) == F_equal_to) {
-              type_rerun = controller_rule_action_execute_type_resume_e;
+              type_rerun = controller_main_rule_action_execute_type_resume_e;
             }
             else if (f_compare_dynamic_partial_string(controller_start_s.string, cache->buffer_item, controller_start_s.used, cache->content_action.array[0]) == F_equal_to) {
-              type_rerun = controller_rule_action_execute_type_start_e;
+              type_rerun = controller_main_rule_action_execute_type_start_e;
             }
             else if (f_compare_dynamic_partial_string(controller_stop_s.string, cache->buffer_item, controller_stop_s.used, cache->content_action.array[0]) == F_equal_to) {
-              type_rerun = controller_rule_action_execute_type_stop_e;
+              type_rerun = controller_main_rule_action_execute_type_stop_e;
             }
             else if (f_compare_dynamic_partial_string(controller_thaw_s.string, cache->buffer_item, controller_thaw_s.used, cache->content_action.array[0]) == F_equal_to) {
-              type_rerun = controller_rule_action_execute_type_thaw_e;
+              type_rerun = controller_main_rule_action_execute_type_thaw_e;
             }
           }
 
@@ -278,10 +278,10 @@ extern "C" {
           for (i = 2; i < cache->content_action.used; ++i) {
 
             if (f_compare_dynamic_partial_string(controller_delay_s.string, cache->buffer_item, controller_delay_s.used, cache->content_action.array[i]) == F_equal_to) {
-              status = controller_rule_action_read_rerun_number(global, controller_delay_s.string, cache, &i, &rerun_item->delay);
+              status = controller_main_rule_action_read_rerun_number(global, controller_delay_s.string, cache, &i, &rerun_item->delay);
             }
             else if (f_compare_dynamic_partial_string(controller_max_s.string, cache->buffer_item, controller_max_s.used, cache->content_action.array[i]) == F_equal_to) {
-              status = controller_rule_action_read_rerun_number(global, controller_max_s.string, cache, &i, &rerun_item->max);
+              status = controller_main_rule_action_read_rerun_number(global, controller_max_s.string, cache, &i, &rerun_item->max);
             }
             else if (f_compare_dynamic_partial_string(controller_reset_s.string, cache->buffer_item, controller_reset_s.used, cache->content_action.array[i]) == F_equal_to) {
               item->reruns[type_rerun].is |= rerun_item == &item->reruns[type_rerun].failure ? controller_rule_rerun_is_failure_reset_d : controller_rule_rerun_is_success_reset_d;
@@ -293,7 +293,7 @@ extern "C" {
             }
           } // for
         }
-        else if (type == controller_rule_action_type_with_e) {
+        else if (type == controller_main_rule_action_type_with_e) {
           for (i = 0; i < cache->content_action.used; ++i) {
 
             if (f_compare_dynamic_partial_string(controller_full_path_s.string, cache->buffer_item, controller_full_path_s.used, cache->content_action.array[i]) == F_equal_to) {
@@ -390,7 +390,7 @@ extern "C" {
           actions->array[actions->used].line += ++item->line;
           actions->array[actions->used].status = F_known_not;
 
-          status = controller_rule_parameters_read(global, cache->buffer_item, 0, &cache->content_action, &actions->array[actions->used], &state);
+          status = controller_main_rule_parameters_read(global, cache->buffer_item, 0, &cache->content_action, &actions->array[actions->used], &state);
 
           if (F_status_is_error(status)) {
             actions->array[actions->used++].status = controller_main_error_simplify(F_status_set_fine(status));
@@ -412,10 +412,10 @@ extern "C" {
 
     return status;
   }
-#endif // _di_controller_rule_action_read_
+#endif // _di_controller_main_rule_action_read_
 
-#ifndef _di_controller_rule_action_read_rerun_number_
-  f_status_t controller_rule_action_read_rerun_number(controller_global_t * const global, const f_string_t name, controller_cache_t * const cache, f_number_unsigned_t * const index, f_number_unsigned_t * const number) {
+#ifndef _di_controller_main_rule_action_read_rerun_number_
+  f_status_t controller_main_rule_action_read_rerun_number(controller_global_t * const global, const f_string_t name, controller_cache_t * const cache, f_number_unsigned_t * const index, f_number_unsigned_t * const number) {
 
     f_status_t status = F_okay;
     f_number_signed_t parsed = 0;
@@ -481,7 +481,7 @@ extern "C" {
 
     return F_okay;
   }
-#endif // _di_controller_rule_action_read_rerun_number_
+#endif // _di_controller_main_rule_action_read_rerun_number_
 
 #ifdef __cplusplus
 } // extern "C"

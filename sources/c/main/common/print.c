@@ -6,6 +6,7 @@ extern "C" {
 
 #ifndef _di_controller_f_a_
   const f_string_t controller_f_a[] = {
+    "controller_main_lock_create",
     "controller_rule_copy",
     "controller_rule_items_increase_by",
     "controller_path_canonical_relative",

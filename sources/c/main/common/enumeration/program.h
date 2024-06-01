@@ -35,7 +35,7 @@ extern "C" {
 /**
  * Controller program mode enumeration.
  *
- * controller_setting_mode_*:
+ * controller_program_mode_*:
  *   - helper:  Run as a helper, exiting when finished prrocess entry (and any respective exit).
  *   - program: Run as a program, exiting when finished prrocess entry (and any respective exit).
  *   - service: Run as a service, listening for requests after processing entry.

@@ -4,8 +4,8 @@
 extern "C" {
 #endif
 
-#ifndef _di_controller_rule_execute_
-  f_status_t controller_rule_execute(controller_global_t * const global, const uint8_t action, const uint8_t options, controller_instance_t * const instance) {
+#ifndef _di_controller_main_rule_execute_
+  f_status_t controller_main_rule_execute(controller_global_t * const global, const uint8_t action, const uint8_t options, controller_instance_t * const instance) {
 
     if (!global || !instance) return F_status_set_error(F_parameter);
 
@@ -37,7 +37,7 @@ extern "C" {
       execute_set.as.control_group = &instance->rule.cgroup;
 
       // Make sure all required cgroup directories exist.
-      if (controller_rule_status_is_available(action, instance->rule)) {
+      if (controller_main_rule_status_is_available(action, instance->rule)) {
         status = fll_control_group_prepare(instance->rule.cgroup);
 
         if (F_status_is_error(status)) {
@@ -249,21 +249,21 @@ extern "C" {
         }
 
         if (instance->rule.items.array[i].type == controller_rule_item_type_command_e) {
-          status = controller_rule_expand(global, instance->rule.items.array[i].actions.array[j], instance);
+          status = controller_main_rule_expand(global, instance->rule.items.array[i].actions.array[j], instance);
 
           if (F_status_is_error(status)) {
-            controller_main_print_rule_error(&global->error, instance->cache.action, F_status_set_fine(status), "controller_rule_expand", F_true, F_false);
+            controller_main_print_rule_error(&global->error, instance->cache.action, F_status_set_fine(status), "controller_main_rule_expand", F_true, F_false);
 
             break;
           }
 
           do {
-            status = controller_rule_execute_foreground(instance->rule.items.array[i].type, f_string_empty_s, instance->cache.expanded, options, &execute_set, instance);
+            status = controller_main_rule_execute_foreground(instance->rule.items.array[i].type, f_string_empty_s, instance->cache.expanded, options, &execute_set, instance);
 
             if (status == F_child || F_status_set_fine(status) == F_interrupt || F_status_set_fine(status) == F_lock) break;
             if (F_status_is_error(status) && F_status_set_fine(status) != F_failure) break;
 
-          } while (controller_rule_execute_rerun(controller_rule_action_type_to_action_execute_type(action), instance, &instance->rule.items.array[i]) > 0);
+          } while (controller_main_rule_execute_rerun(controller_main_rule_action_type_to_action_execute_type(action), instance, &instance->rule.items.array[i]) > 0);
 
           if (status == F_child || F_status_set_fine(status) == F_interrupt || F_status_set_fine(status) == F_lock) break;
 
@@ -279,10 +279,10 @@ extern "C" {
           }
         }
         else if (instance->rule.items.array[i].type == controller_rule_item_type_script_e) {
-          status = controller_rule_expand(global, instance->rule.items.array[i].actions.array[j], instance);
+          status = controller_main_rule_expand(global, instance->rule.items.array[i].actions.array[j], instance);
 
           if (F_status_is_error(status)) {
-            controller_main_print_rule_error(&global->error, instance->cache.action, F_status_set_fine(status), "controller_rule_expand", F_true, F_false);
+            controller_main_print_rule_error(&global->error, instance->cache.action, F_status_set_fine(status), "controller_main_rule_expand", F_true, F_false);
 
             break;
           }
@@ -296,16 +296,16 @@ extern "C" {
 
           do {
             if (instance->rule.engine.used) {
-              status = controller_rule_execute_foreground(instance->rule.items.array[i].type, instance->rule.engine, instance->rule.engine_arguments, options, &execute_set, instance);
+              status = controller_main_rule_execute_foreground(instance->rule.items.array[i].type, instance->rule.engine, instance->rule.engine_arguments, options, &execute_set, instance);
             }
             else {
-              status = controller_rule_execute_foreground(instance->rule.items.array[i].type, *global->main->setting.default_engine, instance->rule.engine_arguments, options, &execute_set, instance);
+              status = controller_main_rule_execute_foreground(instance->rule.items.array[i].type, *global->main->setting.default_engine, instance->rule.engine_arguments, options, &execute_set, instance);
             }
 
             if (status == F_child || F_status_set_fine(status) == F_lock) break;
             if (F_status_is_error(status) && F_status_set_fine(status) != F_failure) break;
 
-          } while (controller_rule_execute_rerun(controller_rule_action_type_to_action_execute_type(action), instance, &instance->rule.items.array[i]) > 0);
+          } while (controller_main_rule_execute_rerun(controller_main_rule_action_type_to_action_execute_type(action), instance, &instance->rule.items.array[i]) > 0);
 
           if (status == F_child || F_status_set_fine(status) == F_interrupt || F_status_set_fine(status) == F_lock) break;
 
@@ -321,22 +321,22 @@ extern "C" {
           }
         }
         else if (instance->rule.items.array[i].type == controller_rule_item_type_service_e) {
-          status = controller_rule_expand(global, instance->rule.items.array[i].actions.array[j], instance);
+          status = controller_main_rule_expand(global, instance->rule.items.array[i].actions.array[j], instance);
 
           if (F_status_is_error(status)) {
-            controller_main_print_rule_error(&global->error, instance->cache.action, F_status_set_fine(status), "controller_rule_expand", F_true, F_false);
+            controller_main_print_rule_error(&global->error, instance->cache.action, F_status_set_fine(status), "controller_main_rule_expand", F_true, F_false);
 
             break;
           }
 
           if (instance->rule.items.array[i].pid_file.used) {
             do {
-              status = controller_rule_execute_pid_with(instance->rule.items.array[i].pid_file, instance->rule.items.array[i].type, f_string_empty_s, instance->cache.expanded, options, instance->rule.items.array[i].with, &execute_set, instance);
+              status = controller_main_rule_execute_pid_with(instance->rule.items.array[i].pid_file, instance->rule.items.array[i].type, f_string_empty_s, instance->cache.expanded, options, instance->rule.items.array[i].with, &execute_set, instance);
 
               if (status == F_child || F_status_set_fine(status) == F_interrupt || F_status_set_fine(status) == F_lock) break;
               if (F_status_is_error(status) && F_status_set_fine(status) != F_failure) break;
 
-            } while (controller_rule_execute_rerun(controller_rule_action_type_to_action_execute_type(action), instance, &instance->rule.items.array[i]) > 0);
+            } while (controller_main_rule_execute_rerun(controller_main_rule_action_type_to_action_execute_type(action), instance, &instance->rule.items.array[i]) > 0);
 
             if (status == F_child || F_status_set_fine(status) == F_interrupt || F_status_set_fine(status) == F_lock) break;
 
@@ -359,10 +359,10 @@ extern "C" {
         }
         else if (instance->rule.items.array[i].type == controller_rule_item_type_utility_e) {
           if (instance->rule.items.array[i].pid_file.used) {
-            status = controller_rule_expand(global, instance->rule.items.array[i].actions.array[j], instance);
+            status = controller_main_rule_expand(global, instance->rule.items.array[i].actions.array[j], instance);
 
             if (F_status_is_error(status)) {
-              controller_main_print_rule_error(&global->error, instance->cache.action, F_status_set_fine(status), "controller_rule_expand", F_true, F_false);
+              controller_main_print_rule_error(&global->error, instance->cache.action, F_status_set_fine(status), "controller_main_rule_expand", F_true, F_false);
 
               break;
             }
@@ -375,12 +375,12 @@ extern "C" {
             }
 
             do {
-              status = controller_rule_execute_pid_with(instance->rule.items.array[i].pid_file, instance->rule.items.array[i].type, instance->rule.engine.used ? instance->rule.engine : *global->main->setting.default_engine, instance->rule.engine_arguments, options, instance->rule.items.array[i].with, &execute_set, instance);
+              status = controller_main_rule_execute_pid_with(instance->rule.items.array[i].pid_file, instance->rule.items.array[i].type, instance->rule.engine.used ? instance->rule.engine : *global->main->setting.default_engine, instance->rule.engine_arguments, options, instance->rule.items.array[i].with, &execute_set, instance);
 
               if (status == F_child || F_status_set_fine(status) == F_interrupt || F_status_set_fine(status) == F_lock) break;
               if (F_status_is_error(status) && F_status_set_fine(status) != F_failure) break;
 
-            } while (controller_rule_execute_rerun(controller_rule_action_type_to_action_execute_type(action), instance, &instance->rule.items.array[i]) > 0);
+            } while (controller_main_rule_execute_rerun(controller_main_rule_action_type_to_action_execute_type(action), instance, &instance->rule.items.array[i]) > 0);
 
             if (status == F_child || F_status_set_fine(status) == F_interrupt || F_status_set_fine(status) == F_lock) break;
 
@@ -429,7 +429,7 @@ extern "C" {
 
     // Lock failed, attempt to re-establish lock before returning.
     if (F_status_set_fine(status) == F_lock) {
-      status = controller_lock_read(instance, global->thread, &instance->lock);
+      status = controller_main_lock_read(instance, global->thread, &instance->lock);
       if (F_status_is_error(status)) return F_status_set_error(F_lock);
 
       success = F_false;
@@ -453,10 +453,10 @@ extern "C" {
 
     return F_okay;
   }
-#endif // _di_controller_rule_execute_
+#endif // _di_controller_main_rule_execute_
 
-#ifndef _di_controller_rule_execute_foreground_
-  f_status_t controller_rule_execute_foreground(const uint8_t type, const f_string_static_t program, const f_string_statics_t arguments, const uint8_t options, controller_execute_set_t * const execute_set, controller_instance_t * const instance) {
+#ifndef _di_controller_main_rule_execute_foreground_
+  f_status_t controller_main_rule_execute_foreground(const uint8_t type, const f_string_static_t program, const f_string_statics_t arguments, const uint8_t options, controller_execute_set_t * const execute_set, controller_instance_t * const instance) {
 
     if (!instance) return F_status_set_error(F_parameter);
 
@@ -524,9 +524,9 @@ extern "C" {
 
       // Sleep for less than a second to better show simulation of synchronous vs asynchronous.
       {
-        const f_time_spec_t delay = controller_time_milliseconds(controller_thread_simulation_timeout_d);
+        const f_time_spec_t delay = controller_main_time_milliseconds(controller_thread_simulation_timeout_d);
 
-        if (controller_time_sleep_nanoseconds((controller_global_t *) instance->global, delay) == -1) {
+        if (controller_main_time_sleep_nanoseconds((controller_global_t *) instance->global, delay) == -1) {
           status = F_status_set_error(F_interrupt);
         }
       }
@@ -547,13 +547,13 @@ extern "C" {
 
       f_thread_unlock(&instance->lock);
 
-      status_lock = controller_lock_write_process(instance, thread, &instance->lock);
+      status_lock = controller_main_lock_write_instance(instance, thread, &instance->lock);
 
       if (F_status_is_error(status_lock)) {
         controller_lock_print_error_critical(&main->program.error, F_status_set_fine(status_lock), F_false, thread);
 
         if (F_status_set_fine(status_lock) != F_interrupt) {
-          status = controller_lock_read_process(instance, thread, &instance->lock);
+          status = controller_main_lock_read_instance(instance, thread, &instance->lock);
 
           if (status == F_okay) {
             return status_lock;
@@ -568,7 +568,7 @@ extern "C" {
 
       f_thread_unlock(&instance->lock);
 
-      status_lock = controller_lock_read_process(instance, thread, &instance->lock);
+      status_lock = controller_main_lock_read_instance(instance, thread, &instance->lock);
 
       if (F_status_is_error(status_lock)) {
         controller_lock_print_error_critical(&main->program.error, F_status_set_fine(status_lock), F_true, thread);
@@ -588,13 +588,13 @@ extern "C" {
         f_thread_unlock(&instance->lock);
       }
 
-      status_lock = controller_lock_write_process(instance, thread, &instance->lock);
+      status_lock = controller_main_lock_write_instance(instance, thread, &instance->lock);
 
       if (F_status_is_error(status_lock)) {
         controller_lock_print_error_critical(&main->program.error, F_status_set_fine(status_lock), F_false, thread);
 
         if (F_status_set_fine(status_lock) != F_interrupt) {
-          status = controller_lock_read_process(instance, thread, &instance->lock);
+          status = controller_main_lock_read_instance(instance, thread, &instance->lock);
 
           if (status == F_okay) {
             return status_lock;
@@ -611,7 +611,7 @@ extern "C" {
 
       f_thread_unlock(&instance->lock);
 
-      status_lock = controller_lock_read_process(instance, thread, &instance->lock);
+      status_lock = controller_main_lock_read_instance(instance, thread, &instance->lock);
 
       if (F_status_is_error(status_lock)) {
         controller_lock_print_error_critical(&main->program.error, F_status_set_fine(status_lock), F_true, thread);
@@ -664,10 +664,10 @@ extern "C" {
 
     return status;
   }
-#endif // _di_controller_rule_execute_foreground_
+#endif // _di_controller_main_rule_execute_foreground_
 
-#ifndef _di_controller_rule_execute_pid_with_
-  f_status_t controller_rule_execute_pid_with(const f_string_dynamic_t pid_file, const uint8_t type, const f_string_static_t program, const f_string_statics_t arguments, const uint8_t options, const uint8_t with, controller_execute_set_t * const execute_set, controller_instance_t * const instance) {
+#ifndef _di_controller_main_rule_execute_pid_with_
+  f_status_t controller_main_rule_execute_pid_with(const f_string_dynamic_t pid_file, const uint8_t type, const f_string_static_t program, const f_string_statics_t arguments, const uint8_t options, const uint8_t with, controller_execute_set_t * const execute_set, controller_instance_t * const instance) {
 
     if (!execute_set || !instance) return F_status_set_error(F_parameter);
 
@@ -772,9 +772,9 @@ extern "C" {
 
       // Sleep for less than a second to better show simulation of synchronous vs asynchronous.
       {
-        const f_time_spec_t delay = controller_time_milliseconds(controller_thread_simulation_timeout_d);
+        const f_time_spec_t delay = controller_main_time_milliseconds(controller_thread_simulation_timeout_d);
 
-        if (controller_time_sleep_nanoseconds((controller_global_t *) instance->global, delay) == -1) {
+        if (controller_main_time_sleep_nanoseconds((controller_global_t *) instance->global, delay) == -1) {
           status = F_status_set_error(F_interrupt);
         }
       }
@@ -796,13 +796,13 @@ extern "C" {
 
       f_thread_unlock(&instance->lock);
 
-      status_lock = controller_lock_write_process(instance, thread, &instance->lock);
+      status_lock = controller_main_lock_write_instance(instance, thread, &instance->lock);
 
       if (F_status_is_error(status_lock)) {
         controller_lock_print_error_critical(&main->program.error, F_status_set_fine(status_lock), F_false, thread);
 
         if (F_status_set_fine(status_lock) != F_interrupt) {
-          status = controller_lock_read_process(instance, thread, &instance->lock);
+          status = controller_main_lock_read_instance(instance, thread, &instance->lock);
 
           if (status == F_okay) {
             return status_lock;
@@ -817,7 +817,7 @@ extern "C" {
 
       f_thread_unlock(&instance->lock);
 
-      status_lock = controller_lock_read_process(instance, thread, &instance->lock);
+      status_lock = controller_main_lock_read_instance(instance, thread, &instance->lock);
 
       if (F_status_is_error(status_lock)) {
         controller_lock_print_error_critical(&main->program.error, F_status_set_fine(status_lock), F_true, thread);
@@ -841,13 +841,13 @@ extern "C" {
         f_thread_unlock(&instance->lock);
       }
 
-      status_lock = controller_lock_write_process(instance, thread, &instance->lock);
+      status_lock = controller_main_lock_write_instance(instance, thread, &instance->lock);
 
       if (F_status_is_error(status_lock)) {
         controller_lock_print_error_critical(&main->program.error, F_status_set_fine(status_lock), F_false, thread);
 
         if (F_status_set_fine(status_lock) != F_interrupt) {
-          status = controller_lock_read_process(instance, thread, &instance->lock);
+          status = controller_main_lock_read_instance(instance, thread, &instance->lock);
 
           if (status == F_okay) {
             return status_lock;
@@ -864,7 +864,7 @@ extern "C" {
 
       f_thread_unlock(&instance->lock);
 
-      status_lock = controller_lock_read_process(instance, thread, &instance->lock);
+      status_lock = controller_main_lock_read_instance(instance, thread, &instance->lock);
 
       if (F_status_is_error(status_lock)) {
         controller_lock_print_error_critical(&main->program.error, F_status_set_fine(status_lock), F_true, thread);
@@ -917,10 +917,10 @@ extern "C" {
 
     return status;
   }
-#endif // _di_controller_rule_execute_pid_with_
+#endif // _di_controller_main_rule_execute_pid_with_
 
-#ifndef _di_controller_rule_execute_rerun_
-  int8_t controller_rule_execute_rerun(const uint8_t action, controller_instance_t * const instance, controller_rule_item_t * const item) {
+#ifndef _di_controller_main_rule_execute_rerun_
+  int8_t controller_main_rule_execute_rerun(const uint8_t action, controller_instance_t * const instance, controller_rule_item_t * const item) {
 
     if (!instance || !item) return F_status_set_error(F_parameter);
 
@@ -939,7 +939,7 @@ extern "C" {
 
           fl_print_format("%rRe-running '", main->program.output.to, f_string_eol_s);
           fl_print_format("%[%r%]' '", main->program.output.to, main->program.context.set.title, instance->rule.alias, main->program.context.set.title);
-          fl_print_format("%[%r%]' with a ", main->program.output.to, main->program.context.set.notable, controller_rule_action_execute_type_name(action), main->program.context.set.notable);
+          fl_print_format("%[%r%]' with a ", main->program.output.to, main->program.context.set.notable, controller_main_rule_action_execute_type_name(action), main->program.context.set.notable);
           fl_print_format("%[%r%] of ", main->program.output.to, main->program.context.set.notable, controller_delay_s, main->program.context.set.notable);
           fl_print_format("%[%ul%] MegaTime", main->program.output.to, main->program.context.set.notable, rerun_item->delay, main->program.context.set.notable);
 
@@ -957,9 +957,9 @@ extern "C" {
         }
 
         if (rerun_item->delay) {
-          const f_time_spec_t delay = controller_time_milliseconds(rerun_item->delay);
+          const f_time_spec_t delay = controller_main_time_milliseconds(rerun_item->delay);
 
-          if (controller_time_sleep_nanoseconds(main, (controller_process_t *) instance->main_setting, delay) == -1) {
+          if (controller_main_time_sleep_nanoseconds(main, (controller_process_t *) instance->main_setting, delay) == -1) {
             return -1;
           }
 
@@ -985,7 +985,7 @@ extern "C" {
 
     return F_false;
   }
-#endif // _di_controller_rule_execute_rerun_
+#endif // _di_controller_main_rule_execute_rerun_
 
 #ifdef __cplusplus
 } // extern "C"

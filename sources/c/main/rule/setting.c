@@ -4,8 +4,8 @@
 extern "C" {
 #endif
 
-#ifndef _di_controller_rule_setting_read_
-  f_status_t controller_rule_setting_read(controller_global_t * const global, const bool is_normal, controller_cache_t * const cache, controller_rule_t * const rule) {
+#ifndef _di_controller_main_rule_setting_read_
+  f_status_t controller_main_rule_setting_read(controller_global_t * const global, const bool is_normal, controller_cache_t * const cache, controller_rule_t * const rule) {
 
     if (!global || !cache || !rule) return F_status_set_error(F_parameter);
 
@@ -1536,31 +1536,31 @@ extern "C" {
       }
 
       if (f_compare_dynamic_partial_string(controller_freeze_s.string, cache->buffer_item, controller_freeze_s.used, cache->content_actions.array[i].array[0]) == F_equal_to) {
-        action = controller_rule_action_type_freeze_e;
+        action = controller_main_rule_action_type_freeze_e;
       }
       else if (f_compare_dynamic_partial_string(controller_kill_s.string, cache->buffer_item, controller_kill_s.used, cache->content_actions.array[i].array[0]) == F_equal_to) {
-        action = controller_rule_action_type_kill_e;
+        action = controller_main_rule_action_type_kill_e;
       }
       else if (f_compare_dynamic_partial_string(controller_pause_s.string, cache->buffer_item, controller_pause_s.used, cache->content_actions.array[i].array[0]) == F_equal_to) {
-        action = controller_rule_action_type_pause_e;
+        action = controller_main_rule_action_type_pause_e;
       }
       else if (f_compare_dynamic_partial_string(controller_reload_s.string, cache->buffer_item, controller_reload_s.used, cache->content_actions.array[i].array[0]) == F_equal_to) {
-        action = controller_rule_action_type_reload_e;
+        action = controller_main_rule_action_type_reload_e;
       }
       else if (f_compare_dynamic_partial_string(controller_restart_s.string, cache->buffer_item, controller_restart_s.used, cache->content_actions.array[i].array[0]) == F_equal_to) {
-        action = controller_rule_action_type_restart_e;
+        action = controller_main_rule_action_type_restart_e;
       }
       else if (f_compare_dynamic_partial_string(controller_resume_s.string, cache->buffer_item, controller_resume_s.used, cache->content_actions.array[i].array[0]) == F_equal_to) {
-        action = controller_rule_action_type_resume_e;
+        action = controller_main_rule_action_type_resume_e;
       }
       else if (f_compare_dynamic_partial_string(controller_start_s.string, cache->buffer_item, controller_start_s.used, cache->content_actions.array[i].array[0]) == F_equal_to) {
-        action = controller_rule_action_type_start_e;
+        action = controller_main_rule_action_type_start_e;
       }
       else if (f_compare_dynamic_partial_string(controller_stop_s.string, cache->buffer_item, controller_stop_s.used, cache->content_actions.array[i].array[0]) == F_equal_to) {
-        action = controller_rule_action_type_stop_e;
+        action = controller_main_rule_action_type_stop_e;
       }
       else if (f_compare_dynamic_partial_string(controller_thaw_s.string, cache->buffer_item, controller_thaw_s.used, cache->content_actions.array[i].array[0]) == F_equal_to) {
-        action = controller_rule_action_type_thaw_e;
+        action = controller_main_rule_action_type_thaw_e;
       }
       else {
         if (global->main->program.error.verbosity > f_console_verbosity_quiet_e) {
@@ -1747,7 +1747,7 @@ extern "C" {
 
     return status_return;
   }
-#endif // _di_controller_rule_setting_read_
+#endif // _di_controller_main_rule_setting_read_
 
 #ifdef __cplusplus
 } // extern "C"

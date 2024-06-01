@@ -25,9 +25,6 @@ extern "C" {
       return;
     }
 
-    // A custom status at this scope is used to prevent the status from being changed by any child process or sub-function.
-    f_status_t status = F_okay;
-
     fl_print_t message = main->program.message;
     fl_print_t output = main->program.output;
     fl_print_t error = main->program.error;
@@ -40,7 +37,7 @@ extern "C" {
     message.custom = output.custom = error.custom = warning.custom = debug.custom = (void *) &global;
 
     // The global locks must be initialized, but only once, so initialize immediately upon allocation.
-    status = controller_main_lock_create(&thread.lock);
+    f_status_t status = controller_main_lock_create(&thread.lock);
 
     if (F_status_is_error(status)) {
       controller_main_print_error_status(&main->program.error, macro_controller_f(controller_main_lock_create), status);
@@ -53,7 +50,7 @@ extern "C" {
     }
 
     if (F_status_is_error_not(status)) {
-      status = f_thread_create(0, &thread.id_signal, &controller_thread_signal_normal, (void *) &global);
+      status = f_thread_create(0, &thread.id_signal, &controller_main_thread_signal_normal, (void *) &global);
     }
 
     if (F_status_is_error(status)) {
@@ -63,11 +60,11 @@ extern "C" {
     }
     else {
       if (main->setting.flag & controller_main_flag_daemon_e) {
-        program->ready = controller_setting_ready_done_e;
+        program->ready = controller_program_ready_done_e;
 
         if (f_file_exists(program->path_pid, F_true) == F_true) {
           status = F_status_set_error(F_available_not);
-          program->ready = controller_setting_ready_abort_e;
+          program->ready = controller_program_ready_abort_e;
 
           controller_main_print_error_file_pid_exists(&main->program.error, &thread, program->path_pid);
         }
@@ -79,7 +76,7 @@ extern "C" {
           controller_main_print_error_status(&main->program.error, macro_controller_f(f_thread_create), status);
         }
         else {
-          controller_thread_join(&thread.id_entry);
+          controller_main_thread_join(&thread.id_entry);
 
           status = thread.status;
           thread.id_entry = 0;
@@ -94,7 +91,7 @@ extern "C" {
         // Wait for the entry thread to complete before starting the rule thread.
         controller_main_thread_join(&thread.id_rule);
 
-        if (thread.enabled && program->mode == controller_setting_mode_service_e) {
+        if (thread.enabled && program->mode == controller_program_mode_service_e) {
           status = f_thread_create(0, &thread.id_rule, &controller_main_thread_rule, (void *) &global);
 
           if (F_status_is_error(status)) {
@@ -116,23 +113,23 @@ extern "C" {
     if (status == F_child) {
       main->setting.state.status = F_child;
 
-      controller_main_thread_delete(&thread);
+      controller_thread_delete(&thread);
 
       return;
     }
 
-    if (F_status_is_error_not(status) && status != F_failure && !(main->setting.flag & controller_main_flag_validate_e) && controller_thread_is_enabled(F_true, &thread)) {
-      if (program->mode == controller_setting_mode_service_e) {
+    if (F_status_is_error_not(status) && status != F_failure && !(main->setting.flag & controller_main_flag_validate_e) && controller_main_thread_is_enabled(F_true, &thread)) {
+      if (program->mode == controller_program_mode_service_e) {
         controller_main_thread_join(&thread.id_signal);
       }
-      else if (program->mode == controller_setting_mode_helper_e || program->mode == controller_setting_mode_program_e) {
+      else if (program->mode == controller_program_mode_helper_e || program->mode == controller_program_mode_program_e) {
         status = controller_main_rule_wait_all(global, F_true, F_false);
       }
     }
 
-    controller_main_thread_process_cancel(global, F_true, controller_thread_cancel_call_e);
+    controller_main_thread_instance_cancel(global, F_true, controller_thread_cancel_call_e);
 
-    controller_main_thread_process_exit(&global);
+    controller_main_thread_instance_exit(&global);
 
     if (thread.id_signal) f_thread_join(thread.id_signal, 0);
     if (thread.id_cleanup) f_thread_join(thread.id_cleanup, 0);
@@ -146,7 +143,7 @@ extern "C" {
     thread.id_rule = 0;
     thread.id_signal = 0;
 
-    controller_main_thread_delete(&thread);
+    controller_thread_delete(&thread);
 
     if (F_status_set_fine(status) == F_interrupt) {
       fll_program_print_signal_received(&main->program.warning, thread.signal);

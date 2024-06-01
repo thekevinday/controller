@@ -282,7 +282,7 @@ extern "C" {
       main->setting.flag &= ~controller_main_flag_interruptible_e;
     }
 
-    if (main->program.parameters.array[f_console_standard_parameter_daemon_e].result & f_console_result_found_e) {
+    if (main->program.parameters.array[controller_parameter_daemon_e].result & f_console_result_found_e) {
       main->setting.flag |= controller_main_flag_daemon_e;
     }
 

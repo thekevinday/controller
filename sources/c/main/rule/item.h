@@ -23,6 +23,7 @@ extern "C" {
  *
  * @param global
  *   The global data.
+ *
  *   Must not be NULL.
  *
  *   This does not alter global.main.setting.state.status.
@@ -41,13 +42,13 @@ extern "C" {
  *   Errors (with error bit) from: f_fss_count_lines().
  *   Errors (with error bit) from: f_string_dynamic_partial_append_nulless().
  *
- * @see controller_rule_action_read()
+ * @see controller_main_rule_action_read()
  * @see f_fss_count_lines()
  * @see f_string_dynamic_partial_append_nulless()
  */
-#ifndef _di_controller_rule_item_read_
-  extern f_status_t controller_rule_item_read(controller_global_t * const global, const bool is_normal, controller_cache_t * const cache, controller_rule_item_t * const item);
-#endif // _di_controller_rule_item_read_
+#ifndef _di_controller_main_rule_item_read_
+  extern f_status_t controller_main_rule_item_read(controller_global_t * const global, const bool is_normal, controller_cache_t * const cache, controller_rule_item_t * const item);
+#endif // _di_controller_main_rule_item_read_
 
 #ifdef __cplusplus
 } // extern "C"

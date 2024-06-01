@@ -24,6 +24,7 @@ extern "C" {
  *   If FALSE, then instance as if this operates during a an exit operation.
  * @param thread
  *   The thread data.
+ *
  *   Must not be NULL.
  *
  * @return
@@ -39,9 +40,11 @@ extern "C" {
  *
  * @param instance
  *   The instance to use when checking if thread is enabled.
+ *
  *   Must not be NULL.
  * @param thread
  *   The thread data.
+ *
  *   Must not be NULL.
  *
  * @return
@@ -61,6 +64,7 @@ extern "C" {
  *   The instance type to use when checking if thread is enabled.
  * @param thread
  *   The thread data.
+ *
  *   Must not be NULL.
  *
  * @return
