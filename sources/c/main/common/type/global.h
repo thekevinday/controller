@@ -19,15 +19,16 @@ extern "C" {
 /**
  * A wrapper used for passing a common set of all data, particularly for sharing between threads.
  *
- * main:    The main program data.
- * program: The program data.
- * thread:  The thread data for a specific thread.
+ * Properties:
+ *   - main:    The main program data.
+ *   - program: The program data.
+ *   - thread:  The thread data for a specific thread.
  *
- * message: A message printer, with custom set to this structure.
- * output:  An output printer, with custom set to this structure.
- * error:   An error printer, with custom set to this structure.
- * warning: A warning printer, with custom set to this structure.
- * debug:   A debug printer, with custom set to this structure.
+ *   - message: The output file for normal output messages (often stdout), but with custom set to (controller_global_t *).
+ *   - output:  The output file for normal/non-message output, aka data output (often stdout or a file), but with custom set to (controller_global_t *).
+ *   - error:   The output file for error output messages, but with custom set to (controller_global_t *).
+ *   - warning: The output file for warning output messages, but with custom set to (controller_global_t *).
+ *   - debug:   The output file for debug output messages, but with custom set to (controller_global_t *).
  */
 #ifndef _di_controller_global_t_
   typedef struct {
@@ -35,24 +36,24 @@ extern "C" {
     controller_program_t *program;
     controller_thread_t *thread;
 
-    fl_print_t message;
-    fl_print_t output;
-    fl_print_t error;
-    fl_print_t warning;
-    fl_print_t debug;
+    fl_print_t *message;
+    fl_print_t *output;
+    fl_print_t *error;
+    fl_print_t *warning;
+    fl_print_t *debug;
   } controller_global_t;
 
-  #define controller_global_t_initialize { 0, 0, 0 }
+  #define controller_global_t_initialize { 0, 0, 0, 0, 0, 0, 0, 0 }
 
-  #define macro_controller_global_t_initialize(main, program, thread) { \
+  #define macro_controller_global_t_initialize_1(main, program, thread, message, output, error, warning, debug) { \
     main, \
     program, \
     thread, \
-    fl_print_t_initialize, \
-    fl_print_t_initialize, \
-    macro_fl_print_t_initialize_error(), \
-    macro_fl_print_t_initialize_warning(), \
-    macro_fl_print_t_initialize_debug(), \
+    message, \
+    output, \
+    error, \
+    warning, \
+    debug, \
   }
 #endif // _di_controller_global_t_
 

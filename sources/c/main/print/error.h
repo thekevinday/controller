@@ -40,6 +40,36 @@ extern "C" {
 #endif // _di_controller_main_print_error_
 
 /**
+ * Print error message regarding the failsafe item failing.
+ *
+ * @param print
+ *   The output structure to print to.
+ *
+ *   Must not be NULL.
+ *
+ *   This does not alter print.custom.setting.state.status.
+ * @param thread
+ *   The name of the function associated with the error.
+ *
+ *   Must not be NULL.
+ * @param name
+ *   The name of the item.
+ *
+ *   Must not be NULL.
+ *
+ * @return
+ *   F_okay on success.
+ *   F_output_not on success, but no printing is performed.
+ *
+ *   F_output_not (with error bit) if setting is NULL.
+ *
+ * @see fll_error_print()
+ */
+#ifndef _di_controller_main_print_error_failsafe_item_
+  extern f_status_t controller_main_print_error_failsafe_item(fl_print_t * const print, controller_thread_t * const thread, f_string_dynamic_t * const name);
+#endif // _di_controller_main_print_error_failsafe_item_
+
+/**
  * Print file related error or warning messages.
  *
  * @param print
@@ -184,6 +214,36 @@ extern "C" {
 #ifndef _di_controller_main_print_rule_error_cache_
   extern void controller_main_print_rule_error_cache(fl_print_t * const print, const controller_cache_action_t cache, const bool item);
 #endif // _di_controller_main_print_rule_error_cache_
+
+/**
+ * Print error message regarding the pid file already existing.
+ *
+ * @param print
+ *   The output structure to print to.
+ *
+ *   Must not be NULL.
+ *
+ *   This does not alter print.custom.setting.state.status.
+ * @param thread
+ *   The name of the function associated with the error.
+ *
+ *   Must not be NULL.
+ * @param path
+ *   The path to the PID file.
+ *
+ *   Must not be NULL.
+ *
+ * @return
+ *   F_okay on success.
+ *   F_output_not on success, but no printing is performed.
+ *
+ *   F_output_not (with error bit) if setting is NULL.
+ *
+ * @see fll_error_print()
+ */
+#ifndef _di_controller_main_print_error_file_pid_exists_
+  extern f_status_t controller_main_print_error_file_pid_exists(fl_print_t * const print, controller_thread_t * const thread, f_string_dynamic_t * const path);
+#endif // _di_controller_main_print_error_file_pid_exists_
 
 #ifdef __cplusplus
 } // extern "C"

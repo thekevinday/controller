@@ -38,7 +38,7 @@ extern "C" {
  * cache:     A cache used by the main entry/rule processing thread for synchronous operations.
  */
 #ifndef _di_controller_thread_t_
-  typedef struct controller_thread_t_ {
+  typedef struct {
     uint8_t enabled;
     int signal;
     f_status_t status;

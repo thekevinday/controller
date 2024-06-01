@@ -38,7 +38,7 @@ int main(const int argc, const f_string_t *argv, const f_string_t *envp) {
     controller_main_setting_load(arguments, &data, &program);
   }
 
-  controller_controller_main(&data, &program);
+  controller_main_process(&data, &program);
 
   controller_main_delete(&data);
 

@@ -97,10 +97,10 @@
 #include <program/controller/main/common/type/lock.h>
 #include <program/controller/main/common/type/rule.h>
 #include <program/controller/main/common/type/program.h>
-#include <program/controller/main/common/type/instance.h>
 #include <program/controller/main/common/type/thread.h>
 #include <program/controller/main/common/type.h>
 #include <program/controller/main/common/type/global.h>
+#include <program/controller/main/common/type/instance.h>
 #include <program/controller/main/common.h>
 #include <program/controller/main/path.h>
 #include <program/controller/main/print/action.h>
@@ -136,6 +136,7 @@
 #include <program/controller/main/rule/setting.h>
 #include <program/controller/main/rule/validate.h>
 #include <program/controller/main/rule/wait.h>
+#include <program/controller/main/process.h>
 
 #ifdef __cplusplus
 extern "C" {

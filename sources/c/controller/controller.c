@@ -25,7 +25,7 @@ extern "C" {
       return;
     }
 
-    // @todo controller_main(&data, &program); (also needs to include things like controller_main_thread())
+    controller_main_process(data, program);
     if (main->setting.state.status == F_status_set_error(F_child)) return;
 
     if (main->setting.state.status == F_status_set_error(F_interrupt)) {

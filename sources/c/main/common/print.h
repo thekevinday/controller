@@ -54,6 +54,7 @@ extern "C" {
     controller_f_f_rip_dynamic_partial_nulless_e,
     controller_f_f_string_append_assure_e,
     controller_f_f_string_dynamic_append_e,
+    controller_f_f_string_dynamic_append_assure_e,
     controller_f_f_string_dynamic_append_nulless_e,
     controller_f_f_string_dynamic_partial_append_e,
     controller_f_f_string_dynamic_partial_append_nulless_e,

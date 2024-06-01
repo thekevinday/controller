@@ -41,7 +41,7 @@ int main(const int argc, const f_string_t *argv, const f_string_t *envp) {
     controller_main_setting_load(arguments, &data, &program);
   }
 
-  controller_init_main(&data, &program);
+  controller_main_process(&data, &program);
 
   fll_program_standard_set_down(&data.program);
 

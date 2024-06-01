@@ -23,6 +23,8 @@ extern "C" {
 /**
  * Execute main program.
  *
+ * @todo this may or may not be needed. For now controller_main_process() is being written as a complete replacement to this.
+ *
  * If main.signal is non-zero, then this blocks and handles the following signals:
  *   - F_signal_abort
  *   - F_signal_broken_pipe
@@ -45,6 +47,8 @@ extern "C" {
  *   A pointer to the current program settings.
  *
  *   Must not be NULL.
+ *
+ * @see controller_main_process()
  */
 #ifndef _di_controller_init_main_
   extern void controller_init_main(controller_main_t * const main, controller_program_t * const program);

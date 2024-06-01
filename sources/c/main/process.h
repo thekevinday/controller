@@ -5,23 +5,19 @@
  * API Version: 0.7
  * Licenses: lgpl-2.1-or-later
  *
- * This program provides an controller base project.
+ * Provides the main process functionality.
  *
- * This program does nothing but can be used as a starting point for new program projects.
+ * This is auto-included and should not need to be explicitly included.
  */
-#ifndef _controller_controller_h
-#define _controller_controller_h
-
-// Controller includes.
-#include <program/controller/main/controller.h>
-#include <program/controller/controller/string.h>
+#ifndef _controller_main_process_h
+#define _controller_main_process_h
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
 /**
- * Execute main program.
+ * Execute main program process.
  *
  * If main.signal is non-zero, then this blocks and handles the following signals:
  *   - F_signal_abort
@@ -47,15 +43,13 @@ extern "C" {
  *   A pointer to the current program settings.
  *
  *   Must not be NULL.
- *
- * @see controller_main_process()
  */
-#ifndef _di_controller_controller_main_
-  extern void controller_controller_main(controller_main_t * const main, controller_program_t * const program);
-#endif // _di_controller_controller_main_
+#ifndef controller_main_process
+  extern void controller_main_process(controller_main_t * const main, controller_program_t * const program);
+#endif // controller_main_process
 
 #ifdef __cplusplus
 } // extern "C"
 #endif
 
-#endif // _controller_controller_h
+#endif // _controller_main_process_h

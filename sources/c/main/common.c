@@ -176,20 +176,21 @@ extern "C" {
       index = main->program.parameters.array[controller_parameter_settings_e].values.array[main->program.parameters.array[controller_parameter_settings_e].values.used - 1];
 
       controller_path_canonical_relative(main, program->path_current, args[index], &program->path_setting);
+
+      if (F_status_is_error(main->setting.state.status)) {
+        controller_main_print_error_file(&main->program.error, macro_controller_f(controller_path_canonical_relative), args[index], f_file_operation_verify_s, fll_error_file_type_path_e);
+
+        return;
+      }
     }
     else {
       main->setting.state.status = f_string_dynamic_append(controller_default_path_settings_s, &program->path_setting);
-    }
 
-    if (F_status_is_error(main->setting.state.status)) {
-      if (main->program.parameters.array[controller_parameter_settings_e].locations.used) {
-        controller_main_print_error_file(&main->program.error, macro_controller_f(controller_path_canonical_relative), args[index], f_file_operation_verify_s, fll_error_file_type_path_e);
-      }
-      else {
+      if (F_status_is_error(main->setting.state.status)) {
         controller_main_print_error(&main->program.error, macro_controller_f(f_string_dynamic_append));
-      }
 
-      return;
+        return;
+      }
     }
 
     if (!program->path_pid.used && !main->program.parameters.array[controller_parameter_pid_e].locations.used) {
@@ -242,6 +243,27 @@ extern "C" {
         controller_main_print_debug_directory_path_empty(&main->program.warning, f_console_symbol_long_normal_s, controller_long_cgroup_s);
       }
     }
+    else {
+      main->setting.state.status = f_string_dynamic_append_nulless(f_control_group_path_system_prefix_s, &program->path_cgroup);
+
+      if (F_status_is_error_not(main->setting.state.status)) {
+        main->setting.state.status = f_string_dynamic_append_nulless(f_control_group_path_system_default_s, &program->path_cgroup);
+      }
+
+      if (F_status_is_error(main->setting.state.status)) {
+        controller_main_print_error(&main->program.error, macro_controller_f(f_string_dynamic_append_nulless));
+
+        return;
+      }
+
+      main->setting.state.status = f_string_dynamic_append_assure(f_path_separator_s, &program->path_cgroup);
+
+      if (F_status_is_error(main->setting.state.status)) {
+        controller_main_print_error(&main->program.error, macro_controller_f(f_string_dynamic_append_assure));
+
+        return;
+      }
+    }
 
     if (main->program.parameters.array[controller_parameter_interruptible_e].result & f_console_result_found_e) {
       if (main->program.parameters.array[controller_parameter_uninterruptible_e].result & f_console_result_found_e) {
@@ -258,6 +280,14 @@ extern "C" {
     }
     else if (main->program.parameters.array[controller_parameter_uninterruptible_e].result & f_console_result_found_e) {
       main->setting.flag &= ~controller_main_flag_interruptible_e;
+    }
+
+    if (main->program.parameters.array[f_console_standard_parameter_daemon_e].result & f_console_result_found_e) {
+      main->setting.flag |= controller_main_flag_daemon_e;
+    }
+
+    if (main->program.parameters.array[controller_parameter_validate_e].result & f_console_result_found_e) {
+      main->setting.flag |= controller_main_flag_validate_e;
     }
   }
 #endif // _di_controller_main_setting_load_

@@ -42,12 +42,9 @@ extern "C" {
  * path_pids: An array of paths representing PID files.
  * stack:     A stack used to represent dependencies as Rule ID's to avoid circular Rule dependencies (If Rule A waits on Rule B, then Rule B must not wait on Rule A).
  *
- * rule:  A copy of the rule actively being executed.
- * cache: The cache used by this Instance.
- *
- * main:    The associated main program data (of type controller_main_t).
- * program: The associated program data.
- * thread:  The associated thread data (of type f_thread_t).
+ * rule:   A copy of the rule actively being executed.
+ * cache:  The cache used by this Instance.
+ * global: The global data.
  */
 #ifndef _di_controller_instance_t_
   typedef struct {
@@ -71,13 +68,7 @@ extern "C" {
 
     controller_rule_t rule;
     controller_cache_t cache;
-
-    // @fixme change this to void *global where global is controller_global_t??
-    // @fixme each instance probably needs its own thread data and this likely needs to be backported if it do-able in a non-breaking-change manner!
-    // @fixme I may want to instead replace the controller_global_t with controller_instance_t during printing calls (maybe more??).
-    void *main;
-    controller_program_t *program;
-    void *thread;
+    controller_global_t global;
   } controller_instance_t;
 
   #define controller_instance_t_initialize { \
@@ -97,9 +88,7 @@ extern "C" {
     f_number_unsigneds_t_initialize, \
     controller_rule_t_initialize, \
     controller_cache_t_initialize, \
-    0, \
-    0, \
-    0, \
+    controller_global_t_initialize, \
   }
 #endif // _di_controller_instance_t_
 

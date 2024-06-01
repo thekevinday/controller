@@ -21,6 +21,7 @@ extern "C" {
     "f_rip_dynamic_partial_nulless",
     "f_string_append_assure",
     "f_string_dynamic_append",
+    "f_string_dynamic_append_assure",
     "f_string_dynamic_append_nulless",
     "f_string_dynamic_partial_append",
     "f_string_dynamic_partial_append_nulless",
