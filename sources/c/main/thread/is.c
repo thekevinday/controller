@@ -18,7 +18,7 @@ extern "C" {
 
     if (!instance) return F_false;
 
-    return controller_thread_is_enabled_instance_type(instance->type, instance->global->thread);
+    return controller_thread_is_enabled_instance_type(instance->type, &instance->main->thread);
   }
 #endif // _di_controller_thread_is_enabled_instance_
 

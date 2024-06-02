@@ -5,9 +5,9 @@ extern "C" {
 #endif
 
 #ifndef _di_controller_rule_expand_
-  f_status_t controller_rule_expand(controller_global_t * const global, const controller_rule_action_t action, controller_instance_t * const instance) {
+  f_status_t controller_rule_expand(controller_t * const main, const controller_rule_action_t action, controller_instance_t * const instance) {
 
-    if (!global || !instance) return F_status_set_error(F_parameter);
+    if (!main || !instance) return F_status_set_error(F_parameter);
 
     instance->cache.expanded.used = 0;
 
@@ -90,7 +90,7 @@ extern "C" {
 #ifndef _di_controller_rule_expand_iki_
   f_status_t controller_rule_expand_iki(controller_instance_t * const instance, const f_string_static_t source, const f_range_t vocabulary, const f_range_t content, f_string_dynamic_t * const destination) {
 
-    if (!instance || !instance->global || !instance->global->program || !destination) return F_status_set_error(F_parameter);
+    if (!instance || !instance->main || !destination) return F_status_set_error(F_parameter);
     if (vocabulary.start > vocabulary.stop) return F_okay;
     if (content.start > content.stop) return F_okay;
 
@@ -111,7 +111,7 @@ extern "C" {
       } // for
 
       if (i == instance->rule.define.used) {
-        controller_entry_t * const entry = instance->type == controller_instance_type_entry_e ? &instance->global->program->entry : &instance->global->program->exit;
+        controller_entry_t * const entry = instance->type == controller_instance_type_entry_e ? &instance->main->process.entry : &instance->main->process.exit;
 
         for (i = 0; i < entry->define.used; ++i) {
 
@@ -160,7 +160,7 @@ extern "C" {
       } // for
 
       if (i == instance->rule.parameter.used) {
-        controller_entry_t * const entry = instance->type == controller_instance_type_entry_e ? &instance->global->program->entry : &instance->global->program->exit;
+        controller_entry_t * const entry = instance->type == controller_instance_type_entry_e ? &instance->main->process.entry : &instance->main->process.exit;
 
         for (i = 0; i < entry->parameter.used; ++i) {
 
@@ -174,8 +174,8 @@ extern "C" {
       }
     }
     else if (f_compare_dynamic_partial_string(controller_program_s.string, source, controller_program_s.used, vocabulary) == F_equal_to) {
-      f_string_static_t * const argv = instance->global->main.program.parameters.arguments.array;
-      f_console_parameters_t * const parameters = &instance->global->main.program.parameters;
+      f_string_static_t * const argv = instance->main->program.parameters.arguments.array;
+      f_console_parameters_t * const parameters = &instance->main->program.parameters;
 
       const f_string_static_t options[] = {
         f_console_standard_long_light_s,

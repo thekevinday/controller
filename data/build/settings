@@ -41,7 +41,7 @@ build_libraries-level -lfll_2 -lfll_1 -lfll_0
 build_libraries-monolithic -lfll
 
 build_sources_library main/common.c main/common/define.c main/common/enumeration.c main/common/print.c main/common/string.c main/common/type.c
-build_sources_library main/common/type/cache.c main/common/type/control.c main/common/type/entry.c main/common/type/execute.c main/common/type/global.c main/common/type/lock.c main/common/type/instance.c main/common/type/program.c main/common/type/rule.c main/common/type/thread.c
+build_sources_library main/common/type/cache.c main/common/type/control.c main/common/type/entry.c main/common/type/execute.c main/common/type/instance.c main/common/type/interrupt.c main/common/type/lock.c main/common/type/process.c main/common/type/rule.c main/common/type/thread.c
 build_sources_library main/common/string/general.c main/common/string/rule.c
 build_sources_library main/convert.c main/instance.c main/instance/prepare.c main/instance/wait.c
 build_sources_library main/file.c main/lock.c main/path.c main/process.c
@@ -50,12 +50,13 @@ build_sources_library main/print/action.c main/print/data.c main/print/debug.c m
 build_sources_library main/print/rule/action.c main/print/rule/item.c main/print/rule/setting.c
 build_sources_library main/signal.c main/time.c
 build_sources_library main/thread.c main/thread/cleanup.c main/thread/control.c main/thread/entry.c main/thread/instance.c main/thread/is.c main/thread/rule.c main/thread/signal.c
+build_sources_library main/validate.c
 
 build_sources_headers main/common.h main/controller.h main/common/define.h main/common/enumeration.h main/common/print.h main/common/string.h main/common/thread.h main/common/type.h
 build_sources_headers main/common/define/control.h main/common/define/entry.h main/common/define/rule.h main/common/define/thread.h
-build_sources_headers main/common/enumeration/control.h main/common/enumeration/entry.h main/common/enumeration/instance.h main/common/enumeration/program.h main/common/enumeration/rule.h main/common/enumeration/thread.h
+build_sources_headers main/common/enumeration/control.h main/common/enumeration/entry.h main/common/enumeration/instance.h main/common/enumeration/process.h main/common/enumeration/rule.h main/common/enumeration/thread.h
 build_sources_headers main/common/string/general.h main/common/string/rule.h
-build_sources_headers main/common/type/cache.h main/common/type/control.h main/common/type/defs.h main/common/type/entry.h main/common/type/execute.h main/common/type/global.h main/common/type/lock.h main/common/type/instance.h main/common/type/program.h main/common/type/rule.h main/common/type/thread.h
+build_sources_headers main/common/type/cache.h main/common/type/control.h main/common/type/defs.h main/common/type/entry.h main/common/type/execute.h main/common/type/instance.h main/common/type/interrupt.h main/common/type/lock.h main/common/type/process.h main/common/type/rule.h main/common/type/thread.h
 build_sources_headers main/convert.h main/instance.h main/instance/prepare.h main/instance/wait.h
 build_sources_headers main/file.h main/lock.h main/path.h main/process.h
 build_sources_headers main/rule.h main/rule/action.h main/rule/execute.h main/rule/expand.h main/rule/instance.h main/rule/is.h main/rule/item.h main/rule/parameter.h main/rule/read.h main/rule/setting.h main/rule/validate.h main/rule/wait.h
@@ -63,6 +64,7 @@ build_sources_headers main/print/action.h main/print/data.h main/print/debug.h m
 build_sources_headers main/print/rule/action.h main/print/rule/item.h main/print/rule/setting.h
 build_sources_headers main/signal.h main/time.h
 build_sources_headers main/thread.h main/thread/cleanup.h main/thread/control.h main/thread/entry.h main/thread/instance.h main/thread/is.h main/thread/rule.h main/thread/signal.h
+build_sources_headers main/validate.h
 
 build_sources_documentation man
 

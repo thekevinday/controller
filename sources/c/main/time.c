@@ -26,12 +26,12 @@ extern "C" {
 #endif // _di_controller_time_now_
 
 #ifndef _di_controller_time_sleep_nanoseconds_
-  f_status_t controller_time_sleep_nanoseconds(controller_global_t * const global, const f_time_spec_t time) {
+  f_status_t controller_time_sleep_nanoseconds(controller_t * const main, const f_time_spec_t time) {
 
-    if (!global || !global->main) return F_status_set_error(F_parameter);
+    if (!main) return F_status_set_error(F_parameter);
 
     // When sleep is a second or more, instead wait for terminating signals if interruptible.
-    if ((global->main->program.flag & controller_main_flag_interruptible_e) && time.tv_sec) {
+    if ((main->setting.flag & controller_main_flag_interruptible_e) && time.tv_sec) {
       siginfo_t information;
       f_signal_t signal = f_signal_t_initialize;
 

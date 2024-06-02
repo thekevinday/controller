@@ -21,12 +21,12 @@ extern "C" {
  *
  * The object and content ranges are merged together (in that order) as the action parameters.
  *
- * @param global
- *   The global data.
+ * @param main
+ *   The main program data.
  *
  *   Must not be NULL.
  *
- *   This does not alter global.main.setting.state.status.
+ *   This does not alter main.setting.state.status.
  * @param buffer
  *   The buffer containing the content.
  * @param object
@@ -59,7 +59,7 @@ extern "C" {
  * @see fl_iki_read()
  */
 #ifndef _di_controller_rule_parameters_read_
-  extern f_status_t controller_rule_parameters_read(controller_global_t * const global, const f_string_static_t buffer, f_range_t * const object, f_ranges_t * const content, controller_rule_action_t * const action, f_state_t * const state);
+  extern f_status_t controller_rule_parameters_read(controller_t * const main, const f_string_static_t buffer, f_range_t * const object, f_ranges_t * const content, controller_rule_action_t * const action, f_state_t * const state);
 #endif // _di_controller_rule_parameters_read_
 
 #ifdef __cplusplus

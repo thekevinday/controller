@@ -7,7 +7,7 @@ extern "C" {
 #ifndef _di_controller_instance_wait_
   f_status_t controller_instance_wait(controller_instance_t * const instance) {
 
-    if (!instance || !instance->global || !instance->global->main || !instance->global->thread) return F_status_set_error(F_parameter);
+    if (!instance || !instance->main) return F_status_set_error(F_parameter);
     if (!controller_thread_is_enabled_instance(instance)) return F_status_set_error(F_interrupt);
 
     f_time_spec_t time;
@@ -43,7 +43,7 @@ extern "C" {
       status_lock = controller_lock_read_instance(instance, &instance->lock);
 
       if (F_status_is_error(status_lock)) {
-        controller_lock_print_error_critical(&instance->global->main->program.error, F_status_set_fine(status_lock), F_true, instance->global->thread);
+        controller_lock_print_error_critical(&instance->main->program.error, F_status_set_fine(status_lock), F_true);
 
         break;
       }

@@ -10,37 +10,39 @@ extern "C" {
     if (!print || !print->custom || !cache) return F_status_set_error(F_output_not);
     if (print->verbosity < f_console_verbosity_debug_e) return F_output_not;
 
-    controller_global_t * const global = (controller_global_t *) print->custom;
+    controller_t * const main = (controller_t *) print->custom;
 
-    controller_lock_print(print->to, global->thread);
+    controller_lock_print(print->to, &main->thread);
 
-    fl_print_format("%r%[%QAction is empty, nothing to do.%]%r", primt->to, f_string_eol_s, print->context, print->prefix, print->context, f_string_eol_s);
+    fl_print_format("%r%[%QAction is empty, nothing to do.%]%r", print->to, f_string_eol_s, print->context, print->prefix, print->context, f_string_eol_s);
 
     controller_print_rule_error_cache(print, cache->action, F_true);
 
-    controller_unlock_print_flush(print->to, global->thread);
+    controller_unlock_print_flush(print->to, &main->thread);
 
     return F_okay;
   }
 #endif // _di_controller_print_rule_item_debug_action_empty_
 
 #ifndef _di_controller_print_rule_item_error_
-  void controller_print_rule_item_error(fl_print_t * const print, const controller_cache_action_t cache, const bool item, const f_status_t status) {
+  f_status_t controller_print_rule_item_error(fl_print_t * const print, const controller_cache_action_t cache, const bool item, const f_status_t status) {
 
     if (!print || !print->custom) return F_status_set_error(F_output_not);
     if (print->verbosity < f_console_verbosity_error_e) return F_output_not;
     if (status == F_interrupt) return F_status_set_error(F_output_not);
 
-    controller_global_t * const global = (controller_global_t *) print->custom;
+    controller_t * const main = (controller_t *) print->custom;
 
     // fll_error_print() automatically locks, so manually handle only the mutex locking and flushing rather than calling controller_lock_print().
-    f_thread_mutex_lock(&global->thread->lock.print);
+    f_thread_mutex_lock(&main->thread.lock.print);
 
     controller_print_rule_error_cache(print, cache, item);
 
     f_file_stream_lock(print->to);
 
-    controller_unlock_print_flush(print->to, global->thread);
+    controller_unlock_print_flush(print->to, &main->thread);
+
+    return F_okay;
   }
 #endif // _di_controller_print_rule_item_error_
 
@@ -50,9 +52,9 @@ extern "C" {
     if (!print || !print->custom || !cache) return F_status_set_error(F_output_not);
     if (print->verbosity < f_console_verbosity_error_e) return F_output_not;
 
-    controller_global_t * const global = (controller_global_t *) print->custom;
+    controller_t * const main = (controller_t *) print->custom;
 
-    controller_lock_print(print->to, global->thread);
+    controller_lock_print(print->to, &main->thread);
 
     fl_print_format("%r%[%QRule item action '%]", print->to, f_string_eol_s, print->context, print->prefix, print->context);
     fl_print_format(f_string_format_r_single_s.string, print->to, print->notable, controller_rerun_s, print->notable);
@@ -72,7 +74,7 @@ extern "C" {
 
     controller_print_rule_error_cache(print, cache->action, F_true);
 
-    controller_unlock_print_flush(print->to, global->thread);
+    controller_unlock_print_flush(print->to, &main->thread);
 
     return F_okay;
   }
@@ -84,9 +86,9 @@ extern "C" {
     if (!print || !print->custom || !cache) return F_status_set_error(F_output_not);
     if (print->verbosity < f_console_verbosity_error_e) return F_output_not;
 
-    controller_global_t * const global = (controller_global_t *) print->custom;
+    controller_t * const main = (controller_t *) print->custom;
 
-    controller_lock_print(print->to, global->thread);
+    controller_lock_print(print->to, &main->thread);
 
     fl_print_format("%r%[%QRule item action '%]", print->to, f_string_eol_s, print->context, print->prefix, print->context);
     fl_print_format(f_string_format_r_single_s.string, print->to, print->notable, controller_rerun_s, print->notable);
@@ -99,7 +101,7 @@ extern "C" {
 
     controller_print_rule_error_cache(print, cache->action, F_true);
 
-    controller_unlock_print_flush(print->to, global->thread);
+    controller_unlock_print_flush(print->to, &main->thread);
 
     return F_okay;
   }
@@ -111,9 +113,9 @@ extern "C" {
     if (!print || !print->custom || !cache) return F_status_set_error(F_output_not);
     if (print->verbosity < f_console_verbosity_error_e) return F_output_not;
 
-    controller_global_t * const global = (controller_global_t *) print->custom;
+    controller_t * const main = (controller_t *) print->custom;
 
-    controller_lock_print(print->to, global->thread);
+    controller_lock_print(print->to, &main->thread);
 
     fl_print_format("%r%[%QRule item action '%]", print->to, f_string_eol_s, print->context, print->prefix, print->context);
     fl_print_format(f_string_format_r_single_s.string, print->to, print->notable, name, print->notable);
@@ -123,21 +125,19 @@ extern "C" {
 
     controller_print_rule_error_cache(print, cache->action, F_true);
 
-    controller_unlock_print_flush(print->to, global->thread);
+    controller_unlock_print_flush(print->to, &main->thread);
 
     return F_okay;
   }
 #endif // _di_controller_print_rule_item_error_action_unknown_
 
 #ifndef _di_controller_print_rule_item_error_execute_
-  void controller_print_rule_item_error_execute(fl_print_t * const print, controller_instance_t * const instance, const bool script_is, const f_string_static_t name, const f_status_t status) {
+  f_status_t controller_print_rule_item_error_execute(fl_print_t * const print, controller_instance_t * const instance, const bool script_is, const f_string_static_t name, const f_status_t status) {
 
-    if (!print || !print->custom) return F_status_set_error(F_output_not);
+    if (!print || !instance || !instance->main) return F_status_set_error(F_output_not);
     if (print->verbosity < f_console_verbosity_error_e) return F_output_not;
 
-    controller_global_t * const global = (controller_global_t *) print->custom;
-
-    controller_lock_print(print->to, global->thread);
+    controller_lock_print(print->to, &instance->main->thread);
 
     fl_print_format("%r%[%QThe %r '%]", print->to, f_string_eol_s, print->context, print->prefix, script_is ? controller_engine_s : controller_program_s, print->context);
     fl_print_format(f_string_format_Q_single_s.string, print->to, print->notable, name, print->notable);
@@ -160,8 +160,8 @@ extern "C" {
 
       fl_print_format("%]%['.%]%r", print->to, print->notable, print->context, print->context, f_string_eol_s);
     }
-    else if (WIFEXITED(process->result) ? WEXITSTATUS(process->result) : 0) {
-      const uint8_t code = WIFEXITED(process->result) ? WEXITSTATUS(process->result) : 0;
+    else if (WIFEXITED(instance->result) ? WEXITSTATUS(instance->result) : 0) {
+      const uint8_t code = WIFEXITED(instance->result) ? WEXITSTATUS(instance->result) : 0;
 
       if (code == F_execute_access) {
         fl_print_format("%[' failed, access is denied.%]%r", print->to, print->context, print->context, f_string_eol_s);
@@ -377,29 +377,35 @@ extern "C" {
       fl_print_format("%[' failed.%]%r", print->to, print->context, print->context, f_string_eol_s);
     }
 
-    controller_unlock_print_flush(print->to, global->thread);
+    controller_unlock_print_flush(print->to, &instance->main->thread);
+
+    return F_okay;
   }
 #endif // _di_controller_print_rule_item_error_execute_
 
 #ifndef _di_controller_print_rule_item_error_need_want_wish_
-  void controller_print_rule_item_error_need_want_wish(fl_print_t * const print, const f_string_static_t need_want_wish, const f_string_static_t value, const f_string_t why) {
+  f_status_t controller_print_rule_item_error_need_want_wish(fl_print_t * const print, const f_string_static_t need_want_wish, const f_string_static_t value, const f_string_t why) {
 
-    if (print->verbosity == f_console_verbosity_quiet_e) return;
+    if (print->verbosity == f_console_verbosity_quiet_e) return F_output_not;
 
     fl_print_format("%r%[%QThe %r rule '%]", print->to, f_string_eol_s, print->context, print->prefix, need_want_wish, print->context);
     fl_print_format(f_string_format_Q_single_s.string, print->to, print->notable, value, print->notable);
     fl_print_format("%[' %S.%]%r", print->to, print->context, why, print->context, f_string_eol_s);
+
+    return F_okay;
   }
 #endif // _di_controller_print_rule_item_error_need_want_wish_
 
 #ifndef _di_controller_print_rule_item_error_rule_not_loaded_
-  void controller_print_rule_item_error_rule_not_loaded(fl_print_t * const print, const f_string_static_t alias) {
+  f_status_t controller_print_rule_item_error_rule_not_loaded(fl_print_t * const print, const f_string_static_t alias) {
 
-    if (print->verbosity == f_console_verbosity_quiet_e) return;
+    if (print->verbosity == f_console_verbosity_quiet_e) return F_output_not;
 
     fl_print_format("%r%[%QThe rule '%]", print->to, f_string_eol_s, print->context, print->prefix, print->context);
     fl_print_format(f_string_format_Q_single_s.string, print->to, print->notable, alias, print->notable);
     fl_print_format("%[' is no longer loaded.%]%r", print->to, print->context, print->context, f_string_eol_s);
+
+    return F_okay;
   }
 #endif // _di_controller_print_rule_item_error_rule_not_loaded_
 

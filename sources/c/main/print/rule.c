@@ -11,10 +11,10 @@ extern "C" {
     if (print->verbosity < f_console_verbosity_error_e) return F_output_not;
     if (status == F_interrupt) return F_status_set_error(F_output_not);
 
-    controller_global_t * const global = (controller_global_t *) print->custom;
+    controller_t * const main = (controller_t *) print->custom;
 
     // fll_error_print() automatically locks, so manually handle only the mutex locking and flushing rather than calling controller_lock_print().
-    f_thread_mutex_lock(&global->thread->lock.print);
+    f_thread_mutex_lock(&main->thread.lock.print);
 
     fll_error_print(print, status, function, fallback);
 
@@ -22,7 +22,7 @@ extern "C" {
 
     controller_print_rule_error_cache(print, cache, item);
 
-    controller_unlock_print_flush(print->to, global->thread);
+    controller_unlock_print_flush(print->to, &main->thread);
 
     return F_okay;
   }
@@ -48,7 +48,7 @@ extern "C" {
       fl_print_format("rule %r '%]", print->to, item ? controller_item_s : controller_settings_s, print->context);
       fl_print_format(f_string_format_Q_single_s.string, print->to, print->notable, cache.name_item, print->notable);
       fl_print_format("%[' on line%] ", print->to, print->context, print->context);
-      fl_print_format(f_string_format_un_single_s.string", print->to, print->notable, cache.line_item, print->notable);
+      fl_print_format(f_string_format_un_single_s.string, print->to, print->notable, cache.line_item, print->notable);
       fl_print_format("%[ for ", print->to, print->context);
     }
 

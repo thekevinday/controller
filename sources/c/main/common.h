@@ -68,16 +68,12 @@ extern "C" {
  *
  *     Errors (with error bit) from: f_console_parameter_process().
  *     Errors (with error bit) from: fll_program_parameter_process_context().
- * @param program
- *   A pointer to the current program settings.
- *
- *   Must not be NULL.
  *
  * @see f_console_parameter_process()
  * @see fll_program_parameter_process_context()
  */
 #ifndef _di_controller_setting_load_
-  extern void controller_setting_load(const f_console_arguments_t arguments, controller_t * const main, controller_program_t * const program);
+  extern void controller_setting_load(const f_console_arguments_t arguments, controller_t * const main);
 #endif // _di_controller_setting_load_
 
 #ifdef __cplusplus

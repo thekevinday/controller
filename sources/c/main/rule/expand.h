@@ -19,12 +19,12 @@ extern "C" {
 /**
  * Expand a single IKI variable into the buffer.
  *
- * @param global
- *   The global data.
+ * @param main
+ *   The main program data.
  *
  *   Must not be NULL.
  *
- *   This does not alter global.main.setting.state.status.
+ *   This does not alter main.setting.state.status.
  * @param action
  *   The rule action data.
  * @param process
@@ -38,7 +38,7 @@ extern "C" {
  *   @see controller_rule_expand_iki()
  */
 #ifndef _di_controller_rule_expand_
-  extern f_status_t controller_rule_expand(controller_global_t * const global, const controller_rule_action_t action, controller_instance_t * const instance);
+  extern f_status_t controller_rule_expand(controller_t * const main, const controller_rule_action_t action, controller_instance_t * const instance);
 #endif // _di_controller_rule_expand_
 
 /**

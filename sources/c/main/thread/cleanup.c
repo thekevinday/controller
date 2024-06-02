@@ -5,38 +5,41 @@ extern "C" {
 #endif
 
 #ifndef _di_controller_thread_cleanup_
-  void * controller_thread_cleanup(void * const arguments) {
+  void * controller_thread_cleanup(void * const argument) {
 
-    if (!arguments) return 0;
+    if (!argument) return 0;
 
     f_thread_cancel_state_set(PTHREAD_CANCEL_DEFERRED, 0);
 
-    controller_global_t * const global = (controller_global_t * const) arguments;
+    controller_t * const main = (controller_t *) argument;
 
-    if (global->thread->enabled != controller_thread_enabled_e) return 0;
+    if (main->thread.enabled != controller_thread_enabled_e) return 0;
 
-    const f_time_spec_t delay = controller_time_seconds(global->main->program.parameters.array[controller_parameter_simulate_e].result & f_console_result_found_e)
-      ? controller_thread_cleanup_interval_short_d
-      : controller_thread_cleanup_interval_long_d);
+    const f_time_spec_t delay = {
+      .tv_sec = (main->program.parameters.array[controller_parameter_simulate_e].result & f_console_result_found_e)
+        ? controller_thread_cleanup_interval_short_d
+        : controller_thread_cleanup_interval_long_d,
+      .tv_nsec = 0,
+    };
 
     f_status_t status = F_okay;
 
-    while (global->thread->enabled == controller_thread_enabled_e) {
+    while (main->thread.enabled == controller_thread_enabled_e) {
 
       f_time_sleep_spec(delay, 0);
 
-      if (global->thread->enabled != controller_thread_enabled_e) break;
+      if (main->thread.enabled != controller_thread_enabled_e) break;
 
-      if (f_thread_lock_write_try(&global->thread->lock.instance) == F_okay) {
+      if (f_thread_lock_write_try(&main->thread.lock.instance) == F_okay) {
         controller_instance_t *instance = 0;
 
         f_number_unsigned_t i = 0;
 
-        for (; i < global->thread->instances.size && global->thread->enabled == controller_thread_enabled_e; ++i) {
+        for (; i < main->thread.instances.size && main->thread.enabled == controller_thread_enabled_e; ++i) {
 
-          if (!global->thread->instances.array[i]) continue;
+          if (!main->thread.instances.array[i]) continue;
 
-          instance = global->thread->instances.array[i];
+          instance = main->thread.instances.array[i];
 
           // If "active" has a read lock, then do not attempt to clean it.
           if (f_thread_lock_write_try(&instance->active) != F_okay) continue;
@@ -49,7 +52,7 @@ extern "C" {
           }
 
           // If instance is active or busy, then do not attempt to clean it.
-          if (instance->state == controller_process_state_active_e || instance->state == controller_process_state_busy_e) {
+          if (instance->state == controller_instance_state_active_e || instance->state == controller_instance_state_busy_e) {
             f_thread_unlock(&instance->active);
             f_thread_unlock(&instance->lock);
 
@@ -85,14 +88,14 @@ extern "C" {
               status = f_thread_lock_write(&instance->lock);
 
               if (F_status_is_error(status)) {
-                controller_lock_print_error_critical(&global->main->program.error, F_status_set_fine(status), F_false, global->thread);
+                controller_lock_print_error_critical(&main->program.error, F_status_set_fine(status), F_false);
 
                 f_thread_unlock(&instance->active);
 
                 continue;
               }
 
-              instance->state = controller_process_state_idle_e;
+              instance->state = controller_instance_state_idle_e;
               instance->id_thread = 0;
 
               f_thread_mutex_lock(&instance->wait_lock);
@@ -109,7 +112,7 @@ extern "C" {
           }
 
           // De-allocate dynamic portions of the structure that are only ever needed while the instance is running.
-          controller_cache_delete_simple(&instance->cache);
+          controller_cache_delete(&instance->cache);
           f_memory_array_resize(0, sizeof(f_number_unsigned_t), (void **) &instance->stack.array, &instance->stack.used, &instance->stack.size);
 
           // Shrink the childs array.
@@ -131,14 +134,14 @@ extern "C" {
           }
 
           // De-allocate any rules in the space that is declared to be unused.
-          if (i >= global->thread->instances.used) {
+          if (i >= main->thread.instances.used) {
             controller_rule_delete(&instance->rule);
           }
 
           f_thread_unlock(&instance->active);
         } // for
 
-        f_thread_unlock(&global->thread->lock.instance);
+        f_thread_unlock(&main->thread.lock.instance);
       }
     } // while
 

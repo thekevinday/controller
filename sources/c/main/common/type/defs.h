@@ -17,13 +17,6 @@ extern "C" {
 #endif
 
 /**
- * The controller global typedef.
- */
- #ifndef _di_controller_global_t_
-  typedef struct controller_global_t_ controller_global_t;
-#endif // _di_controller_global_t_
-
-/**
  * The controller instance typedef.
  */
  #ifndef _di_controller_instance_t_
@@ -47,9 +40,9 @@ extern "C" {
 /**
  * The controller program typedef.
  */
-#ifndef _di_controller_program_t_
-  typedef struct controller_program_t_ controller_program_t;
-#endif // _di_controller_program_t_
+#ifndef _di_controller_process_t
+  typedef struct controller_process_t_ controller_process_t;
+#endif // _di_controller_process_t
 
 /**
  * The controller thread typedef.

@@ -19,12 +19,12 @@ extern "C" {
 /**
  * Read the rule file, extracting all valid items.
  *
- * @param global
- *   The global data.
+ * @param main
+ *   The main program data.
  *
  *   Must not be NULL.
  *
- *   This does not alter global.main.setting.state.status.
+ *   This does not alter main.setting.state.status.
  * @param is_normal
  *   If TRUE, then process as if this operates during a normal operation (entry and control).
  *   If FALSE, then process as if this operates during a an exit operation.
@@ -55,7 +55,7 @@ extern "C" {
  * @see fll_fss_basic_list_read().
  */
 #ifndef _di_controller_rule_read_
-  extern f_status_t controller_rule_read(controller_global_t * const global, const bool is_normal, const f_string_static_t alias, controller_cache_t * const cache, controller_entry_t * const entry, controller_rule_t * const rule);
+  extern f_status_t controller_rule_read(controller_t * const main, const bool is_normal, const f_string_static_t alias, controller_cache_t * const cache, controller_entry_t * const entry, controller_rule_t * const rule);
 #endif // _di_controller_rule_read_
 
 

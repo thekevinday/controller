@@ -33,11 +33,9 @@ extern "C" {
  * @param is_read
  *   If TRUE, then this is for a read lock.
  *   If FALSE, then this is for a write lock.
- * @param thread
- *   The thread data.
  */
 #ifndef _di_controller_lock_print_error_critical_
-  extern void controller_lock_print_error_critical(fl_print_t * const print, const f_status_t status, const uint8_t is_read, controller_thread_t *thread);
+  extern void controller_lock_print_error_critical(fl_print_t * const print, const f_status_t status, const uint8_t is_read);
 #endif // _di_controller_lock_print_error_critical_
 
 /**

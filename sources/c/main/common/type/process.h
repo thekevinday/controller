@@ -5,12 +5,12 @@
  * API Version: 0.7
  * Licenses: lgpl-2.1-or-later
  *
- * Provides the common program type structures.
+ * Provides the common process type structures.
  *
  * This is auto-included and should not need to be explicitly included.
  */
-#ifndef _controller_main_common_type_program_h
-#define _controller_main_common_type_program_h
+#ifndef _controller_main_common_type_process_h
+#define _controller_main_common_type_process_h
 
 #ifdef __cplusplus
 extern "C" {
@@ -39,8 +39,8 @@ extern "C" {
  *   - exit:    The Exit settings.
  *   - rules:   All rules and their respective settings.
  */
-#ifndef _di_controller_program_t_
-  struct controller_program_t_ {
+#ifndef _di_controller_process_t
+  struct controller_process_t_ {
     uint8_t ready;
     uint8_t mode;
 
@@ -59,7 +59,7 @@ extern "C" {
     controller_rules_t rules;
   };
 
-  #define controller_program_t_initialize { \
+  #define controller_process_tinitialize { \
     0, \
     0, \
     0, \
@@ -74,22 +74,22 @@ extern "C" {
     controller_entry_t_initialize, \
     controller_rules_t_initialize, \
   }
-#endif // _di_controller_program_t_
+#endif // _di_controller_process_t
 
 /**
- * Delete the Controller program data.
+ * Delete the Controller process data.
  *
- * @param program
- *   A pointer to the current program settings.
+ * @param process
+ *   A pointer to the current process data.
  *
  *   Must not be NULL.
  */
-#ifndef _di_controller_program_delete_
-  extern void controller_program_delete(controller_program_t * const program);
-#endif // _di_controller_program_delete_
+#ifndef _di_controller_process_delete_
+  extern void controller_process_delete(controller_process_t * const process);
+#endif // _di_controller_process_delete_
 
 #ifdef __cplusplus
 } // extern "C"
 #endif
 
-#endif // _controller_main_common_type_program_h
+#endif // _controller_main_common_type_process_h

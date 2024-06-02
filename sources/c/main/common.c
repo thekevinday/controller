@@ -60,9 +60,9 @@ extern "C" {
 #endif // _di_controller_range_after_number_sign_
 
 #ifndef _di_controller_setting_load_
-  void controller_setting_load(const f_console_arguments_t arguments, controller_t * const main, controller_program_t * const program) {
+  void controller_setting_load(const f_console_arguments_t arguments, controller_t * const main) {
 
-    if (!main || !program) return;
+    if (!main) return;
 
     main->setting.state.step_small = controller_allocation_console_d;
 
@@ -120,11 +120,11 @@ extern "C" {
     f_string_static_t * const args = main->program.parameters.arguments.array;
     f_number_unsigned_t index = 0;
 
-    program->control.server.domain = f_socket_protocol_family_local_e;
-    program->control.server.type = f_socket_type_stream_e;
-    program->control.server.form = f_socket_address_form_local_e;
+    main->process.control.server.domain = f_socket_protocol_family_local_e;
+    main->process.control.server.type = f_socket_type_stream_e;
+    main->process.control.server.form = f_socket_address_form_local_e;
 
-    memset(&program->control.server.address, 0, sizeof(f_socket_address_t));
+    memset(&main->process.control.server.address, 0, sizeof(f_socket_address_t));
 
     {
       const uint8_t codes[] = {
@@ -154,7 +154,7 @@ extern "C" {
     }
 
     // The first remaining argument represents the entry name.
-    main->setting.state.status = f_string_dynamic_append(main->program.parameters.remaining.used ? args[main->program.parameters.remaining.array[0]] : controller_default_s, &program->name_entry);
+    main->setting.state.status = f_string_dynamic_append(main->program.parameters.remaining.used ? args[main->program.parameters.remaining.array[0]] : controller_default_s, &main->process.name_entry);
 
     if (F_status_is_error(main->setting.state.status)) {
       controller_print_error(&main->program.error, macro_controller_f(fll_program_parameter_process_verbosity_standard));
@@ -162,7 +162,7 @@ extern "C" {
       return;
     }
 
-    main->setting.state.status = f_path_current(F_false, &program->path_current);
+    main->setting.state.status = f_path_current(F_false, &main->process.path_current);
 
     if (F_status_is_error(main->setting.state.status)) {
       controller_print_error(&main->program.error, macro_controller_f(f_path_current));
@@ -170,12 +170,12 @@ extern "C" {
       return;
     }
 
-    program->path_setting.used = 0;
+    main->process.path_setting.used = 0;
 
     if (main->program.parameters.array[controller_parameter_settings_e].locations.used) {
       index = main->program.parameters.array[controller_parameter_settings_e].values.array[main->program.parameters.array[controller_parameter_settings_e].values.used - 1];
 
-      controller_path_canonical_relative(main, program->path_current, args[index], &program->path_setting);
+      controller_path_canonical_relative(main, main->process.path_current, args[index], &main->process.path_setting);
 
       if (F_status_is_error(main->setting.state.status)) {
         controller_print_error_file(&main->program.error, macro_controller_f(controller_path_canonical_relative), args[index], f_file_operation_verify_s, fll_error_file_type_path_e);
@@ -184,7 +184,7 @@ extern "C" {
       }
     }
     else {
-      main->setting.state.status = f_string_dynamic_append(controller_default_path_settings_s, &program->path_setting);
+      main->setting.state.status = f_string_dynamic_append(controller_default_path_settings_s, &main->process.path_setting);
 
       if (F_status_is_error(main->setting.state.status)) {
         controller_print_error(&main->program.error, macro_controller_f(f_string_dynamic_append));
@@ -193,23 +193,23 @@ extern "C" {
       }
     }
 
-    if (!program->path_pid.used && !main->program.parameters.array[controller_parameter_pid_e].locations.used) {
-      main->setting.state.status = f_string_dynamic_append(controller_default_path_pid_s, &program->path_pid);
+    if (!main->process.path_pid.used && !main->program.parameters.array[controller_parameter_pid_e].locations.used) {
+      main->setting.state.status = f_string_dynamic_append(controller_default_path_pid_s, &main->process.path_pid);
 
       if (F_status_is_error_not(main->setting.state.status)) {
-        main->setting.state.status = f_string_dynamic_append(f_path_separator_s, &program->path_pid);
+        main->setting.state.status = f_string_dynamic_append(f_path_separator_s, &main->process.path_pid);
       }
 
       if (F_status_is_error_not(main->setting.state.status)) {
-        main->setting.state.status = f_string_dynamic_append(controller_default_path_pid_prefix_s, &program->path_pid);
+        main->setting.state.status = f_string_dynamic_append(controller_default_path_pid_prefix_s, &main->process.path_pid);
       }
 
       if (F_status_is_error_not(main->setting.state.status)) {
-        main->setting.state.status = f_string_dynamic_append(program->name_entry, &program->path_pid);
+        main->setting.state.status = f_string_dynamic_append(main->process.name_entry, &main->process.path_pid);
       }
 
       if (F_status_is_error_not(main->setting.state.status)) {
-        main->setting.state.status = f_string_dynamic_append(controller_default_path_pid_suffix_s, &program->path_pid);
+        main->setting.state.status = f_string_dynamic_append(controller_default_path_pid_suffix_s, &main->process.path_pid);
       }
 
       if (F_status_is_error(main->setting.state.status)) {
@@ -223,7 +223,7 @@ extern "C" {
       index = main->program.parameters.array[controller_parameter_cgroup_e].values.array[main->program.parameters.array[controller_parameter_cgroup_e].values.used - 1];
 
       if (args[index].used) {
-        controller_path_canonical_relative(main, program->path_current, args[index], &program->path_cgroup);
+        controller_path_canonical_relative(main, main->process.path_current, args[index], &main->process.path_cgroup);
 
         if (F_status_is_error(main->setting.state.status)) {
           controller_print_error_file(&main->program.error, macro_controller_f(controller_path_canonical_relative), args[index], f_file_operation_verify_s, fll_error_file_type_path_e);
@@ -231,7 +231,7 @@ extern "C" {
           return;
         }
 
-        main->setting.state.status = f_string_append_assure(F_path_separator_s, 1, &program->path_cgroup);
+        main->setting.state.status = f_string_append_assure(F_path_separator_s, 1, &main->process.path_cgroup);
 
         if (F_status_is_error(main->setting.state.status)) {
           controller_print_error(&main->program.error, macro_controller_f(f_string_append_assure));
@@ -244,10 +244,10 @@ extern "C" {
       }
     }
     else {
-      main->setting.state.status = f_string_dynamic_append_nulless(f_control_group_path_system_prefix_s, &program->path_cgroup);
+      main->setting.state.status = f_string_dynamic_append_nulless(f_control_group_path_system_prefix_s, &main->process.path_cgroup);
 
       if (F_status_is_error_not(main->setting.state.status)) {
-        main->setting.state.status = f_string_dynamic_append_nulless(f_control_group_path_system_default_s, &program->path_cgroup);
+        main->setting.state.status = f_string_dynamic_append_nulless(f_control_group_path_system_default_s, &main->process.path_cgroup);
       }
 
       if (F_status_is_error(main->setting.state.status)) {
@@ -256,7 +256,7 @@ extern "C" {
         return;
       }
 
-      main->setting.state.status = f_string_dynamic_append_assure(f_path_separator_s, &program->path_cgroup);
+      main->setting.state.status = f_string_dynamic_append_assure(f_path_separator_s, &main->process.path_cgroup);
 
       if (F_status_is_error(main->setting.state.status)) {
         controller_print_error(&main->program.error, macro_controller_f(f_string_dynamic_append_assure));

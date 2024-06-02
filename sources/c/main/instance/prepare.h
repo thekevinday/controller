@@ -24,10 +24,10 @@ extern "C" {
  *
  * If a instance by the given Rule alias and Rule Action already exists, then nothing is done.
  *
- * This requires that a global.thread->lock.instance lock be set on instance->lock before being called.
+ * This requires that a main.thread.lock.instance lock be set on instance.lock before being called.
  *
- * @param global
- *   The global data.
+ * @param main
+ *   The main program data.
  *
  *   Must not be NULL.
  * @param is_normal
@@ -46,7 +46,7 @@ extern "C" {
  *   F_okay on success.
  *   F_found on success, but nothing was done because an existing instance was found.
  *
- *   F_lock (with error bit) if failed to re-establish read lock on global.thread->lock.instance while returning.
+ *   F_lock (with error bit) if failed to re-establish read lock on main.thread.lock.instance while returning.
  *   F_parameter (with error bit) if a parameter is invalid.
  *
  *   Errors (with error bit) from: f_string_dynamic_append().
@@ -59,7 +59,7 @@ extern "C" {
  * @see controller_lock_write()
  */
 #ifndef _di_controller_instance_prepare_
-  extern f_status_t controller_instance_prepare(controller_global_t * const global, const bool is_normal, const uint8_t action, const f_string_static_t alias, f_number_unsigned_t *id);
+  extern f_status_t controller_instance_prepare(controller_t * const main, const bool is_normal, const uint8_t action, const f_string_static_t alias, f_number_unsigned_t *id);
 #endif // _di_controller_instance_prepare_
 
 /**
@@ -70,10 +70,10 @@ extern "C" {
  *
  * If a instance by the given Rule alias and Rule Action already exists, then nothing is done.
  *
- * This requires that a global.thread->lock.instance lock be set on instance->lock before being called.
+ * This requires that a main.thread.lock.instance lock be set on instance->lock before being called.
  *
- * @param global
- *   The global data.
+ * @param main
+ *   The main program data.
  *
  *   Must not be NULL.
  * @param type
@@ -95,7 +95,7 @@ extern "C" {
  * @see controller_instance_prepare()
  */
 #ifndef _di_controller_instance_prepare_instance_type_
-  extern f_status_t controller_instance_prepare_instance_type(controller_global_t * const global, const uint8_t type, const uint8_t action, const f_string_static_t alias, f_number_unsigned_t *id);
+  extern f_status_t controller_instance_prepare_instance_type(controller_t * const main, const uint8_t type, const uint8_t action, const f_string_static_t alias, f_number_unsigned_t *id);
 #endif // _di_controller_instance_prepare_instance_type_
 
 #ifdef __cplusplus

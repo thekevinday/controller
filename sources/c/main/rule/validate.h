@@ -23,12 +23,12 @@ extern "C" {
  *
  * This automatically sets the rule's status to F_complete.
  *
- * @param global
- *   The global data.
+ * @param main
+ *   The main program data.
  *
  *   Must not be NULL.
  *
- *   This does not alter global.main.setting.state.status.
+ *   This does not alter main.setting.state.status.
  * @param rule
  *   The rule to process.
  * @param action
@@ -42,7 +42,7 @@ extern "C" {
  *   A structure for containing and caching relevant data.
  */
 #ifndef _di_controller_rule_validate_
-  extern void controller_rule_validate(controller_global_t * const global, const controller_rule_t rule, const uint8_t action, const uint8_t options, controller_cache_t * const cache);
+  extern void controller_rule_validate(controller_t * const main, const controller_rule_t rule, const uint8_t action, const uint8_t options, controller_cache_t * const cache);
 #endif // _di_controller_rule_validate_
 
 #ifdef __cplusplus

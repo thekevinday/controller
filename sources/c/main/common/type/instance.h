@@ -45,9 +45,9 @@ extern "C" {
  *   - path_pids: An array of paths representing PID files.
  *   - stack:     A stack used to represent dependencies as Rule ID's to avoid circular Rule dependencies (If Rule A waits on Rule B, then Rule B must not wait on Rule A).
  *
- *   - rule:   A copy of the rule actively being executed.
- *   - cache:  The cache used by this Instance.
- *   - global: The global data.
+ *   - rule:  A copy of the rule actively being executed.
+ *   - cache: The cache used by this Instance.
+ *   - main:  The main program data.
  */
 #ifndef _di_controller_instance_t_
   struct controller_instance_t_ {
@@ -71,7 +71,7 @@ extern "C" {
 
     controller_rule_t rule;
     controller_cache_t cache;
-    controller_global_t *global;
+    controller_t *main;
   };
 
   #define controller_instance_t_initialize { \

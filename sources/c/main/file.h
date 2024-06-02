@@ -19,8 +19,8 @@ extern "C" {
 /**
  * Load a file from the controller settings directory.
  *
- * @param global
- *   The global data.
+ * @param main
+ *   The main program data.
  *
  *   Must not be NULL.
  * @param cache
@@ -56,7 +56,7 @@ extern "C" {
  * @see f_string_append()
  */
 #ifndef _di_controller_file_load_
-  extern f_status_t controller_file_load(controller_global_t * const global, controller_cache_t * const cache, const bool required, const f_string_static_t path_prefix, const f_string_static_t path_name, const f_string_static_t path_suffix);
+  extern f_status_t controller_file_load(controller_t * const main, controller_cache_t * const cache, const bool required, const f_string_static_t path_prefix, const f_string_static_t path_name, const f_string_static_t path_suffix);
 #endif // _di_controller_file_load_
 
 /**

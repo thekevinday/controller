@@ -5,11 +5,9 @@ extern "C" {
 #endif
 
 #ifndef _di_controller_rule_validate_
-  void controller_rule_validate(controller_global_t * const global, const controller_rule_t rule, const uint8_t action, const uint8_t options, controller_cache_t * const cache) {
+  void controller_rule_validate(controller_t * const main, const controller_rule_t rule, const uint8_t action, const uint8_t options, controller_cache_t * const cache) {
 
-    if (!global || !cache) return F_status_set_error(F_parameter);
-
-    controller_t * const main = global->main;
+    if (!main || !cache) return;
 
     switch (action) {
       case controller_rule_action_type_freeze_e:
@@ -25,15 +23,15 @@ extern "C" {
 
       default:
         if (main->program.error.verbosity > f_console_verbosity_quiet_e) {
-          controller_lock_print(main->program.error.to, global->thread);
+          controller_lock_print(main->program.error.to, &main->thread);
 
           fl_print_format("%r%[%QUnsupported action type '%]", main->program.error.to, f_string_eol_s, main->program.error.context, main->program.error.prefix, main->program.error.context);
           fl_print_format(f_string_format_r_single_s.string, main->program.error.to, main->program.error.notable, controller_convert_rule_action_type_string(action), main->program.error.notable);
           fl_print_format("%[' while attempting to validate rule execution.%]%r", main->program.error.to, main->program.error.context, main->program.error.context, f_string_eol_s);
 
-          controller_print_rule_error_cache(global->error, cache->action, F_true);
+          controller_print_rule_error_cache(&main->program.error, cache->action, F_true);
 
-          controller_unlock_print_flush(main->program.error.to, global->thread);
+          controller_unlock_print_flush(main->program.error.to, &main->thread);
         }
 
         return;
@@ -59,7 +57,7 @@ extern "C" {
       } // for
 
       if (missing) {
-        controller_lock_print(main->program.output.to, global->thread);
+        controller_lock_print(main->program.output.to, &main->thread);
 
         if (rule.items.used) {
           fl_print_format("%rRule '", main->program.output.to, f_string_eol_s);
@@ -80,11 +78,11 @@ extern "C" {
           fl_print_format("%[%r%]'.%r", main->program.output.to, main->program.context.set.important, options & controller_instance_option_require_e ? controller_required_s : controller_optional_s, main->program.context.set.important, f_string_eol_s);
         }
 
-        controller_unlock_print_flush(main->program.output.to, global->thread);
+        controller_unlock_print_flush(main->program.output.to, &main->thread);
       }
     }
 
-    controller_lock_print(main->program.output.to, global->thread);
+    controller_lock_print(main->program.output.to, &main->thread);
 
     fl_print_format("%rRule %[%Q%] {%r", main->program.output.to, f_string_eol_s, main->program.context.set.title, rule.alias, main->program.context.set.title, f_string_eol_s);
 
@@ -496,7 +494,7 @@ extern "C" {
 
     fl_print_format("}%r", main->program.output.to, f_string_eol_s);
 
-    controller_unlock_print_flush(main->program.output.to, global->thread);
+    controller_unlock_print_flush(main->program.output.to, &main->thread);
   }
 #endif // _di_controller_rule_validate_
 

@@ -35,10 +35,16 @@ extern "C" {
  * @param cache
  *   A structure for containing and caching relevant data.
  *
+ * @return
+ *   F_okay on success.
+ *   F_output_not on success, but no printing is performed.
+ *
+ *   F_output_not (with error bit) if setting is NULL.
+ *
  * @see controller_rule_setting_read()
  */
 #ifndef _di_controller_print_rule_setting_read_error_
-  extern void controller_print_rule_setting_read_error(fl_print_t * const print, const f_string_t message, const f_number_unsigned_t index, const f_number_unsigned_t line_item, controller_thread_t * const thread, controller_cache_t * const cache);
+  extern f_status_t controller_print_rule_setting_read_error(fl_print_t * const print, const f_string_t message, const f_number_unsigned_t index, const f_number_unsigned_t line_item, controller_thread_t * const thread, controller_cache_t * const cache);
 #endif // _di_controller_print_rule_setting_read_error_
 
 /**
@@ -64,31 +70,47 @@ extern "C" {
  * @param cache
  *   A structure for containing and caching relevant data.
  *
+ * @return
+ *   F_okay on success.
+ *   F_output_not on success, but no printing is performed.
+ *
+ *   F_output_not (with error bit) if setting is NULL.
+ *
  * @see controller_rule_setting_read()
  */
 #ifndef _di_controller_print_rule_setting_read_error_with_range_
-  extern void controller_print_rule_setting_read_error_with_range(fl_print_t * const print, const f_string_t before, const f_range_t range, const f_string_t after, const f_number_unsigned_t index, const f_number_unsigned_t line_item, controller_thread_t * const thread, controller_cache_t * const cache);
+  extern f_status_t controller_print_rule_setting_read_error_with_range(fl_print_t * const print, const f_string_t before, const f_range_t range, const f_string_t after, const f_number_unsigned_t index, const f_number_unsigned_t line_item, controller_thread_t * const thread, controller_cache_t * const cache);
 #endif // _di_controller_print_rule_setting_read_error_with_range_
 
 /**
  * Print message regarding the mapping of a setting when in simulation or verbose mode.
  *
- * @param global
- *   The global data.
+ * @param main
+ *   The main program data.
+ *
+ *   Must not be NULL.
  * @param name
  *   The Object name of the setting being populated.
  * @param map
  *   The map being applied.
+ *
+ * @return
+ *   F_okay on success.
+ *   F_output_not on success, but no printing is performed.
+ *
+ *   F_output_not (with error bit) if setting is NULL.
  */
 #ifndef _di_controller_print_rule_setting_read_mapping_
-  extern void controller_print_rule_setting_read_mapping(const controller_global_t global, const f_string_static_t name, const f_string_map_t map);
+  extern f_status_t controller_print_rule_setting_read_mapping(controller_t * const main, const f_string_static_t name, const f_string_map_t map);
 #endif // _di_controller_print_rule_setting_read_mapping_
 
 /**
  * Print message regarding the population of a setting when in simulation or verbose mode.
  *
- * @param global
- *   The global data.
+ * @param main
+ *   The main program data.
+ *
+ *   Must not be NULL.
  * @param name
  *   The Object name of the setting being populated.
  * @param name_sub
@@ -98,9 +120,15 @@ extern "C" {
  *   The value being set.
  * @param suffix
  *   An additional message to append at the end (before the final period).
+ *
+ * @return
+ *   F_okay on success.
+ *   F_output_not on success, but no printing is performed.
+ *
+ *   F_output_not (with error bit) if setting is NULL.
  */
 #ifndef _di_controller_print_rule_setting_read_value_
-  extern void controller_print_rule_setting_read_value(const controller_global_t global, const f_string_static_t name, const f_string_static_t name_sub, const f_string_static_t value, const f_string_t suffix);
+  extern f_status_t controller_print_rule_setting_read_value(controller_t * const main, const f_string_static_t name, const f_string_static_t name_sub, const f_string_static_t value, const f_string_t suffix);
 #endif // _di_controller_print_rule_setting_read_value_
 
 /**
@@ -108,17 +136,25 @@ extern "C" {
  *
  * This handles the case where there are multiple values stored in the buffer_item at a given content_actions position.
  *
- * @param global
- *   The global data.
+ * @param main
+ *   The main program data.
+ *
+ *   Must not be NULL.
  * @param name
  *   The Object name of the setting being populated.
  * @param index
  *   Position within the content_actions range cache array.
  * @param cache
  *   A structure for containing and caching relevant data.
+ *
+ * @return
+ *   F_okay on success.
+ *   F_output_not on success, but no printing is performed.
+ *
+ *   F_output_not (with error bit) if setting is NULL.
  */
 #ifndef _di_controller_print_rule_setting_read_values_
-  extern void controller_print_rule_setting_read_values(const controller_global_t global, const f_string_static_t name, const f_number_unsigned_t index, controller_cache_t * const cache);
+  extern f_status_t controller_print_rule_setting_read_values(controller_t * const main, const f_string_static_t name, const f_number_unsigned_t index, controller_cache_t * const cache);
 #endif // _di_controller_print_rule_setting_read_values_
 
 #ifdef __cplusplus

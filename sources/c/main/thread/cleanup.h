@@ -19,17 +19,17 @@ extern "C" {
 /**
  * Thread for periodically cleaning up data when not busy.
  *
- * @param arguments
- *   The thread arguments.
- *   Must be of type controller_global_t.
+ * @param argument
+ *   The main program data.
  *
+ *   Must be of type controller_t.
  *   Must not be NULL.
  *
  * @return
  *   0, always.
  */
 #ifndef _di_controller_thread_cleanup_
-  extern void * controller_thread_cleanup(void * const arguments);
+  extern void * controller_thread_cleanup(void * const argument);
 #endif // _di_controller_thread_cleanup_
 
 #ifdef __cplusplus

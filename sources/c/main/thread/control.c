@@ -5,25 +5,22 @@ extern "C" {
 #endif
 
 #ifndef _di_controller_thread_control_
-  void * controller_thread_control(void * const arguments) {
+  void * controller_thread_control(void * const argument) {
 
-    if (!arguments) return 0;
+    if (!argument) return 0;
 
     f_thread_cancel_state_set(PTHREAD_CANCEL_DEFERRED, 0);
 
-    controller_global_t * const global = (controller_global_t * const) arguments;
+    controller_t * const main = (controller_t *) argument;
 
-    if (global->thread->enabled != controller_thread_enabled_e) return 0;
+    if (main->thread.enabled != controller_thread_enabled_e) return 0;
 
     f_status_t status = F_okay;
 
+    // A forked child process should de-allocate memory on exit.
+    // It seems that this function doesn't return to the calling thread for a forked child process, even with the "return 0;" below.
     if (status == F_child) {
-
-      // A forked child process should de-allocate memory on exit.
-      // It seems that this function doesn't return to the calling thread for a forked child process, even with the "return 0;" below.
-      controller_thread_delete_simple(global->thread);
-      controller_process_delete(global->setting);
-      controller_delete(global->main);
+      controller_delete(main);
     }
 
     return 0;

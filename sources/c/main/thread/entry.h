@@ -23,9 +23,9 @@ extern "C" {
  * This runs all synchronous rules or spawns asynchronous rules.
  *
  * @param arguments
- *   The global data.
- *   Must be of type controller_instance_t.
+ *   The main program data.
  *
+ *   Must be of type controller_t.
  *   Must not be NULL.
  *
  * @return
@@ -44,17 +44,17 @@ extern "C" {
  * Do not confuse this with exiting a thread, this is the what process the exit files (similar to that of an entry file).
  * Exit files process the "stop" action, whereas the Entry files process the "start" Action
  *
- * @param arguments
- *   The global data.
- *   Must be of type controller_instance_t.
+ * @param argument
+ *   The main program data.
  *
+ *   Must be of type controller_t.
  *   Must not be NULL.
  *
  * @return
  *   0, always.
  */
 #ifndef _di_controller_thread_exit_
-  extern void * controller_thread_exit(void * const arguments);
+  extern void * controller_thread_exit(void * const argument);
 #endif // _di_controller_thread_exit_
 
 #ifdef __cplusplus

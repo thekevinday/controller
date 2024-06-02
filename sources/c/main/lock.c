@@ -67,9 +67,9 @@ extern "C" {
 #ifndef _di_controller_lock_read_instance_
   f_status_t controller_lock_read_instance(controller_instance_t * const instance, f_thread_lock_t * const lock) {
 
-    if (!instance || !lock) return F_status_set_error(F_parameter);
+    if (!instance || !instance->main || !lock) return F_status_set_error(F_parameter);
 
-    return controller_lock_read_instance_type(instance->type, instance->global->thread, lock);
+    return controller_lock_read_instance_type(instance->type, &instance->main->thread, lock);
   }
 #endif // _di_controller_lock_read_instance_
 
@@ -112,7 +112,7 @@ extern "C" {
 
     if (!instance || !lock) return F_status_set_error(F_parameter);
 
-    return controller_lock_write_instance_type(instance->type, instance->global->thread, lock);
+    return controller_lock_write_instance_type(instance->type, &instance->main->thread, lock);
   }
 #endif // _di_controller_lock_write_instance_
 

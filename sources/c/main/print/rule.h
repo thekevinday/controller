@@ -41,7 +41,7 @@ extern "C" {
  * @see controller_print_rule_error_cache()
  */
 #ifndef _di_controller_print_rule_error_
-  extern void controller_print_rule_error(fl_print_t * const print, const controller_cache_action_t cache, const f_status_t status, const f_string_t function, const bool fallback, const bool item);
+  extern f_status_t controller_print_rule_error(fl_print_t * const print, const controller_cache_action_t cache, const f_status_t status, const f_string_t function, const bool fallback, const bool item);
 #endif // _di_controller_print_rule_error_
 
 /**
@@ -66,7 +66,7 @@ extern "C" {
  * @see controller_rule_setting_read()
  */
 #ifndef _di_controller_print_rule_error_cache_
-  extern void controller_print_rule_error_cache(fl_print_t * const print, const controller_cache_action_t cache, const bool item);
+  extern f_status_t controller_print_rule_error_cache(fl_print_t * const print, const controller_cache_action_t cache, const bool item);
 #endif // _di_controller_print_rule_error_cache_
 
 #ifdef __cplusplus

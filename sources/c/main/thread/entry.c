@@ -5,82 +5,82 @@ extern "C" {
 #endif
 
 #ifndef _di_controller_thread_entry_
-  void * controller_thread_entry(void * const arguments) {
+  void * controller_thread_entry(void * const argument) {
 
-    if (!arguments) return 0;
+    if (!argument) return 0;
 
     f_thread_cancel_state_set(PTHREAD_CANCEL_DEFERRED, 0);
 
-    controller_global_t * const global = (controller_global_t * const) arguments;
+    controller_t * const main = (controller_t *) argument;
 
-    if (!controller_thread_is_enabled(F_true, global->thread)) return 0;
+    if (!controller_thread_is_enabled(F_true, &main->thread)) return 0;
 
-    f_status_t * const status = &global->thread->status;
+    f_status_t * const status = &main->thread.status;
 
-    *status = controller_entry_read(global, F_true);
+    *status = controller_entry_read(main, F_true);
 
     if (F_status_set_fine(*status) == F_interrupt) {
-      global->program->ready = controller_program_ready_abort_e;
+      main->process.ready = controller_process_ready_abort_e;
     }
     else if (F_status_is_error(*status)) {
-      global->program->ready = controller_program_ready_fail_e;
+      main->process.ready = controller_process_ready_fail_e;
     }
     else if (*status != F_child) {
-      *status = controller_entry_preprocess(global, F_true);
+      *status = controller_entry_preprocess(main, F_true);
 
-      if ((global->main->program.parameters.array[controller_parameter_simulate_e].result & f_console_result_found_e) && (global->main->program.parameters.array[controller_parameter_validate_e].result & f_console_result_found_e)) {
-        controller_entry_setting_validate(global, F_true);
+      if ((main->program.parameters.array[controller_parameter_simulate_e].result & f_console_result_found_e) && (main->program.parameters.array[controller_parameter_validate_e].result & f_console_result_found_e)) {
+        controller_entry_setting_validate(main, F_true);
       }
     }
 
     if (F_status_is_error_not(*status) && *status != F_child) {
-      if (!(global->main->program.parameters.array[controller_parameter_validate_e].result & f_console_result_found_e) || (global->main->program.parameters.array[controller_parameter_simulate_e].result & f_console_result_found_e)) {
+      if (!(main->program.parameters.array[controller_parameter_validate_e].result & f_console_result_found_e) || (main->program.parameters.array[controller_parameter_simulate_e].result & f_console_result_found_e)) {
 
-        if (global->program->entry.pid == controller_entry_pid_require_e && f_file_exists(global->program->path_pid, F_true) == F_true) {
+        if (main->process.entry.pid == controller_entry_pid_require_e && f_file_exists(main->process.path_pid, F_true) == F_true) {
           *status = F_status_set_error(F_available_not);
-          global->program->ready = controller_program_ready_fail_e;
+          main->process.ready = controller_process_ready_fail_e;
 
-          controller_print_error_file_pid_exists(&global->main->program.error, global->thread, global->program->path_pid);
+          controller_print_error_file_pid_exists(&main->program.error, &main->thread, main->process.path_pid);
         }
         else {
-          *status = controller_entry_process(global, F_false, F_true);
+          *status = controller_entry_process(main, F_false, F_true);
 
           if (F_status_is_error(*status)) {
-            global->program->ready = controller_program_ready_fail_e;
+            main->process.ready = controller_process_ready_fail_e;
 
-            if ((F_status_set_fine(*status) == F_execute || F_status_set_fine(*status) == F_require) && (program->flag & controller_setting_flag_failsafe_e)) {
-              const uint8_t original_enabled = global->thread->enabled;
+            if ((F_status_set_fine(*status) == F_execute || F_status_set_fine(*status) == F_require) && (main->setting.flag & controller_process_flag_failsafe_e)) {
+              const uint8_t original_enabled = main->thread.enabled;
 
               // Restore operating mode so that the failsafe can execute.
-              *status = f_thread_mutex_lock(&global->thread->lock.alert);
+              *status = f_thread_mutex_lock(&main->thread.lock.alert);
 
               if (F_status_is_error_not(*status)) {
-                global->thread->enabled = controller_thread_enabled_e;
+                main->thread.enabled = controller_thread_enabled_e;
 
-                f_thread_mutex_unlock(&global->thread->lock.alert);
+                f_thread_mutex_unlock(&main->thread.lock.alert);
               }
 
-              // Restart the signal global->thread to allow for signals while operating the failsafe Items.
-              if (!global->thread->id_signal) {
-                f_thread_create(0, &global->thread->id_signal, &controller_thread_signal_normal, (void *) global);
+              // Restart the signal main->thread to allow for signals while operating the failsafe Items.
+              if (!main->thread.id_signal) {
+                f_thread_create(0, &main->thread.id_signal, &controller_thread_signal_normal, (void *) main);
               }
 
-              const f_status_t status_failsafe = controller_entry_process(global, F_true, F_true);
+              const f_status_t status_failsafe = controller_entry_process(main, F_true, F_true);
 
               if (F_status_is_error(status_failsafe)) {
                 *status = F_status_set_error(F_failure);
 
-                controller_print_error_failsafe_item(&global->main->program.error, global->thread, global->program->entry.items.array[program->failsafe_item_id].name);
+                controller_print_error_failsafe_item(&main->program.error, &main->thread, main->process.entry.items.array[main->process.failsafe_item_id].name);
               }
               else {
 
                 // Restore operating mode to value prior to failsafe mode.
-                *status = f_thread_mutex_lock(&global->thread->lock.alert);
+                *status = f_thread_mutex_lock(&main->thread.lock.alert);
 
                 if (F_status_is_error_not(*status)) {
-                  global->thread->enabled = original_enabled;
+                  main->thread.enabled = original_enabled;
 
-                  f_thread_mutex_unlock(&global->thread->lock.alert);
+                  f_thread_mutex_unlock(&main->thread.lock.alert);
                 }
 
                 *status = F_failure;
@@ -88,121 +88,114 @@ extern "C" {
             }
           }
           else if (F_status_set_fine(*status) == F_interrupt) {
-            global->program->ready = controller_program_ready_abort_e;
+            main->process.ready = controller_process_ready_abort_e;
           }
           else if (*status != F_child) {
-            global->program->ready = controller_program_ready_done_e;
+            main->process.ready = controller_process_ready_done_e;
           }
         }
 
-        if (F_status_is_error_not(*status) && *status != F_child && global->main->program.parameters.array[controller_parameter_validate_e].result == f_console_result_none_e && global->program->mode == controller_program_mode_helper_e) {
+        if (F_status_is_error_not(*status) && *status != F_child && main->program.parameters.array[controller_parameter_validate_e].result == f_console_result_none_e && main->process.mode == controller_process_mode_helper_e) {
           f_time_spec_t time;
           time.tv_sec = controller_thread_exit_helper_timeout_seconds_d;
           time.tv_nsec = controller_thread_exit_helper_timeout_nanoseconds_d;
 
           nanosleep(&time, 0);
 
-          controller_thread_instance_cancel(global, F_true, controller_thread_cancel_exit_e);
+          controller_thread_instance_cancel(main, F_true, controller_thread_cancel_exit_e);
         }
       }
     }
 
+    // A forked child process should de-allocate memory on exit.
+    // It seems that this function doesn't return to the calling thread for a forked child process, even with the "return 0;" below.
     if (*status == F_child) {
+      controller_delete(main);
 
-      // A forked child process should de-allocate memory on exit.
-      // It seems that this function doesn't return to the calling thread for a forked child process, even with the "return 0;" below.
-      controller_thread_delete(global->thread);
-      controller_program_delete(global->program);
-      controller_delete(global->main);
-
-      // According to the manpages, pthread_exit() calls exit(0), which the value of global->main->program.child should be returned instead.
-      if (global->main->program.child) exit(global->main->program.child);
-
-      return 0;
+      // According to the manpages, pthread_exit() calls exit(0), which the value of main->program.child should be returned instead.
+      if (main->program.child) exit(main->program.child);
+    } else {
+      f_thread_condition_signal_all(&main->thread.lock.alert_condition);
     }
-
-    f_thread_condition_signal_all(&global->thread->lock.alert_condition);
 
     return 0;
   }
 #endif // _di_controller_thread_entry_
 
 #ifndef _di_controller_thread_exit_
-  void * controller_thread_exit(void * const arguments) {
+  void * controller_thread_exit(void * const argument) {
 
-    if (!arguments) return 0;
+    if (!argument) return 0;
 
     f_thread_cancel_state_set(PTHREAD_CANCEL_DEFERRED, 0);
 
-    controller_global_t * const global = (controller_global_t * const) arguments;
+    controller_t * const main = (controller_t *) argument;
+    controller_cache_t * const cache = &main->thread.cache;
+    f_status_t * const status = &main->thread.status;
 
-    controller_t * const main = global->main;
-    controller_cache_t * const cache = &global->thread->cache;
-    f_status_t * const status = &global->thread->status;
-
-    *status = controller_entry_read(global, F_false);
+    *status = controller_entry_read(main, F_false);
 
     if (F_status_set_fine(*status) == F_interrupt) {
-      global->program->ready = controller_program_ready_abort_e;
+      main->process.ready = controller_process_ready_abort_e;
     }
     else if (F_status_is_error(*status)) {
-      global->program->ready = controller_program_ready_fail_e;
+      main->process.ready = controller_process_ready_fail_e;
     }
     else if (*status == F_file_found_not) {
-      global->program->ready = controller_program_ready_done_e;
+      main->process.ready = controller_process_ready_done_e;
     }
     else if (*status != F_child) {
-      *status = controller_entry_preprocess(global, F_false, cache);
+      *status = controller_entry_preprocess(main, F_false, cache);
 
       if ((main->program.parameters.array[controller_parameter_simulate_e].result & f_console_result_found_e) && (main->program.parameters.array[controller_parameter_validate_e].result & f_console_result_found_e)) {
-        controller_entry_setting_validate(global, F_false, cache);
+        controller_entry_setting_validate(main, F_false, cache);
       }
     }
 
     if (F_status_is_error_not(*status) && *status != F_child && *status != F_file_found_not) {
       if (!(main->program.parameters.array[controller_parameter_validate_e].result & f_console_result_found_e) || (main->program.parameters.array[controller_parameter_simulate_e].result & f_console_result_found_e)) {
 
-        *status = controller_entry_process(global, F_false, F_false);
+        *status = controller_entry_process(main, F_false, F_false);
 
         if (F_status_is_error(*status)) {
-          global->program->ready = controller_program_ready_fail_e;
+          main->process.ready = controller_process_ready_fail_e;
 
-          if ((F_status_set_fine(*status) == F_execute || F_status_set_fine(*status) == F_require) && (global->program->flag & controller_setting_flag_failsafe_e)) {
+          if ((F_status_set_fine(*status) == F_execute || F_status_set_fine(*status) == F_require) && (main->setting.flag & controller_process_flag_failsafe_e)) {
 
-            const uint8_t original_enabled = global->thread->enabled;
+            const uint8_t original_enabled = main->thread.enabled;
 
             // Restore operating mode so that the failsafe can execute.
             if (F_status_set_fine(*status) == F_execute) {
-              *status = f_thread_mutex_lock(&global->thread->lock.alert);
+              *status = f_thread_mutex_lock(&main->thread.lock.alert);
 
               if (F_status_is_error_not(*status)) {
-                global->thread->enabled = controller_thread_enabled_exit_e;
+                main->thread.enabled = controller_thread_enabled_exit_e;
 
-                f_thread_mutex_unlock(&global->thread->lock.alert);
+                f_thread_mutex_unlock(&main->thread.lock.alert);
               }
 
               // Restart the signal thread to allow for signals while operating the failsafe Items.
-              if (!global->thread->id_signal) {
-                f_thread_create(0, &global->thread->id_signal, &controller_thread_signal_other, (void *) global);
+              if (!main->thread.id_signal) {
+                f_thread_create(0, &main->thread.id_signal, &controller_thread_signal_other, (void *) main);
               }
             }
 
-            const f_status_t status_failsafe = controller_entry_process(global, F_true, F_false);
+            const f_status_t status_failsafe = controller_entry_process(main, F_true, F_false);
 
             if (F_status_is_error(status_failsafe)) {
               *status = F_status_set_error(F_failure);
 
-              controller_print_error_failsafe_item(&global->main->program.error, global->thread, global->program->entry.items.array[program->failsafe_item_id].name);
+              controller_print_error_failsafe_item(&main->program.error, &main->thread, main->process.entry.items.array[main->process.failsafe_item_id].name);
             }
             else {
 
               // Restore operating mode to value prior to failsafe mode.
-              *status = f_thread_mutex_lock(&global->thread->lock.alert);
+              *status = f_thread_mutex_lock(&main->thread.lock.alert);
 
               if (F_status_is_error_not(*status)) {
-                global->thread->enabled = original_enabled;
+                main->thread.enabled = original_enabled;
 
-                f_thread_mutex_unlock(&global->thread->lock.alert);
+                f_thread_mutex_unlock(&main->thread.lock.alert);
               }
 
               *status = F_failure;
@@ -210,32 +203,29 @@ extern "C" {
           }
         }
         else if (F_status_set_fine(*status) == F_interrupt) {
-          global->program->ready = controller_program_ready_abort_e;
+          main->process.ready = controller_process_ready_abort_e;
         }
         else if (*status != F_child) {
-          global->program->ready = controller_program_ready_done_e;
+          main->process.ready = controller_process_ready_done_e;
         }
       }
     }
 
+    // A forked child process should de-allocate memory on exit.
+    // It seems that this function doesn't return to the calling thread for a forked child process, even with the "return 0;" below.
     if (*status == F_child) {
-
-      // A forked child process should de-allocate memory on exit.
-      // It seems that this function doesn't return to the calling thread for a forked child process, even with the "return 0;" below.
-      controller_thread_delete_simple(global->thread);
-      controller_process_delete(global->program);
       controller_delete(main);
 
       return 0;
     }
 
-    if (F_status_is_error_not(f_thread_mutex_lock(&global->thread->lock.alert))) {
-      global->thread->enabled = controller_thread_enabled_not_e;
+    if (F_status_is_error_not(f_thread_mutex_lock(&main->thread.lock.alert))) {
+      main->thread.enabled = controller_thread_enabled_not_e;
 
-      f_thread_mutex_unlock(&global->thread->lock.alert);
+      f_thread_mutex_unlock(&main->thread.lock.alert);
     }
 
-    f_thread_condition_signal_all(&global->thread->lock.alert_condition);
+    f_thread_condition_signal_all(&main->thread.lock.alert_condition);
 
     return 0;
   }

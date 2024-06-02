@@ -21,12 +21,12 @@ extern "C" {
  *
  * This requires that a read lock be set on process->lock before being called.
  *
- * @param global
- *   The global data.
+ * @param main
+ *   The main program data.
  *
  *   Must not be NULL.
  *
- *   This does not alter global.main.setting.state.status.
+ *   This does not alter main.setting.state.status.
  * @param action
  *   The action to perform based on the action type codes.
  *
@@ -58,7 +58,7 @@ extern "C" {
  *   On failure, the individual status for the rule is set to an appropriate error status.
  */
 #ifndef _di_controller_rule_execute_
-  extern f_status_t controller_rule_execute(controller_global_t * const global, const uint8_t action, const uint8_t options, controller_instance_t * const instance);
+  extern f_status_t controller_rule_execute(controller_t * const main, const uint8_t action, const uint8_t options, controller_instance_t * const instance);
 #endif // _di_controller_rule_execute_
 
 /**

@@ -5,9 +5,9 @@ extern "C" {
 #endif
 
 #ifndef _di_controller_file_load_
-  f_status_t controller_file_load(controller_global_t * const global, controller_cache_t * const cache, const bool required, const f_string_static_t path_prefix, const f_string_static_t path_name, const f_string_static_t path_suffix) {
+  f_status_t controller_file_load(controller_t * const main, controller_cache_t * const cache, const bool required, const f_string_static_t path_prefix, const f_string_static_t path_name, const f_string_static_t path_suffix) {
 
-    if (!global || !cache) return F_status_set_error(F_parameter);
+    if (!main || !cache) return F_status_set_error(F_parameter);
 
     f_status_t status = F_okay;
     f_file_t file = f_file_t_initialize;
@@ -36,15 +36,15 @@ extern "C" {
     }
 
     if (F_status_is_error(status)) {
-      controller_print_error_status(&global->main->program.error, macro_controller_f(f_string_dynamic_append), F_status_set_fine(status));
+      controller_print_error_status(&main->program.error, macro_controller_f(f_string_dynamic_append), F_status_set_fine(status));
 
       return status;
     }
 
     f_string_static_t path = f_string_static_t_initialize;
 
-    if (global->setting->path_setting.used) {
-      path.used = global->setting->path_setting.used + F_path_separator_s_length + cache->action.name_file.used;
+    if (main->setting.path_setting.used) {
+      path.used = main->setting.path_setting.used + F_path_separator_s_length + cache->action.name_file.used;
     }
     else {
       path.used = cache->action.name_file.used;
@@ -53,11 +53,11 @@ extern "C" {
     f_char_t path_string[path.used + 1];
     path.string = path_string;
 
-    if (global->setting->path_setting.used) {
-      memcpy(path_string, global->setting->path_setting.string, sizeof(f_char_t) * global->setting->path_setting.used);
-      memcpy(path_string + global->setting->path_setting.used + F_path_separator_s_length, cache->action.name_file.string, sizeof(f_char_t) * cache->action.name_file.used);
+    if (main->setting.path_setting.used) {
+      memcpy(path_string, main->setting.path_setting.string, sizeof(f_char_t) * main->setting.path_setting.used);
+      memcpy(path_string + main->setting.path_setting.used + F_path_separator_s_length, cache->action.name_file.string, sizeof(f_char_t) * cache->action.name_file.used);
 
-      path_string[global->setting->path_setting.used] = f_path_separator_s.string[0];
+      path_string[main->setting.path_setting.used] = f_path_separator_s.string[0];
     }
     else {
       memcpy(path_string, cache->action.name_file.string, sizeof(f_char_t) * cache->action.name_file.used);
@@ -76,17 +76,15 @@ extern "C" {
         return F_file_found_not;
       }
 
-      if (global->main->program.error.verbosity > f_console_verbosity_quiet_e) {
-        controller_print_error_file_status(&global->main->program.error, macro_controller_f(f_file_stream_open), F_true, path, f_file_operation_open_s, fll_error_file_type_file_e, F_status_set_fine(status));
+      if (main->program.error.verbosity > f_console_verbosity_quiet_e) {
+        controller_print_error_file_status(&main->program.error, macro_controller_f(f_file_stream_open), path, f_file_operation_open_s, fll_error_file_type_file_e, F_status_set_fine(status));
       }
     }
     else {
       status = f_file_stream_read(file, &cache->buffer_file);
 
       if (F_status_is_error(status)) {
-        if (global->main->program.error.verbosity > f_console_verbosity_quiet_e) {
-          controller_print_error_file(global->thread, &global->main->program.error, F_status_set_fine(status), "f_file_stream_read", F_true, path, f_file_operation_read_s, fll_error_file_type_file_e);
-        }
+        controller_print_error_file_status(&main->program.error, macro_controller_f(f_file_stream_read), path, f_file_operation_read_s, fll_error_file_type_file_e, F_status_set_fine(status));
       }
     }
 
@@ -99,9 +97,7 @@ extern "C" {
       status = f_file_stat(path, F_true, &stat_file);
 
       if (F_status_is_error(status)) {
-        if (global->main->program.error.verbosity > f_console_verbosity_quiet_e) {
-          controller_print_error_file(global->thread, &global->main->program.error, F_status_set_fine(status), "f_file_stat", F_true, path, f_file_operation_stat_s, fll_error_file_type_file_e);
-        }
+        controller_print_error_file_status(&main->program.error, macro_controller_f(f_file_stat), path, f_file_operation_stat_s, fll_error_file_type_file_e, F_status_set_fine(status));
       }
       else {
         cache->timestamp.seconds = stat_file.st_ctim.tv_sec;

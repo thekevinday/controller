@@ -74,8 +74,10 @@ extern "C" {
 /**
  * Construct an id from two distinct strings found within a single given source.
  *
- * @param global
- *   The global data.
+ * @param main
+ *   The main program data.
+ *
+ *   Must not be NULL.
  * @param source
  *   The source string that both the directory and basename are copied from.
  * @param directory
@@ -84,6 +86,8 @@ extern "C" {
  *   A range within the source representing the basename part of a rule id.
  * @param alias
  *   The constructed alias.
+ *
+ *   Must not be NULL.
  *
  * @return
  *   F_okay on success.
@@ -94,7 +98,7 @@ extern "C" {
  * @see f_string_dynamic_partial_append_nulless()
  */
 #ifndef _di_controller_rule_id_construct_
-  extern f_status_t controller_rule_id_construct(controller_global_t * const global, const f_string_static_t source, const f_range_t directory, const f_range_t basename, f_string_dynamic_t * const alias);
+  extern f_status_t controller_rule_id_construct(controller_t * const main, const f_string_static_t source, const f_range_t directory, const f_range_t basename, f_string_dynamic_t * const alias);
 #endif // _di_controller_rule_id_construct_
 
 #ifdef __cplusplus

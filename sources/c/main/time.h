@@ -31,12 +31,12 @@
 /**
  * Sleep for the given time.
  *
- * @param global
- *   The global data.
+ * @param main
+ *   The main program data.
  *
  *   Must not be NULL.
  *
- *   This does not alter global.main.setting.state.status.
+ *   This does not alter main.setting.state.status.
  * @param time
  *   The time in nanoseconds to wait.
  *
@@ -52,7 +52,7 @@
  * @see f_time_of_day_get()
  */
 #ifndef _di_controller_time_sleep_nanoseconds_
-  extern f_status_t controller_time_sleep_nanoseconds(controller_global_t * const global, const f_time_spec_t time);
+  extern f_status_t controller_time_sleep_nanoseconds(controller_t * const main, const f_time_spec_t time);
 #endif // _di_controller_time_sleep_nanoseconds_
 
 #ifdef __cplusplus

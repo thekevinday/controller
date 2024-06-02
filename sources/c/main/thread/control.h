@@ -19,17 +19,17 @@ extern "C" {
 /**
  * Thread for handling control requests and responses.
  *
- * @param arguments
- *   The global data.
- *   Must be of type controller_global_t.
+ * @param argument
+ *   The main program data.
  *
+ *   Must be of type controller_t.
  *   Must not be NULL.
  *
  * @return
  *   0, always.
  */
 #ifndef _di_controller_thread_control_
-  extern void * controller_thread_control(void * const arguments);
+  extern void * controller_thread_control(void * const argument);
 #endif // _di_controller_thread_control_
 
 #ifdef __cplusplus

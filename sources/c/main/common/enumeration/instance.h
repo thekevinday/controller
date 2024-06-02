@@ -20,19 +20,21 @@ extern "C" {
  * Instance options.
  *
  * controller_instance_option_*_e:
- *   - asynchronous: The Instance runs asynchronously.
- *   - require:      The Instance is required.
- *   - simulate:     The Instance is being simulated.
- *   - validate:     The Instance is being validated.
- *   - wait:         The Instance is blocking (waiting) for all asynchronous Instances before it to complete before running.
+ *   - asynchronous:      The Instance runs asynchronously.
+ *   - require:           The Instance is required.
+ *   - simulate:          The Instance is being simulated.
+ *   - validate:          The Instance is being validated.
+ *   - wait:              The Instance is blocking (waiting) for all asynchronous Instances before it to complete before running.
+ *   - simulate_validate: A helper flag representing simulate and validate flag bits being set.
  */
 #ifndef _di_controller_instance_option_e_
   enum {
-    controller_instance_option_asynchronous_e = 0x1,
-    controller_instance_option_require_e      = 0x2,
-    controller_instance_option_simulate_e     = 0x4,
-    controller_instance_option_validate_e     = 0x8,
-    controller_instance_option_wait_e         = 0x10,
+    controller_instance_option_asynchronous_e      = 0x1,
+    controller_instance_option_require_e           = 0x2,
+    controller_instance_option_simulate_e          = 0x4,
+    controller_instance_option_validate_e          = 0x8,
+    controller_instance_option_wait_e              = 0x10,
+    controller_instance_option_simulate_validate_e = 0xc,
   }; // enum
 #endif // _di_controller_instance_option_e_
 

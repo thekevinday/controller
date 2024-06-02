@@ -60,10 +60,16 @@ extern "C" {
  * @param status
  *   The status code representing the failure (without the error bit set).
  *
+ * @return
+ *   F_okay on success.
+ *   F_output_not on success, but no printing is performed.
+ *
+ *   F_output_not (with error bit) if setting is NULL.
+ *
  * @see controller_print_rule_error_cache()
  */
 #ifndef _di_controller_print_rule_item_error_
-  extern void controller_print_rule_item_error(fl_print_t * const print, const controller_cache_action_t cache, const bool item, const f_status_t status);
+  extern f_status_t controller_print_rule_item_error(fl_print_t * const print, const controller_cache_action_t cache, const bool item, const f_status_t status);
 #endif // _di_controller_print_rule_item_error_
 
 /**
@@ -177,9 +183,15 @@ extern "C" {
  *   The code returned by the executed program or script.
  * @param status
  *   The status code representing the failure (without the error bit set).
+ *
+ * @return
+ *   F_okay on success.
+ *   F_output_not on success, but no printing is performed.
+ *
+ *   F_output_not (with error bit) if setting is NULL.
  */
 #ifndef _di_controller_print_rule_item_error_execute_
-  extern void controller_print_rule_item_error_execute(fl_print_t * const print, controller_instance_t * const instance, const bool script_is, const f_string_static_t name, const f_status_t status);
+  extern f_status_t controller_print_rule_item_error_execute(fl_print_t * const print, controller_instance_t * const instance, const bool script_is, const f_string_static_t name, const f_status_t status);
 #endif // _di_controller_print_rule_item_error_execute_
 
 /**
@@ -194,9 +206,15 @@ extern "C" {
  *   The value that is the error or warning.
  * @param why
  *   A short explanation on why this is an error or warning.
+ *
+ * @return
+ *   F_okay on success.
+ *   F_output_not on success, but no printing is performed.
+ *
+ *   F_output_not (with error bit) if setting is NULL.
  */
 #ifndef _di_controller_print_rule_item_error_need_want_wish_
-  extern void controller_print_rule_item_error_need_want_wish(fl_print_t * const print, const f_string_static_t need_want_wish, const f_string_static_t value, const f_string_t why);
+  extern f_status_t controller_print_rule_item_error_need_want_wish(fl_print_t * const print, const f_string_static_t need_want_wish, const f_string_static_t value, const f_string_t why);
 #endif // _di_controller_print_rule_item_error_need_want_wish_
 
 /**
@@ -206,9 +224,15 @@ extern "C" {
  *   The error or warning output structure.
  * @param alias
  *   The rule alias of the rule that is not loaded.
+ *
+ * @return
+ *   F_okay on success.
+ *   F_output_not on success, but no printing is performed.
+ *
+ *   F_output_not (with error bit) if setting is NULL.
  */
 #ifndef _di_controller_print_rule_item_error_rule_not_loaded_
-  extern void controller_print_rule_item_error_rule_not_loaded(fl_print_t * const print, const f_string_static_t alias);
+  extern f_status_t controller_print_rule_item_error_rule_not_loaded(fl_print_t * const print, const f_string_static_t alias);
 #endif // _di_controller_print_rule_item_error_rule_not_loaded_
 
 #ifdef __cplusplus

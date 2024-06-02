@@ -233,16 +233,16 @@ extern "C" {
 #endif // _di_controller_rule_find_
 
 #ifndef _di_controller_rule_id_construct_
-  f_status_t controller_rule_id_construct(controller_global_t * const global, const f_string_static_t source, const f_range_t directory, const f_range_t basename, f_string_dynamic_t * const alias) {
+  f_status_t controller_rule_id_construct(controller_t * const main, const f_string_static_t source, const f_range_t directory, const f_range_t basename, f_string_dynamic_t * const alias) {
 
-    if (!global || !global->main || !global->thread) return F_status_set_error(F_parameter);
+    if (!main || !alias) return F_status_set_error(F_parameter);
 
     alias->used = 0;
 
     f_status_t status = f_string_dynamic_partial_append_nulless(source, directory, alias);
 
     if (F_status_is_error(status)) {
-      controller_print_error_status(&global->main->program.error, macro_controller_f(f_string_dynamic_partial_append_nulless), F_status_set_fine(status));
+      controller_print_error_status(&main->program.error, macro_controller_f(f_string_dynamic_partial_append_nulless), F_status_set_fine(status));
 
       return status;
     }
@@ -250,7 +250,7 @@ extern "C" {
     status = f_string_dynamic_append(f_path_separator_s, alias);
 
     if (F_status_is_error(status)) {
-      controller_print_error_status(&global->main->program.error, macro_controller_f(f_string_dynamic_append), F_status_set_fine(status));
+      controller_print_error_status(&main->program.error, macro_controller_f(f_string_dynamic_append), F_status_set_fine(status));
 
       return status;
     }
@@ -258,7 +258,7 @@ extern "C" {
     status = f_string_dynamic_partial_append_nulless(source, basename, alias);
 
     if (F_status_is_error(status)) {
-      controller_print_error_status(&global->main->program.error, macro_controller_f(f_string_dynamic_partial_append_nulless), F_status_set_fine(status));
+      controller_print_error_status(&main->program.error, macro_controller_f(f_string_dynamic_partial_append_nulless), F_status_set_fine(status));
 
       return status;
     }

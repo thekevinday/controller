@@ -36,12 +36,12 @@ extern "C" {
 /**
  * Cancel all process threads.
  *
- * @param global
- *   The global data.
+ * @param main
+ *   The main program data.
  *
  *   Must not be NULL.
  *
- *   This does not alter global.main.setting.state.status.
+ *   This does not alter main.setting.state.status.
  * @param is_normal
  *   If F_true, then process as if this operates during a normal operation (entry and control).
  *   If F_false, then process as if this operates during a an exit operation.
@@ -53,30 +53,30 @@ extern "C" {
  *   If controller_thread_cancel_execute_e, then this was called from within the Entry/Exit for executing a process, so cancel the signal thread but not the Entry thread.
  */
 #ifndef _di_controller_thread_instance_cancel_
-  extern void controller_thread_instance_cancel(controller_global_t * const global, const uint8_t is_normal, const uint8_t by);
+  extern void controller_thread_instance_cancel(controller_t * const main, const uint8_t is_normal, const uint8_t by);
 #endif // _di_controller_thread_instance_cancel_
 
 /**
  * Process the Exit file, if applicable.
  *
- * @param global
- *   The global data.
+ * @param main
+ *   The main program data.
  *
  *   Must not be NULL.
  *
- *   This does not alter global.main.setting.state.status.
+ *   This does not alter main.setting.state.status.
  */
 #ifndef _di_controller_thread_instance_exit_
-  extern void controller_thread_instance_exit(controller_global_t * const global);
+  extern void controller_thread_instance_exit(controller_t * const main);
 #endif // _di_controller_thread_instance_exit_
 
 /**
  * Asynchronously execute a Rule process during normal operations.
  *
- * @param arguments
- *   The thread arguments.
- *   Must be of type controller_global_t.
+ * @param argument
+ *   The instance data.
  *
+ *   Must be of type controller_instance_t.
  *   Must not be NULL.
  *
  * @return
@@ -85,17 +85,17 @@ extern "C" {
  * @see controller_thread_instance()
  */
 #ifndef _di_controller_thread_instance_normal_
-  extern void * controller_thread_instance_normal(void * const global);
+  extern void * controller_thread_instance_normal(void * const argument);
 #endif // _di_controller_thread_instance_normal_
 
 /**
  * Asynchronously execute a Rule process during other operations.
  *
- * @param arguments
- *   The thread arguments.
+ * @param argument
+ *   The instance data.
  *
- *   Must not be NULL.
  *   Must be of type controller_instance_t.
+ *   Must not be NULL.
  *
  * @return
  *   0, always.
@@ -103,7 +103,7 @@ extern "C" {
  * @see controller_thread_instance()
  */
 #ifndef _di_controller_thread_instance_other_
-  extern void * controller_thread_instance_other(void * const arguments);
+  extern void * controller_thread_instance_other(void * const argument);
 #endif // _di_controller_thread_instance_other_
 
 #ifdef __cplusplus

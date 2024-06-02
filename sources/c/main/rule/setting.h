@@ -52,12 +52,12 @@ extern "C" {
  * Errors from this are not considered fatal, but the first error code encountered is returned.
  * Memory failure errors are always immediately returned.
  *
- * @param global
- *   The global data.
+ * @param main
+ *   The main program data.
  *
  *   Must not be NULL.
  *
- *   This does not alter global.main.setting.state.status.
+ *   This does not alter main.setting.state.status.
  * @param is_normal
  *   If TRUE, then process as if this operates during a normal operation (entry and control).
  *   If FALSE, then process as if this operates during a an exit operation.
@@ -86,7 +86,7 @@ extern "C" {
  * @see controller_path_canonical_relative()
  */
 #ifndef _di_controller_rule_setting_read_
-  extern f_status_t controller_rule_setting_read(controller_global_t * const global, const bool is_normal, controller_cache_t * const cache, controller_rule_t * const rule);
+  extern f_status_t controller_rule_setting_read(controller_t * const main, const bool is_normal, controller_cache_t * const cache, controller_rule_t * const rule);
 #endif // _di_controller_rule_setting_read_
 
 #ifdef __cplusplus

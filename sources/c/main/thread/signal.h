@@ -15,8 +15,8 @@
 /**
  * Thread for handling signals/interrupts.
  *
- * @param global
- *   The global data.
+ * @param main
+ *   The main program data.
  *
  *   Must not be NULL.
  * @param is_normal
@@ -24,7 +24,7 @@
  *   If FALSE, then process as if this operates during a an exit operation.
  */
 #ifndef _di_controller_thread_signal_
-  extern void controller_thread_signal(controller_global_t * const global, const bool is_normal);
+  extern void controller_thread_signal(controller_t * const main, const bool is_normal);
 #endif // _di_controller_thread_signal_
 
 /**
@@ -58,10 +58,10 @@
 /**
  * Thread for handling signals/interrupts during normal operations.
  *
- * @param global
- *   The global structure.
- *   Must be of type controller_global_t.
+ * @param argument
+ *   The main program data.
  *
+ *   Must be of type controller_t.
  *   Must not be NULL.
  *
  * @return
@@ -70,16 +70,16 @@
  * @see controller_thread_signal()
  */
 #ifndef _di_controller_thread_signal_normal_
-  extern void * controller_thread_signal_normal(void * const global);
+  extern void * controller_thread_signal_normal(void * const argument);
 #endif // _di_controller_thread_signal_normal_
 
 /**
  * Thread for handling signals/interrupts during other operations.
  *
- * @param global
- *   The global structure.
- *   Must be of type controller_global_t.
+ * @param argument
+ *   The main program data.
  *
+ *   Must be of type controller_t.
  *   Must not be NULL.
  *
  * @return
@@ -88,7 +88,7 @@
  * @see controller_thread_signal()
  */
 #ifndef _di_controller_thread_signal_other_
-  extern void * controller_thread_signal_other(void * const global);
+  extern void * controller_thread_signal_other(void * const argument);
 #endif // _di_controller_thread_signal_other_
 
 #ifdef __cplusplus

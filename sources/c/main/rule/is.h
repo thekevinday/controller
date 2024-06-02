@@ -19,7 +19,7 @@ extern "C" {
 /**
  * Check to see if the given Rule has status F_known_not for the given Rule Action.
  *
- * The global Rule status is checked for error and any errors on the global Rule status will result in F_false.
+ * The Rule status is checked for error and any errors on the Rule status will result in F_false.
  *
  * @param action
  *   The Rule Action type.
@@ -37,7 +37,7 @@ extern "C" {
 /**
  * Check to see if the given Rule has status is designated as an error for the given Rule Action.
  *
- * The global Rule status is checked for error and any errors on the global Rule status will result in F_true.
+ * The Rule status is checked for error and any errors on the Rule status will result in F_true.
  *
  * @param action
  *   The Rule Action type.

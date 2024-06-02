@@ -10,7 +10,11 @@ extern "C" {
     if (!main) return;
 
     fll_program_data_delete(&main->program);
+
+    controller_cache_delete(&main->cache);
+    controller_process_delete(&main->process);
     controller_setting_delete(&main->setting);
+    controller_thread_delete(&main->thread);
   }
 #endif // _di_controller_delete_
 

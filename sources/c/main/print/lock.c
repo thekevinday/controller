@@ -5,13 +5,15 @@ extern "C" {
 #endif
 
 #ifndef _di_controller_lock_print_error_critical_
-  void controller_lock_print_error_critical(fl_print_t * const print, const f_status_t status, const uint8_t is_read, controller_thread_t *thread) {
+  void controller_lock_print_error_critical(fl_print_t * const print, const f_status_t status, const uint8_t is_read) {
 
     // A signal is not an error.
-    if (status == F_interrupt) return;
+    if (!print || !print->custom || status == F_interrupt) return;
+
+    controller_t * const main = (controller_t *) print->custom;
 
     if (print->verbosity != f_console_verbosity_quiet_e) {
-      controller_lock_print(print->to, thread);
+      controller_lock_print(print->to, &main->thread);
 
       fl_print_format("%r%[%QThe pid file '%]", print->to, f_string_eol_s, print->context, print->prefix, print->context);
       fl_print_format("%['Critical failure while attempting to establish '%]", print->to, print->context, print->context);
@@ -36,7 +38,7 @@ extern "C" {
 
       fl_print_format(f_string_format_sentence_end_quote_s.string, print->to, print->context, print->context, f_string_eol_s);
 
-      controller_unlock_print_flush(print->to, thread);
+      controller_unlock_print_flush(print->to, &main->thread);
     }
   }
 #endif // _di_controller_lock_print_error_critical_

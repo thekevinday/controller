@@ -39,13 +39,9 @@ extern "C" {
  *     F_interrupt on (exit) signal received.
  *
  *     F_parameter (with error bit) if main is NULL or setting is NULL.
- * @param program
- *   A pointer to the current program settings.
- *
- *   Must not be NULL.
  */
 #ifndef controller_process
-  extern void controller_process(controller_t * const main, controller_program_t * const program);
+  extern void controller_process(controller_t * const main);
 #endif // controller_process
 
 #ifdef __cplusplus

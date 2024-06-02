@@ -19,12 +19,12 @@ extern "C" {
 /**
  * Wait until all currently running Rule processes are complete.
  *
- * @param global
- *   The global data.
+ * @param main
+ *   The main program data.
  *
  *   Must not be NULL.
  *
- *   This does not alter global.main.setting.state.status.
+ *   This does not alter main.setting.state.status.
  * @param is_normal
  *   If TRUE, then process as if this operates during a normal operation (entry and control).
  *   If FALSE, then process as if this operates during a an exit operation.
@@ -42,18 +42,18 @@ extern "C" {
  *   F_require (with error bit set) if a required process is in failed status when required is TRUE.
  */
 #ifndef _di_controller_rule_wait_all_
-  extern f_status_t controller_rule_wait_all(controller_global_t * const global, const bool is_normal, const bool required);
+  extern f_status_t controller_rule_wait_all(controller_t * const main, const bool is_normal, const bool required);
 #endif // _di_controller_rule_wait_all_
 
 /**
  * Wait until all currently running Rule processes are complete for some process type.
  *
- * @param global
- *   The global data.
+ * @param main
+ *   The main program data.
  *
  *   Must not be NULL.
  *
- *   This does not alter global.main.setting.state.status.
+ *   This does not alter main.setting.state.status.
  * @param type
  *   The process type to use when checking if thread is enabled.
  * @param required
@@ -68,7 +68,7 @@ extern "C" {
  * @see controller_rule_wait_all()
  */
 #ifndef _di_controller_rule_wait_all_instance_type_
-  extern f_status_t controller_rule_wait_all_instance_type(controller_global_t * const global, const uint8_t type, const bool required);
+  extern f_status_t controller_rule_wait_all_instance_type(controller_t * const main, const uint8_t type, const bool required);
 #endif // _di_controller_rule_wait_all_instance_type_
 
 #ifdef __cplusplus

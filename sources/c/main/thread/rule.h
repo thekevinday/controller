@@ -24,17 +24,17 @@ extern "C" {
  *
  * @todo the control thread should send commands to this thread, somehow.
  *
- * @param arguments
- *   The global data.
- *   Must be of type controller_global_t.
+ * @param argument
+ *   The main program data.
  *
+ *   Must be of type controller_t.
  *   Must not be NULL.
  *
  * @return
  *   0, always.
  */
 #ifndef _di_controller_thread_rule_
-  extern void * controller_thread_rule(void * const arguments);
+  extern void * controller_thread_rule(void * const argument);
 #endif // _di_controller_thread_rule_
 
 #ifdef __cplusplus

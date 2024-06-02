@@ -53,26 +53,35 @@ extern "C" {
 #endif // _di_controller_setting_t_
 
 /**
- * The main program data as a single structure.
+ * The main program data.
  *
  * The typedef for this is located in the defs.h header.
  *
  * Properties:
  *   - program: The main program data.
+ *
+ *   - cache:   The cache.
+ *   - process: The process data.
  *   - setting: The settings data.
+ *   - thread:  The thread data.
  */
 #ifndef _di_controller_t_
   struct controller_t_ {
     fll_program_data_t program;
-    controller_setting_t setting;
+
     controller_cache_t cache;
+    controller_process_t process;
+    controller_setting_t setting;
+    controller_thread_t thread;
   };
 
   #define controller_t_initialize \
     { \
       fll_program_data_t_initialize, \
-      controller_setting_t_initialize, \
       controller_cache_t_initialize, \
+      controller_process_t_initialize, \
+      controller_setting_t_initialize, \
+      controller_thread_t_initialize, \
     }
 #endif // _di_controller_t_
 
@@ -87,7 +96,10 @@ extern "C" {
  *   This does not alter main.setting.state.status.
  *
  * @see controller_cache_delete()
+ * @see controller_process_delete()
  * @see controller_setting_delete()
+ * @see controller_thread_delete()
+ *
  * @see fll_program_data_delete()
  */
 #ifndef _di_controller_delete_

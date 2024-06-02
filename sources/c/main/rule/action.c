@@ -32,13 +32,13 @@ extern "C" {
 #endif // _di_controller_rule_action_type_to_action_execute_type_
 
 #ifndef _di_controller_rule_action_read_
-  f_status_t controller_rule_action_read(controller_global_t * const global, const bool is_normal, const uint8_t type, const uint8_t method, controller_cache_t * const cache, controller_rule_item_t * const item, controller_rule_actions_t * const actions, f_range_t * const range) {
+  f_status_t controller_rule_action_read(controller_t * const main, const bool is_normal, const uint8_t type, const uint8_t method, controller_cache_t * const cache, controller_rule_item_t * const item, controller_rule_actions_t * const actions, f_range_t * const range) {
 
-    if (!global || !item || !actions || !range) return F_status_set_error(F_parameter);
+    if (!main || !item || !actions || !range) return F_status_set_error(F_parameter);
 
     f_status_t status = F_okay;
 
-    controller_interrupt_t custom = macro_controller_interrupt_t_initialize_1(is_normal, global);
+    controller_interrupt_t custom = macro_controller_interrupt_t_initialize_1(is_normal, main);
     f_state_t state = macro_f_state_t_initialize_1(controller_allocation_large_d, controller_allocation_small_d, F_okay, 0, 0, 0, &controller_thread_signal_state_fss, 0, (void *) &custom, 0);
 
     f_number_unsigned_t i = 0;
@@ -67,7 +67,7 @@ extern "C" {
       fl_fss_extended_list_content_read(cache->buffer_item, range, &cache->content_action, &cache->delimits, &cache->comments, &state);
 
       if (F_status_is_error(status)) {
-        controller_print_error(&global->main->program.error, macro_controller_f(fl_fss_extended_list_content_read));
+        controller_print_error(&main->program.error, macro_controller_f(fl_fss_extended_list_content_read));
 
         return status;
       }
@@ -76,7 +76,7 @@ extern "C" {
         f_fss_apply_delimit(cache->delimits, &cache->buffer_item, &state);
 
         if (F_status_is_error(status)) {
-          controller_print_error(&global->main->program.error, macro_controller_f(f_fss_apply_delimit));
+          controller_print_error(&main->program.error, macro_controller_f(f_fss_apply_delimit));
 
           return status;
         }
@@ -88,7 +88,7 @@ extern "C" {
           status = f_memory_array_increase(controller_allocation_small_d, sizeof(f_string_dynamic_t), (void **) &actions->array[actions->used].parameters.array, &actions->array[actions->used].parameters.used, &actions->array[actions->used].parameters.size);
 
           if (F_status_is_error(status)) {
-            controller_print_error(&global->main->program.error, macro_controller_f(f_memory_array_increase));
+            controller_print_error(&main->program.error, macro_controller_f(f_memory_array_increase));
 
             return status;
           }
@@ -96,7 +96,7 @@ extern "C" {
           status = f_memory_array_increase(controller_allocation_small_d, sizeof(f_iki_data_t), (void **) &actions->array[actions->used].ikis.array, &actions->array[actions->used].ikis.used, &actions->array[actions->used].ikis.size);
 
           if (F_status_is_error(status)) {
-            controller_print_error(&global->main->program.error, macro_controller_f(f_memory_array_increase));
+            controller_print_error(&main->program.error, macro_controller_f(f_memory_array_increase));
 
             return status;
           }
@@ -108,7 +108,7 @@ extern "C" {
           status = f_string_dynamic_partial_append_nulless(cache->buffer_item, cache->content_action.array[0], &actions->array[actions->used].parameters.array[0]);
 
           if (F_status_is_error(status)) {
-            controller_print_error(&global->main->program.error, macro_controller_f(f_string_dynamic_append_nulless));
+            controller_print_error(&main->program.error, macro_controller_f(f_string_dynamic_append_nulless));
 
             actions->array[actions->used++].status = controller_error_simplify(F_status_set_fine(status));
 
@@ -125,7 +125,7 @@ extern "C" {
             fl_iki_read(&actions->array[actions->used].parameters.array[0], &range_iki, &actions->array[actions->used].ikis.array[0], &state);
 
             if (F_status_is_error(status)) {
-              controller_print_error(&global->main->program.error, macro_controller_f(fl_iki_read));
+              controller_print_error(&main->program.error, macro_controller_f(fl_iki_read));
 
               actions->array[actions->used++].status = controller_error_simplify(F_status_set_fine(status));
 
@@ -145,7 +145,7 @@ extern "C" {
         fll_fss_extended_read(cache->buffer_item, &cache->content_action.array[0], &cache->object_actions, &cache->content_actions, 0, 0, &cache->delimits, 0, &state);
 
         if (F_status_is_error(status)) {
-          controller_print_error(&global->main->program.error, macro_controller_f(fll_fss_extended_read));
+          controller_print_error(&main->program.error, macro_controller_f(fll_fss_extended_read));
 
           return status;
         }
@@ -153,7 +153,7 @@ extern "C" {
         f_fss_apply_delimit(cache->delimits, &cache->buffer_item, &state);
 
         if (F_status_is_error(status)) {
-          controller_print_error(&global->main->program.error, macro_controller_f(f_fss_apply_delimit));
+          controller_print_error(&main->program.error, macro_controller_f(f_fss_apply_delimit));
 
           return status;
         }
@@ -163,7 +163,7 @@ extern "C" {
           status = f_memory_array_increase_by(controller_allocation_small_d, sizeof(controller_rule_action_t), (void **) &actions->array, &actions->used, &actions->size);
 
           if (F_status_is_error(status)) {
-            controller_print_error(&global->main->program.error, macro_controller_f(f_memory_array_increase_by));
+            controller_print_error(&main->program.error, macro_controller_f(f_memory_array_increase_by));
 
             return status;
           }
@@ -171,7 +171,7 @@ extern "C" {
           f_fss_count_lines(cache->buffer_item, cache->object_actions.array[i].start, &actions->array[actions->used].line, &state);
 
           if (F_status_is_error(status)) {
-            controller_print_error(&global->main->program.error, macro_controller_f(f_fss_count_lines));
+            controller_print_error(&main->program.error, macro_controller_f(f_fss_count_lines));
 
             return status;
           }
@@ -180,7 +180,7 @@ extern "C" {
           actions->array[actions->used].line += ++item->line;
           actions->array[actions->used].status = F_known_not;
 
-          status = controller_rule_parameters_read(global, cache->buffer_item, &cache->object_actions.array[i], &cache->content_actions.array[i], &actions->array[actions->used], &state);
+          status = controller_rule_parameters_read(main, cache->buffer_item, &cache->object_actions.array[i], &cache->content_actions.array[i], &actions->array[actions->used], &state);
 
           if (F_status_is_error(status)) {
             actions->array[actions->used++].status = controller_error_simplify(F_status_set_fine(status));
@@ -201,13 +201,13 @@ extern "C" {
       fl_fss_extended_content_read(cache->buffer_item, range, &cache->content_action, 0, &cache->delimits, &state);
 
       if (F_status_is_error(status)) {
-        controller_print_error(&global->main->program.error, macro_controller_f(fll_fss_extended_content_read));
+        controller_print_error(&main->program.error, macro_controller_f(fll_fss_extended_content_read));
       }
       else if (status == F_fss_found_content) {
         f_fss_apply_delimit(cache->delimits, &cache->buffer_item, &state);
 
         if (F_status_is_error(status)) {
-          controller_print_error(&global->main->program.error, macro_controller_f(f_fss_apply_delimit));
+          controller_print_error(&main->program.error, macro_controller_f(f_fss_apply_delimit));
         }
         else if (type == controller_rule_action_type_pid_file_e) {
           item->pid_file.used = 0;
@@ -215,7 +215,7 @@ extern "C" {
           status = f_rip_dynamic_partial(cache->buffer_item, cache->content_action.array[0], &item->pid_file);
 
           if (F_status_is_error(status)) {
-            controller_print_error(&global->main->program.error, macro_controller_f(f_rip_dynamic_partial));
+            controller_print_error(&main->program.error, macro_controller_f(f_rip_dynamic_partial));
           }
         }
         else if (type == controller_rule_action_type_rerun_e) {
@@ -252,7 +252,7 @@ extern "C" {
           }
 
           if (!type_rerun) {
-            controller_print_rule_item_error_action_first(&global->main->program.error, cache);
+            controller_print_rule_item_error_action_first(&main->program.error, cache);
 
             return F_status_set_error(F_valid_not);
           }
@@ -270,7 +270,7 @@ extern "C" {
             }
           }
           else {
-            controller_print_rule_item_error_action_second(&global->main->program.error, cache);
+            controller_print_rule_item_error_action_second(&main->program.error, cache);
 
             return F_status_set_error(F_valid_not);
           }
@@ -278,16 +278,16 @@ extern "C" {
           for (i = 2; i < cache->content_action.used; ++i) {
 
             if (f_compare_dynamic_partial_string(controller_delay_s.string, cache->buffer_item, controller_delay_s.used, cache->content_action.array[i]) == F_equal_to) {
-              status = controller_rule_action_read_rerun_number(global, controller_delay_s.string, cache, &i, &rerun_item->delay);
+              status = controller_rule_action_read_rerun_number(main, controller_delay_s.string, cache, &i, &rerun_item->delay);
             }
             else if (f_compare_dynamic_partial_string(controller_max_s.string, cache->buffer_item, controller_max_s.used, cache->content_action.array[i]) == F_equal_to) {
-              status = controller_rule_action_read_rerun_number(global, controller_max_s.string, cache, &i, &rerun_item->max);
+              status = controller_rule_action_read_rerun_number(main, controller_max_s.string, cache, &i, &rerun_item->max);
             }
             else if (f_compare_dynamic_partial_string(controller_reset_s.string, cache->buffer_item, controller_reset_s.used, cache->content_action.array[i]) == F_equal_to) {
               item->reruns[type_rerun].is |= rerun_item == &item->reruns[type_rerun].failure ? controller_rule_rerun_is_failure_reset_d : controller_rule_rerun_is_success_reset_d;
             }
             else {
-              controller_print_rule_item_error_action_unknown(&global->main->program.error, cache, controller_rerun_s, i);
+              controller_print_rule_item_error_action_unknown(&main->program.error, cache, controller_rerun_s, i);
 
               return F_status_set_error(F_valid_not);
             }
@@ -312,7 +312,7 @@ extern "C" {
               item->with &= ~controller_with_session_new_d;
             }
             else {
-              controller_print_rule_item_error_action_unknown(&global->main->program.error, cache, controller_with_s, i);
+              controller_print_rule_item_error_action_unknown(&main->program.error, cache, controller_with_s, i);
 
               status = F_status_set_error(F_valid_not);
 
@@ -324,7 +324,7 @@ extern "C" {
           status = f_memory_array_increase(controller_allocation_small_d, sizeof(f_string_dynamic_t), (void **) &actions->array[actions->used].parameters.array, &actions->array[actions->used].parameters.used, &actions->array[actions->used].parameters.size);
 
           if (F_status_is_error(status)) {
-            controller_print_error(&global->main->program.error, macro_controller_f(f_memory_array_increase));
+            controller_print_error(&main->program.error, macro_controller_f(f_memory_array_increase));
 
             return status;
           }
@@ -332,7 +332,7 @@ extern "C" {
           status = f_memory_array_increase(controller_allocation_small_d, sizeof(f_iki_data_t), (void **) &actions->array[actions->used].ikis.array, &actions->array[actions->used].ikis.used, &actions->array[actions->used].ikis.size);
 
           if (F_status_is_error(status)) {
-            controller_print_error(&global->main->program.error, macro_controller_f(f_memory_array_increase));
+            controller_print_error(&main->program.error, macro_controller_f(f_memory_array_increase));
 
             return status;
           }
@@ -349,7 +349,7 @@ extern "C" {
           } // for
 
           if (F_status_is_error(status)) {
-            controller_print_error(&global->main->program.error, macro_controller_f(f_string_dynamic_partial_mash_nulless));
+            controller_print_error(&main->program.error, macro_controller_f(f_string_dynamic_partial_mash_nulless));
 
             actions->array[actions->used++].status = controller_error_simplify(F_status_set_fine(status));
 
@@ -366,7 +366,7 @@ extern "C" {
             fl_iki_read(&actions->array[actions->used].parameters.array[0], &range_iki, &actions->array[actions->used].ikis.array[0], &state);
 
             if (F_status_is_error(status)) {
-              controller_print_error(&global->main->program.error, macro_controller_f(fl_iki_read));
+              controller_print_error(&main->program.error, macro_controller_f(fl_iki_read));
 
               actions->array[actions->used++].status = controller_error_simplify(F_status_set_fine(status));
 
@@ -381,7 +381,7 @@ extern "C" {
           f_fss_count_lines(cache->buffer_item, range->start, &actions->array[actions->used].line, &state);
 
           if (F_status_is_error(status)) {
-            controller_print_error(&global->main->program.error, macro_controller_f(f_fss_count_lines));
+            controller_print_error(&main->program.error, macro_controller_f(f_fss_count_lines));
 
             return status;
           }
@@ -390,7 +390,7 @@ extern "C" {
           actions->array[actions->used].line += ++item->line;
           actions->array[actions->used].status = F_known_not;
 
-          status = controller_rule_parameters_read(global, cache->buffer_item, 0, &cache->content_action, &actions->array[actions->used], &state);
+          status = controller_rule_parameters_read(main, cache->buffer_item, 0, &cache->content_action, &actions->array[actions->used], &state);
 
           if (F_status_is_error(status)) {
             actions->array[actions->used++].status = controller_error_simplify(F_status_set_fine(status));
@@ -407,7 +407,7 @@ extern "C" {
     }
 
     if (F_status_is_error_not(status) && status == F_data_not) {
-      controller_print_rule_item_debug_action_empty(global->debug, cache);
+      controller_print_rule_item_debug_action_empty(&main->program.debug, cache);
     }
 
     return status;
@@ -415,7 +415,7 @@ extern "C" {
 #endif // _di_controller_rule_action_read_
 
 #ifndef _di_controller_rule_action_read_rerun_number_
-  f_status_t controller_rule_action_read_rerun_number(controller_global_t * const global, const f_string_t name, controller_cache_t * const cache, f_number_unsigned_t * const index, f_number_unsigned_t * const number) {
+  f_status_t controller_rule_action_read_rerun_number(controller_t * const main, const f_string_t name, controller_cache_t * const cache, f_number_unsigned_t * const index, f_number_unsigned_t * const number) {
 
     f_status_t status = F_okay;
     f_number_signed_t parsed = 0;
@@ -436,41 +436,41 @@ extern "C" {
     }
 
     if (F_status_is_error(status)) {
-      if (global->main->program.error.verbosity > f_console_verbosity_quiet_e) {
+      if (main->program.error.verbosity > f_console_verbosity_quiet_e) {
         status = F_status_set_fine(status);
 
         if (status != F_valid_not && status != F_number && status != F_number_decimal && status != F_number_overflow && status != F_number_underflow && status != F_number_negative) {
-          controller_print_error(&global->main->program.error, macro_controller_f(fl_conversion_dynamic_partial_to_signed_detect));
+          controller_print_error(&main->program.error, macro_controller_f(fl_conversion_dynamic_partial_to_signed_detect));
         }
         else {
-          controller_lock_print(global->main->program.error.to, global->thread);
+          controller_lock_print(main->program.error.to, &main->thread);
 
-          fl_print_format("%r%[%QRule item action '%]", global->main->program.error.to, f_string_eol_s, global->main->program.error.context, global->main->program.error.prefix, global->main->program.error.context);
-          fl_print_format(f_string_format_r_single_s.string, global->main->program.error.to, global->main->program.error.notable, controller_rerun_s, global->main->program.error.notable);
-          fl_print_format("%[' requires a positive whole number or 0 for the '%]", global->main->program.error.to, global->main->program.error.context, global->main->program.error.context);
-          fl_print_format("%[%S%]", global->main->program.error.to, global->main->program.error.notable, name, global->main->program.error.notable);
-          fl_print_format("%[' value", global->main->program.error.to, global->main->program.error.context, global->main->program.error.context);
+          fl_print_format("%r%[%QRule item action '%]", main->program.error.to, f_string_eol_s, main->program.error.context, main->program.error.prefix, main->program.error.context);
+          fl_print_format(f_string_format_r_single_s.string, main->program.error.to, main->program.error.notable, controller_rerun_s, main->program.error.notable);
+          fl_print_format("%[' requires a positive whole number or 0 for the '%]", main->program.error.to, main->program.error.context, main->program.error.context);
+          fl_print_format("%[%S%]", main->program.error.to, main->program.error.notable, name, main->program.error.notable);
+          fl_print_format("%[' value", main->program.error.to, main->program.error.context, main->program.error.context);
 
           if (*index + 1 == cache->content_action.used) {
-            fl_print_format(", but none were given.%]%r", global->main->program.error.to, global->main->program.error.context, f_string_eol_s);
+            fl_print_format(", but none were given.%]%r", main->program.error.to, main->program.error.context, f_string_eol_s);
           }
           else {
-            fl_print_format(", but '%]%[%/Q%]", global->main->program.error.to, global->main->program.error.context, global->main->program.error.notable, cache->buffer_item, cache->content_action.array[*index], global->main->program.error.notable);
+            fl_print_format(", but '%]%[%/Q%]", main->program.error.to, main->program.error.context, main->program.error.notable, cache->buffer_item, cache->content_action.array[*index], main->program.error.notable);
 
             if (status == F_number || status == F_number_decimal) {
-              fl_print_format("%[' was given.%]%r", global->main->program.error.to, global->main->program.error.context, global->main->program.error.context, f_string_eol_s);
+              fl_print_format("%[' was given.%]%r", main->program.error.to, main->program.error.context, main->program.error.context, f_string_eol_s);
             }
             else if (status == F_number_overflow) {
-              fl_print_format("%[' is too large.%]%r", global->main->program.error.to, global->main->program.error.context, global->main->program.error.context, f_string_eol_s);
+              fl_print_format("%[' is too large.%]%r", main->program.error.to, main->program.error.context, main->program.error.context, f_string_eol_s);
             }
             else {
-              fl_print_format("%[' is negative.%]%r", global->main->program.error.to, global->main->program.error.context, global->main->program.error.context, f_string_eol_s);
+              fl_print_format("%[' is negative.%]%r", main->program.error.to, main->program.error.context, main->program.error.context, f_string_eol_s);
             }
           }
 
-          controller_print_rule_error_cache(global->error, cache->action, F_true);
+          controller_print_rule_error_cache(&main->program.error, cache->action, F_true);
 
-          controller_unlock_print_flush(global->main->program.error.to, global->thread);
+          controller_unlock_print_flush(main->program.error.to, &main->thread);
         }
       }
 
