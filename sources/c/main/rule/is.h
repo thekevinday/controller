@@ -30,9 +30,9 @@ extern "C" {
  *   F_true on available (status is F_known_not).
  *   F_false on unavailable.
  */
-#ifndef _di_controller_main_rule_status_is_available_
-  extern f_status_t controller_main_rule_status_is_available(const uint8_t action, const controller_rule_t rule);
-#endif // _di_controller_main_rule_status_is_available_
+#ifndef _di_controller_rule_status_is_available_
+  extern f_status_t controller_rule_status_is_available(const uint8_t action, const controller_rule_t rule);
+#endif // _di_controller_rule_status_is_available_
 
 /**
  * Check to see if the given Rule has status is designated as an error for the given Rule Action.
@@ -48,9 +48,9 @@ extern "C" {
  *   F_true if status represents an error.
  *   F_false if status does not represent an error.
  */
-#ifndef _di_controller_main_rule_status_is_error_
-  extern f_status_t controller_main_rule_status_is_error(const uint8_t action, const controller_rule_t rule);
-#endif // _di_controller_main_rule_status_is_error_
+#ifndef _di_controller_rule_status_is_error_
+  extern f_status_t controller_rule_status_is_error(const uint8_t action, const controller_rule_t rule);
+#endif // _di_controller_rule_status_is_error_
 
 #ifdef __cplusplus
 } // extern "C"

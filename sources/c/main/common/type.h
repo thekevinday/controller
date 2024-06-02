@@ -61,20 +61,20 @@ extern "C" {
  *   - program: The main program data.
  *   - setting: The settings data.
  */
-#ifndef _di_controller_main_t_
-  struct controller_main_t_ {
+#ifndef _di_controller_t_
+  struct controller_t_ {
     fll_program_data_t program;
     controller_setting_t setting;
     controller_cache_t cache;
   };
 
-  #define controller_main_t_initialize \
+  #define controller_t_initialize \
     { \
       fll_program_data_t_initialize, \
       controller_setting_t_initialize, \
       controller_cache_t_initialize, \
     }
-#endif // _di_controller_main_t_
+#endif // _di_controller_t_
 
 /**
  * De-allocate main program data.
@@ -90,9 +90,9 @@ extern "C" {
  * @see controller_setting_delete()
  * @see fll_program_data_delete()
  */
-#ifndef _di_controller_main_delete_
-  extern void controller_main_delete(controller_main_t * const main);
-#endif // _di_controller_main_delete_
+#ifndef _di_controller_delete_
+  extern void controller_delete(controller_t * const main);
+#endif // _di_controller_delete_
 
 /**
  * Delete the program main setting data.

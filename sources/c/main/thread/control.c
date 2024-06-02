@@ -4,8 +4,8 @@
 extern "C" {
 #endif
 
-#ifndef _di_controller_main_thread_control_
-  void * controller_main_thread_control(void * const arguments) {
+#ifndef _di_controller_thread_control_
+  void * controller_thread_control(void * const arguments) {
 
     if (!arguments) return 0;
 
@@ -23,12 +23,12 @@ extern "C" {
       // It seems that this function doesn't return to the calling thread for a forked child process, even with the "return 0;" below.
       controller_thread_delete_simple(global->thread);
       controller_process_delete(global->setting);
-      controller_main_delete(global->main);
+      controller_delete(global->main);
     }
 
     return 0;
   }
-#endif // _di_controller_main_thread_control_
+#endif // _di_controller_thread_control_
 
 #ifdef __cplusplus
 } // extern "C"

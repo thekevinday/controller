@@ -5,7 +5,7 @@ extern "C" {
 #endif
 
 #ifndef _di_controller_path_canonical_relative_
-  void controller_path_canonical_relative(controller_main_t * const main, const f_string_static_t current, const f_string_static_t source, f_string_dynamic_t * const destination) {
+  void controller_path_canonical_relative(controller_t * const main, const f_string_static_t current, const f_string_static_t source, f_string_dynamic_t * const destination) {
 
     if (!main || !destination) return;
 

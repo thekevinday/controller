@@ -58,9 +58,9 @@ extern "C" {
  * @see f_memory_array_increase_by()
  * @see fl_iki_read()
  */
-#ifndef _di_controller_main_rule_parameters_read_
-  extern f_status_t controller_main_rule_parameters_read(controller_global_t * const global, const f_string_static_t buffer, f_range_t * const object, f_ranges_t * const content, controller_main_rule_action_t * const action, f_state_t * const state);
-#endif // _di_controller_main_rule_parameters_read_
+#ifndef _di_controller_rule_parameters_read_
+  extern f_status_t controller_rule_parameters_read(controller_global_t * const global, const f_string_static_t buffer, f_range_t * const object, f_ranges_t * const content, controller_rule_action_t * const action, f_state_t * const state);
+#endif // _di_controller_rule_parameters_read_
 
 #ifdef __cplusplus
 } // extern "C"

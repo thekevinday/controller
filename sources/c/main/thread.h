@@ -32,9 +32,9 @@
  *
  * @see f_thread_detach()
  */
-#ifndef _di_controller_main_thread_detach_
-  extern f_status_t controller_main_thread_detach(f_thread_id_t * const id);
-#endif // _di_controller_main_thread_detach_
+#ifndef _di_controller_thread_detach_
+  extern f_status_t controller_thread_detach(f_thread_id_t * const id);
+#endif // _di_controller_thread_detach_
 
 /***
  * Join a thread, assigning id to NULL on success.
@@ -54,9 +54,9 @@
  *
  * @see f_thread_join()
  */
-#ifndef _di_controller_main_thread_join_
-  extern f_status_t controller_main_thread_join(f_thread_id_t * const id);
-#endif // _di_controller_main_thread_join_
+#ifndef _di_controller_thread_join_
+  extern f_status_t controller_thread_join(f_thread_id_t * const id);
+#endif // _di_controller_thread_join_
 
 #ifdef __cplusplus
 } // extern "C"

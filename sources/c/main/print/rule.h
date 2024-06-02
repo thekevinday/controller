@@ -38,11 +38,11 @@ extern "C" {
  *   If FALSE, then this error is associated with a rule setting.
  *
  * @see fll_error_print()
- * @see controller_main_print_rule_error_cache()
+ * @see controller_print_rule_error_cache()
  */
-#ifndef _di_controller_main_print_rule_error_
-  extern void controller_main_print_rule_error(fl_print_t * const print, const controller_cache_action_t cache, const f_status_t status, const f_string_t function, const bool fallback, const bool item);
-#endif // _di_controller_main_print_rule_error_
+#ifndef _di_controller_print_rule_error_
+  extern void controller_print_rule_error(fl_print_t * const print, const controller_cache_action_t cache, const f_status_t status, const f_string_t function, const bool fallback, const bool item);
+#endif // _di_controller_print_rule_error_
 
 /**
  * Print additional error/warning information in addition to existing error.
@@ -59,15 +59,15 @@ extern "C" {
  *   If TRUE, then this error is associated with an item.
  *   If FALSE, then this error is associated with a rule setting.
  *
- * @see controller_main_rule_action_read()
- * @see controller_main_rule_item_read()
+ * @see controller_rule_action_read()
+ * @see controller_rule_item_read()
  * @see controller_rule_items_read()
- * @see controller_main_rule_read()
- * @see controller_main_rule_setting_read()
+ * @see controller_rule_read()
+ * @see controller_rule_setting_read()
  */
-#ifndef _di_controller_main_print_rule_error_cache_
-  extern void controller_main_print_rule_error_cache(fl_print_t * const print, const controller_cache_action_t cache, const bool item);
-#endif // _di_controller_main_print_rule_error_cache_
+#ifndef _di_controller_print_rule_error_cache_
+  extern void controller_print_rule_error_cache(fl_print_t * const print, const controller_cache_action_t cache, const bool item);
+#endif // _di_controller_print_rule_error_cache_
 
 #ifdef __cplusplus
 } // extern "C"

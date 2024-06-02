@@ -4,12 +4,12 @@
 extern "C" {
 #endif
 
-#if !defined(_di_controller_main_signal_check_) && defined(_di_thread_support_)
-  f_status_t controller_main_signal_check(controller_main_t * const main) {
+#if !defined(_di_controller_signal_check_) && defined(_di_thread_support_)
+  f_status_t controller_signal_check(controller_t * const main) {
 
     if (!main || main->program.signal.id == -1) return F_false;
 
-    if (!((++main->program.signal_check) % controller_main_signal_check_d)) {
+    if (!((++main->program.signal_check) % controller_signal_check_d)) {
       if (fll_program_standard_signal_received(&main->program)) {
         fll_program_print_signal_received(&main->program.warning, main->program.signal_received);
 
@@ -23,10 +23,10 @@ extern "C" {
 
     return F_false;
   }
-#endif // !defined(_di_controller_main_signal_check_) && defined(_di_thread_support_)
+#endif // !defined(_di_controller_signal_check_) && defined(_di_thread_support_)
 
-#if !defined(_di_controller_main_signal_check_) && !defined(_di_thread_support_)
-  f_status_t controller_main_signal_check(controller_main_t * const main) {
+#if !defined(_di_controller_signal_check_) && !defined(_di_thread_support_)
+  f_status_t controller_signal_check(controller_t * const main) {
 
     if (!main || main->program.signal.id == -1) return F_false;
 
@@ -40,10 +40,10 @@ extern "C" {
 
     return F_false;
   }
-#endif // !defined(_di_controller_main_signal_check_) && !defined(_di_thread_support_)
+#endif // !defined(_di_controller_signal_check_) && !defined(_di_thread_support_)
 
-#if !defined(_di_controller_main_signal_handler_) && !defined(_di_thread_support_)
-  void controller_main_signal_handler(controller_main_t * const main) {
+#if !defined(_di_controller_signal_handler_) && !defined(_di_thread_support_)
+  void controller_signal_handler(controller_t * const main) {
 
     if (!main) return;
 
@@ -104,7 +104,7 @@ extern "C" {
       main->program.signal_received = F_signal_abort;
     }
   }
-#endif // !defined(_di_controller_main_signal_handler_) && !defined(_di_thread_support_)
+#endif // !defined(_di_controller_signal_handler_) && !defined(_di_thread_support_)
 
 #ifdef __cplusplus
 } // extern "C"

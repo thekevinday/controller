@@ -4,8 +4,8 @@
 extern "C" {
 #endif
 
-#ifndef _di_controller_main_thread_cleanup_
-  void * controller_main_thread_cleanup(void * const arguments) {
+#ifndef _di_controller_thread_cleanup_
+  void * controller_thread_cleanup(void * const arguments) {
 
     if (!arguments) return 0;
 
@@ -15,9 +15,9 @@ extern "C" {
 
     if (global->thread->enabled != controller_thread_enabled_e) return 0;
 
-    const f_time_spec_t delay = controller_main_time_seconds(global->main->program.parameters.array[controller_parameter_simulate_e].result & f_console_result_found_e)
-      ? controller_main_thread_cleanup_interval_short_d
-      : controller_main_thread_cleanup_interval_long_d);
+    const f_time_spec_t delay = controller_time_seconds(global->main->program.parameters.array[controller_parameter_simulate_e].result & f_console_result_found_e)
+      ? controller_thread_cleanup_interval_short_d
+      : controller_thread_cleanup_interval_long_d);
 
     f_status_t status = F_okay;
 
@@ -132,7 +132,7 @@ extern "C" {
 
           // De-allocate any rules in the space that is declared to be unused.
           if (i >= global->thread->instances.used) {
-            controller_main_rule_delete(&instance->rule);
+            controller_rule_delete(&instance->rule);
           }
 
           f_thread_unlock(&instance->active);
@@ -144,7 +144,7 @@ extern "C" {
 
     return 0;
   }
-#endif // _di_controller_main_thread_cleanup_
+#endif // _di_controller_thread_cleanup_
 
 #ifdef __cplusplus
 } // extern "C"

@@ -31,9 +31,9 @@ extern "C" {
  * @return
  *   0, always.
  */
-#ifndef _di_controller_main_thread_entry_
-  extern void * controller_main_thread_entry(void * const arguments);
-#endif // _di_controller_main_thread_entry_
+#ifndef _di_controller_thread_entry_
+  extern void * controller_thread_entry(void * const arguments);
+#endif // _di_controller_thread_entry_
 
 /**
  * Thread for handling exit file processing.
@@ -53,9 +53,9 @@ extern "C" {
  * @return
  *   0, always.
  */
-#ifndef _di_controller_main_thread_exit_
-  extern void * controller_main_thread_exit(void * const arguments);
-#endif // _di_controller_main_thread_exit_
+#ifndef _di_controller_thread_exit_
+  extern void * controller_thread_exit(void * const arguments);
+#endif // _di_controller_thread_exit_
 
 #ifdef __cplusplus
 } // extern "C"

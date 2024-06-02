@@ -4,8 +4,8 @@
 extern "C" {
 #endif
 
-#ifndef _di_controller_main_print_rule_item_debug_action_empty_
-  f_status_t controller_main_print_rule_item_debug_action_empty(fl_print_t * const print, controller_cache_t * const cache) {
+#ifndef _di_controller_print_rule_item_debug_action_empty_
+  f_status_t controller_print_rule_item_debug_action_empty(fl_print_t * const print, controller_cache_t * const cache) {
 
     if (!print || !print->custom || !cache) return F_status_set_error(F_output_not);
     if (print->verbosity < f_console_verbosity_debug_e) return F_output_not;
@@ -16,16 +16,16 @@ extern "C" {
 
     fl_print_format("%r%[%QAction is empty, nothing to do.%]%r", primt->to, f_string_eol_s, print->context, print->prefix, print->context, f_string_eol_s);
 
-    controller_main_print_rule_error_cache(print, cache->action, F_true);
+    controller_print_rule_error_cache(print, cache->action, F_true);
 
     controller_unlock_print_flush(print->to, global->thread);
 
     return F_okay;
   }
-#endif // _di_controller_main_print_rule_item_debug_action_empty_
+#endif // _di_controller_print_rule_item_debug_action_empty_
 
-#ifndef _di_controller_main_print_rule_item_error_
-  void controller_main_print_rule_item_error(fl_print_t * const print, const controller_cache_action_t cache, const bool item, const f_status_t status) {
+#ifndef _di_controller_print_rule_item_error_
+  void controller_print_rule_item_error(fl_print_t * const print, const controller_cache_action_t cache, const bool item, const f_status_t status) {
 
     if (!print || !print->custom) return F_status_set_error(F_output_not);
     if (print->verbosity < f_console_verbosity_error_e) return F_output_not;
@@ -36,16 +36,16 @@ extern "C" {
     // fll_error_print() automatically locks, so manually handle only the mutex locking and flushing rather than calling controller_lock_print().
     f_thread_mutex_lock(&global->thread->lock.print);
 
-    controller_main_print_rule_error_cache(print, cache, item);
+    controller_print_rule_error_cache(print, cache, item);
 
     f_file_stream_lock(print->to);
 
     controller_unlock_print_flush(print->to, global->thread);
   }
-#endif // _di_controller_main_print_rule_item_error_
+#endif // _di_controller_print_rule_item_error_
 
-#ifndef _di_controller_main_print_rule_item_error_action_first_
-  f_status_t controller_main_print_rule_item_error_action_first(fl_print_t * const print, controller_cache_t * const cache) {
+#ifndef _di_controller_print_rule_item_error_action_first_
+  f_status_t controller_print_rule_item_error_action_first(fl_print_t * const print, controller_cache_t * const cache) {
 
     if (!print || !print->custom || !cache) return F_status_set_error(F_output_not);
     if (print->verbosity < f_console_verbosity_error_e) return F_output_not;
@@ -70,16 +70,16 @@ extern "C" {
     fl_print_format(f_string_format_r_single_s.string, print->to, print->notable, controller_thaw_s, print->notable, print->context);
     fl_print_format(f_string_format_sentence_end_quote_s.string, print->to, print->context, print->context, f_string_eol_s);
 
-    controller_main_print_rule_error_cache(print, cache->action, F_true);
+    controller_print_rule_error_cache(print, cache->action, F_true);
 
     controller_unlock_print_flush(print->to, global->thread);
 
     return F_okay;
   }
-#endif // _di_controller_main_print_rule_item_error_action_first_
+#endif // _di_controller_print_rule_item_error_action_first_
 
-#ifndef _di_controller_main_print_rule_item_error_action_second_
-  f_status_t controller_main_print_rule_item_error_action_second(fl_print_t * const print, controller_cache_t * const cache) {
+#ifndef _di_controller_print_rule_item_error_action_second_
+  f_status_t controller_print_rule_item_error_action_second(fl_print_t * const print, controller_cache_t * const cache) {
 
     if (!print || !print->custom || !cache) return F_status_set_error(F_output_not);
     if (print->verbosity < f_console_verbosity_error_e) return F_output_not;
@@ -97,16 +97,16 @@ extern "C" {
     fl_print_format(f_string_format_r_single_s.string, print->to, print->notable, controller_thaw_s, print->notable, print->context);
     fl_print_format(f_string_format_sentence_end_quote_s.string, print->to, print->context, print->context, f_string_eol_s);
 
-    controller_main_print_rule_error_cache(print, cache->action, F_true);
+    controller_print_rule_error_cache(print, cache->action, F_true);
 
     controller_unlock_print_flush(print->to, global->thread);
 
     return F_okay;
   }
-#endif // _di_controller_main_print_rule_item_error_action_second_
+#endif // _di_controller_print_rule_item_error_action_second_
 
-#ifndef _di_controller_main_print_rule_item_error_action_unknown_
-  f_status_t controller_main_print_rule_item_error_action_unknown(fl_print_t * const print, controller_cache_t * const cache, const f_string_static_t name, const f_number_unsigned_t index) {
+#ifndef _di_controller_print_rule_item_error_action_unknown_
+  f_status_t controller_print_rule_item_error_action_unknown(fl_print_t * const print, controller_cache_t * const cache, const f_string_static_t name, const f_number_unsigned_t index) {
 
     if (!print || !print->custom || !cache) return F_status_set_error(F_output_not);
     if (print->verbosity < f_console_verbosity_error_e) return F_output_not;
@@ -121,16 +121,16 @@ extern "C" {
     fl_print_format(f_string_format_Q_range_single_s.string, print->to, print->notable, cache->buffer_item, cache->content_action.array[index], print->notable);
     fl_print_format(f_string_format_sentence_end_quote_s.string, print->to, print->context, print->context, f_string_eol_s);
 
-    controller_main_print_rule_error_cache(print, cache->action, F_true);
+    controller_print_rule_error_cache(print, cache->action, F_true);
 
     controller_unlock_print_flush(print->to, global->thread);
 
     return F_okay;
   }
-#endif // _di_controller_main_print_rule_item_error_action_unknown_
+#endif // _di_controller_print_rule_item_error_action_unknown_
 
-#ifndef _di_controller_main_print_rule_item_error_execute_
-  void controller_main_print_rule_item_error_execute(fl_print_t * const print, controller_instance_t * const instance, const bool script_is, const f_string_static_t name, const f_status_t status) {
+#ifndef _di_controller_print_rule_item_error_execute_
+  void controller_print_rule_item_error_execute(fl_print_t * const print, controller_instance_t * const instance, const bool script_is, const f_string_static_t name, const f_status_t status) {
 
     if (!print || !print->custom) return F_status_set_error(F_output_not);
     if (print->verbosity < f_console_verbosity_error_e) return F_output_not;
@@ -379,10 +379,10 @@ extern "C" {
 
     controller_unlock_print_flush(print->to, global->thread);
   }
-#endif // _di_controller_main_print_rule_item_error_execute_
+#endif // _di_controller_print_rule_item_error_execute_
 
-#ifndef _di_controller_main_print_rule_item_error_need_want_wish_
-  void controller_main_print_rule_item_error_need_want_wish(fl_print_t * const print, const f_string_static_t need_want_wish, const f_string_static_t value, const f_string_t why) {
+#ifndef _di_controller_print_rule_item_error_need_want_wish_
+  void controller_print_rule_item_error_need_want_wish(fl_print_t * const print, const f_string_static_t need_want_wish, const f_string_static_t value, const f_string_t why) {
 
     if (print->verbosity == f_console_verbosity_quiet_e) return;
 
@@ -390,10 +390,10 @@ extern "C" {
     fl_print_format(f_string_format_Q_single_s.string, print->to, print->notable, value, print->notable);
     fl_print_format("%[' %S.%]%r", print->to, print->context, why, print->context, f_string_eol_s);
   }
-#endif // _di_controller_main_print_rule_item_error_need_want_wish_
+#endif // _di_controller_print_rule_item_error_need_want_wish_
 
-#ifndef _di_controller_main_print_rule_item_error_rule_not_loaded_
-  void controller_main_print_rule_item_error_rule_not_loaded(fl_print_t * const print, const f_string_static_t alias) {
+#ifndef _di_controller_print_rule_item_error_rule_not_loaded_
+  void controller_print_rule_item_error_rule_not_loaded(fl_print_t * const print, const f_string_static_t alias) {
 
     if (print->verbosity == f_console_verbosity_quiet_e) return;
 
@@ -401,7 +401,7 @@ extern "C" {
     fl_print_format(f_string_format_Q_single_s.string, print->to, print->notable, alias, print->notable);
     fl_print_format("%[' is no longer loaded.%]%r", print->to, print->context, print->context, f_string_eol_s);
   }
-#endif // _di_controller_main_print_rule_item_error_rule_not_loaded_
+#endif // _di_controller_print_rule_item_error_rule_not_loaded_
 
 #ifdef __cplusplus
 } // extern "C"

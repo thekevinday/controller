@@ -40,9 +40,9 @@ extern "C" {
  *
  * @see fll_error_print()
  */
-#ifndef _di_controller_main_print_debug_directory_path_empty_
-  extern f_status_t controller_main_print_debug_directory_path_empty(fl_print_t * const print, const f_string_static_t symbol, const f_string_static_t name);
-#endif // _di_controller_main_print_debug_directory_path_empty_
+#ifndef _di_controller_print_debug_directory_path_empty_
+  extern f_status_t controller_print_debug_directory_path_empty(fl_print_t * const print, const f_string_static_t symbol, const f_string_static_t name);
+#endif // _di_controller_print_debug_directory_path_empty_
 
 #ifdef __cplusplus
 } // extern "C"

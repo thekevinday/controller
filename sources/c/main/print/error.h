@@ -36,9 +36,9 @@ extern "C" {
  *
  * @see fll_error_print()
  */
-#ifndef _di_controller_main_print_error_
-  extern f_status_t controller_main_print_error(fl_print_t * const print, const f_string_t function);
-#endif // _di_controller_main_print_error_
+#ifndef _di_controller_print_error_
+  extern f_status_t controller_print_error(fl_print_t * const print, const f_string_t function);
+#endif // _di_controller_print_error_
 
 /**
  * Print error message regarding the failsafe item failing.
@@ -66,9 +66,9 @@ extern "C" {
  *
  * @see fll_error_print()
  */
-#ifndef _di_controller_main_print_error_failsafe_item_
-  extern f_status_t controller_main_print_error_failsafe_item(fl_print_t * const print, controller_thread_t * const thread, f_string_dynamic_t * const name);
-#endif // _di_controller_main_print_error_failsafe_item_
+#ifndef _di_controller_print_error_failsafe_item_
+  extern f_status_t controller_print_error_failsafe_item(fl_print_t * const print, controller_thread_t * const thread, f_string_dynamic_t * const name);
+#endif // _di_controller_print_error_failsafe_item_
 
 /**
  * Print file related error or warning messages.
@@ -99,9 +99,9 @@ extern "C" {
  *
  * @see fll_error_file_print()
  */
-#ifndef _di_controller_main_print_error_file_
-  extern f_status_t controller_main_print_error_file(fl_print_t * const print, const f_string_t function, const f_string_static_t name, const f_string_static_t operation, const uint8_t type);
-#endif // _di_controller_main_print_error_file_
+#ifndef _di_controller_print_error_file_
+  extern f_status_t controller_print_error_file(fl_print_t * const print, const f_string_t function, const f_string_static_t name, const f_string_static_t operation, const uint8_t type);
+#endif // _di_controller_print_error_file_
 
 /**
  * Print file related error or warning messages.
@@ -134,9 +134,9 @@ extern "C" {
  *
  * @see fll_error_file_print()
  */
-#ifndef _di_controller_main_print_error_file_status_
-  extern f_status_t controller_main_print_error_file_status(fl_print_t * const print, const f_string_t function, const f_string_static_t name, const f_string_static_t operation, const uint8_t type, const f_status_t status);
-#endif // _di_controller_main_print_error_file_status_
+#ifndef _di_controller_print_error_file_status_
+  extern f_status_t controller_print_error_file_status(fl_print_t * const print, const f_string_t function, const f_string_static_t name, const f_string_static_t operation, const uint8_t type, const f_status_t status);
+#endif // _di_controller_print_error_file_status_
 
 /**
  * Print generic error message regarding a function failing in some way.
@@ -160,9 +160,9 @@ extern "C" {
  *
  * @see fll_error_print()
  */
-#ifndef _di_controller_main_print_error_status_
-  extern f_status_t controller_main_print_error_status(fl_print_t * const print, const f_string_t function, const f_status_t status);
-#endif // _di_controller_main_print_error_status_
+#ifndef _di_controller_print_error_status_
+  extern f_status_t controller_print_error_status(fl_print_t * const print, const f_string_t function, const f_status_t status);
+#endif // _di_controller_print_error_status_
 
 /**
  * Print error message regarding the pid file already existing.
@@ -188,9 +188,9 @@ extern "C" {
  *
  * @see fll_error_print()
  */
-#ifndef _di_controller_main_print_error_file_pid_exists_
-  extern f_status_t controller_main_print_error_file_pid_exists(fl_print_t * const print, controller_thread_t * const thread, const f_string_dynamic_t path);
-#endif // _di_controller_main_print_error_file_pid_exists_
+#ifndef _di_controller_print_error_file_pid_exists_
+  extern f_status_t controller_print_error_file_pid_exists(fl_print_t * const print, controller_thread_t * const thread, const f_string_dynamic_t path);
+#endif // _di_controller_print_error_file_pid_exists_
 
 #ifdef __cplusplus
 } // extern "C"

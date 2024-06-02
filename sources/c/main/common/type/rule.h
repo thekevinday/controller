@@ -83,7 +83,7 @@ extern "C" {
  *   - status:     The last execution status of the Rule Action.
  *   - parameters: All parameters associated with the Rule Action.
  */
-#ifndef _di_controller_main_rule_action_t_
+#ifndef _di_controller_rule_action_t_
   typedef struct {
     uint8_t type;
     f_number_unsigned_t line;
@@ -91,16 +91,16 @@ extern "C" {
 
     f_string_dynamics_t parameters;
     f_iki_datas_t ikis;
-  } controller_main_rule_action_t;
+  } controller_rule_action_t;
 
-  #define controller_main_rule_action_t_initialize { \
+  #define controller_rule_action_t_initialize { \
     0, \
     0, \
     F_known_not, \
     f_string_dynamics_t_initialize, \
     f_iki_datas_t_initialize, \
   }
-#endif // _di_controller_main_rule_action_t_
+#endif // _di_controller_rule_action_t_
 
 /**
  * Controller Rule Actions.
@@ -110,20 +110,20 @@ extern "C" {
  *   - size:  Total amount of allocated space.
  *   - used:  Total number of allocated spaces used.
  */
-#ifndef _di_controller_main_rule_actions_t_
+#ifndef _di_controller_rule_actions_t_
   typedef struct {
-    controller_main_rule_action_t *array;
+    controller_rule_action_t *array;
 
     f_number_unsigned_t size;
     f_number_unsigned_t used;
-  } controller_main_rule_actions_t;
+  } controller_rule_actions_t;
 
-  #define controller_main_rule_actions_t_initialize { \
+  #define controller_rule_actions_t_initialize { \
     0, \
     0, \
     0, \
   }
-#endif // _di_controller_main_rule_actions_t_
+#endif // _di_controller_rule_actions_t_
 
 /**
  * Controller Rule Item.
@@ -142,8 +142,8 @@ extern "C" {
     f_number_unsigned_t line;
 
     f_string_dynamic_t pid_file;
-    controller_rule_rerun_t reruns[controller_main_rule_action_execute_type__enum_size_e];
-    controller_main_rule_actions_t actions;
+    controller_rule_rerun_t reruns[controller_rule_action_execute_type__enum_size_e];
+    controller_rule_actions_t actions;
   } controller_rule_item_t;
 
   #define controller_rule_item_t_initialize \
@@ -163,7 +163,7 @@ extern "C" {
         controller_rule_rerun_t_initialize, \
         controller_rule_rerun_t_initialize, \
       }, \
-      controller_main_rule_actions_t_initialize, \
+      controller_rule_actions_t_initialize, \
     }
 #endif // _di_controller_rule_item_t_
 
@@ -262,7 +262,7 @@ extern "C" {
  *   - parameter:        Any parameters made available to the Rule for IKI substitution.
  *   - path:             The path to the Rule file.
  *   - scheduler:        The scheduler setting if the Rule "has" a scheduler.
- *   - status:           A set of action-specific success/failure status of the Rule. Each index represents a controller_main_rule_action_type_* enum value. Index 0 represents a global status.
+ *   - status:           A set of action-specific success/failure status of the Rule. Each index represents a controller_rule_action_type_* enum value. Index 0 represents a global status.
  *   - timeout_exit:     The timeout to wait when exiting the Controller program after sending the terminate signal to send the kill signal.
  *   - timeout_kill:     The timeout to wait relating to using a kill signal.
  *   - timeout_start:    The timeout to wait relating to starting a process.
@@ -272,7 +272,7 @@ extern "C" {
  */
 #ifndef _di_controller_rule_t_
   typedef struct {
-    f_status_t status[controller_main_rule_action_type__enum_size_e];
+    f_status_t status[controller_rule_action_type__enum_size_e];
 
     f_number_unsigned_t timeout_kill;
     f_number_unsigned_t timeout_start;
@@ -398,12 +398,12 @@ extern "C" {
  * @see f_memory_array_resize()
  * @see f_memory_arrays_resize()
  */
-#ifndef _di_controller_main_rule_action_delete_
-  extern void controller_main_rule_action_delete(controller_main_rule_action_t * const action);
-#endif // _di_controller_main_rule_action_delete_
+#ifndef _di_controller_rule_action_delete_
+  extern void controller_rule_action_delete(controller_rule_action_t * const action);
+#endif // _di_controller_rule_action_delete_
 
 /**
- * A callback intended to be passed to f_memory_arrays_resize() for an controller_main_rule_actions_t structure.
+ * A callback intended to be passed to f_memory_arrays_resize() for an controller_rule_actions_t structure.
  *
  * This is only called when shrinking the array and generally should perform de-allocations.
  *
@@ -423,11 +423,11 @@ extern "C" {
  *
  *   F_parameter (with error bit) if a parameter is invalid.
  *
- * @see controller_main_rule_action_delete()
+ * @see controller_rule_action_delete()
  */
-#ifndef _di_controller_main_rule_actions_delete_callback_
-  extern f_status_t controller_main_rule_actions_delete_callback(const f_number_unsigned_t start, const f_number_unsigned_t stop, void * const array);
-#endif // _di_controller_main_rule_actions_delete_callback_
+#ifndef _di_controller_rule_actions_delete_callback_
+  extern f_status_t controller_rule_actions_delete_callback(const f_number_unsigned_t start, const f_number_unsigned_t stop, void * const array);
+#endif // _di_controller_rule_actions_delete_callback_
 
 /**
  * Delete the Controller Rule Item data.
@@ -435,7 +435,7 @@ extern "C" {
  * @param item
  *   The Rule Item data.
  *
- * @see controller_main_rule_actions_delete()
+ * @see controller_rule_actions_delete()
  *
  * @see f_memory_array_resize()
  */

@@ -9,8 +9,8 @@
  *
  * This is auto-included and should not need to be explicitly included.
  */
-#ifndef _controller_main_path_h
-#define _controller_main_path_h
+#ifndef _controller_path_h
+#define _controller_path_h
 
 #ifdef __cplusplus
 extern "C" {
@@ -48,11 +48,11 @@ extern "C" {
  * @see memmove()
  */
 #ifndef _di_controller_path_canonical_relative_
-  extern void controller_path_canonical_relative(controller_main_t * const main, const f_string_static_t current, const f_string_static_t source, f_string_dynamic_t * const destination);
+  extern void controller_path_canonical_relative(controller_t * const main, const f_string_static_t current, const f_string_static_t source, f_string_dynamic_t * const destination);
 #endif // _di_controller_path_canonical_relative_
 
 #ifdef __cplusplus
 } // extern "C"
 #endif
 
-#endif // _controller_main_path_h
+#endif // _controller_path_h

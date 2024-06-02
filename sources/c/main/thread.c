@@ -4,8 +4,8 @@
 extern "C" {
 #endif
 
-#ifndef _di_controller_main_thread_detach_
-  f_status_t controller_main_thread_detach(f_thread_id_t * const id) {
+#ifndef _di_controller_thread_detach_
+  f_status_t controller_thread_detach(f_thread_id_t * const id) {
 
     if (!id || !*id) return F_data_not;
 
@@ -17,10 +17,10 @@ extern "C" {
 
     return status;
   }
-#endif // _di_controller_main_thread_detach_
+#endif // _di_controller_thread_detach_
 
-#ifndef _di_controller_main_thread_join_
-  f_status_t controller_main_thread_join(f_thread_id_t * const id) {
+#ifndef _di_controller_thread_join_
+  f_status_t controller_thread_join(f_thread_id_t * const id) {
 
     if (!id || !*id) return F_data_not;
 
@@ -32,7 +32,7 @@ extern "C" {
 
     return status;
   }
-#endif // _di_controller_main_thread_join_
+#endif // _di_controller_thread_join_
 
 #ifdef __cplusplus
 } // extern "C"

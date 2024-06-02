@@ -25,9 +25,9 @@ extern "C" {
  * @return
  *   A subset of status codes (with error bit set).
  */
-#ifndef _di_controller_main_error_simplify_
-  extern f_status_t controller_main_error_simplify(const f_status_t status);
-#endif // _di_controller_main_error_simplify_
+#ifndef _di_controller_error_simplify_
+  extern f_status_t controller_error_simplify(const f_status_t status);
+#endif // _di_controller_error_simplify_
 
 /**
  * Given a string whose range represents a number, seek past the first positive or negative sign.
@@ -45,9 +45,9 @@ extern "C" {
  *   The string range.
  *   The start range will be past the stop range on overflow or on any failure.
  */
-#ifndef _di_controller_main_range_after_number_sign_
-  extern f_range_t controller_main_range_after_number_sign(const f_string_static_t buffer, const f_range_t range);
-#endif // _di_controller_main_range_after_number_sign_
+#ifndef _di_controller_range_after_number_sign_
+  extern f_range_t controller_range_after_number_sign(const f_string_static_t buffer, const f_range_t range);
+#endif // _di_controller_range_after_number_sign_
 
 /**
  * Perform the standard program setting load settings.
@@ -76,9 +76,9 @@ extern "C" {
  * @see f_console_parameter_process()
  * @see fll_program_parameter_process_context()
  */
-#ifndef _di_controller_main_setting_load_
-  extern void controller_main_setting_load(const f_console_arguments_t arguments, controller_main_t * const main, controller_program_t * const program);
-#endif // _di_controller_main_setting_load_
+#ifndef _di_controller_setting_load_
+  extern void controller_setting_load(const f_console_arguments_t arguments, controller_t * const main, controller_program_t * const program);
+#endif // _di_controller_setting_load_
 
 #ifdef __cplusplus
 } // extern "C"

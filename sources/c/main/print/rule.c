@@ -4,8 +4,8 @@
 extern "C" {
 #endif
 
-#ifndef _di_controller_main_print_rule_error_
-  f_status_t controller_main_print_rule_error(fl_print_t * const print, const controller_cache_action_t cache, const f_status_t status, const f_string_t function, const bool fallback, const bool item) {
+#ifndef _di_controller_print_rule_error_
+  f_status_t controller_print_rule_error(fl_print_t * const print, const controller_cache_action_t cache, const f_status_t status, const f_string_t function, const bool fallback, const bool item) {
 
     if (!print || !print->custom) return F_status_set_error(F_output_not);
     if (print->verbosity < f_console_verbosity_error_e) return F_output_not;
@@ -20,16 +20,16 @@ extern "C" {
 
     f_file_stream_lock(print->to);
 
-    controller_main_print_rule_error_cache(print, cache, item);
+    controller_print_rule_error_cache(print, cache, item);
 
     controller_unlock_print_flush(print->to, global->thread);
 
     return F_okay;
   }
-#endif // _di_controller_main_print_rule_error_
+#endif // _di_controller_print_rule_error_
 
-#ifndef _di_controller_main_print_rule_error_cache_
-  f_status_t controller_main_print_rule_error_cache(fl_print_t * const print, const controller_cache_action_t cache, const bool item) {
+#ifndef _di_controller_print_rule_error_cache_
+  f_status_t controller_print_rule_error_cache(fl_print_t * const print, const controller_cache_action_t cache, const bool item) {
 
     if (!print) return F_status_set_error(F_output_not);
     if (print->verbosity < f_console_verbosity_error_e) return F_output_not;
@@ -60,7 +60,7 @@ extern "C" {
 
     return F_okay;
   }
-#endif // _di_controller_main_print_rule_error_cache_
+#endif // _di_controller_print_rule_error_cache_
 
 #ifdef __cplusplus
 } // extern "C"

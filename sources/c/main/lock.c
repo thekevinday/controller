@@ -4,8 +4,8 @@
 extern "C" {
 #endif
 
-#ifndef _di_controller_main_lock_create_
-  f_status_t controller_main_lock_create(controller_lock_t * const lock) {
+#ifndef _di_controller_lock_create_
+  f_status_t controller_lock_create(controller_lock_t * const lock) {
 
     if (!lock) return F_status_set_error(F_parameter);
 
@@ -37,10 +37,10 @@ extern "C" {
 
     return F_status_is_error(status) ? status : F_okay;
   }
-#endif // _di_controller_main_lock_create_
+#endif // _di_controller_lock_create_
 
-#ifndef _di_controller_main_lock_read_
-  f_status_t controller_main_lock_read(const bool is_normal, controller_thread_t * const thread, f_thread_lock_t * const lock) {
+#ifndef _di_controller_lock_read_
+  f_status_t controller_lock_read(const bool is_normal, controller_thread_t * const thread, f_thread_lock_t * const lock) {
 
     if (!thread || !lock) return F_status_set_error(F_parameter);
 
@@ -48,12 +48,12 @@ extern "C" {
 
     for (f_time_spec_t time; ; ) {
 
-      controller_main_time_now(controller_thread_lock_read_timeout_seconds_d, controller_thread_lock_read_timeout_nanoseconds_d, &time);
+      controller_time_now(controller_thread_lock_read_timeout_seconds_d, controller_thread_lock_read_timeout_nanoseconds_d, &time);
 
       status = f_thread_lock_read_timed(&time, lock);
 
       if (status == F_time) {
-        if (!controller_main_thread_is_enabled(is_normal, thread)) return F_status_set_error(F_interrupt);
+        if (!controller_thread_is_enabled(is_normal, thread)) return F_status_set_error(F_interrupt);
       }
       else {
         break;
@@ -62,28 +62,28 @@ extern "C" {
 
     return status;
   }
-#endif // _di_controller_main_lock_read_
+#endif // _di_controller_lock_read_
 
-#ifndef _di_controller_main_lock_read_instance_
-  f_status_t controller_main_lock_read_instance(controller_instance_t * const instance, controller_thread_t * const thread, f_thread_lock_t * const lock) {
+#ifndef _di_controller_lock_read_instance_
+  f_status_t controller_lock_read_instance(controller_instance_t * const instance, f_thread_lock_t * const lock) {
+
+    if (!instance || !lock) return F_status_set_error(F_parameter);
+
+    return controller_lock_read_instance_type(instance->type, instance->global->thread, lock);
+  }
+#endif // _di_controller_lock_read_instance_
+
+#ifndef _di_controller_lock_read_instance_type_
+  f_status_t controller_lock_read_instance_type(const uint8_t type, controller_thread_t * const thread, f_thread_lock_t * const lock) {
 
     if (!thread || !lock) return F_status_set_error(F_parameter);
 
-    return controller_main_lock_read_instance_type(instance->type, thread, lock);
+    return controller_lock_read(type != controller_instance_type_exit_e, thread, lock);
   }
-#endif // _di_controller_main_lock_read_instance_
+#endif // _di_controller_lock_read_instance_type_
 
-#ifndef _di_controller_main_lock_read_instance_type_
-  f_status_t controller_main_lock_read_instance_type(const uint8_t type, controller_thread_t * const thread, f_thread_lock_t * const lock) {
-
-    if (!thread || !lock) return F_status_set_error(F_parameter);
-
-    return controller_main_lock_read(type != controller_instance_type_exit_e, thread, lock);
-  }
-#endif // _di_controller_main_lock_read_instance_type_
-
-#ifndef _di_controller_main_lock_write_
-  f_status_t controller_main_lock_write(const bool is_normal, controller_thread_t * const thread, f_thread_lock_t * const lock) {
+#ifndef _di_controller_lock_write_
+  f_status_t controller_lock_write(const bool is_normal, controller_thread_t * const thread, f_thread_lock_t * const lock) {
 
     if (!thread || !lock) return F_status_set_error(F_parameter);
 
@@ -91,12 +91,12 @@ extern "C" {
 
     for (f_time_spec_t time; ; ) {
 
-      controller_main_time_now(controller_thread_lock_write_timeout_seconds_d, controller_thread_lock_write_timeout_nanoseconds_d, &time);
+      controller_time_now(controller_thread_lock_write_timeout_seconds_d, controller_thread_lock_write_timeout_nanoseconds_d, &time);
 
       status = f_thread_lock_write_timed(&time, lock);
 
       if (status == F_time) {
-        if (!controller_main_thread_is_enabled(is_normal, thread)) return F_status_set_error(F_interrupt);
+        if (!controller_thread_is_enabled(is_normal, thread)) return F_status_set_error(F_interrupt);
       }
       else {
         break;
@@ -105,25 +105,25 @@ extern "C" {
 
     return status;
   }
-#endif // _di_controller_main_lock_write_
+#endif // _di_controller_lock_write_
 
-#ifndef _di_controller_main_lock_write_instance_
-  f_status_t controller_main_lock_write_instance(controller_instance_t * const instance, controller_thread_t * const thread, f_thread_lock_t * const lock) {
+#ifndef _di_controller_lock_write_instance_
+  f_status_t controller_lock_write_instance(controller_instance_t * const instance, f_thread_lock_t * const lock) {
+
+    if (!instance || !lock) return F_status_set_error(F_parameter);
+
+    return controller_lock_write_instance_type(instance->type, instance->global->thread, lock);
+  }
+#endif // _di_controller_lock_write_instance_
+
+#ifndef _di_controller_lock_write_instance_type_
+  f_status_t controller_lock_write_instance_type(const uint8_t type, controller_thread_t * const thread, f_thread_lock_t * const lock) {
 
     if (!thread || !lock) return F_status_set_error(F_parameter);
 
-    return controller_main_lock_write_instance_type(instance->type, thread, lock);
+    return controller_lock_write(type != controller_instance_type_exit_e, thread, lock);
   }
-#endif // _di_controller_main_lock_write_instance_
-
-#ifndef _di_controller_main_lock_write_instance_type_
-  f_status_t controller_main_lock_write_instance_type(const uint8_t type, controller_thread_t * const thread, f_thread_lock_t * const lock) {
-
-    if (!thread || !lock) return F_status_set_error(F_parameter);
-
-    return controller_main_lock_write(type != controller_instance_type_exit_e, thread, lock);
-  }
-#endif // _di_controller_main_lock_write_instance_type_
+#endif // _di_controller_lock_write_instance_type_
 
 #ifdef __cplusplus
 } // extern "C"

@@ -4,8 +4,8 @@
 extern "C" {
 #endif
 
-#ifndef _di_controller_main_thread_rule_
-  void * controller_main_thread_rule(void * const arguments) {
+#ifndef _di_controller_thread_rule_
+  void * controller_thread_rule(void * const arguments) {
 
     if (!arguments) return 0;
 
@@ -13,11 +13,11 @@ extern "C" {
 
     controller_global_t * const global = (controller_global_t * const) arguments;
 
-    if (!controller_main_thread_is_enabled(F_true, global->thread)) return 0;
+    if (!controller_thread_is_enabled(F_true, global->thread)) return 0;
 
     return 0;
   }
-#endif // _di_controller_main_thread_rule_
+#endif // _di_controller_thread_rule_
 
 #ifdef __cplusplus
 } // extern "C"

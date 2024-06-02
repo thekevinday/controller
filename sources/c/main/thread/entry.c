@@ -4,8 +4,8 @@
 extern "C" {
 #endif
 
-#ifndef _di_controller_main_thread_entry_
-  void * controller_main_thread_entry(void * const arguments) {
+#ifndef _di_controller_thread_entry_
+  void * controller_thread_entry(void * const arguments) {
 
     if (!arguments) return 0;
 
@@ -13,11 +13,11 @@ extern "C" {
 
     controller_global_t * const global = (controller_global_t * const) arguments;
 
-    if (!controller_main_thread_is_enabled(F_true, global->thread)) return 0;
+    if (!controller_thread_is_enabled(F_true, global->thread)) return 0;
 
     f_status_t * const status = &global->thread->status;
 
-    *status = controller_main_entry_read(global, F_true);
+    *status = controller_entry_read(global, F_true);
 
     if (F_status_set_fine(*status) == F_interrupt) {
       global->program->ready = controller_program_ready_abort_e;
@@ -26,10 +26,10 @@ extern "C" {
       global->program->ready = controller_program_ready_fail_e;
     }
     else if (*status != F_child) {
-      *status = controller_main_entry_preprocess(global, F_true);
+      *status = controller_entry_preprocess(global, F_true);
 
       if ((global->main->program.parameters.array[controller_parameter_simulate_e].result & f_console_result_found_e) && (global->main->program.parameters.array[controller_parameter_validate_e].result & f_console_result_found_e)) {
-        controller_main_entry_setting_validate(global, F_true);
+        controller_entry_setting_validate(global, F_true);
       }
     }
 
@@ -40,10 +40,10 @@ extern "C" {
           *status = F_status_set_error(F_available_not);
           global->program->ready = controller_program_ready_fail_e;
 
-          controller_main_print_error_file_pid_exists(&global->main->program.error, global->thread, global->program->path_pid);
+          controller_print_error_file_pid_exists(&global->main->program.error, global->thread, global->program->path_pid);
         }
         else {
-          *status = controller_main_entry_process(global, F_false, F_true);
+          *status = controller_entry_process(global, F_false, F_true);
 
           if (F_status_is_error(*status)) {
             global->program->ready = controller_program_ready_fail_e;
@@ -62,15 +62,15 @@ extern "C" {
 
               // Restart the signal global->thread to allow for signals while operating the failsafe Items.
               if (!global->thread->id_signal) {
-                f_thread_create(0, &global->thread->id_signal, &controller_main_thread_signal_normal, (void *) global);
+                f_thread_create(0, &global->thread->id_signal, &controller_thread_signal_normal, (void *) global);
               }
 
-              const f_status_t status_failsafe = controller_main_entry_process(global, F_true, F_true);
+              const f_status_t status_failsafe = controller_entry_process(global, F_true, F_true);
 
               if (F_status_is_error(status_failsafe)) {
                 *status = F_status_set_error(F_failure);
 
-                controller_main_print_error_failsafe_item(&global->main->program.error, global->thread, global->program->entry.items.array[program->failsafe_item_id].name);
+                controller_print_error_failsafe_item(&global->main->program.error, global->thread, global->program->entry.items.array[program->failsafe_item_id].name);
               }
               else {
 
@@ -97,12 +97,12 @@ extern "C" {
 
         if (F_status_is_error_not(*status) && *status != F_child && global->main->program.parameters.array[controller_parameter_validate_e].result == f_console_result_none_e && global->program->mode == controller_program_mode_helper_e) {
           f_time_spec_t time;
-          time.tv_sec = controller_main_thread_exit_helper_timeout_seconds_d;
-          time.tv_nsec = controller_main_thread_exit_helper_timeout_nanoseconds_d;
+          time.tv_sec = controller_thread_exit_helper_timeout_seconds_d;
+          time.tv_nsec = controller_thread_exit_helper_timeout_nanoseconds_d;
 
           nanosleep(&time, 0);
 
-          controller_main_thread_instance_cancel(global, F_true, controller_thread_cancel_exit_e);
+          controller_thread_instance_cancel(global, F_true, controller_thread_cancel_exit_e);
         }
       }
     }
@@ -113,7 +113,7 @@ extern "C" {
       // It seems that this function doesn't return to the calling thread for a forked child process, even with the "return 0;" below.
       controller_thread_delete(global->thread);
       controller_program_delete(global->program);
-      controller_main_delete(global->main);
+      controller_delete(global->main);
 
       // According to the manpages, pthread_exit() calls exit(0), which the value of global->main->program.child should be returned instead.
       if (global->main->program.child) exit(global->main->program.child);
@@ -125,10 +125,10 @@ extern "C" {
 
     return 0;
   }
-#endif // _di_controller_main_thread_entry_
+#endif // _di_controller_thread_entry_
 
-#ifndef _di_controller_main_thread_exit_
-  void * controller_main_thread_exit(void * const arguments) {
+#ifndef _di_controller_thread_exit_
+  void * controller_thread_exit(void * const arguments) {
 
     if (!arguments) return 0;
 
@@ -136,7 +136,7 @@ extern "C" {
 
     controller_global_t * const global = (controller_global_t * const) arguments;
 
-    controller_main_t * const main = global->main;
+    controller_t * const main = global->main;
     controller_cache_t * const cache = &global->thread->cache;
     f_status_t * const status = &global->thread->status;
 
@@ -183,7 +183,7 @@ extern "C" {
 
               // Restart the signal thread to allow for signals while operating the failsafe Items.
               if (!global->thread->id_signal) {
-                f_thread_create(0, &global->thread->id_signal, &controller_main_thread_signal_other, (void *) global);
+                f_thread_create(0, &global->thread->id_signal, &controller_thread_signal_other, (void *) global);
               }
             }
 
@@ -192,7 +192,7 @@ extern "C" {
             if (F_status_is_error(status_failsafe)) {
               *status = F_status_set_error(F_failure);
 
-              controller_main_print_error_failsafe_item(&global->main->program.error, global->thread, global->program->entry.items.array[program->failsafe_item_id].name);
+              controller_print_error_failsafe_item(&global->main->program.error, global->thread, global->program->entry.items.array[program->failsafe_item_id].name);
             }
             else {
 
@@ -224,7 +224,7 @@ extern "C" {
       // It seems that this function doesn't return to the calling thread for a forked child process, even with the "return 0;" below.
       controller_thread_delete_simple(global->thread);
       controller_process_delete(global->program);
-      controller_main_delete(main);
+      controller_delete(main);
 
       return 0;
     }
@@ -239,7 +239,7 @@ extern "C" {
 
     return 0;
   }
-#endif // _di_controller_main_thread_exit_
+#endif // _di_controller_thread_exit_
 
 #ifdef __cplusplus
 } // extern "C"

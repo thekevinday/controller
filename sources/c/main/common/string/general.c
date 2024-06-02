@@ -62,7 +62,7 @@ extern "C" {
   const f_string_static_t controller_length_s = macro_f_string_static_t_initialize_1(CONTROLLER_length_s, 0, CONTROLLER_length_s_length);
   const f_string_static_t controller_limit_s = macro_f_string_static_t_initialize_1(CONTROLLER_limit_s, 0, CONTROLLER_limit_s_length);
   const f_string_static_t controller_locks_s = macro_f_string_static_t_initialize_1(CONTROLLER_locks_s, 0, CONTROLLER_locks_s_length);
-  const f_string_static_t controller_main_s = macro_f_string_static_t_initialize_1(CONTROLLER_main_s, 0, CONTROLLER_main_s_length);
+  const f_string_static_t controller_s = macro_f_string_static_t_initialize_1(CONTROLLER_main_s, 0, CONTROLLER_main_s_length);
   const f_string_static_t controller_max_s = macro_f_string_static_t_initialize_1(CONTROLLER_max_s, 0, CONTROLLER_max_s_length);
   const f_string_static_t controller_memlock_s = macro_f_string_static_t_initialize_1(CONTROLLER_memlock_s, 0, CONTROLLER_memlock_s_length);
   const f_string_static_t controller_method_s = macro_f_string_static_t_initialize_1(CONTROLLER_method_s, 0, CONTROLLER_method_s_length);

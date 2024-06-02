@@ -4,8 +4,8 @@
 extern "C" {
 #endif
 
-#ifndef _di_controller_main_time_now_
-  void controller_main_time_now(const time_t seconds, const long nanoseconds, f_time_spec_t * const time) {
+#ifndef _di_controller_time_now_
+  void controller_time_now(const time_t seconds, const long nanoseconds, f_time_spec_t * const time) {
 
     {
       f_time_value_t now = f_time_value_t_initialize;
@@ -23,39 +23,15 @@ extern "C" {
       time->tv_nsec -= 1000000000;
     }
   }
-#endif // _di_controller_main_time_now_
+#endif // _di_controller_time_now_
 
-/*
-#ifndef _di_controller_main_time_milliseconds_
-  f_time_spec_t controller_main_time_milliseconds(const f_number_unsigned_t milliseconds) {
-
-    f_time_spec_t time;
-
-    f_time_spec_millisecond(0, milliseconds, &time);
-
-    return time;
-  }
-#endif // _di_controller_main_time_milliseconds_
-
-#ifndef _di_controller_main_time_seconds_
-  f_time_simple_t controller_main_time_seconds(const f_number_unsigned_t seconds) {
-
-    f_time_spec_t time;
-
-    f_time_spec_millisecond(seconds, 0, &time);
-
-    return time;
-  }
-#endif // _di_controller_main_time_seconds_
-*/
-
-#ifndef _di_controller_main_time_sleep_nanoseconds_
-  f_status_t controller_main_time_sleep_nanoseconds(controller_global_t * const global, const f_time_spec_t time) {
+#ifndef _di_controller_time_sleep_nanoseconds_
+  f_status_t controller_time_sleep_nanoseconds(controller_global_t * const global, const f_time_spec_t time) {
 
     if (!global || !global->main) return F_status_set_error(F_parameter);
 
     // When sleep is a second or more, instead wait for terminating signals if interruptible.
-    if ((global->main->setting.flag & controller_main_flag_interruptible_e) && time.tv_sec) {
+    if ((global->main->program.flag & controller_main_flag_interruptible_e) && time.tv_sec) {
       siginfo_t information;
       f_signal_t signal = f_signal_t_initialize;
 
@@ -72,7 +48,7 @@ extern "C" {
 
     return f_time_sleep_spec(time, 0);
   }
-#endif // _di_controller_main_time_sleep_nanoseconds_
+#endif // _di_controller_time_sleep_nanoseconds_
 
 #ifdef __cplusplus
 } // extern "C"

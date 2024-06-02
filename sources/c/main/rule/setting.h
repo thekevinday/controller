@@ -17,6 +17,34 @@ extern "C" {
 #endif
 
 /**
+ * Identify the rule item code the given name represents.
+ *
+ * @param item
+ *   The string representing an rule action.
+ *
+ * @return
+ *   The rule item type code on success.
+ *   0 if name is unknown.
+ */
+#ifndef _di_controller_rule_setting_limit_type_identify_
+  extern uint8_t controller_rule_setting_limit_type_identify(const f_string_static_t item);
+#endif // _di_controller_rule_setting_limit_type_identify_
+
+/**
+ * Get a string representing the rule setting limit type.
+ *
+ * @param type
+ *   The rule setting limit type code.
+ *
+ * @return
+ *   The string with used > 0 on success.
+ *   The string with used == 0 if no match was found.
+ */
+#ifndef _di_controller_rule_setting_limit_type_name_
+  extern f_string_static_t controller_rule_setting_limit_type_name(const uint8_t type);
+#endif // di_controller_rule_setting_limit_type_name_
+
+/**
  * Read the content within the buffer, extracting all valid settings.
  *
  * This will perform additional FSS read functions as appropriate.
@@ -57,9 +85,9 @@ extern "C" {
  *
  * @see controller_path_canonical_relative()
  */
-#ifndef _di_controller_main_rule_setting_read_
-  extern f_status_t controller_main_rule_setting_read(controller_global_t * const global, const bool is_normal, controller_cache_t * const cache, controller_rule_t * const rule);
-#endif // _di_controller_main_rule_setting_read_
+#ifndef _di_controller_rule_setting_read_
+  extern f_status_t controller_rule_setting_read(controller_global_t * const global, const bool is_normal, controller_cache_t * const cache, controller_rule_t * const rule);
+#endif // _di_controller_rule_setting_read_
 
 #ifdef __cplusplus
 } // extern "C"

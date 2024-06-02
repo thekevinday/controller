@@ -33,9 +33,9 @@ extern "C" {
  * @return
  *   0, always.
  */
-#ifndef _di_controller_main_thread_rule_
-  extern void * controller_main_thread_rule(void * const arguments);
-#endif // _di_controller_main_thread_rule_
+#ifndef _di_controller_thread_rule_
+  extern void * controller_thread_rule(void * const arguments);
+#endif // _di_controller_thread_rule_
 
 #ifdef __cplusplus
 } // extern "C"

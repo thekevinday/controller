@@ -9,8 +9,8 @@
  *
  * This is auto-included and should not need to be explicitly included.
  */
-#ifndef _controller_main_process_h
-#define _controller_main_process_h
+#ifndef _controller_process_h
+#define _controller_process_h
 
 #ifdef __cplusplus
 extern "C" {
@@ -44,12 +44,12 @@ extern "C" {
  *
  *   Must not be NULL.
  */
-#ifndef controller_main_process
-  extern void controller_main_process(controller_main_t * const main, controller_program_t * const program);
-#endif // controller_main_process
+#ifndef controller_process
+  extern void controller_process(controller_t * const main, controller_program_t * const program);
+#endif // controller_process
 
 #ifdef __cplusplus
 } // extern "C"
 #endif
 
-#endif // _controller_main_process_h
+#endif // _controller_process_h

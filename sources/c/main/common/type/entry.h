@@ -174,7 +174,7 @@ extern "C" {
     0, \
     0, \
     0, \
-    controller_main_thread_exit_timeout_d, \
+    controller_thread_exit_timeout_d, \
     0, \
     0, \
     0, \

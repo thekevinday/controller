@@ -28,9 +28,9 @@ extern "C" {
  * @return
  *   0, always.
  */
-#ifndef _di_controller_main_thread_cleanup_
-  extern void * controller_main_thread_cleanup(void * const arguments);
-#endif // _di_controller_main_thread_cleanup_
+#ifndef _di_controller_thread_cleanup_
+  extern void * controller_thread_cleanup(void * const arguments);
+#endif // _di_controller_thread_cleanup_
 
 #ifdef __cplusplus
 } // extern "C"

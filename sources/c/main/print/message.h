@@ -22,7 +22,7 @@ extern "C" {
  * @param print
  *   The output structure to print to.
  *
- *   This requires print.custom to be controller_main_t.
+ *   This requires print.custom to be controller_t.
  *
  *   This does not alter print.custom.setting.state.status.
  * @param uninterrupt
@@ -43,9 +43,9 @@ extern "C" {
  * @see fll_program_print_help_option()
  * @see fll_program_print_help_usage()
  */
-#ifndef _di_controller_main_print_message_help_
-  extern f_status_t controller_main_print_message_help(fl_print_t * const print, const uint8_t uninterrupt);
-#endif // _di_controller_main_print_message_help_
+#ifndef _di_controller_print_message_help_
+  extern f_status_t controller_print_message_help(fl_print_t * const print, const uint8_t uninterrupt);
+#endif // _di_controller_print_message_help_
 
 #ifdef __cplusplus
 } // extern "C"

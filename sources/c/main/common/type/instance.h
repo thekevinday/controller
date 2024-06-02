@@ -71,7 +71,7 @@ extern "C" {
 
     controller_rule_t rule;
     controller_cache_t cache;
-    controller_global_t global;
+    controller_global_t *global;
   };
 
   #define controller_instance_t_initialize { \
@@ -91,7 +91,7 @@ extern "C" {
     f_number_unsigneds_t_initialize, \
     controller_rule_t_initialize, \
     controller_cache_t_initialize, \
-    controller_global_t_initialize, \
+    0, \
   }
 #endif // _di_controller_instance_t_
 

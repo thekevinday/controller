@@ -4,16 +4,16 @@
 extern "C" {
 #endif
 
-#ifndef _di_controller_main_rule_expand_
-  f_status_t controller_main_rule_expand(controller_global_t * const global, const controller_main_rule_action_t action, controller_instance_t * const instance) {
+#ifndef _di_controller_rule_expand_
+  f_status_t controller_rule_expand(controller_global_t * const global, const controller_rule_action_t action, controller_instance_t * const instance) {
 
     if (!global || !instance) return F_status_set_error(F_parameter);
 
-    process->cache.expanded.used = 0;
+    instance->cache.expanded.used = 0;
 
     if (!action.parameters.used) return F_okay;
 
-    f_status_t status = f_memory_array_increase_by(action.parameters.used, sizeof(f_string_dynamic_t), (void **) &process->cache.expanded.array, &process->cache.expanded.used, &process->cache.expanded.size);
+    f_status_t status = f_memory_array_increase_by(action.parameters.used, sizeof(f_string_dynamic_t), (void **) &instance->cache.expanded.array, &instance->cache.expanded.used, &instance->cache.expanded.size);
     if (F_status_is_error(status)) return status;
 
     f_number_unsigned_t i = 0;
@@ -23,20 +23,20 @@ extern "C" {
     f_iki_data_t *iki_data = 0;
     f_string_dynamic_t *buffer = 0;
 
-    for (; process->cache.expanded.used < action.parameters.used; ++process->cache.expanded.used) {
+    for (; instance->cache.expanded.used < action.parameters.used; ++instance->cache.expanded.used) {
 
-      buffer = &process->cache.expanded.array[process->cache.expanded.used];
+      buffer = &instance->cache.expanded.array[instance->cache.expanded.used];
       buffer->used = 0;
 
-      if (action.ikis.array[process->cache.expanded.used].variable.used) {
-        iki_data = &action.ikis.array[process->cache.expanded.used];
+      if (action.ikis.array[instance->cache.expanded.used].variable.used) {
+        iki_data = &action.ikis.array[instance->cache.expanded.used];
 
         // Allocate enough room plus an extra buffer to help reduce reallocations.
-        status = f_memory_array_increase_by(action.parameters.array[process->cache.expanded.used].used + controller_allocation_large_d, sizeof(f_char_t), (void **) &buffer->string, &buffer->used, &buffer->size);
+        status = f_memory_array_increase_by(action.parameters.array[instance->cache.expanded.used].used + controller_allocation_large_d, sizeof(f_char_t), (void **) &buffer->string, &buffer->used, &buffer->size);
 
         // Apply the IKI delimits.
         for (i = 0; i < iki_data->delimits.used; ++i) {
-          action.parameters.array[process->cache.expanded.used].string[iki_data->delimits.array[i]] = f_iki_syntax_placeholder_s.string[0];
+          action.parameters.array[instance->cache.expanded.used].string[iki_data->delimits.array[i]] = f_iki_syntax_placeholder_s.string[0];
         } // for
 
         if (iki_data->variable.used) {
@@ -47,11 +47,11 @@ extern "C" {
               range.start = first;
               range.stop = iki_data->variable.array[i].start - 1;
 
-              status = f_string_dynamic_partial_append_nulless(action.parameters.array[process->cache.expanded.used], range, buffer);
+              status = f_string_dynamic_partial_append_nulless(action.parameters.array[instance->cache.expanded.used], range, buffer);
               if (F_status_is_error(status)) break;
             }
 
-            status = controller_main_rule_expand_iki(process, action.parameters.array[process->cache.expanded.used], iki_data->vocabulary.array[i], iki_data->content.array[i], buffer);
+            status = controller_rule_expand_iki(instance, action.parameters.array[instance->cache.expanded.used], iki_data->vocabulary.array[i], iki_data->content.array[i], buffer);
             if (F_status_is_error(status)) break;
 
             first = iki_data->variable.array[i].stop + 1;
@@ -60,24 +60,24 @@ extern "C" {
           if (F_status_is_error(status)) break;
 
           // Copy everything after the last IKI variable to the end of the content.
-          if (first < action.parameters.array[process->cache.expanded.used].used) {
+          if (first < action.parameters.array[instance->cache.expanded.used].used) {
             range.start = first;
-            range.stop = action.parameters.array[process->cache.expanded.used].used - 1;
+            range.stop = action.parameters.array[instance->cache.expanded.used].used - 1;
 
-            status = f_string_dynamic_partial_append(action.parameters.array[process->cache.expanded.used], range, buffer);
+            status = f_string_dynamic_partial_append(action.parameters.array[instance->cache.expanded.used], range, buffer);
           }
         }
         else {
-          status = f_string_dynamic_append_nulless(action.parameters.array[process->cache.expanded.used], buffer);
+          status = f_string_dynamic_append_nulless(action.parameters.array[instance->cache.expanded.used], buffer);
         }
 
         // Unapply the IKI delimits.
         for (i = 0; i < iki_data->delimits.used; ++i) {
-          action.parameters.array[process->cache.expanded.used].string[iki_data->delimits.array[i]] = f_iki_syntax_slash_s.string[0];
+          action.parameters.array[instance->cache.expanded.used].string[iki_data->delimits.array[i]] = f_iki_syntax_slash_s.string[0];
         } // for
       }
       else {
-        status = f_string_dynamic_append(action.parameters.array[process->cache.expanded.used], buffer);
+        status = f_string_dynamic_append(action.parameters.array[instance->cache.expanded.used], buffer);
       }
 
       if (F_status_is_error(status)) return status;
@@ -85,12 +85,12 @@ extern "C" {
 
     return F_okay;
   }
-#endif // _di_controller_main_rule_expand_
+#endif // _di_controller_rule_expand_
 
-#ifndef _di_controller_main_rule_expand_iki_
-  f_status_t controller_main_rule_expand_iki(controller_instance_t * const instance, const f_string_static_t source, const f_range_t vocabulary, const f_range_t content, f_string_dynamic_t * const destination) {
+#ifndef _di_controller_rule_expand_iki_
+  f_status_t controller_rule_expand_iki(controller_instance_t * const instance, const f_string_static_t source, const f_range_t vocabulary, const f_range_t content, f_string_dynamic_t * const destination) {
 
-    if (!instance || !destination) return F_status_set_error(F_parameter);
+    if (!instance || !instance->global || !instance->global->program || !destination) return F_status_set_error(F_parameter);
     if (vocabulary.start > vocabulary.stop) return F_okay;
     if (content.start > content.stop) return F_okay;
 
@@ -100,18 +100,18 @@ extern "C" {
       f_number_unsigned_t i = 0;
 
       // First check to see if the environment variable is overwritten by a "define".
-      for (; i < process->rule.define.used; ++i) {
+      for (; i < instance->rule.define.used; ++i) {
 
-        if (f_compare_dynamic_partial_string(process->rule.define.array[i].key.string, source, process->rule.define.array[i].key.used, content) == F_equal_to) {
-          status = f_string_dynamic_append(process->rule.define.array[i].value, destination);
+        if (f_compare_dynamic_partial_string(instance->rule.define.array[i].key.string, source, instance->rule.define.array[i].key.used, content) == F_equal_to) {
+          status = f_string_dynamic_append(instance->rule.define.array[i].value, destination);
           if (F_status_is_error(status)) return status;
 
           break;
         }
       } // for
 
-      if (i == process->rule.define.used) {
-        controller_entry_t * const entry = process->type == controller_instance_type_entry_e ? &((controller_process_t *) process->main_setting)->entry : &((controller_process_t *) process->main_setting)->exit;
+      if (i == instance->rule.define.used) {
+        controller_entry_t * const entry = instance->type == controller_instance_type_entry_e ? &instance->global->program->entry : &instance->global->program->exit;
 
         for (i = 0; i < entry->define.used; ++i) {
 
@@ -124,11 +124,11 @@ extern "C" {
         } // for
 
         if (i == entry->define.used) {
-          i = process->rule.define.used;
+          i = instance->rule.define.used;
         }
       }
 
-      if (i == process->rule.define.used) {
+      if (i == instance->rule.define.used) {
         f_string_static_t buffer = f_string_static_t_initialize;
         buffer.used = (content.stop - content.start) + 1;
 
@@ -137,30 +137,30 @@ extern "C" {
         memcpy(buffer_string, source.string + content.start, sizeof(f_char_t) * buffer.used);
         buffer_string[buffer.used] = 0;
         buffer.string = buffer_string;
-        process->cache.action.generic.used = 0;
+        instance->cache.action.generic.used = 0;
 
-        status = f_environment_get(buffer, &process->cache.action.generic);
+        status = f_environment_get(buffer, &instance->cache.action.generic);
         if (F_status_is_error(status)) return status;
 
-        status = f_string_dynamic_append(process->cache.action.generic, destination);
+        status = f_string_dynamic_append(instance->cache.action.generic, destination);
         if (F_status_is_error(status)) return status;
       }
     }
     else if (f_compare_dynamic_partial_string(controller_parameter_s.string, source, controller_parameter_s.used, vocabulary) == F_equal_to) {
       f_number_unsigned_t i = 0;
 
-      for (; i < process->rule.parameter.used; ++i) {
+      for (; i < instance->rule.parameter.used; ++i) {
 
-        if (f_compare_dynamic_partial_string(process->rule.parameter.array[i].key.string, source, process->rule.parameter.array[i].key.used, content) == F_equal_to) {
-          status = f_string_dynamic_append(process->rule.parameter.array[i].value, destination);
+        if (f_compare_dynamic_partial_string(instance->rule.parameter.array[i].key.string, source, instance->rule.parameter.array[i].key.used, content) == F_equal_to) {
+          status = f_string_dynamic_append(instance->rule.parameter.array[i].value, destination);
           if (F_status_is_error(status)) return status;
 
           break;
         }
       } // for
 
-      if (i == process->rule.parameter.used) {
-        controller_entry_t * const entry = process->type == controller_instance_type_entry_e ? &((controller_process_t *) process->main_setting)->entry : &((controller_process_t *) process->main_setting)->exit;
+      if (i == instance->rule.parameter.used) {
+        controller_entry_t * const entry = instance->type == controller_instance_type_entry_e ? &instance->global->program->entry : &instance->global->program->exit;
 
         for (i = 0; i < entry->parameter.used; ++i) {
 
@@ -174,8 +174,8 @@ extern "C" {
       }
     }
     else if (f_compare_dynamic_partial_string(controller_program_s.string, source, controller_program_s.used, vocabulary) == F_equal_to) {
-      f_string_static_t * const argv = ((controller_main_t *) process->main_data)->program.parameters.arguments.array;
-      f_console_parameters_t * const parameters = &((controller_main_t *) process->main_data)->program.parameters;
+      f_string_static_t * const argv = instance->global->main.program.parameters.arguments.array;
+      f_console_parameters_t * const parameters = &instance->global->main.program.parameters;
 
       const f_string_static_t options[] = {
         f_console_standard_long_light_s,
@@ -374,7 +374,7 @@ extern "C" {
 
     return F_okay;
   }
-#endif // _di_controller_main_rule_expand_iki_
+#endif // _di_controller_rule_expand_iki_
 
 #ifdef __cplusplus
 } // extern "C"

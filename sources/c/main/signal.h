@@ -9,8 +9,8 @@
  *
  * This is auto-included and should not need to be explicitly included.
  */
-#ifndef _controller_main_signal_h
-#define _controller_main_signal_h
+#ifndef _controller_signal_h
+#define _controller_signal_h
 
 #ifdef __cplusplus
 extern "C" {
@@ -28,7 +28,7 @@ extern "C" {
  *   - F_signal_termination
  *
  * There is a threaded and a non-threaded version of this.
- * The non-threaded version checks periodically using controller_main_signal_check_d and updates main->signal_check as needed.
+ * The non-threaded version checks periodically using controller_signal_check_d and updates main->signal_check as needed.
  * The threaded version checks the flag state which is set by a separate thread that is blocking until signal is received.
  *
  * @param main
@@ -40,13 +40,13 @@ extern "C" {
  *   F_true on signal received.
  *   F_false otherwise.
  *
- * @see controller_main_signal_handler()
+ * @see controller_signal_handler()
  *
  * @see fll_program_standard_signal_received()
  */
-#ifndef _di_controller_main_signal_check_
-  extern f_status_t controller_main_signal_check(controller_main_t * const main);
-#endif // _di_controller_main_signal_check_
+#ifndef _di_controller_signal_check_
+  extern f_status_t controller_signal_check(controller_t * const main);
+#endif // _di_controller_signal_check_
 
 /**
  * Signal handler for signals/interrupts.
@@ -75,12 +75,12 @@ extern "C" {
  * @see f_signal_open()
  * @see f_signal_wait()
  */
-#if !defined(_di_controller_main_signal_handler_) && !defined(_di_thread_support_)
-  extern void controller_main_signal_handler(controller_main_t * const main);
-#endif // !defined(_di_controller_main_signal_handler_) && !defined(_di_thread_support_)
+#if !defined(_di_controller_signal_handler_) && !defined(_di_thread_support_)
+  extern void controller_signal_handler(controller_t * const main);
+#endif // !defined(_di_controller_signal_handler_) && !defined(_di_thread_support_)
 
 #ifdef __cplusplus
 } // extern "C"
 #endif
 
-#endif // _controller_main_signal_h
+#endif // _controller_signal_h

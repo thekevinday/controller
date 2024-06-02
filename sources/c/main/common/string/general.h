@@ -353,7 +353,7 @@ extern "C" {
   extern const f_string_static_t controller_length_s;
   extern const f_string_static_t controller_limit_s;
   extern const f_string_static_t controller_locks_s;
-  extern const f_string_static_t controller_main_s;
+  extern const f_string_static_t controller_s;
   extern const f_string_static_t controller_max_s;
   extern const f_string_static_t controller_memlock_s;
   extern const f_string_static_t controller_method_s;

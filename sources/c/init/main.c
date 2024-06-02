@@ -2,7 +2,7 @@
 
 int main(const int argc, const f_string_t *argv, const f_string_t *envp) {
 
-  controller_main_t data = controller_main_t_initialize;
+  controller_t data = controller_t_initialize;
   controller_program_t program = controller_program_t_initialize;
 
   data.program.debug.flag |= controller_print_flag_debug_e | controller_print_flag_out_e;
@@ -38,10 +38,10 @@ int main(const int argc, const f_string_t *argv, const f_string_t *envp) {
   {
     const f_console_arguments_t arguments = macro_f_console_arguments_t_initialize_1(argc, argv, envp);
 
-    controller_main_setting_load(arguments, &data, &program);
+    controller_setting_load(arguments, &data, &program);
   }
 
-  controller_main_process(&data, &program);
+  controller_process(&data, &program);
 
   fll_program_standard_set_down(&data.program);
 

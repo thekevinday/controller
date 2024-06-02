@@ -9,8 +9,8 @@
  *
  * This is auto-included and should not need to be explicitly included.
  */
-#ifndef _controller_main_time_h
-#define _controller_main_time_h
+#ifndef _controller_time_h
+#define _controller_time_h
 
 /**
  * Get the current time, plus the given offset.
@@ -24,9 +24,9 @@
  *
  * @see f_time_of_day_get()
  */
-#ifndef _di_controller_main_time_now_
-  extern void controller_main_time_now(const time_t seconds, const long nanoseconds, f_time_spec_t * const time);
-#endif // _di_controller_main_time_now_
+#ifndef _di_controller_time_now_
+  extern void controller_time_now(const time_t seconds, const long nanoseconds, f_time_spec_t * const time);
+#endif // _di_controller_time_now_
 
 /**
  * Sleep for the given time.
@@ -51,12 +51,12 @@
  *
  * @see f_time_of_day_get()
  */
-#ifndef _di_controller_main_time_sleep_nanoseconds_
-  extern f_status_t controller_main_time_sleep_nanoseconds(controller_global_t * const global, const f_time_spec_t time);
-#endif // _di_controller_main_time_sleep_nanoseconds_
+#ifndef _di_controller_time_sleep_nanoseconds_
+  extern f_status_t controller_time_sleep_nanoseconds(controller_global_t * const global, const f_time_spec_t time);
+#endif // _di_controller_time_sleep_nanoseconds_
 
 #ifdef __cplusplus
 } // extern "C"
 #endif
 
-#endif // _controller_main_time_h
+#endif // _controller_time_h

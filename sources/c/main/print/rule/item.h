@@ -38,12 +38,12 @@ extern "C" {
  * @see fll_error_print()
  *
  * @see controller_lock_print()
- * @see controller_main_print_rule_error_cache()
+ * @see controller_print_rule_error_cache()
  * @see controller_unlock_print_flush()
  */
-#ifndef _di_controller_main_print_rule_item_debug_action_empty_
-  extern f_status_t controller_main_print_rule_item_debug_action_empty(fl_print_t * const print, controller_cache_t * const cache);
-#endif // _di_controller_main_print_rule_item_debug_action_empty_
+#ifndef _di_controller_print_rule_item_debug_action_empty_
+  extern f_status_t controller_print_rule_item_debug_action_empty(fl_print_t * const print, controller_cache_t * const cache);
+#endif // _di_controller_print_rule_item_debug_action_empty_
 
 /**
  * Print additional error/warning information in addition to existing error.
@@ -60,11 +60,11 @@ extern "C" {
  * @param status
  *   The status code representing the failure (without the error bit set).
  *
- * @see controller_main_print_rule_error_cache()
+ * @see controller_print_rule_error_cache()
  */
-#ifndef _di_controller_main_print_rule_item_error_
-  extern void controller_main_print_rule_item_error(fl_print_t * const print, const controller_cache_action_t cache, const bool item, const f_status_t status);
-#endif // _di_controller_main_print_rule_item_error_
+#ifndef _di_controller_print_rule_item_error_
+  extern void controller_print_rule_item_error(fl_print_t * const print, const controller_cache_action_t cache, const bool item, const f_status_t status);
+#endif // _di_controller_print_rule_item_error_
 
 /**
  * Print rule error message about the first rule item action parameter being invalid.
@@ -88,12 +88,12 @@ extern "C" {
  * @see fll_error_print()
  *
  * @see controller_lock_print()
- * @see controller_main_print_rule_error_cache()
+ * @see controller_print_rule_error_cache()
  * @see controller_unlock_print_flush()
  */
-#ifndef _di_controller_main_print_rule_item_error_action_first_
-  extern f_status_t controller_main_print_rule_item_error_action_first(fl_print_t * const print, controller_cache_t * const cache);
-#endif // _di_controller_main_print_rule_item_error_action_first_
+#ifndef _di_controller_print_rule_item_error_action_first_
+  extern f_status_t controller_print_rule_item_error_action_first(fl_print_t * const print, controller_cache_t * const cache);
+#endif // _di_controller_print_rule_item_error_action_first_
 
 /**
  * Print rule error message about the second rule item action parameter being invalid.
@@ -117,12 +117,12 @@ extern "C" {
  * @see fll_error_print()
  *
  * @see controller_lock_print()
- * @see controller_main_print_rule_error_cache()
+ * @see controller_print_rule_error_cache()
  * @see controller_unlock_print_flush()
  */
-#ifndef _di_controller_main_print_rule_item_error_action_second_
-  extern f_status_t controller_main_print_rule_item_error_action_second(fl_print_t * const print, controller_cache_t * const cache);
-#endif // _di_controller_main_print_rule_item_error_action_second_
+#ifndef _di_controller_print_rule_item_error_action_second_
+  extern f_status_t controller_print_rule_item_error_action_second(fl_print_t * const print, controller_cache_t * const cache);
+#endif // _di_controller_print_rule_item_error_action_second_
 
 /**
  * Print rule error message about the rule item action being unknown.
@@ -150,12 +150,12 @@ extern "C" {
  * @see fll_error_print()
  *
  * @see controller_lock_print()
- * @see controller_main_print_rule_error_cache()
+ * @see controller_print_rule_error_cache()
  * @see controller_unlock_print_flush()
  */
-#ifndef _di_controller_main_print_rule_item_error_action_unknown_
-  extern f_status_t controller_main_print_rule_item_error_action_unknown(fl_print_t * const print, controller_cache_t * const cache, const f_string_static_t name, const f_number_unsigned_t index);
-#endif // _di_controller_main_print_rule_item_error_action_unknown_
+#ifndef _di_controller_print_rule_item_error_action_unknown_
+  extern f_status_t controller_print_rule_item_error_action_unknown(fl_print_t * const print, controller_cache_t * const cache, const f_string_static_t name, const f_number_unsigned_t index);
+#endif // _di_controller_print_rule_item_error_action_unknown_
 
 /**
  * Print an error or warning message related to the failed execution of some program or script.
@@ -178,9 +178,9 @@ extern "C" {
  * @param status
  *   The status code representing the failure (without the error bit set).
  */
-#ifndef _di_controller_main_print_rule_item_error_execute_
-  extern void controller_main_print_rule_item_error_execute(fl_print_t * const print, controller_instance_t * const instance, const bool script_is, const f_string_static_t name, const f_status_t status);
-#endif // _di_controller_main_print_rule_item_error_execute_
+#ifndef _di_controller_print_rule_item_error_execute_
+  extern void controller_print_rule_item_error_execute(fl_print_t * const print, controller_instance_t * const instance, const bool script_is, const f_string_static_t name, const f_status_t status);
+#endif // _di_controller_print_rule_item_error_execute_
 
 /**
  * Print an error or warning message related to need/want/wish settings of some rule.
@@ -195,9 +195,9 @@ extern "C" {
  * @param why
  *   A short explanation on why this is an error or warning.
  */
-#ifndef _di_controller_main_print_rule_item_error_need_want_wish_
-  extern void controller_main_print_rule_item_error_need_want_wish(fl_print_t * const print, const f_string_static_t need_want_wish, const f_string_static_t value, const f_string_t why);
-#endif // _di_controller_main_print_rule_item_error_need_want_wish_
+#ifndef _di_controller_print_rule_item_error_need_want_wish_
+  extern void controller_print_rule_item_error_need_want_wish(fl_print_t * const print, const f_string_static_t need_want_wish, const f_string_static_t value, const f_string_t why);
+#endif // _di_controller_print_rule_item_error_need_want_wish_
 
 /**
  * Print an error or warning message about some rule not being loaded.
@@ -207,9 +207,9 @@ extern "C" {
  * @param alias
  *   The rule alias of the rule that is not loaded.
  */
-#ifndef _di_controller_main_print_rule_item_error_rule_not_loaded_
-  extern void controller_main_print_rule_item_error_rule_not_loaded(fl_print_t * const print, const f_string_static_t alias);
-#endif // _di_controller_main_print_rule_item_error_rule_not_loaded_
+#ifndef _di_controller_print_rule_item_error_rule_not_loaded_
+  extern void controller_print_rule_item_error_rule_not_loaded(fl_print_t * const print, const f_string_static_t alias);
+#endif // _di_controller_print_rule_item_error_rule_not_loaded_
 
 #ifdef __cplusplus
 } // extern "C"

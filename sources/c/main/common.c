@@ -4,8 +4,8 @@
 extern "C" {
 #endif
 
-#ifndef _di_controller_main_error_simplify_
-  f_status_t controller_main_error_simplify(const f_status_t status) {
+#ifndef _di_controller_error_simplify_
+  f_status_t controller_error_simplify(const f_status_t status) {
 
     if (status == F_memory_not) {
       return F_status_set_error(F_memory);
@@ -37,10 +37,10 @@ extern "C" {
 
     return F_status_set_error(F_failure);
   }
-#endif // _di_controller_main_error_simplify_
+#endif // _di_controller_error_simplify_
 
-#ifndef _di_controller_main_range_after_number_sign_
-  f_range_t controller_main_range_after_number_sign(const f_string_static_t buffer, const f_range_t range) {
+#ifndef _di_controller_range_after_number_sign_
+  f_range_t controller_range_after_number_sign(const f_string_static_t buffer, const f_range_t range) {
 
     f_range_t result = range;
 
@@ -57,10 +57,10 @@ extern "C" {
 
     return result;
   }
-#endif // _di_controller_main_range_after_number_sign_
+#endif // _di_controller_range_after_number_sign_
 
-#ifndef _di_controller_main_setting_load_
-  void controller_main_setting_load(const f_console_arguments_t arguments, controller_main_t * const main, controller_program_t * const program) {
+#ifndef _di_controller_setting_load_
+  void controller_setting_load(const f_console_arguments_t arguments, controller_t * const main, controller_program_t * const program) {
 
     if (!main || !program) return;
 
@@ -71,7 +71,7 @@ extern "C" {
     main->setting.state.step_small = controller_allocation_small_d;
 
     if (F_status_is_error(main->setting.state.status)) {
-      controller_main_print_error(&main->program.error, macro_controller_f(f_console_parameter_process));
+      controller_print_error(&main->program.error, macro_controller_f(f_console_parameter_process));
 
       return;
     }
@@ -79,7 +79,7 @@ extern "C" {
     main->setting.state.status = fll_program_parameter_process_context_standard(F_true, &main->program);
 
     if (F_status_is_error(main->setting.state.status)) {
-      controller_main_print_error(&main->program.error, macro_controller_f(fll_program_parameter_process_context_standard));
+      controller_print_error(&main->program.error, macro_controller_f(fll_program_parameter_process_context_standard));
 
       return;
     }
@@ -87,7 +87,7 @@ extern "C" {
     main->setting.state.status = fll_program_parameter_process_verbosity_standard(F_true, &main->program);
 
     if (F_status_is_error(main->setting.state.status)) {
-      controller_main_print_error(&main->program.error, macro_controller_f(fll_program_parameter_process_verbosity_standard));
+      controller_print_error(&main->program.error, macro_controller_f(fll_program_parameter_process_verbosity_standard));
 
       return;
     }
@@ -157,7 +157,7 @@ extern "C" {
     main->setting.state.status = f_string_dynamic_append(main->program.parameters.remaining.used ? args[main->program.parameters.remaining.array[0]] : controller_default_s, &program->name_entry);
 
     if (F_status_is_error(main->setting.state.status)) {
-      controller_main_print_error(&main->program.error, macro_controller_f(fll_program_parameter_process_verbosity_standard));
+      controller_print_error(&main->program.error, macro_controller_f(fll_program_parameter_process_verbosity_standard));
 
       return;
     }
@@ -165,7 +165,7 @@ extern "C" {
     main->setting.state.status = f_path_current(F_false, &program->path_current);
 
     if (F_status_is_error(main->setting.state.status)) {
-      controller_main_print_error(&main->program.error, macro_controller_f(f_path_current));
+      controller_print_error(&main->program.error, macro_controller_f(f_path_current));
 
       return;
     }
@@ -178,7 +178,7 @@ extern "C" {
       controller_path_canonical_relative(main, program->path_current, args[index], &program->path_setting);
 
       if (F_status_is_error(main->setting.state.status)) {
-        controller_main_print_error_file(&main->program.error, macro_controller_f(controller_path_canonical_relative), args[index], f_file_operation_verify_s, fll_error_file_type_path_e);
+        controller_print_error_file(&main->program.error, macro_controller_f(controller_path_canonical_relative), args[index], f_file_operation_verify_s, fll_error_file_type_path_e);
 
         return;
       }
@@ -187,7 +187,7 @@ extern "C" {
       main->setting.state.status = f_string_dynamic_append(controller_default_path_settings_s, &program->path_setting);
 
       if (F_status_is_error(main->setting.state.status)) {
-        controller_main_print_error(&main->program.error, macro_controller_f(f_string_dynamic_append));
+        controller_print_error(&main->program.error, macro_controller_f(f_string_dynamic_append));
 
         return;
       }
@@ -213,7 +213,7 @@ extern "C" {
       }
 
       if (F_status_is_error(main->setting.state.status)) {
-        controller_main_print_error(&main->program.error, macro_controller_f(f_string_dynamic_append));
+        controller_print_error(&main->program.error, macro_controller_f(f_string_dynamic_append));
 
         return;
       }
@@ -226,7 +226,7 @@ extern "C" {
         controller_path_canonical_relative(main, program->path_current, args[index], &program->path_cgroup);
 
         if (F_status_is_error(main->setting.state.status)) {
-          controller_main_print_error_file(&main->program.error, macro_controller_f(controller_path_canonical_relative), args[index], f_file_operation_verify_s, fll_error_file_type_path_e);
+          controller_print_error_file(&main->program.error, macro_controller_f(controller_path_canonical_relative), args[index], f_file_operation_verify_s, fll_error_file_type_path_e);
 
           return;
         }
@@ -234,13 +234,13 @@ extern "C" {
         main->setting.state.status = f_string_append_assure(F_path_separator_s, 1, &program->path_cgroup);
 
         if (F_status_is_error(main->setting.state.status)) {
-          controller_main_print_error(&main->program.error, macro_controller_f(f_string_append_assure));
+          controller_print_error(&main->program.error, macro_controller_f(f_string_append_assure));
 
           return;
         }
       }
       else {
-        controller_main_print_debug_directory_path_empty(&main->program.warning, f_console_symbol_long_normal_s, controller_long_cgroup_s);
+        controller_print_debug_directory_path_empty(&main->program.warning, f_console_symbol_long_normal_s, controller_long_cgroup_s);
       }
     }
     else {
@@ -251,7 +251,7 @@ extern "C" {
       }
 
       if (F_status_is_error(main->setting.state.status)) {
-        controller_main_print_error(&main->program.error, macro_controller_f(f_string_dynamic_append_nulless));
+        controller_print_error(&main->program.error, macro_controller_f(f_string_dynamic_append_nulless));
 
         return;
       }
@@ -259,7 +259,7 @@ extern "C" {
       main->setting.state.status = f_string_dynamic_append_assure(f_path_separator_s, &program->path_cgroup);
 
       if (F_status_is_error(main->setting.state.status)) {
-        controller_main_print_error(&main->program.error, macro_controller_f(f_string_dynamic_append_assure));
+        controller_print_error(&main->program.error, macro_controller_f(f_string_dynamic_append_assure));
 
         return;
       }
@@ -290,7 +290,7 @@ extern "C" {
       main->setting.flag |= controller_main_flag_validate_e;
     }
   }
-#endif // _di_controller_main_setting_load_
+#endif // _di_controller_setting_load_
 
 #ifdef __cplusplus
 } // extern "C"

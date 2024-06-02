@@ -24,9 +24,9 @@ extern "C" {
  * @param alias
  *   The rule alias of the rule that is missing the pid file designation.
  */
-#ifndef _di_controller_main_print_rule_action_error_missing_pid_
-  extern void controller_main_print_rule_action_error_missing_pid(fl_print_t * const print, const f_string_static_t alias);
-#endif // _di_controller_main_print_rule_action_error_missing_pid_
+#ifndef _di_controller_print_rule_action_error_missing_pid_
+  extern void controller_print_rule_action_error_missing_pid(fl_print_t * const print, const f_string_static_t alias);
+#endif // _di_controller_print_rule_action_error_missing_pid_
 
 #ifdef __cplusplus
 } // extern "C"

@@ -4,23 +4,23 @@
 extern "C" {
 #endif
 
-#ifndef _di_controller_main_rule_validate_
-  void controller_main_rule_validate(controller_global_t * const global, const controller_rule_t rule, const uint8_t action, const uint8_t options, controller_cache_t * const cache) {
+#ifndef _di_controller_rule_validate_
+  void controller_rule_validate(controller_global_t * const global, const controller_rule_t rule, const uint8_t action, const uint8_t options, controller_cache_t * const cache) {
 
     if (!global || !cache) return F_status_set_error(F_parameter);
 
-    controller_main_t * const main = global->main;
+    controller_t * const main = global->main;
 
     switch (action) {
-      case controller_main_rule_action_type_freeze_e:
-      case controller_main_rule_action_type_kill_e:
-      case controller_main_rule_action_type_pause_e:
-      case controller_main_rule_action_type_reload_e:
-      case controller_main_rule_action_type_restart_e:
-      case controller_main_rule_action_type_resume_e:
-      case controller_main_rule_action_type_start_e:
-      case controller_main_rule_action_type_stop_e:
-      case controller_main_rule_action_type_thaw_e:
+      case controller_rule_action_type_freeze_e:
+      case controller_rule_action_type_kill_e:
+      case controller_rule_action_type_pause_e:
+      case controller_rule_action_type_reload_e:
+      case controller_rule_action_type_restart_e:
+      case controller_rule_action_type_resume_e:
+      case controller_rule_action_type_start_e:
+      case controller_rule_action_type_stop_e:
+      case controller_rule_action_type_thaw_e:
         break;
 
       default:
@@ -28,10 +28,10 @@ extern "C" {
           controller_lock_print(main->program.error.to, global->thread);
 
           fl_print_format("%r%[%QUnsupported action type '%]", main->program.error.to, f_string_eol_s, main->program.error.context, main->program.error.prefix, main->program.error.context);
-          fl_print_format(f_string_format_r_single_s.string, main->program.error.to, main->program.error.notable, controller_main_rule_action_type_name(action), main->program.error.notable);
+          fl_print_format(f_string_format_r_single_s.string, main->program.error.to, main->program.error.notable, controller_convert_rule_action_type_string(action), main->program.error.notable);
           fl_print_format("%[' while attempting to validate rule execution.%]%r", main->program.error.to, main->program.error.context, main->program.error.context, f_string_eol_s);
 
-          controller_main_print_rule_error_cache(&global->error, &cache->action, F_true);
+          controller_print_rule_error_cache(global->error, cache->action, F_true);
 
           controller_unlock_print_flush(main->program.error.to, global->thread);
         }
@@ -64,7 +64,7 @@ extern "C" {
         if (rule.items.used) {
           fl_print_format("%rRule '", main->program.output.to, f_string_eol_s);
           fl_print_format("%[%Q%]' has no '", main->program.output.to, main->program.context.set.title, rule.name, main->program.context.set.title);
-          fl_print_format("%[%r%]' action to execute and would '", main->program.output.to, main->program.context.set.title, controller_main_rule_action_type_name(action), main->program.context.set.title);
+          fl_print_format("%[%r%]' action to execute and would '", main->program.output.to, main->program.context.set.title, controller_convert_rule_action_type_string(action), main->program.context.set.title);
           fl_print_format("%[%r%]' because it is '", main->program.output.to, main->program.context.set.important, options & controller_instance_option_require_e ? controller_fail_s : controller_succeed_s, main->program.context.set.important);
           fl_print_format("%[%r%]'.%r", main->program.output.to, main->program.context.set.important, options & controller_instance_option_require_e ? controller_required_s : controller_optional_s, main->program.context.set.important, f_string_eol_s);
         }
@@ -261,31 +261,31 @@ extern "C" {
       {
         f_string_static_t action = f_string_static_t_initialize;
 
-        if (rule.ons.array[i].action == controller_main_rule_action_type_freeze_e) {
+        if (rule.ons.array[i].action == controller_rule_action_type_freeze_e) {
           action = controller_freeze_s;
         }
-        else if (rule.ons.array[i].action == controller_main_rule_action_type_kill_e) {
+        else if (rule.ons.array[i].action == controller_rule_action_type_kill_e) {
           action = controller_kill_s;
         }
-        else if (rule.ons.array[i].action == controller_main_rule_action_type_pause_e) {
+        else if (rule.ons.array[i].action == controller_rule_action_type_pause_e) {
           action = controller_pause_s;
         }
-        else if (rule.ons.array[i].action == controller_main_rule_action_type_reload_e) {
+        else if (rule.ons.array[i].action == controller_rule_action_type_reload_e) {
           action = controller_reload_s;
         }
-        else if (rule.ons.array[i].action == controller_main_rule_action_type_restart_e) {
+        else if (rule.ons.array[i].action == controller_rule_action_type_restart_e) {
           action = controller_restart_s;
         }
-        else if (rule.ons.array[i].action == controller_main_rule_action_type_resume_e) {
+        else if (rule.ons.array[i].action == controller_rule_action_type_resume_e) {
           action = controller_resume_s;
         }
-        else if (rule.ons.array[i].action == controller_main_rule_action_type_start_e) {
+        else if (rule.ons.array[i].action == controller_rule_action_type_start_e) {
           action = controller_start_s;
         }
-        else if (rule.ons.array[i].action == controller_main_rule_action_type_stop_e) {
+        else if (rule.ons.array[i].action == controller_rule_action_type_stop_e) {
           action = controller_stop_s;
         }
-        else if (rule.ons.array[i].action == controller_main_rule_action_type_thaw_e) {
+        else if (rule.ons.array[i].action == controller_rule_action_type_thaw_e) {
           action = controller_thaw_s;
         }
 
@@ -326,7 +326,7 @@ extern "C" {
 
     // Items.
     if (rule.items.used) {
-      controller_main_rule_action_t *action = 0;
+      controller_rule_action_t *action = 0;
       controller_rule_item_t *item = 0;
       controller_rule_rerun_item_t *rerun_item = 0;
 
@@ -369,7 +369,7 @@ extern "C" {
           action = &item->actions.array[j];
 
           fl_print_format("    %[%r%] {%r", main->program.output.to, main->program.context.set.important, controller_action_s, main->program.context.set.important, f_string_eol_s);
-          fl_print_format("      %[%r%] %r%r", main->program.output.to, main->program.context.set.important, controller_type_s, main->program.context.set.important, controller_main_rule_action_type_name(action->type), f_string_eol_s);
+          fl_print_format("      %[%r%] %r%r", main->program.output.to, main->program.context.set.important, controller_type_s, main->program.context.set.important, controller_convert_rule_action_type_string(action->type), f_string_eol_s);
 
           if (item->type == controller_rule_item_type_script_e || item->type == controller_rule_item_type_utility_e) {
             fl_print_format("      %[%r%] {%r", main->program.output.to, main->program.context.set.important, controller_parameter_s, main->program.context.set.important, f_string_eol_s);
@@ -422,7 +422,7 @@ extern "C" {
 
         // Rerun.
         fl_print_format("    %[%r%] {%r", main->program.output.to, main->program.context.set.important, controller_rerun_s, main->program.context.set.important, f_string_eol_s);
-        for (j = 0; j < controller_main_rule_action_execute_type__enum_size_e; ++j) {
+        for (j = 0; j < controller_rule_action_execute_type__enum_size_e; ++j) {
 
           for (k = 0; k < 2; ++k) {
             if (!k && (item->reruns[j].is & controller_rule_rerun_is_failure_d)) {
@@ -438,39 +438,39 @@ extern "C" {
 
             fl_print_format("      %[", main->program.output.to, main->program.context.set.important);
             switch (j) {
-              case controller_main_rule_action_execute_type_freeze_e:
+              case controller_rule_action_execute_type_freeze_e:
                 f_print_dynamic_raw(controller_freeze_s, main->program.output.to);
                 break;
 
-              case controller_main_rule_action_execute_type_kill_e:
+              case controller_rule_action_execute_type_kill_e:
                 f_print_dynamic_raw(controller_kill_s, main->program.output.to);
                 break;
 
-              case controller_main_rule_action_execute_type_pause_e:
+              case controller_rule_action_execute_type_pause_e:
                 f_print_dynamic_raw(controller_pause_s, main->program.output.to);
                 break;
 
-              case controller_main_rule_action_execute_type_reload_e:
+              case controller_rule_action_execute_type_reload_e:
                 f_print_dynamic_raw(controller_reload_s, main->program.output.to);
                 break;
 
-              case controller_main_rule_action_execute_type_restart_e:
+              case controller_rule_action_execute_type_restart_e:
                 f_print_dynamic_raw(controller_restart_s, main->program.output.to);
                 break;
 
-              case controller_main_rule_action_execute_type_resume_e:
+              case controller_rule_action_execute_type_resume_e:
                 f_print_dynamic_raw(controller_resume_s, main->program.output.to);
                 break;
 
-              case controller_main_rule_action_execute_type_start_e:
+              case controller_rule_action_execute_type_start_e:
                 f_print_dynamic_raw(controller_start_s, main->program.output.to);
                 break;
 
-              case controller_main_rule_action_execute_type_stop_e:
+              case controller_rule_action_execute_type_stop_e:
                 f_print_dynamic_raw(controller_stop_s, main->program.output.to);
                 break;
 
-              case controller_main_rule_action_execute_type_thaw_e:
+              case controller_rule_action_execute_type_thaw_e:
                 f_print_dynamic_raw(controller_thaw_s, main->program.output.to);
                 break;
 
@@ -498,7 +498,7 @@ extern "C" {
 
     controller_unlock_print_flush(main->program.output.to, global->thread);
   }
-#endif // _di_controller_main_rule_validate_
+#endif // _di_controller_rule_validate_
 
 #ifdef __cplusplus
 } // extern "C"

@@ -4,13 +4,13 @@
 extern "C" {
 #endif
 
-#ifndef _di_controller_main_print_rule_setting_read_error_
-  void controller_main_print_rule_setting_read_error(fl_print_t * const print, const f_string_t message, const f_number_unsigned_t index, const f_number_unsigned_t line_item, controller_thread_t * const thread, controller_cache_t * const cache) {
+#ifndef _di_controller_print_rule_setting_read_error_
+  void controller_print_rule_setting_read_error(fl_print_t * const print, const f_string_t message, const f_number_unsigned_t index, const f_number_unsigned_t line_item, controller_thread_t * const thread, controller_cache_t * const cache) {
 
     if (!print->custom) return;
     if (print->verbosity == f_console_verbosity_quiet_e) return;
 
-    controller_main_t * const main = (controller_main_t *) print->custom;
+    controller_t * const main = (controller_t *) print->custom;
 
     f_state_t state = f_state_t_initialize;
 
@@ -24,19 +24,19 @@ extern "C" {
 
     fl_print_format("%r%[%QRule setting %S.%]%r", print->to, f_string_eol_s, print->context, print->prefix, message, print->context, f_string_eol_s);
 
-    controller_main_print_rule_error_cache(print, cache->action, F_false);
+    controller_print_rule_error_cache(print, cache->action, F_false);
 
     controller_unlock_print_flush(print->to, thread);
   }
-#endif // _di_controller_main_print_rule_setting_read_error_
+#endif // _di_controller_print_rule_setting_read_error_
 
-#ifndef _di_controller_main_print_rule_setting_read_error_with_range_
-  void controller_main_print_rule_setting_read_error_with_range(fl_print_t * const print, const f_string_t before, const f_range_t range, const f_string_t after, const f_number_unsigned_t index, const f_number_unsigned_t line_item, controller_thread_t * const thread, controller_cache_t * const cache) {
+#ifndef _di_controller_print_rule_setting_read_error_with_range_
+  void controller_print_rule_setting_read_error_with_range(fl_print_t * const print, const f_string_t before, const f_range_t range, const f_string_t after, const f_number_unsigned_t index, const f_number_unsigned_t line_item, controller_thread_t * const thread, controller_cache_t * const cache) {
 
     if (!print->custom) return;
     if (print->verbosity == f_console_verbosity_quiet_e) return;
 
-    controller_main_t * const main = (controller_main_t *) print->custom;
+    controller_t * const main = (controller_t *) print->custom;
 
     f_state_t state = f_state_t_initialize;
 
@@ -52,14 +52,14 @@ extern "C" {
     fl_print_format(f_string_format_Q_range_single_s.string, print->to, print->notable, cache->buffer_item, range, print->notable);
     fl_print_format("%['%S.%]%r", print->to, print->context, after, print->context, f_string_eol_s);
 
-    controller_main_print_rule_error_cache(print, cache->action, F_false);
+    controller_print_rule_error_cache(print, cache->action, F_false);
 
     controller_unlock_print_flush(print->to, thread);
   }
-#endif // _di_controller_main_print_rule_setting_read_error_with_range_
+#endif // _di_controller_print_rule_setting_read_error_with_range_
 
-#ifndef _di_controller_main_print_rule_setting_read_mapping_
-  void controller_main_print_rule_setting_read_mapping(const controller_global_t global, const f_string_static_t name, const f_string_map_t map) {
+#ifndef _di_controller_print_rule_setting_read_mapping_
+  void controller_print_rule_setting_read_mapping(const controller_global_t global, const f_string_static_t name, const f_string_map_t map) {
 
     if (global.main->program.error.verbosity != f_console_verbosity_debug_e) {
       if (!(global.main->program.error.verbosity == f_console_verbosity_verbose_e && (global.main->program.parameters.array[controller_parameter_simulate_e].result & f_console_result_found_e))) {
@@ -75,10 +75,10 @@ extern "C" {
 
     controller_unlock_print_flush(global.main->program.output.to, global.thread);
   }
-#endif // _di_controller_main_print_rule_setting_read_mapping_
+#endif // _di_controller_print_rule_setting_read_mapping_
 
-#ifndef _di_controller_main_print_rule_setting_read_value_
-  void controller_main_print_rule_setting_read_value(const controller_global_t global, const f_string_static_t name, const f_string_static_t name_sub, const f_string_static_t value, const f_string_t suffix) {
+#ifndef _di_controller_print_rule_setting_read_value_
+  void controller_print_rule_setting_read_value(const controller_global_t global, const f_string_static_t name, const f_string_static_t name_sub, const f_string_static_t value, const f_string_t suffix) {
 
     if (global.main->program.error.verbosity != f_console_verbosity_debug_e) {
       if (!(global.main->program.error.verbosity == f_console_verbosity_verbose_e && (global.main->program.parameters.array[controller_parameter_simulate_e].result & f_console_result_found_e))) {
@@ -102,10 +102,10 @@ extern "C" {
 
     controller_unlock_print_flush(global.main->program.output.to, global.thread);
   }
-#endif // _di_controller_main_print_rule_setting_read_value_
+#endif // _di_controller_print_rule_setting_read_value_
 
-#ifndef _di_controller_main_print_rule_setting_read_values_
-  void controller_main_print_rule_setting_read_values(const controller_global_t global, const f_string_static_t name, const f_number_unsigned_t index, controller_cache_t * const cache) {
+#ifndef _di_controller_print_rule_setting_read_values_
+  void controller_print_rule_setting_read_values(const controller_global_t global, const f_string_static_t name, const f_number_unsigned_t index, controller_cache_t * const cache) {
 
     if (global.main->program.error.verbosity != f_console_verbosity_debug_e) {
       if (!(global.main->program.error.verbosity == f_console_verbosity_verbose_e && (global.main->program.parameters.array[controller_parameter_simulate_e].result & f_console_result_found_e))) {
@@ -137,7 +137,7 @@ extern "C" {
 
     controller_unlock_print_flush(global.main->program.output.to, global.thread);
   }
-#endif // _di_controller_main_print_rule_setting_read_value_
+#endif // _di_controller_print_rule_setting_read_value_
 
 #ifdef __cplusplus
 } // extern "C"

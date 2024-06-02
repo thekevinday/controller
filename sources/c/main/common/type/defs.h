@@ -40,9 +40,9 @@ extern "C" {
 /**
  * The controller main typedef.
  */
-#ifndef _di_controller_main_t_
-  typedef struct controller_main_t_ controller_main_t;
-#endif // _di_controller_main_t_
+#ifndef _di_controller_t_
+  typedef struct controller_t_ controller_t;
+#endif // _di_controller_t_
 
 /**
  * The controller program typedef.

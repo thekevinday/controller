@@ -28,9 +28,9 @@ extern "C" {
  * @return
  *   0, always.
  */
-#ifndef _di_controller_main_thread_control_
-  extern void * controller_main_thread_control(void * const arguments);
-#endif // _di_controller_main_thread_control_
+#ifndef _di_controller_thread_control_
+  extern void * controller_thread_control(void * const arguments);
+#endif // _di_controller_thread_control_
 
 #ifdef __cplusplus
 } // extern "C"

@@ -4,12 +4,12 @@
 extern "C" {
 #endif
 
-#ifndef _di_controller_main_print_message_help_
-  f_status_t controller_main_print_message_help(fl_print_t * const print, const uint8_t uninterrupt) {
+#ifndef _di_controller_print_message_help_
+  f_status_t controller_print_message_help(fl_print_t * const print, const uint8_t uninterrupt) {
 
     if (!print || !print->custom) return F_status_set_error(F_output_not);
 
-    controller_main_t * const main = (controller_main_t *) print->custom;
+    controller_t * const main = (controller_t *) print->custom;
 
     f_file_stream_lock(print->to);
 
@@ -45,7 +45,7 @@ extern "C" {
 
     return F_okay;
   }
-#endif // _di_controller_main_print_message_help_
+#endif // _di_controller_print_message_help_
 
 #ifdef __cplusplus
 } // extern "C"

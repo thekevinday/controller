@@ -9,8 +9,8 @@
  *
  * This is auto-included and should not need to be explicitly included.
  */
-#ifndef _controller_main_lock_h
-#define _controller_main_lock_h
+#ifndef _controller_lock_h
+#define _controller_lock_h
 
 #ifdef __cplusplus
 extern "C" {
@@ -35,9 +35,9 @@ extern "C" {
  * @see f_thread_lock_delete()
  * @see f_thread_mutex_delete()
  */
-#ifndef _di_controller_main_lock_create_
-  extern f_status_t controller_main_lock_create(controller_lock_t * const lock);
-#endif // _di_controller_main_lock_create_
+#ifndef _di_controller_lock_create_
+  extern f_status_t controller_lock_create(controller_lock_t * const lock);
+#endif // _di_controller_lock_create_
 
 /**
  * Wait to get a read lock.
@@ -68,9 +68,9 @@ extern "C" {
  *
  * @see f_thread_lock_read_timed()
  */
-#ifndef _di_controller_main_lock_read_
-  extern f_status_t controller_main_lock_read(const bool is_normal, controller_thread_t * const thread, f_thread_lock_t * const lock);
-#endif // _di_controller_main_lock_read_
+#ifndef _di_controller_lock_read_
+  extern f_status_t controller_lock_read(const bool is_normal, controller_thread_t * const thread, f_thread_lock_t * const lock);
+#endif // _di_controller_lock_read_
 
 /**
  * Wait to get a read lock for some instance.
@@ -79,8 +79,6 @@ extern "C" {
  *
  * @param instance
  *   The instance to use when checking if thread is enabled.
- * @param thread
- *   The thread data used to determine if the main thread is disabled or not.
  *
  *   Must not be NULL.
  * @param lock
@@ -89,17 +87,17 @@ extern "C" {
  *   Must not be NULL.
  *
  * @return
- *   Status from: controller_main_lock_read().
+ *   Status from: controller_lock_read().
  *
  *   F_parameter (with error bit) if a parameter is invalid.
  *
- *   Errors (with error bit) from: controller_main_lock_read().
+ *   Errors (with error bit) from: controller_lock_read().
  *
- * @see controller_main_lock_read()
+ * @see controller_lock_read()
  */
-#ifndef _di_controller_main_lock_read_instance_
-  extern f_status_t controller_main_lock_read_instance(controller_instance_t * const instance, controller_thread_t * const thread, f_thread_lock_t * const lock);
-#endif // _di_controller_main_lock_read_instance_
+#ifndef _di_controller_lock_read_instance_
+  extern f_status_t controller_lock_read_instance(controller_instance_t * const instance, f_thread_lock_t * const lock);
+#endif // _di_controller_lock_read_instance_
 
 /**
  * Wait to get a read lock for some instance type.
@@ -118,17 +116,17 @@ extern "C" {
  *   Must not be NULL.
  *
  * @return
- *   Status from: controller_main_lock_read().
+ *   Status from: controller_lock_read().
  *
  *   F_parameter (with error bit) if a parameter is invalid.
  *
- *   Errors (with error bit) from: controller_main_lock_read().
+ *   Errors (with error bit) from: controller_lock_read().
  *
- * @see controller_main_lock_read()
+ * @see controller_lock_read()
  */
-#ifndef _di_controller_main_lock_read_instance_type_
-  extern f_status_t controller_main_lock_read_instance_type(const uint8_t type, controller_thread_t * const thread, f_thread_lock_t * const lock);
-#endif // _di_controller_main_lock_read_instance_type_
+#ifndef _di_controller_lock_read_instance_type_
+  extern f_status_t controller_lock_read_instance_type(const uint8_t type, controller_thread_t * const thread, f_thread_lock_t * const lock);
+#endif // _di_controller_lock_read_instance_type_
 
 /**
  * Wait to get a write lock.
@@ -159,9 +157,9 @@ extern "C" {
  *
  * @see f_thread_lock_write_timed()
  */
-#ifndef _di_controller_main_lock_write_
-  extern f_status_t controller_main_lock_write(const bool is_normal, controller_thread_t * const thread, f_thread_lock_t * const lock);
-#endif // _di_controller_main_lock_write_
+#ifndef _di_controller_lock_write_
+  extern f_status_t controller_lock_write(const bool is_normal, controller_thread_t * const thread, f_thread_lock_t * const lock);
+#endif // _di_controller_lock_write_
 
 /**
  * Wait to get a write lock for some instance.
@@ -170,8 +168,6 @@ extern "C" {
  *
  * @param instance
  *   The instance to use when checking if thread is enabled.
- * @param thread
- *   The thread data used to determine if the main thread is disabled or not.
  *
  *   Must not be NULL.
  * @param lock
@@ -180,17 +176,17 @@ extern "C" {
  *   Must not be NULL.
  *
  * @return
- *   Status from: controller_main_lock_write_instance_type().
+ *   Status from: controller_lock_write_instance_type().
  *
  *   F_parameter (with error bit) if a parameter is invalid.
  *
- *   Errors (with error bit) from: controller_main_lock_write_instance_type().
+ *   Errors (with error bit) from: controller_lock_write_instance_type().
  *
- * @see controller_main_lock_write_instance_type()
+ * @see controller_lock_write_instance_type()
  */
-#ifndef _di_controller_main_lock_write_instance_
-  extern f_status_t controller_main_lock_write_instance(controller_instance_t * const instance, controller_thread_t * const thread, f_thread_lock_t * const lock);
-#endif // _di_controller_main_lock_write_instance_
+#ifndef _di_controller_lock_write_instance_
+  extern f_status_t controller_lock_write_instance(controller_instance_t * const instance, f_thread_lock_t * const lock);
+#endif // _di_controller_lock_write_instance_
 
 /**
  * Wait to get a write lock for some instance type.
@@ -209,20 +205,20 @@ extern "C" {
  *   Must not be NULL.
  *
  * @return
- *   Status from: controller_main_lock_write().
+ *   Status from: controller_lock_write().
  *
  *   F_parameter (with error bit) if a parameter is invalid.
  *
- *   Errors (with error bit) from: controller_main_lock_write().
+ *   Errors (with error bit) from: controller_lock_write().
  *
- * @see controller_main_lock_write()
+ * @see controller_lock_write()
  */
-#ifndef _di_controller_main_lock_write_instance_type_
-  extern f_status_t controller_main_lock_write_instance_type(const uint8_t type, controller_thread_t * const thread, f_thread_lock_t * const lock);
-#endif // _di_controller_main_lock_write_instance_type_
+#ifndef _di_controller_lock_write_instance_type_
+  extern f_status_t controller_lock_write_instance_type(const uint8_t type, controller_thread_t * const thread, f_thread_lock_t * const lock);
+#endif // _di_controller_lock_write_instance_type_
 
 #ifdef __cplusplus
 } // extern "C"
 #endif
 
-#endif // _controller_main_lock_h
+#endif // _controller_lock_h

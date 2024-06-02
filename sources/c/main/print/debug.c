@@ -4,13 +4,13 @@
 extern "C" {
 #endif
 
-#ifndef _di_controller_main_print_debug_directory_path_empty_
-  f_status_t controller_main_print_debug_directory_path_empty(fl_print_t * const print, const f_string_static_t symbol, const f_string_static_t name) {
+#ifndef _di_controller_print_debug_directory_path_empty_
+  f_status_t controller_print_debug_directory_path_empty(fl_print_t * const print, const f_string_static_t symbol, const f_string_static_t name) {
 
     if (!print || !print->custom) return F_status_set_error(F_output_not);
     if (print->verbosity < f_console_verbosity_debug_e) return F_output_not;
 
-    controller_main_t * const main = (controller_main_t *) print->custom;
+    controller_t * const main = (controller_t *) print->custom;
 
     controller_lock_print(print->to, 0);
 
@@ -22,7 +22,7 @@ extern "C" {
 
     return F_okay;
   }
-#endif // _di_controller_main_print_debug_directory_path_empty_
+#endif // _di_controller_print_debug_directory_path_empty_
 
 #ifdef __cplusplus
 } // extern "C"

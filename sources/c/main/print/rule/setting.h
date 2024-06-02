@@ -19,7 +19,7 @@ extern "C" {
 /**
  * Print a message about a rule setting problem.
  *
- * This is intended to be explicitly called by controller_main_rule_setting_read().
+ * This is intended to be explicitly called by controller_rule_setting_read().
  * This is intended only to be used for simple messages.
  *
  * @param print
@@ -35,16 +35,16 @@ extern "C" {
  * @param cache
  *   A structure for containing and caching relevant data.
  *
- * @see controller_main_rule_setting_read()
+ * @see controller_rule_setting_read()
  */
-#ifndef _di_controller_main_print_rule_setting_read_error_
-  extern void controller_main_print_rule_setting_read_error(fl_print_t * const print, const f_string_t message, const f_number_unsigned_t index, const f_number_unsigned_t line_item, controller_thread_t * const thread, controller_cache_t * const cache);
-#endif // _di_controller_main_print_rule_setting_read_error_
+#ifndef _di_controller_print_rule_setting_read_error_
+  extern void controller_print_rule_setting_read_error(fl_print_t * const print, const f_string_t message, const f_number_unsigned_t index, const f_number_unsigned_t line_item, controller_thread_t * const thread, controller_cache_t * const cache);
+#endif // _di_controller_print_rule_setting_read_error_
 
 /**
  * Print a message about a rule setting problem, with additional messages about the value.
  *
- * This is intended to be explicitly called by controller_main_rule_setting_read().
+ * This is intended to be explicitly called by controller_rule_setting_read().
  * This is intended only to be used for simple messages.
  *
  * @param print
@@ -64,11 +64,11 @@ extern "C" {
  * @param cache
  *   A structure for containing and caching relevant data.
  *
- * @see controller_main_rule_setting_read()
+ * @see controller_rule_setting_read()
  */
-#ifndef _di_controller_main_print_rule_setting_read_error_with_range_
-  extern void controller_main_print_rule_setting_read_error_with_range(fl_print_t * const print, const f_string_t before, const f_range_t range, const f_string_t after, const f_number_unsigned_t index, const f_number_unsigned_t line_item, controller_thread_t * const thread, controller_cache_t * const cache);
-#endif // _di_controller_main_print_rule_setting_read_error_with_range_
+#ifndef _di_controller_print_rule_setting_read_error_with_range_
+  extern void controller_print_rule_setting_read_error_with_range(fl_print_t * const print, const f_string_t before, const f_range_t range, const f_string_t after, const f_number_unsigned_t index, const f_number_unsigned_t line_item, controller_thread_t * const thread, controller_cache_t * const cache);
+#endif // _di_controller_print_rule_setting_read_error_with_range_
 
 /**
  * Print message regarding the mapping of a setting when in simulation or verbose mode.
@@ -80,9 +80,9 @@ extern "C" {
  * @param map
  *   The map being applied.
  */
-#ifndef _di_controller_main_print_rule_setting_read_mapping_
-  extern void controller_main_print_rule_setting_read_mapping(const controller_global_t global, const f_string_static_t name, const f_string_map_t map);
-#endif // _di_controller_main_print_rule_setting_read_mapping_
+#ifndef _di_controller_print_rule_setting_read_mapping_
+  extern void controller_print_rule_setting_read_mapping(const controller_global_t global, const f_string_static_t name, const f_string_map_t map);
+#endif // _di_controller_print_rule_setting_read_mapping_
 
 /**
  * Print message regarding the population of a setting when in simulation or verbose mode.
@@ -99,9 +99,9 @@ extern "C" {
  * @param suffix
  *   An additional message to append at the end (before the final period).
  */
-#ifndef _di_controller_main_print_rule_setting_read_value_
-  extern void controller_main_print_rule_setting_read_value(const controller_global_t global, const f_string_static_t name, const f_string_static_t name_sub, const f_string_static_t value, const f_string_t suffix);
-#endif // _di_controller_main_print_rule_setting_read_value_
+#ifndef _di_controller_print_rule_setting_read_value_
+  extern void controller_print_rule_setting_read_value(const controller_global_t global, const f_string_static_t name, const f_string_static_t name_sub, const f_string_static_t value, const f_string_t suffix);
+#endif // _di_controller_print_rule_setting_read_value_
 
 /**
  * Print message regarding the population of a setting when in simulation or verbose mode.
@@ -117,9 +117,9 @@ extern "C" {
  * @param cache
  *   A structure for containing and caching relevant data.
  */
-#ifndef _di_controller_main_print_rule_setting_read_values_
-  extern void controller_main_print_rule_setting_read_values(const controller_global_t global, const f_string_static_t name, const f_number_unsigned_t index, controller_cache_t * const cache);
-#endif // _di_controller_main_print_rule_setting_read_values_
+#ifndef _di_controller_print_rule_setting_read_values_
+  extern void controller_print_rule_setting_read_values(const controller_global_t global, const f_string_static_t name, const f_number_unsigned_t index, controller_cache_t * const cache);
+#endif // _di_controller_print_rule_setting_read_values_
 
 #ifdef __cplusplus
 } // extern "C"

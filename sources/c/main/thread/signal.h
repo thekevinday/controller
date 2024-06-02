@@ -23,9 +23,9 @@
  *   If TRUE, then process as if this operates during a normal operation (entry and control).
  *   If FALSE, then process as if this operates during a an exit operation.
  */
-#ifndef _di_controller_main_thread_signal_
-  extern void controller_main_thread_signal(controller_global_t * const global, const bool is_normal);
-#endif // _di_controller_main_thread_signal_
+#ifndef _di_controller_thread_signal_
+  extern void controller_thread_signal(controller_global_t * const global, const bool is_normal);
+#endif // _di_controller_thread_signal_
 
 /**
  * Callback passed to FSS functions for checking for interrupts.
@@ -37,9 +37,9 @@
  * @param internal
  *   Not used.
  */
-#ifndef _di_controller_main_thread_signal_state_fss_
-  extern void controller_main_thread_signal_state_fss(f_state_t * const state, void * const internal);
-#endif // _di_controller_main_thread_signal_state_fss_
+#ifndef _di_controller_thread_signal_state_fss_
+  extern void controller_thread_signal_state_fss(f_state_t * const state, void * const internal);
+#endif // _di_controller_thread_signal_state_fss_
 
 /**
  * Callback passed to IKI functions for checking for interrupts.
@@ -51,9 +51,9 @@
  * @param internal
  *   Not used.
  */
-#ifndef _di_controller_main_thread_signal_state_iki_
-  extern void controller_main_thread_signal_state_iki(f_state_t * const state, void * const internal);
-#endif // _di_controller_main_thread_signal_state_iki_
+#ifndef _di_controller_thread_signal_state_iki_
+  extern void controller_thread_signal_state_iki(f_state_t * const state, void * const internal);
+#endif // _di_controller_thread_signal_state_iki_
 
 /**
  * Thread for handling signals/interrupts during normal operations.
@@ -67,11 +67,11 @@
  * @return
  *   0, always.
  *
- * @see controller_main_thread_signal()
+ * @see controller_thread_signal()
  */
-#ifndef _di_controller_main_thread_signal_normal_
-  extern void * controller_main_thread_signal_normal(void * const global);
-#endif // _di_controller_main_thread_signal_normal_
+#ifndef _di_controller_thread_signal_normal_
+  extern void * controller_thread_signal_normal(void * const global);
+#endif // _di_controller_thread_signal_normal_
 
 /**
  * Thread for handling signals/interrupts during other operations.
@@ -85,11 +85,11 @@
  * @return
  *   0, always.
  *
- * @see controller_main_thread_signal()
+ * @see controller_thread_signal()
  */
-#ifndef _di_controller_main_thread_signal_other_
-  extern void * controller_main_thread_signal_other(void * const global);
-#endif // _di_controller_main_thread_signal_other_
+#ifndef _di_controller_thread_signal_other_
+  extern void * controller_thread_signal_other(void * const global);
+#endif // _di_controller_thread_signal_other_
 
 #ifdef __cplusplus
 } // extern "C"

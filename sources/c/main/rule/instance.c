@@ -4,21 +4,23 @@
 extern "C" {
 #endif
 
-#ifndef _di_controller_main_rule_instance_
-  f_status_t controller_main_rule_instance(controller_global_t * const global, controller_instance_t * const instance) {
+#ifndef _di_controller_rule_instance_
+  f_status_t controller_rule_instance(controller_instance_t * const instance) {
 
-    if (!global || !instance) return F_status_set_error(F_parameter);
+    if (!instance || !instance->global) return F_status_set_error(F_parameter);
+
+    controller_global_t * const global = instance->global;
 
     switch (instance->action) {
-      case controller_main_rule_action_type_freeze_e:
-      case controller_main_rule_action_type_kill_e:
-      case controller_main_rule_action_type_pause_e:
-      case controller_main_rule_action_type_reload_e:
-      case controller_main_rule_action_type_restart_e:
-      case controller_main_rule_action_type_resume_e:
-      case controller_main_rule_action_type_start_e:
-      case controller_main_rule_action_type_stop_e:
-      case controller_main_rule_action_type_thaw_e:
+      case controller_rule_action_type_freeze_e:
+      case controller_rule_action_type_kill_e:
+      case controller_rule_action_type_pause_e:
+      case controller_rule_action_type_reload_e:
+      case controller_rule_action_type_restart_e:
+      case controller_rule_action_type_resume_e:
+      case controller_rule_action_type_start_e:
+      case controller_rule_action_type_stop_e:
+      case controller_rule_action_type_thaw_e:
         break;
 
       default:
@@ -26,10 +28,10 @@ extern "C" {
           controller_lock_print(global->main->program.error.to, global->thread);
 
           fl_print_format("%r%[%QUnsupported action type '%]", global->main->program.error.to, f_string_eol_s, global->main->program.error.context, global->main->program.error.prefix, global->main->program.error.context);
-          fl_print_format(f_string_format_r_single_s.string, global->main->program.error.to, global->main->program.error.notable, controller_main_rule_action_type_name(instance->action), global->main->program.error.notable);
+          fl_print_format(f_string_format_r_single_s.string, global->main->program.error.to, global->main->program.error.notable, controller_convert_rule_action_type_string(instance->action), global->main->program.error.notable);
           fl_print_format("%[' while attempting to execute rule.%]%r", global->main->program.error.to, global->main->program.error.context, global->main->program.error.context, f_string_eol_s);
 
-          controller_main_print_rule_error_cache(&global->error, instance->cache.action, F_true);
+          controller_print_rule_error_cache(global->error, instance->cache.action, F_true);
 
           controller_unlock_print_flush(global->main->program.error.to, global->thread);
         }
@@ -51,7 +53,7 @@ extern "C" {
     }
 
     if (F_status_is_error(status)) {
-      controller_main_print_rule_error(&global->error, instance->cache.action, F_status_set_fine(status), "f_string_dynamic_append", F_true, F_true);
+      controller_print_rule_error(global->error, instance->cache.action, F_status_set_fine(status), "f_string_dynamic_append", F_true, F_true);
 
       return status;
     }
@@ -59,7 +61,7 @@ extern "C" {
     status = f_string_dynamic_append(instance->rule.alias, &instance->cache.action.name_file);
 
     if (F_status_is_error(status)) {
-      controller_main_print_rule_error(&global->error, instance->cache.action, F_status_set_fine(status), "f_string_dynamic_append", F_true, F_true);
+      controller_print_rule_error(global->error, instance->cache.action, F_status_set_fine(status), "f_string_dynamic_append", F_true, F_true);
 
       return status;
     }
@@ -71,13 +73,13 @@ extern "C" {
     }
 
     if (F_status_is_error(status)) {
-      controller_main_print_rule_error(&global->error, instance->cache.action, F_status_set_fine(status), "f_string_dynamic_append", F_true, F_true);
+      controller_print_rule_error(global->error, instance->cache.action, F_status_set_fine(status), "f_string_dynamic_append", F_true, F_true);
 
       return status;
     }
 
     if ((instance->options & controller_instance_option_simulate_e) && (instance->options & controller_instance_option_validate_e)) {
-      controller_main_rule_validate(global, instance->rule, instance->action, instance->options, &instance->cache);
+      controller_rule_validate(global, instance->rule, instance->action, instance->options, &instance->cache);
     }
 
     f_number_unsigned_t i = 0;
@@ -118,15 +120,15 @@ extern "C" {
 
       // i==0 is need, i==1 is want, i==2 is wish.
       // Loop through all dependencies: wait for depedency, execute dependency, fail due to missing required dependency, or skip unrequired missing dependencies.
-      for (i = 0; i < 3 && controller_main_thread_is_enabled_instance(instance, global->thread); ++i) {
+      for (i = 0; i < 3 && controller_thread_is_enabled_instance(instance); ++i) {
 
-        for (j = 0; j < dynamics[i]->used && controller_main_thread_is_enabled_instance(instance, global->thread); ++j) {
+        for (j = 0; j < dynamics[i]->used && controller_thread_is_enabled_instance(instance); ++j) {
 
           id_dependency = 0;
           dependency = 0;
           found = F_false;
 
-          status_lock = controller_main_lock_read_instance(instance, global->thread, &global->thread->lock.instance);
+          status_lock = controller_lock_read_instance(instance, &global->thread->lock.instance);
 
           if (F_status_is_error(status_lock)) {
             controller_lock_print_error_critical(&global->main->program.error, F_status_set_fine(status_lock), F_true, global->thread);
@@ -136,7 +138,7 @@ extern "C" {
 
             if (F_status_is_error(status)) {
               if (F_status_set_fine(status) == F_lock) {
-                if (!controller_main_thread_is_enabled_instance_type(instance->type, global->thread)) {
+                if (!controller_thread_is_enabled_instance_type(instance->type, global->thread)) {
                   return F_status_set_error(F_interrupt);
                 }
               }
@@ -144,8 +146,8 @@ extern "C" {
               if (global->main->program.error.verbosity > f_console_verbosity_quiet_e) {
                 controller_lock_print(global->main->program.error.to, global->thread);
 
-                controller_main_print_rule_item_error_rule_not_loaded(&global->main->program.error, dynamics[i]->array[j]);
-                controller_main_print_rule_error_cache(&global->error, instance->cache.action, F_false);
+                controller_print_rule_item_error_rule_not_loaded(&global->main->program.error, dynamics[i]->array[j]);
+                controller_print_rule_error_cache(global->error, instance->cache.action, F_false);
 
                 controller_unlock_print_flush(global->main->program.error.to, global->thread);
               }
@@ -161,7 +163,7 @@ extern "C" {
 
             dependency = global->thread->instances.array[id_dependency];
 
-            status_lock = controller_main_lock_read_instance(instance, global->thread, &dependency->active);
+            status_lock = controller_lock_read_instance(instance, &dependency->active);
 
             if (F_status_is_error(status_lock)) {
               controller_lock_print_error_critical(&global->main->program.error, F_status_set_fine(status_lock), F_true, global->thread);
@@ -174,7 +176,7 @@ extern "C" {
             else {
               f_thread_unlock(&global->thread->lock.instance);
 
-              status_lock = controller_main_lock_read_instance(instance, global->thread, &global->thread->lock.rule);
+              status_lock = controller_lock_read_instance(instance, &global->thread->lock.rule);
 
               if (F_status_is_error(status_lock)) {
                 controller_lock_print_error_critical(&global->main->program.error, F_status_set_fine(status_lock), F_true, global->thread);
@@ -199,8 +201,8 @@ extern "C" {
             if (i == 0) {
               controller_lock_print(global->main->program.error.to, global->thread);
 
-              controller_main_print_rule_item_error_need_want_wish(&global->main->program.error, strings[i], dynamics[i]->array[j], "is not found");
-              controller_main_print_rule_error_cache(&global->error, instance->cache.action, F_true);
+              controller_print_rule_item_error_need_want_wish(&global->main->program.error, strings[i], dynamics[i]->array[j], "is not found");
+              controller_print_rule_error_cache(global->error, instance->cache.action, F_true);
 
               controller_unlock_print_flush(global->main->program.error.to, global->thread);
 
@@ -218,16 +220,16 @@ extern "C" {
               if (global->main->program.warning.verbosity == f_console_verbosity_debug_e) {
                 controller_lock_print(global->main->program.warning.to, global->thread);
 
-                controller_main_print_rule_item_error_need_want_wish(&global->main->program.warning, strings[i], dynamics[i]->array[j], "is not found");
+                controller_print_rule_item_error_need_want_wish(&global->main->program.warning, strings[i], dynamics[i]->array[j], "is not found");
 
-                controller_main_print_rule_error_cache(&global->main->program.warning, instance->cache.action, F_true);
+                controller_print_rule_error_cache(&global->main->program.warning, instance->cache.action, F_true);
 
                 controller_unlock_print_flush(global->main->program.warning.to, global->thread);
               }
             }
           }
           else if (found) {
-            status_lock = controller_main_lock_read_instance(instance, global->thread, &global->thread->lock.rule);
+            status_lock = controller_lock_read_instance(instance, &global->thread->lock.rule);
 
             if (F_status_is_error(status_lock)) {
               controller_lock_print_error_critical(&global->main->program.error, F_status_set_fine(status_lock), F_true, global->thread);
@@ -251,7 +253,7 @@ extern "C" {
 
             f_thread_unlock(&global->thread->lock.rule);
 
-            status_lock = controller_main_lock_read_instance(instance, global->thread, &dependency->lock);
+            status_lock = controller_lock_read_instance(instance, &dependency->lock);
 
             if (F_status_is_error(status_lock)) {
               controller_lock_print_error_critical(&global->main->program.error, F_status_set_fine(status_lock), F_true, global->thread);
@@ -261,14 +263,14 @@ extern "C" {
             else if (dependency->state == controller_instance_state_active_e || dependency->state == controller_instance_state_busy_e) {
               f_thread_unlock(&dependency->lock);
 
-              status = controller_instance_wait(global, dependency);
+              status = controller_instance_wait(dependency);
 
               if (F_status_is_error(status) && !(instance->options & controller_instance_option_simulate_e)) break;
 
               status = dependency->rule.status[instance->action];
             }
             else {
-              status_lock = controller_main_lock_read_instance(instance, global->thread, &global->thread->lock.rule);
+              status_lock = controller_lock_read_instance(instance, &global->thread->lock.rule);
 
               if (F_status_is_error(status_lock)) {
                 controller_lock_print_error_critical(&global->main->program.error, F_status_set_fine(status_lock), F_true, global->thread);
@@ -277,7 +279,7 @@ extern "C" {
 
                 status = status_lock;
               }
-              else if (controller_main_rule_status_is_available(instance->action, global->program->rules.array[id_rule])) {
+              else if (controller_rule_status_is_available(instance->action, global->program->rules.array[id_rule])) {
                 f_thread_unlock(&global->thread->lock.rule);
                 f_thread_unlock(&dependency->lock);
 
@@ -292,7 +294,7 @@ extern "C" {
                 }
 
                 // Synchronously execute dependency.
-                status = controller_main_rule_instance_begin(global, 0, alias_other_buffer, instance->action, options_instance, instance->type, instance->stack, dependency->cache);
+                status = controller_rule_instance_begin(global, 0, alias_other_buffer, instance->action, options_instance, instance->type, instance->stack, dependency->cache);
 
                 if (status == F_child || F_status_set_fine(status) == F_interrupt) {
                   f_thread_unlock(&dependency->active);
@@ -304,8 +306,8 @@ extern "C" {
                   if (i == 0 || i == 1 || F_status_set_fine(status) == F_memory_not) {
                     controller_lock_print(global->main->program.error.to, global->thread);
 
-                    controller_main_print_rule_item_error_need_want_wish(&global->main->program.error, strings[i], alias_other_buffer, "failed during execution");
-                    controller_main_print_rule_error_cache(&global->error, instance->cache.action, F_true);
+                    controller_print_rule_item_error_need_want_wish(&global->main->program.error, strings[i], alias_other_buffer, "failed during execution");
+                    controller_print_rule_error_cache(global->error, instance->cache.action, F_true);
 
                     controller_unlock_print_flush(global->main->program.error.to, global->thread);
 
@@ -319,9 +321,9 @@ extern "C" {
                     if (global->main->program.warning.verbosity == f_console_verbosity_debug_e) {
                       controller_lock_print(global->main->program.warning.to, global->thread);
 
-                      controller_main_print_rule_item_error_need_want_wish(&global->main->program.warning, strings[i], alias_other_buffer, "failed during execution");
+                      controller_print_rule_item_error_need_want_wish(&global->main->program.warning, strings[i], alias_other_buffer, "failed during execution");
 
-                      controller_main_print_rule_error_cache(&global->main->program.warning, instance->cache.action, F_true);
+                      controller_print_rule_error_cache(&global->main->program.warning, instance->cache.action, F_true);
 
                       controller_unlock_print_flush(global->main->program.warning.to, global->thread);
                     }
@@ -336,14 +338,14 @@ extern "C" {
               }
             }
 
-            if (!controller_main_thread_is_enabled_instance(instance, global->thread)) {
+            if (!controller_thread_is_enabled_instance(instance)) {
               f_thread_unlock(&dependency->active);
 
               break;
             }
 
             if (F_status_is_error_not(status_lock)) {
-              status_lock = controller_main_lock_read_instance(instance, global->thread, &global->thread->lock.rule);
+              status_lock = controller_lock_read_instance(instance, &global->thread->lock.rule);
 
               if (F_status_is_error(status_lock)) {
                 controller_lock_print_error_critical(&global->main->program.error, F_status_set_fine(status_lock), F_false, global->thread);
@@ -352,20 +354,20 @@ extern "C" {
 
             if (F_status_is_error(status_lock)) {
               if (F_status_is_error(status_lock)) {
-                controller_main_print_rule_item_error_need_want_wish(&global->main->program.error, strings[i], alias_other_buffer, "due to lock failure");
+                controller_print_rule_item_error_need_want_wish(&global->main->program.error, strings[i], alias_other_buffer, "due to lock failure");
               }
 
               status = status_lock;
             }
-            else if (controller_main_rule_status_is_error(instance->action, global->program->rules.array[id_rule])) {
+            else if (controller_rule_status_is_error(instance->action, global->program->rules.array[id_rule])) {
               f_thread_unlock(&global->thread->lock.rule);
 
               if (i == 0 || i == 1) {
                 controller_lock_print(global->main->program.error.to, global->thread);
 
-                controller_main_print_rule_item_error_need_want_wish(&global->main->program.error, strings[i], alias_other_buffer, "is in a failed state");
+                controller_print_rule_item_error_need_want_wish(&global->main->program.error, strings[i], alias_other_buffer, "is in a failed state");
 
-                controller_main_print_rule_error_cache(&global->error, instance->cache.action, F_true);
+                controller_print_rule_error_cache(global->error, instance->cache.action, F_true);
 
                 controller_unlock_print_flush(global->main->program.error.to, global->thread);
 
@@ -381,9 +383,9 @@ extern "C" {
                 if (global->main->program.warning.verbosity == f_console_verbosity_debug_e) {
                   controller_lock_print(global->main->program.warning.to, global->thread);
 
-                  controller_main_print_rule_item_error_need_want_wish(&global->main->program.warning, strings[i], alias_other_buffer, "is in a failed state");
+                  controller_print_rule_item_error_need_want_wish(&global->main->program.warning, strings[i], alias_other_buffer, "is in a failed state");
 
-                  controller_main_print_rule_error_cache(&global->main->program.warning, instance->cache.action, F_true);
+                  controller_print_rule_error_cache(&global->main->program.warning, instance->cache.action, F_true);
 
                   controller_unlock_print_flush(global->main->program.warning.to, global->thread);
                 }
@@ -409,12 +411,12 @@ extern "C" {
       return status;
     }
 
-    if (!controller_main_thread_is_enabled_instance(instance, global->thread)) {
+    if (!controller_thread_is_enabled_instance(instance)) {
       return F_status_set_error(F_interrupt);
     }
 
     if ((instance->options & controller_instance_option_wait_e) && F_status_is_error_not(status) && (instance->options & controller_instance_option_validate_e)) {
-      status_lock = controller_main_rule_wait_all_instance_type(global, instance->type, F_false);
+      status_lock = controller_rule_wait_all_instance_type(global, instance->type, F_false);
 
       if (F_status_set_fine(status_lock) == F_interrupt) {
         return status_lock;
@@ -449,7 +451,7 @@ extern "C" {
               fl_print_format("%r%[%QThe rule '%]", global->main->program.error.to, f_string_eol_s, global->main->program.error.context, global->main->program.error.prefix, global->main->program.error.context);
               fl_print_format(f_string_format_Q_single_s.string, global->main->program.error.to, global->main->program.error.notable, instance->rule.name, global->main->program.error.notable);
               fl_print_format("%[' has no '%]", global->main->program.error.to, global->main->program.error.context, global->main->program.error.context);
-              fl_print_format(f_string_format_r_single_s.string, global->main->program.error.to, global->main->program.error.notable, controller_main_rule_action_type_name(instance->action), global->main->program.error.notable);
+              fl_print_format(f_string_format_r_single_s.string, global->main->program.error.to, global->main->program.error.notable, controller_convert_rule_action_type_string(instance->action), global->main->program.error.notable);
               fl_print_format("%[' action to execute.%]%r", global->main->program.error.to, global->main->program.error.context, global->main->program.error.context, f_string_eol_s);
             }
             else {
@@ -468,7 +470,7 @@ extern "C" {
               fl_print_format("%[') to execute.%]%r", global->main->program.error.to, global->main->program.error.context, global->main->program.error.context, f_string_eol_s);
             }
 
-            controller_main_print_rule_error_cache(&global->error, instance->cache.action, F_true);
+            controller_print_rule_error_cache(global->error, instance->cache.action, F_true);
 
             controller_unlock_print_flush(global->main->program.error.to, global->thread);
           }
@@ -478,14 +480,14 @@ extern "C" {
       }
 
       if (F_status_is_error_not(status)) {
-        status = controller_main_rule_execute(global, instance->action, instance->options, instance);
+        status = controller_rule_execute(global, instance->action, instance->options, instance);
 
         if (status == F_child || F_status_set_fine(status) == F_interrupt || F_status_set_fine(status) == F_lock) {
           return status;
         }
 
         if (F_status_is_error(status)) {
-          controller_main_print_rule_item_error(global->error, instance->cache.action, F_true, F_status_set_fine(status));
+          controller_print_rule_item_error(global->error, instance->cache.action, F_true, F_status_set_fine(status));
         }
       }
     }
@@ -494,13 +496,13 @@ extern "C" {
 
     f_thread_unlock(&instance->lock);
 
-    status_lock = controller_main_lock_write_instance(instance, global->thread, &instance->lock);
+    status_lock = controller_lock_write_instance(instance, &instance->lock);
 
     if (F_status_is_error(status_lock)) {
       controller_lock_print_error_critical(&global->main->program.error, F_status_set_fine(status_lock), F_false, global->thread);
 
       if (F_status_set_fine(status) != F_interrupt) {
-        status = controller_main_lock_read_instance(instance, global->thread, &instance->lock);
+        status = controller_lock_read_instance(instance, &instance->lock);
         if (F_status_is_error_not(status)) return status_lock;
       }
 
@@ -508,20 +510,20 @@ extern "C" {
     }
 
     if (F_status_is_error(status)) {
-      instance->rule.status[instance->action] = controller_main_error_simplify(F_status_set_fine(status));
+      instance->rule.status[instance->action] = controller_error_simplify(F_status_set_fine(status));
     }
     else {
       instance->rule.status[instance->action] = status;
     }
 
-    status_lock = controller_main_lock_write_instance(instance, global->thread, &global->thread->lock.rule);
+    status_lock = controller_lock_write_instance(instance, &global->thread->lock.rule);
 
     if (F_status_is_error(status_lock)) {
       controller_lock_print_error_critical(&global->main->program.error, F_status_set_fine(status_lock), F_false, global->thread);
 
       f_thread_unlock(&instance->lock);
 
-      status = controller_main_lock_read_instance(instance, global->thread, &instance->lock);
+      status = controller_lock_read_instance(instance, &instance->lock);
       if (F_status_is_error_not(status)) return status_lock;
 
       return F_status_set_error(F_lock);
@@ -551,7 +553,7 @@ extern "C" {
     f_thread_unlock(&global->thread->lock.rule);
     f_thread_unlock(&instance->lock);
 
-    status_lock = controller_main_lock_read_instance(instance, global->thread, &instance->lock);
+    status_lock = controller_lock_read_instance(instance, &instance->lock);
 
     if (F_status_is_error(status_lock)) {
       controller_lock_print_error_critical(&global->main->program.error, F_status_set_fine(status_lock), F_true, global->thread);
@@ -561,14 +563,14 @@ extern "C" {
 
     return instance->rule.status[instance->action];
   }
-#endif // _di_controller_main_rule_instance_
+#endif // _di_controller_rule_instance_
 
-#ifndef _di_controller_main_rule_instance_begin_
-  f_status_t controller_main_rule_instance_begin(controller_global_t * const global, const uint8_t options_force, const f_string_static_t alias_rule, const uint8_t action, const uint8_t options, const uint8_t type, const f_number_unsigneds_t stack, const controller_cache_t cache) {
+#ifndef _di_controller_rule_instance_begin_
+  f_status_t controller_rule_instance_begin(controller_global_t * const global, const uint8_t options_force, const f_string_static_t alias_rule, const uint8_t action, const uint8_t options, const uint8_t type, const f_number_unsigneds_t stack, const controller_cache_t cache) {
 
     if (!global) return F_status_set_error(F_parameter);
 
-    if (!controller_main_thread_is_enabled_instance_type(type, global->thread)) {
+    if (!controller_thread_is_enabled_instance_type(type, global->thread)) {
       return F_status_set_error(F_interrupt);
     }
 
@@ -577,7 +579,7 @@ extern "C" {
 
     controller_instance_t *instance = 0;
 
-    status = controller_main_lock_read_instance_type(type, global->thread, &global->thread->lock.instance);
+    status = controller_lock_read_instance_type(type, global->thread, &global->thread->lock.instance);
 
     if (F_status_is_error(status)) {
       controller_lock_print_error_critical(&global->main->program.error, F_status_set_fine(status), F_true, global->thread);
@@ -596,8 +598,8 @@ extern "C" {
         if (global->main->program.error.verbosity > f_console_verbosity_quiet_e) {
           controller_lock_print(global->main->program.error.to, global->thread);
 
-          controller_main_print_rule_item_error_rule_not_loaded(&global->main->program.error, alias_rule);
-          controller_main_print_rule_error_cache(&global->error, cache.action, F_false);
+          controller_print_rule_item_error_rule_not_loaded(&global->main->program.error, alias_rule);
+          controller_print_rule_error_cache(global->error, cache.action, F_false);
 
           controller_unlock_print_flush(global->main->program.error.to, global->thread);
         }
@@ -607,18 +609,18 @@ extern "C" {
 
       instance = global->thread->instances.array[at];
 
-      status = controller_main_lock_read_instance_type(type, global->thread, &instance->active);
+      status = controller_lock_read_instance_type(type, global->thread, &instance->active);
 
       if (F_status_is_error(status)) {
         controller_lock_print_error_critical(&global->main->program.error, F_status_set_fine(status), F_true, global->thread);
-        controller_main_print_rule_item_error(global->error, cache.action, F_false, F_status_set_fine(status));
+        controller_print_rule_item_error(global->error, cache.action, F_false, F_status_set_fine(status));
 
         f_thread_unlock(&global->thread->lock.instance);
 
         return status;
       }
 
-      status_lock = controller_main_lock_write_instance(instance, global->thread, &instance->lock);
+      status_lock = controller_lock_write_instance(instance, &instance->lock);
 
       if (F_status_is_error(status_lock)) {
         controller_lock_print_error_critical(&global->main->program.error, F_status_set_fine(status_lock), F_false, global->thread);
@@ -642,7 +644,7 @@ extern "C" {
 
       // The thread is done, so close the thread.
       if (instance->state == controller_instance_state_done_e) {
-        controller_main_thread_join(&instance->id_thread);
+        controller_thread_join(&instance->id_thread);
 
         f_thread_mutex_lock(&instance->wait_lock);
         f_thread_condition_signal_all(&instance->wait);
@@ -654,7 +656,7 @@ extern "C" {
 
     f_thread_unlock(&instance->lock);
 
-    status_lock = controller_main_lock_write_instance(instance, global->thread, &instance->lock);
+    status_lock = controller_lock_write_instance(instance, &instance->lock);
 
     if (F_status_is_error(status_lock)) {
       controller_lock_print_error_critical(&global->main->program.error, F_status_set_fine(status_lock), F_false, global->thread);
@@ -668,8 +670,6 @@ extern "C" {
     instance->action = action;
     instance->options = options;
     instance->type = type;
-
-    macro_f_time_simple_t_clear(instance->cache.timestamp)
 
     instance->cache.ats.used = 0;
     instance->cache.stack.used = 0;
@@ -692,6 +692,8 @@ extern "C" {
     instance->cache.action.generic.used = 0;
     instance->cache.range_action.start = 1;
     instance->cache.range_action.stop = 0;
+    instance->cache.timestamp.seconds = 0;
+    instance->cache.timestamp.seconds_nano = 0;
 
     instance->stack.used = 0;
 
@@ -703,7 +705,7 @@ extern "C" {
       }
 
       if (F_status_is_error(status)) {
-        controller_main_print_error_status(&global->main->program.error, macro_controller_f(f_memory_array_resize), F_status_set_fine(status));
+        controller_print_error_status(&global->main->program.error, macro_controller_f(f_memory_array_resize), F_status_set_fine(status));
       }
       else {
         for (f_number_unsigned_t i = 0; i < stack.used; ++i) {
@@ -725,7 +727,7 @@ extern "C" {
         status = f_string_dynamic_append(cache.action.name_item, &instance->cache.action.name_item);
       }
       else {
-        controller_main_print_error_status(&global->main->program.error, macro_controller_f(f_string_dynamic_append), F_status_set_fine(status));
+        controller_print_error_status(&global->main->program.error, macro_controller_f(f_string_dynamic_append), F_status_set_fine(status));
       }
     }
 
@@ -734,18 +736,18 @@ extern "C" {
     if (F_status_is_error_not(status)) {
       if (instance->action && (options_force & controller_instance_option_asynchronous_e)) {
         if (instance->type == controller_instance_type_exit_e) {
-          status = f_thread_create(0, &instance->id_thread, controller_main_thread_instance_other, (void *) instance);
+          status = f_thread_create(0, &instance->id_thread, controller_thread_instance_other, (void *) instance);
         }
         else {
-          status = f_thread_create(0, &instance->id_thread, controller_main_thread_instance_normal, (void *) instance);
+          status = f_thread_create(0, &instance->id_thread, controller_thread_instance_normal, (void *) instance);
         }
 
         if (F_status_is_error(status)) {
-          controller_main_print_error_status(&global->main->program.error, macro_controller_f(f_thread_create), F_status_set_fine(status));
+          controller_print_error_status(&global->main->program.error, macro_controller_f(f_thread_create), F_status_set_fine(status));
         }
       }
       else {
-        status = controller_main_rule_instance_do(options_force, instance);
+        status = controller_rule_instance_do(options_force, instance);
 
         if (status == F_child || F_status_set_fine(status) == F_interrupt) {
           f_thread_unlock(&instance->active);
@@ -757,7 +759,7 @@ extern "C" {
 
     if (!action || F_status_is_error(status) && (instance->state == controller_instance_state_active_e || instance->state == controller_instance_state_busy_e)) {
       {
-        status_lock = controller_main_lock_write_instance(instance, global->thread, &instance->lock);
+        status_lock = controller_lock_write_instance(instance, &instance->lock);
 
         if (F_status_is_error(status_lock)) {
           controller_lock_print_error_critical(&global->main->program.error, F_status_set_fine(status_lock), F_false, global->thread);
@@ -790,32 +792,18 @@ extern "C" {
 
     return F_okay;
   }
-#endif // _di_controller_main_rule_instance_begin_
+#endif // _di_controller_rule_instance_begin_
 
-#ifndef _di_controller_main_rule_instance_do_
-  f_status_t controller_main_rule_instance_do(const uint8_t options_force, controller_instance_t * const instance) {
+#ifndef _di_controller_rule_instance_do_
+  f_status_t controller_rule_instance_do(const uint8_t options_force, controller_instance_t * const instance) {
 
     if (!instance) return F_status_set_error(F_parameter);
 
     f_status_t status_lock = F_okay;
 
-    controller_global_t global = macro_controller_global_t_initialize((controller_main_t *) instance->main_data, (controller_instance_t *) instance->main_setting, (controller_thread_t *) instance->main_thread);
-
-    global->message = global->main->program.message;
-    global->output = global->main->program.output;
-    global->error = global->main->program.error;
-    global->warning = global->main->program.warning;
-    global->debug = global->main->program.debug;
-
-    global->message.custom = (void *) &global;
-    global->output.custom = (void *) &global;
-    global->error.custom = (void *) &global;
-    global->warning.custom = (void *) &global;
-    global->debug.custom = (void *) &global;
-
     // The instance and active locks shall be held for the duration of this instanceing (aside from switching between read to/from write).
     if (options_force & controller_instance_option_asynchronous_e) {
-      status_lock = controller_main_lock_read_instance(instance, global->thread, &instance->active);
+      status_lock = controller_lock_read_instance(instance, &instance->active);
 
       if (F_status_is_error(status_lock)) {
         controller_lock_print_error_critical(&global->main->program.error, F_status_set_fine(status_lock), F_true, global->thread);
@@ -824,7 +812,7 @@ extern "C" {
       }
     }
 
-    status_lock = controller_main_lock_read_instance(instance, global->thread, &instance->lock);
+    status_lock = controller_lock_read_instance(instance, &instance->lock);
 
     if (F_status_is_error(status_lock)) {
       controller_lock_print_error_critical(&global->main->program.error, F_status_set_fine(status_lock), F_true, global->thread);
@@ -842,7 +830,7 @@ extern "C" {
 
     const f_number_unsigned_t used_original_stack = instance->stack.used;
 
-    status_lock = controller_main_lock_read_instance(instance, global->thread, &global->thread->lock.rule);
+    status_lock = controller_lock_read_instance(instance, &global->thread->lock.rule);
 
     if (F_status_is_error(status_lock)) {
       controller_lock_print_error_critical(&global->main->program.error, F_status_set_fine(status_lock), F_true, global->thread);
@@ -859,7 +847,7 @@ extern "C" {
     if (controller_rule_find(instance->rule.alias, global->program->rules, &id_rule) == F_true) {
       f_thread_unlock(&instance->lock);
 
-      status_lock = controller_main_lock_write_instance(instance, global->thread, &instance->lock);
+      status_lock = controller_lock_write_instance(instance, &instance->lock);
 
       if (F_status_is_error(status_lock)) {
         controller_lock_print_error_critical(&global->main->program.error, F_status_set_fine(status_lock), F_false, global->thread);
@@ -879,7 +867,7 @@ extern "C" {
 
       f_thread_unlock(&instance->lock);
 
-      status_lock = controller_main_lock_read_instance(instance, global->thread, &instance->lock);
+      status_lock = controller_lock_read_instance(instance, &instance->lock);
 
       if (F_status_is_error(status_lock)) {
         controller_lock_print_error_critical(&global->main->program.error, F_status_set_fine(status_lock), F_true, global->thread);
@@ -896,7 +884,7 @@ extern "C" {
       f_thread_unlock(&global->thread->lock.rule);
 
       if (F_status_is_error(status)) {
-        controller_main_print_error_status(&global->main->program.error, macro_controller_f(controller_rule_copy), F_status_set_fine(status));
+        controller_print_error_status(&global->main->program.error, macro_controller_f(controller_rule_copy), F_status_set_fine(status));
       }
       else if (!instance->action) {
 
@@ -907,10 +895,10 @@ extern "C" {
           f_thread_unlock(&instance->active);
         }
 
-        return F_instance_not;
+        return F_process_not;
       }
       else {
-        for (f_number_unsigned_t i = 0; i < instance->stack.used && controller_main_thread_is_enabled_instance(instance, global->thread); ++i) {
+        for (f_number_unsigned_t i = 0; i < instance->stack.used && controller_thread_is_enabled_instance(instance); ++i) {
 
           if (instance->stack.array[i] == id_rule) {
             if (global->main->program.error.verbosity > f_console_verbosity_quiet_e) {
@@ -920,7 +908,7 @@ extern "C" {
               fl_print_format(f_string_format_Q_single_s.string, global->main->program.error.to, global->main->program.error.notable, instance->rule.alias, global->main->program.error.notable);
               fl_print_format("%[' is already on the execution dependency stack, this recursion is prohibited.%]%r", global->main->program.error.to, global->main->program.error.context, global->main->program.error.context, f_string_eol_s);
 
-              controller_main_print_rule_error_cache(&global->error, instance->cache.action, F_true);
+              controller_print_rule_error_cache(global->error, instance->cache.action, F_true);
 
               controller_unlock_print_flush(global->main->program.error.to, global->thread);
             }
@@ -932,7 +920,7 @@ extern "C" {
           }
         } // for
 
-        if (!controller_main_thread_is_enabled_instance(instance, global->thread)) {
+        if (!controller_thread_is_enabled_instance(instance)) {
           f_thread_unlock(&instance->lock);
 
           if (options_force & controller_instance_option_asynchronous_e) {
@@ -946,12 +934,12 @@ extern "C" {
           status = f_memory_array_increase(controller_allocation_small_d, sizeof(f_number_unsigned_t), (void **) &instance->stack.array, &instance->stack.used, &instance->stack.size);
 
           if (F_status_is_error(status)) {
-            controller_main_print_error_status(&global->main->program.error, macro_controller_f(f_memory_array_increase), F_status_set_fine(status));
+            controller_print_error_status(&global->main->program.error, macro_controller_f(f_memory_array_increase), F_status_set_fine(status));
           }
           else {
             f_thread_unlock(&instance->lock);
 
-            status_lock = controller_main_lock_write_instance(instance, global->thread, &instance->lock);
+            status_lock = controller_lock_write_instance(instance, &instance->lock);
 
             if (F_status_is_error(status_lock)) {
               controller_lock_print_error_critical(&global->main->program.error, F_status_set_fine(status_lock), F_false, global->thread);
@@ -967,7 +955,7 @@ extern "C" {
 
             f_thread_unlock(&instance->lock);
 
-            status_lock = controller_main_lock_read_instance(instance, global->thread, &instance->lock);
+            status_lock = controller_lock_read_instance(instance, &instance->lock);
 
             if (F_status_is_error(status_lock)) {
               controller_lock_print_error_critical(&global->main->program.error, F_status_set_fine(status_lock), F_true, global->thread);
@@ -983,7 +971,7 @@ extern "C" {
       }
 
       if (F_status_is_error_not(status)) {
-        status = controller_main_rule_instance(global, instance);
+        status = controller_rule_instance(instance);
       }
     }
     else {
@@ -994,8 +982,8 @@ extern "C" {
       if (global->main->program.error.verbosity > f_console_verbosity_quiet_e) {
         controller_lock_print(global->main->program.error.to, global->thread);
 
-        controller_main_print_rule_item_error_rule_not_loaded(&global->main->program.error, instance->rule.alias);
-        controller_main_print_rule_error_cache(&global->error, instance->cache.action, F_false);
+        controller_print_rule_item_error_rule_not_loaded(&global->main->program.error, instance->rule.alias);
+        controller_print_rule_error_cache(global->error, instance->cache.action, F_false);
 
         controller_unlock_print_flush(global->main->program.error.to, global->thread);
       }
@@ -1011,7 +999,7 @@ extern "C" {
       return status;
     }
 
-    status_lock = controller_main_lock_write_instance(instance, global->thread, &global->thread->lock.rule);
+    status_lock = controller_lock_write_instance(instance, &global->thread->lock.rule);
 
     if (F_status_is_error(status_lock)) {
       controller_lock_print_error_critical(&global->main->program.error, F_status_set_fine(status_lock), F_false, global->thread);
@@ -1039,7 +1027,7 @@ extern "C" {
       f_thread_unlock(&instance->lock);
     }
 
-    if (F_status_set_fine(status) == F_interrupt || F_status_set_fine(status) == F_lock && !controller_main_thread_is_enabled_instance(instance, global->thread)) {
+    if (F_status_set_fine(status) == F_interrupt || F_status_set_fine(status) == F_lock && !controller_thread_is_enabled_instance(instance)) {
       if (options_force & controller_instance_option_asynchronous_e) {
         f_thread_unlock(&instance->active);
       }
@@ -1047,7 +1035,7 @@ extern "C" {
       return F_status_set_error(F_interrupt);
     }
 
-    status_lock = controller_main_lock_write_instance(instance, global->thread, &instance->lock);
+    status_lock = controller_lock_write_instance(instance, &instance->lock);
 
     if (F_status_is_error(status_lock)) {
       controller_lock_print_error_critical(&global->main->program.error, F_status_set_fine(status_lock), F_false, global->thread);
@@ -1079,13 +1067,13 @@ extern "C" {
       f_thread_unlock(&instance->active);
     }
 
-    if (controller_main_thread_is_enabled_instance(instance, global->thread)) {
+    if (controller_thread_is_enabled_instance(instance)) {
       return status;
     }
 
     return F_status_set_error(F_interrupt);
   }
-#endif // _di_controller_main_rule_instance_do_
+#endif // _di_controller_rule_instance_do_
 
 #ifdef __cplusplus
 } // extern "C"

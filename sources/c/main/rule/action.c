@@ -4,42 +4,42 @@
 extern "C" {
 #endif
 
-#ifndef _di_controller_main_rule_action_method_name_
-  f_string_static_t controller_main_rule_action_method_name(const uint8_t type) {
+#ifndef _di_controller_rule_action_method_name_
+  f_string_static_t controller_rule_action_method_name(const uint8_t type) {
 
-    if (type == controller_main_rule_action_method_extended_e) return controller_main_rule_action_method_extended_s;
-    if (type == controller_main_rule_action_method_extended_list_e) return controller_main_rule_action_method_extended_list_s;
+    if (type == controller_rule_action_method_extended_e) return controller_rule_action_method_extended_s;
+    if (type == controller_rule_action_method_extended_list_e) return controller_rule_action_method_extended_list_s;
 
     return f_string_empty_s;
   }
-#endif // _di_controller_main_rule_action_method_name_
+#endif // _di_controller_rule_action_method_name_
 
-#ifndef _di_controller_main_rule_action_type_to_action_execute_type_
-  uint8_t controller_main_rule_action_type_to_action_execute_type(const uint8_t type) {
+#ifndef _di_controller_rule_action_type_to_action_execute_type_
+  uint8_t controller_rule_action_type_to_action_execute_type(const uint8_t type) {
 
-    if (type == controller_main_rule_action_type_freeze_e) return controller_main_rule_action_execute_type_freeze_e;
-    if (type == controller_main_rule_action_type_kill_e) return controller_main_rule_action_execute_type_kill_e;
-    if (type == controller_main_rule_action_type_pause_e) return controller_main_rule_action_execute_type_pause_e;
-    if (type == controller_main_rule_action_type_reload_e) return controller_main_rule_action_execute_type_reload_e;
-    if (type == controller_main_rule_action_type_restart_e) return controller_main_rule_action_execute_type_restart_e;
-    if (type == controller_main_rule_action_type_resume_e) return controller_main_rule_action_execute_type_resume_e;
-    if (type == controller_main_rule_action_type_start_e) return controller_main_rule_action_execute_type_start_e;
-    if (type == controller_main_rule_action_type_stop_e) return controller_main_rule_action_execute_type_stop_e;
-    if (type == controller_main_rule_action_type_thaw_e) return controller_main_rule_action_execute_type_thaw_e;
+    if (type == controller_rule_action_type_freeze_e) return controller_rule_action_execute_type_freeze_e;
+    if (type == controller_rule_action_type_kill_e) return controller_rule_action_execute_type_kill_e;
+    if (type == controller_rule_action_type_pause_e) return controller_rule_action_execute_type_pause_e;
+    if (type == controller_rule_action_type_reload_e) return controller_rule_action_execute_type_reload_e;
+    if (type == controller_rule_action_type_restart_e) return controller_rule_action_execute_type_restart_e;
+    if (type == controller_rule_action_type_resume_e) return controller_rule_action_execute_type_resume_e;
+    if (type == controller_rule_action_type_start_e) return controller_rule_action_execute_type_start_e;
+    if (type == controller_rule_action_type_stop_e) return controller_rule_action_execute_type_stop_e;
+    if (type == controller_rule_action_type_thaw_e) return controller_rule_action_execute_type_thaw_e;
 
-    return controller_main_rule_action_execute_type__enum_size_e;
+    return controller_rule_action_execute_type__enum_size_e;
   }
-#endif // _di_controller_main_rule_action_type_to_action_execute_type_
+#endif // _di_controller_rule_action_type_to_action_execute_type_
 
-#ifndef _di_controller_main_rule_action_read_
-  f_status_t controller_main_rule_action_read(controller_global_t * const global, const bool is_normal, const uint8_t type, const uint8_t method, controller_cache_t * const cache, controller_rule_item_t * const item, controller_main_rule_actions_t * const actions, f_range_t * const range) {
+#ifndef _di_controller_rule_action_read_
+  f_status_t controller_rule_action_read(controller_global_t * const global, const bool is_normal, const uint8_t type, const uint8_t method, controller_cache_t * const cache, controller_rule_item_t * const item, controller_rule_actions_t * const actions, f_range_t * const range) {
 
     if (!global || !item || !actions || !range) return F_status_set_error(F_parameter);
 
     f_status_t status = F_okay;
 
-    controller_interrupt_t custom = macro_controller_interrupt_t_initialize_1(is_normal, global->thread);
-    f_state_t state = macro_f_state_t_initialize_1(controller_allocation_large_d, controller_allocation_small_d, F_okay, 0, 0, 0, &controller_main_thread_signal_state_fss, 0, (void *) &custom, 0);
+    controller_interrupt_t custom = macro_controller_interrupt_t_initialize_1(is_normal, global);
+    f_state_t state = macro_f_state_t_initialize_1(controller_allocation_large_d, controller_allocation_small_d, F_okay, 0, 0, 0, &controller_thread_signal_state_fss, 0, (void *) &custom, 0);
 
     f_number_unsigned_t i = 0;
 
@@ -63,11 +63,11 @@ extern "C" {
     cache->delimits.used = 0;
     cache->content_action.used = 0;
 
-    if (method == controller_main_rule_action_method_extended_list_e) {
+    if (method == controller_rule_action_method_extended_list_e) {
       fl_fss_extended_list_content_read(cache->buffer_item, range, &cache->content_action, &cache->delimits, &cache->comments, &state);
 
       if (F_status_is_error(status)) {
-        controller_main_print_error(&global->main->program.error, macro_controller_f(fl_fss_extended_list_content_read));
+        controller_print_error(&global->main->program.error, macro_controller_f(fl_fss_extended_list_content_read));
 
         return status;
       }
@@ -76,7 +76,7 @@ extern "C" {
         f_fss_apply_delimit(cache->delimits, &cache->buffer_item, &state);
 
         if (F_status_is_error(status)) {
-          controller_main_print_error(&global->main->program.error, macro_controller_f(f_fss_apply_delimit));
+          controller_print_error(&global->main->program.error, macro_controller_f(f_fss_apply_delimit));
 
           return status;
         }
@@ -88,7 +88,7 @@ extern "C" {
           status = f_memory_array_increase(controller_allocation_small_d, sizeof(f_string_dynamic_t), (void **) &actions->array[actions->used].parameters.array, &actions->array[actions->used].parameters.used, &actions->array[actions->used].parameters.size);
 
           if (F_status_is_error(status)) {
-            controller_main_print_error(&global->main->program.error, macro_controller_f(f_memory_array_increase));
+            controller_print_error(&global->main->program.error, macro_controller_f(f_memory_array_increase));
 
             return status;
           }
@@ -96,7 +96,7 @@ extern "C" {
           status = f_memory_array_increase(controller_allocation_small_d, sizeof(f_iki_data_t), (void **) &actions->array[actions->used].ikis.array, &actions->array[actions->used].ikis.used, &actions->array[actions->used].ikis.size);
 
           if (F_status_is_error(status)) {
-            controller_main_print_error(&global->main->program.error, macro_controller_f(f_memory_array_increase));
+            controller_print_error(&global->main->program.error, macro_controller_f(f_memory_array_increase));
 
             return status;
           }
@@ -108,9 +108,9 @@ extern "C" {
           status = f_string_dynamic_partial_append_nulless(cache->buffer_item, cache->content_action.array[0], &actions->array[actions->used].parameters.array[0]);
 
           if (F_status_is_error(status)) {
-            controller_main_print_error(&global->main->program.error, macro_controller_f(f_string_dynamic_append_nulless));
+            controller_print_error(&global->main->program.error, macro_controller_f(f_string_dynamic_append_nulless));
 
-            actions->array[actions->used++].status = controller_main_error_simplify(F_status_set_fine(status));
+            actions->array[actions->used++].status = controller_error_simplify(F_status_set_fine(status));
 
             return status;
           }
@@ -118,16 +118,16 @@ extern "C" {
           if (actions->array[actions->used].parameters.array[0].used) {
             state.step_large = controller_allocation_iki_large_d;
             state.step_small = controller_allocation_iki_small_d;
-            state.interrupt = &controller_main_thread_signal_state_iki;
+            state.interrupt = &controller_thread_signal_state_iki;
 
             f_range_t range_iki = macro_f_range_t_initialize_2(actions->array[actions->used].parameters.array[0].used);
 
             fl_iki_read(&actions->array[actions->used].parameters.array[0], &range_iki, &actions->array[actions->used].ikis.array[0], &state);
 
             if (F_status_is_error(status)) {
-              controller_main_print_error(&global->main->program.error, macro_controller_f(fl_iki_read));
+              controller_print_error(&global->main->program.error, macro_controller_f(fl_iki_read));
 
-              actions->array[actions->used++].status = controller_main_error_simplify(F_status_set_fine(status));
+              actions->array[actions->used++].status = controller_error_simplify(F_status_set_fine(status));
 
               return status;
             }
@@ -145,7 +145,7 @@ extern "C" {
         fll_fss_extended_read(cache->buffer_item, &cache->content_action.array[0], &cache->object_actions, &cache->content_actions, 0, 0, &cache->delimits, 0, &state);
 
         if (F_status_is_error(status)) {
-          controller_main_print_error(&global->main->program.error, macro_controller_f(fll_fss_extended_read));
+          controller_print_error(&global->main->program.error, macro_controller_f(fll_fss_extended_read));
 
           return status;
         }
@@ -153,17 +153,17 @@ extern "C" {
         f_fss_apply_delimit(cache->delimits, &cache->buffer_item, &state);
 
         if (F_status_is_error(status)) {
-          controller_main_print_error(&global->main->program.error, macro_controller_f(f_fss_apply_delimit));
+          controller_print_error(&global->main->program.error, macro_controller_f(f_fss_apply_delimit));
 
           return status;
         }
 
         for (i = 0; i < cache->object_actions.used; ++i) {
 
-          status = f_memory_array_increase_by(controller_allocation_small_d, sizeof(controller_main_rule_action_t), (void **) &actions->array, &actions->used, &actions->size);
+          status = f_memory_array_increase_by(controller_allocation_small_d, sizeof(controller_rule_action_t), (void **) &actions->array, &actions->used, &actions->size);
 
           if (F_status_is_error(status)) {
-            controller_main_print_error(&global->main->program.error, macro_controller_f(f_memory_array_increase_by));
+            controller_print_error(&global->main->program.error, macro_controller_f(f_memory_array_increase_by));
 
             return status;
           }
@@ -171,7 +171,7 @@ extern "C" {
           f_fss_count_lines(cache->buffer_item, cache->object_actions.array[i].start, &actions->array[actions->used].line, &state);
 
           if (F_status_is_error(status)) {
-            controller_main_print_error(&global->main->program.error, macro_controller_f(f_fss_count_lines));
+            controller_print_error(&global->main->program.error, macro_controller_f(f_fss_count_lines));
 
             return status;
           }
@@ -180,10 +180,10 @@ extern "C" {
           actions->array[actions->used].line += ++item->line;
           actions->array[actions->used].status = F_known_not;
 
-          status = controller_main_rule_parameters_read(global, cache->buffer_item, &cache->object_actions.array[i], &cache->content_actions.array[i], &actions->array[actions->used], &state);
+          status = controller_rule_parameters_read(global, cache->buffer_item, &cache->object_actions.array[i], &cache->content_actions.array[i], &actions->array[actions->used], &state);
 
           if (F_status_is_error(status)) {
-            actions->array[actions->used++].status = controller_main_error_simplify(F_status_set_fine(status));
+            actions->array[actions->used++].status = controller_error_simplify(F_status_set_fine(status));
 
             return status;
           }
@@ -201,58 +201,58 @@ extern "C" {
       fl_fss_extended_content_read(cache->buffer_item, range, &cache->content_action, 0, &cache->delimits, &state);
 
       if (F_status_is_error(status)) {
-        controller_main_print_error(&global->main->program.error, macro_controller_f(fll_fss_extended_content_read));
+        controller_print_error(&global->main->program.error, macro_controller_f(fll_fss_extended_content_read));
       }
       else if (status == F_fss_found_content) {
         f_fss_apply_delimit(cache->delimits, &cache->buffer_item, &state);
 
         if (F_status_is_error(status)) {
-          controller_main_print_error(&global->main->program.error, macro_controller_f(f_fss_apply_delimit));
+          controller_print_error(&global->main->program.error, macro_controller_f(f_fss_apply_delimit));
         }
-        else if (type == controller_main_rule_action_type_pid_file_e) {
+        else if (type == controller_rule_action_type_pid_file_e) {
           item->pid_file.used = 0;
 
           status = f_rip_dynamic_partial(cache->buffer_item, cache->content_action.array[0], &item->pid_file);
 
           if (F_status_is_error(status)) {
-            controller_main_print_error(&global->main->program.error, macro_controller_f(f_rip_dynamic_partial));
+            controller_print_error(&global->main->program.error, macro_controller_f(f_rip_dynamic_partial));
           }
         }
-        else if (type == controller_main_rule_action_type_rerun_e) {
+        else if (type == controller_rule_action_type_rerun_e) {
           uint8_t type_rerun = 0;
 
           if (cache->content_action.used) {
             if (f_compare_dynamic_partial_string(controller_freeze_s.string, cache->buffer_item, controller_freeze_s.used, cache->content_action.array[0]) == F_equal_to) {
-              type_rerun = controller_main_rule_action_execute_type_freeze_e;
+              type_rerun = controller_rule_action_execute_type_freeze_e;
             }
             if (f_compare_dynamic_partial_string(controller_kill_s.string, cache->buffer_item, controller_kill_s.used, cache->content_action.array[0]) == F_equal_to) {
-              type_rerun = controller_main_rule_action_execute_type_kill_e;
+              type_rerun = controller_rule_action_execute_type_kill_e;
             }
             else if (f_compare_dynamic_partial_string(controller_pause_s.string, cache->buffer_item, controller_pause_s.used, cache->content_action.array[0]) == F_equal_to) {
-              type_rerun = controller_main_rule_action_execute_type_pause_e;
+              type_rerun = controller_rule_action_execute_type_pause_e;
             }
             else if (f_compare_dynamic_partial_string(controller_reload_s.string, cache->buffer_item, controller_reload_s.used, cache->content_action.array[0]) == F_equal_to) {
-              type_rerun = controller_main_rule_action_execute_type_reload_e;
+              type_rerun = controller_rule_action_execute_type_reload_e;
             }
             else if (f_compare_dynamic_partial_string(controller_restart_s.string, cache->buffer_item, controller_restart_s.used, cache->content_action.array[0]) == F_equal_to) {
-              type_rerun = controller_main_rule_action_execute_type_restart_e;
+              type_rerun = controller_rule_action_execute_type_restart_e;
             }
             else if (f_compare_dynamic_partial_string(controller_resume_s.string, cache->buffer_item, controller_resume_s.used, cache->content_action.array[0]) == F_equal_to) {
-              type_rerun = controller_main_rule_action_execute_type_resume_e;
+              type_rerun = controller_rule_action_execute_type_resume_e;
             }
             else if (f_compare_dynamic_partial_string(controller_start_s.string, cache->buffer_item, controller_start_s.used, cache->content_action.array[0]) == F_equal_to) {
-              type_rerun = controller_main_rule_action_execute_type_start_e;
+              type_rerun = controller_rule_action_execute_type_start_e;
             }
             else if (f_compare_dynamic_partial_string(controller_stop_s.string, cache->buffer_item, controller_stop_s.used, cache->content_action.array[0]) == F_equal_to) {
-              type_rerun = controller_main_rule_action_execute_type_stop_e;
+              type_rerun = controller_rule_action_execute_type_stop_e;
             }
             else if (f_compare_dynamic_partial_string(controller_thaw_s.string, cache->buffer_item, controller_thaw_s.used, cache->content_action.array[0]) == F_equal_to) {
-              type_rerun = controller_main_rule_action_execute_type_thaw_e;
+              type_rerun = controller_rule_action_execute_type_thaw_e;
             }
           }
 
           if (!type_rerun) {
-            controller_main_print_rule_item_error_action_first(&global->main->program.error, cache);
+            controller_print_rule_item_error_action_first(&global->main->program.error, cache);
 
             return F_status_set_error(F_valid_not);
           }
@@ -270,7 +270,7 @@ extern "C" {
             }
           }
           else {
-            controller_main_print_rule_item_error_action_second(&global->main->program.error, cache);
+            controller_print_rule_item_error_action_second(&global->main->program.error, cache);
 
             return F_status_set_error(F_valid_not);
           }
@@ -278,22 +278,22 @@ extern "C" {
           for (i = 2; i < cache->content_action.used; ++i) {
 
             if (f_compare_dynamic_partial_string(controller_delay_s.string, cache->buffer_item, controller_delay_s.used, cache->content_action.array[i]) == F_equal_to) {
-              status = controller_main_rule_action_read_rerun_number(global, controller_delay_s.string, cache, &i, &rerun_item->delay);
+              status = controller_rule_action_read_rerun_number(global, controller_delay_s.string, cache, &i, &rerun_item->delay);
             }
             else if (f_compare_dynamic_partial_string(controller_max_s.string, cache->buffer_item, controller_max_s.used, cache->content_action.array[i]) == F_equal_to) {
-              status = controller_main_rule_action_read_rerun_number(global, controller_max_s.string, cache, &i, &rerun_item->max);
+              status = controller_rule_action_read_rerun_number(global, controller_max_s.string, cache, &i, &rerun_item->max);
             }
             else if (f_compare_dynamic_partial_string(controller_reset_s.string, cache->buffer_item, controller_reset_s.used, cache->content_action.array[i]) == F_equal_to) {
               item->reruns[type_rerun].is |= rerun_item == &item->reruns[type_rerun].failure ? controller_rule_rerun_is_failure_reset_d : controller_rule_rerun_is_success_reset_d;
             }
             else {
-              controller_main_print_rule_item_error_action_unknown(&global->main->program.error, cache, controller_rerun_s, i);
+              controller_print_rule_item_error_action_unknown(&global->main->program.error, cache, controller_rerun_s, i);
 
               return F_status_set_error(F_valid_not);
             }
           } // for
         }
-        else if (type == controller_main_rule_action_type_with_e) {
+        else if (type == controller_rule_action_type_with_e) {
           for (i = 0; i < cache->content_action.used; ++i) {
 
             if (f_compare_dynamic_partial_string(controller_full_path_s.string, cache->buffer_item, controller_full_path_s.used, cache->content_action.array[i]) == F_equal_to) {
@@ -312,7 +312,7 @@ extern "C" {
               item->with &= ~controller_with_session_new_d;
             }
             else {
-              controller_main_print_rule_item_error_action_unknown(&global->main->program.error, cache, controller_with_s, i);
+              controller_print_rule_item_error_action_unknown(&global->main->program.error, cache, controller_with_s, i);
 
               status = F_status_set_error(F_valid_not);
 
@@ -324,7 +324,7 @@ extern "C" {
           status = f_memory_array_increase(controller_allocation_small_d, sizeof(f_string_dynamic_t), (void **) &actions->array[actions->used].parameters.array, &actions->array[actions->used].parameters.used, &actions->array[actions->used].parameters.size);
 
           if (F_status_is_error(status)) {
-            controller_main_print_error(&global->main->program.error, macro_controller_f(f_memory_array_increase));
+            controller_print_error(&global->main->program.error, macro_controller_f(f_memory_array_increase));
 
             return status;
           }
@@ -332,7 +332,7 @@ extern "C" {
           status = f_memory_array_increase(controller_allocation_small_d, sizeof(f_iki_data_t), (void **) &actions->array[actions->used].ikis.array, &actions->array[actions->used].ikis.used, &actions->array[actions->used].ikis.size);
 
           if (F_status_is_error(status)) {
-            controller_main_print_error(&global->main->program.error, macro_controller_f(f_memory_array_increase));
+            controller_print_error(&global->main->program.error, macro_controller_f(f_memory_array_increase));
 
             return status;
           }
@@ -349,9 +349,9 @@ extern "C" {
           } // for
 
           if (F_status_is_error(status)) {
-            controller_main_print_error(&global->main->program.error, macro_controller_f(f_string_dynamic_partial_mash_nulless));
+            controller_print_error(&global->main->program.error, macro_controller_f(f_string_dynamic_partial_mash_nulless));
 
-            actions->array[actions->used++].status = controller_main_error_simplify(F_status_set_fine(status));
+            actions->array[actions->used++].status = controller_error_simplify(F_status_set_fine(status));
 
             return status;
           }
@@ -359,16 +359,16 @@ extern "C" {
           if (actions->array[actions->used].parameters.array[0].used) {
             state.step_large = controller_allocation_iki_large_d;
             state.step_small = controller_allocation_iki_small_d;
-            state.interrupt = &controller_main_thread_signal_state_iki;
+            state.interrupt = &controller_thread_signal_state_iki;
 
             f_range_t range_iki = macro_f_range_t_initialize_2(actions->array[actions->used].parameters.array[0].used);
 
             fl_iki_read(&actions->array[actions->used].parameters.array[0], &range_iki, &actions->array[actions->used].ikis.array[0], &state);
 
             if (F_status_is_error(status)) {
-              controller_main_print_error(&global->main->program.error, macro_controller_f(fl_iki_read));
+              controller_print_error(&global->main->program.error, macro_controller_f(fl_iki_read));
 
-              actions->array[actions->used++].status = controller_main_error_simplify(F_status_set_fine(status));
+              actions->array[actions->used++].status = controller_error_simplify(F_status_set_fine(status));
 
               return status;
             }
@@ -381,7 +381,7 @@ extern "C" {
           f_fss_count_lines(cache->buffer_item, range->start, &actions->array[actions->used].line, &state);
 
           if (F_status_is_error(status)) {
-            controller_main_print_error(&global->main->program.error, macro_controller_f(f_fss_count_lines));
+            controller_print_error(&global->main->program.error, macro_controller_f(f_fss_count_lines));
 
             return status;
           }
@@ -390,10 +390,10 @@ extern "C" {
           actions->array[actions->used].line += ++item->line;
           actions->array[actions->used].status = F_known_not;
 
-          status = controller_main_rule_parameters_read(global, cache->buffer_item, 0, &cache->content_action, &actions->array[actions->used], &state);
+          status = controller_rule_parameters_read(global, cache->buffer_item, 0, &cache->content_action, &actions->array[actions->used], &state);
 
           if (F_status_is_error(status)) {
-            actions->array[actions->used++].status = controller_main_error_simplify(F_status_set_fine(status));
+            actions->array[actions->used++].status = controller_error_simplify(F_status_set_fine(status));
 
             return status;
           }
@@ -407,15 +407,15 @@ extern "C" {
     }
 
     if (F_status_is_error_not(status) && status == F_data_not) {
-      controller_main_print_rule_item_debug_action_empty(&global->debug, cache);
+      controller_print_rule_item_debug_action_empty(global->debug, cache);
     }
 
     return status;
   }
-#endif // _di_controller_main_rule_action_read_
+#endif // _di_controller_rule_action_read_
 
-#ifndef _di_controller_main_rule_action_read_rerun_number_
-  f_status_t controller_main_rule_action_read_rerun_number(controller_global_t * const global, const f_string_t name, controller_cache_t * const cache, f_number_unsigned_t * const index, f_number_unsigned_t * const number) {
+#ifndef _di_controller_rule_action_read_rerun_number_
+  f_status_t controller_rule_action_read_rerun_number(controller_global_t * const global, const f_string_t name, controller_cache_t * const cache, f_number_unsigned_t * const index, f_number_unsigned_t * const number) {
 
     f_status_t status = F_okay;
     f_number_signed_t parsed = 0;
@@ -427,7 +427,7 @@ extern "C" {
       status = fl_conversion_dynamic_partial_to_signed_detect(fl_conversion_data_base_10_c, cache->buffer_item, cache->content_action.array[++(*index)], &parsed);
 
       if (F_status_set_fine(status) == F_number_positive) {
-        status = fl_conversion_dynamic_partial_to_signed_detect(fl_conversion_data_base_10_c, cache->buffer_item, controller_main_range_after_number_sign(cache->buffer_item, cache->content_action.array[*index]), &parsed);
+        status = fl_conversion_dynamic_partial_to_signed_detect(fl_conversion_data_base_10_c, cache->buffer_item, controller_range_after_number_sign(cache->buffer_item, cache->content_action.array[*index]), &parsed);
       }
 
       if (status == F_data_not) {
@@ -440,7 +440,7 @@ extern "C" {
         status = F_status_set_fine(status);
 
         if (status != F_valid_not && status != F_number && status != F_number_decimal && status != F_number_overflow && status != F_number_underflow && status != F_number_negative) {
-          controller_main_print_error(&global->main->program.error, macro_controller_f(fl_conversion_dynamic_partial_to_signed_detect));
+          controller_print_error(&global->main->program.error, macro_controller_f(fl_conversion_dynamic_partial_to_signed_detect));
         }
         else {
           controller_lock_print(global->main->program.error.to, global->thread);
@@ -468,7 +468,7 @@ extern "C" {
             }
           }
 
-          controller_main_print_rule_error_cache(&global->error, &cache->action, F_true);
+          controller_print_rule_error_cache(global->error, cache->action, F_true);
 
           controller_unlock_print_flush(global->main->program.error.to, global->thread);
         }
@@ -481,7 +481,7 @@ extern "C" {
 
     return F_okay;
   }
-#endif // _di_controller_main_rule_action_read_rerun_number_
+#endif // _di_controller_rule_action_read_rerun_number_
 
 #ifdef __cplusplus
 } // extern "C"

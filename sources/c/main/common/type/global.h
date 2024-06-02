@@ -34,7 +34,7 @@ extern "C" {
  */
 #ifndef _di_controller_global_t_
   struct controller_global_t_ {
-    controller_main_t *main;
+    controller_t *main;
     controller_program_t *program;
     controller_thread_t *thread;
 
@@ -64,13 +64,13 @@ extern "C" {
  *
  * Properties:
  *   - is_normal: Boolean designating if this is operating in a normal state.
- *   - thread:    The thread data.
+ *   - global:    The global data.
  */
 #ifndef _di_controller_interrupt_t_
   typedef struct {
     bool is_normal;
 
-    controller_thread_t *thread;
+    controller_global_t *global;
   } controller_interrupt_t;
 
   #define controller_interrupt_t_initialize { \
@@ -78,9 +78,9 @@ extern "C" {
     0, \
   }
 
-  #define macro_controller_interrupt_t_initialize_1(is_normal, thread) { \
+  #define macro_controller_interrupt_t_initialize_1(is_normal, global) { \
     is_normal, \
-    thread, \
+    global, \
   }
 #endif // _di_controller_interrupt_t_
 

@@ -4,36 +4,36 @@
 extern "C" {
 #endif
 
-#ifndef _di_controller_main_thread_instance_
-  void controller_main_thread_instance(const uint8_t is_normal, controller_instance_t * const instance) {
+#ifndef _di_controller_thread_instance_
+  void controller_thread_instance(const uint8_t is_normal, controller_instance_t * const instance) {
 
     if (!instance) return;
-    if (!controller_main_thread_is_enabled(is_normal, (controller_thread_t * const) instance->thread)) return;
+    if (!controller_thread_is_enabled(is_normal, (controller_thread_t * const) instance->thread)) return;
 
-    const f_status_t status = controller_main_rule_instance_do(controller_instance_option_asynchronous_e, instance);
+    const f_status_t status = controller_rule_instance_do(controller_instance_option_asynchronous_e, instance);
 
     // A forked child instance should de-allocate memory on exit.
     // It seems that this function doesn't return to the calling thread for a forked child instance, even with the "return 0;" below.
     if (status == F_child) {
       controller_thread_delete_simple(instance->main_thread);
       controller_process_delete(instance->program);
-      controller_main_delete(instance->main_data);
+      controller_delete(instance->main_data);
 
       // According to some man pages, pthread_exit() calls exit(0), so expliticly exit to ensure a non-zero code is returned when needed.
       if (instance->main_data->program.child) exit(instance->main_data->program.child);
     }
   }
-#endif // _di_controller_main_thread_instance_
+#endif // _di_controller_thread_instance_
 
-#ifndef _di_controller_main_thread_instance_cancel_
-  void controller_main_thread_instance_cancel(controller_instance_t * const global, const uint8_t is_normal, const uint8_t by) {
+#ifndef _di_controller_thread_instance_cancel_
+  void controller_thread_instance_cancel(controller_global_t * const global, const uint8_t is_normal, const uint8_t by) {
 
     if (!global) return;
 
     f_thread_mutex_lock(&global->thread->lock.cancel);
 
     // Only cancel when enabled.
-    if (!controller_main_thread_is_enabled(is_normal, global->thread)) {
+    if (!controller_thread_is_enabled(is_normal, global->thread)) {
       f_thread_mutex_unlock(&global->thread->lock.cancel);
 
       return;
@@ -67,7 +67,7 @@ extern "C" {
 
         if (!instance->id_thread) continue;
 
-        controller_main_thread_detach(&instance->id_thread);
+        controller_thread_detach(&instance->id_thread);
 
         instance->id_thread = 0;
       } // for
@@ -177,7 +177,7 @@ extern "C" {
               time.tv_sec = 0;
               time.tv_nsec = interval_nanoseconds;
 
-              f_time_sleep_spec(&time, 0);
+              f_time_sleep_spec(time, 0);
 
               lapsed += interval_milliseconds;
             }
@@ -202,7 +202,7 @@ extern "C" {
                   time.tv_sec = 0;
                   time.tv_nsec = interval_nanoseconds;
 
-                  f_time_sleep_spec(&time, 0);
+                  f_time_sleep_spec(time, 0);
 
                   lapsed += interval_milliseconds;
                 }
@@ -235,13 +235,13 @@ extern "C" {
               f_signal_send(F_signal_kill, instance->childs.array[j]);
 
               time.tv_sec = 0;
-              time.tv_nsec = controller_main_thread_exit_process_cancel_wait_d;
+              time.tv_nsec = controller_thread_exit_process_cancel_wait_d;
 
               instance->childs.array[j] = 0;
             }
           } // for
 
-          f_time_sleep_spec(&time, 0);
+          f_time_sleep_spec(time, 0);
         }
 
         f_thread_join(instance->id_thread, 0);
@@ -309,10 +309,10 @@ extern "C" {
 
     f_thread_mutex_unlock(&global->thread->lock.cancel);
   }
-#endif // _di_controller_main_thread_instance_cancel_
+#endif // _di_controller_thread_instance_cancel_
 
-#ifndef _di_controller_main_thread_instance_exit_
-  void controller_main_thread_instance_exit(controller_global_t * const global) {
+#ifndef _di_controller_thread_instance_exit_
+  void controller_thread_instance_exit(controller_global_t * const global) {
 
     if (!global) return;
 
@@ -330,16 +330,14 @@ extern "C" {
 
       // Restart the signal thread to allow for signals while operating the Exit.
       if (!global->thread->id_signal) {
-        f_thread_create(0, &global->thread->id_signal, &controller_main_thread_signal_other, (void *) global);
+        f_thread_create(0, &global->thread->id_signal, &controller_thread_signal_other, (void *) global);
       }
 
-      const controller_main_entry_t entry = macro_controller_main_entry_t_initialize_1(global, global->setting);
-
-      f_status_t status = f_thread_create(0, &global->thread->id_entry, &controller_main_thread_exit, (void *) &entry);
+      f_status_t status = f_thread_create(0, &global->thread->id_entry, &controller_thread_exit, (void *) global);
 
       if (F_status_is_error(status)) {
         if (global->main->program.error.verbosity > f_console_verbosity_quiet_e) {
-          controller_main_print_error_status(&global->main->program.error, macro_controller_f(f_thread_create), F_status_set_fine(status));
+          controller_print_error_status(&global->main->program.error, macro_controller_f(f_thread_create), F_status_set_fine(status));
         }
 
         if (F_status_is_error_not(f_thread_mutex_lock(&global->thread->lock.alert))) {
@@ -363,7 +361,7 @@ extern "C" {
             break;
           }
 
-          controller_main_time_now(controller_main_thread_exit_ready_timeout_seconds_d, controller_main_thread_exit_ready_timeout_nanoseconds_d, &time);
+          controller_time_now(controller_thread_exit_ready_timeout_seconds_d, controller_thread_exit_ready_timeout_nanoseconds_d, &time);
 
           status = f_thread_condition_wait_timed(&time, &global->thread->lock.alert_condition, &global->thread->lock.alert);
 
@@ -391,7 +389,7 @@ extern "C" {
         global->thread->id_signal = 0;
       }
 
-      controller_main_thread_instance_cancel(*global, F_false, controller_thread_cancel_exit_e);
+      controller_thread_instance_cancel(global, F_false, controller_thread_cancel_exit_e);
     }
     else {
       if (F_status_is_error_not(f_thread_mutex_lock(&global->thread->lock.alert))) {
@@ -404,33 +402,33 @@ extern "C" {
       }
     }
   }
-#endif // _di_controller_main_thread_instance_exit_
+#endif // _di_controller_thread_instance_exit_
 
-#ifndef _di_controller_main_thread_instance_normal_
-  void * controller_main_thread_instance_normal(void * const arguments) {
-
-    if (!arguments) return 0;
-
-    f_thread_cancel_state_set(PTHREAD_CANCEL_DEFERRED, 0);
-
-    controller_main_thread_instance(F_true, (controller_instance_t * const) arguments);
-
-    return 0;
-  }
-#endif // _di_controller_main_thread_instance_normal_
-
-#ifndef _di_controller_main_thread_instance_other_
-  void * controller_main_thread_instance_other(void * const arguments) {
+#ifndef _di_controller_thread_instance_normal_
+  void * controller_thread_instance_normal(void * const arguments) {
 
     if (!arguments) return 0;
 
     f_thread_cancel_state_set(PTHREAD_CANCEL_DEFERRED, 0);
 
-    controller_main_thread_instance(F_false, (controller_instance_t * const) arguments);
+    controller_thread_instance(F_true, (controller_instance_t * const) arguments);
 
     return 0;
   }
-#endif // _di_controller_main_thread_instance_other_
+#endif // _di_controller_thread_instance_normal_
+
+#ifndef _di_controller_thread_instance_other_
+  void * controller_thread_instance_other(void * const arguments) {
+
+    if (!arguments) return 0;
+
+    f_thread_cancel_state_set(PTHREAD_CANCEL_DEFERRED, 0);
+
+    controller_thread_instance(F_false, (controller_instance_t * const) arguments);
+
+    return 0;
+  }
+#endif // _di_controller_thread_instance_other_
 
 #ifdef __cplusplus
 } // extern "C"

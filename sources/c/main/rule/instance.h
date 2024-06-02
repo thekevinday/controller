@@ -28,14 +28,10 @@ extern "C" {
  *
  * The rule status will be updated by this function.
  *
- * @param global
- *   The global data.
- *
- *   Must not be NULL.
- *
- *   This does not alter global.main.setting.state.status.
  * @param instance
  *   The instance data for processing this rule.
+ *
+ *   Must not be NULL.
  *
  * @return
  *   F_okay on success.
@@ -45,12 +41,12 @@ extern "C" {
  *   F_interrupt (with error bit) on receiving a instance signal, such as an interrupt signal.
  *   F_lock (with error bit) if failed to re-establish read lock on instance->lock while returning.
  *
- *   Errors (with error bit) from: controller_main_lock_read().
- *   Errors (with error bit) from: controller_main_lock_write().
+ *   Errors (with error bit) from: controller_lock_read().
+ *   Errors (with error bit) from: controller_lock_write().
  */
-#ifndef _di_controller_main_rule_instance_
-  extern f_status_t controller_main_rule_instance(controller_global_t * const global, controller_instance_t * const instance);
-#endif // _di_controller_main_rule_instance_
+#ifndef _di_controller_rule_instance_
+  extern f_status_t controller_rule_instance(controller_instance_t * const instance);
+#endif // _di_controller_rule_instance_
 
 /**
  * Synchronously or asynchronously begin processing some rule.
@@ -88,22 +84,22 @@ extern "C" {
  *   F_interrupt (with error bit) on receiving a process signal, such as an interrupt signal.
  *   F_recurse (with error bit) on recursion error (the instance is already on the instance stack).
  *
- *   Status from: controller_main_rule_instance().
+ *   Status from: controller_rule_instance().
  *
- *   Errors (with error bit) from: controller_main_rule_instance().
+ *   Errors (with error bit) from: controller_rule_instance().
  *   Errors (with error bit) from: f_string_dynamic_append().
  *   Errors (with error bit) from: f_thread_create().
  *
- * @see controller_main_rule_instance()
+ * @see controller_rule_instance()
  * @see f_string_dynamic_append()
  * @see f_thread_create()
  */
-#ifndef _di_controller_main_rule_instance_begin_
-  extern f_status_t controller_main_rule_instance_begin(controller_global_t * const global, const uint8_t options_force, const f_string_static_t alias_rule, const uint8_t action, const uint8_t options, const uint8_t type, const f_number_unsigneds_t stack, const controller_cache_t cache);
-#endif // _di_controller_main_rule_instance_begin_
+#ifndef _di_controller_rule_instance_begin_
+  extern f_status_t controller_rule_instance_begin(controller_global_t * const global, const uint8_t options_force, const f_string_static_t alias_rule, const uint8_t action, const uint8_t options, const uint8_t type, const f_number_unsigneds_t stack, const controller_cache_t cache);
+#endif // _di_controller_rule_instance_begin_
 
 /**
- * Helper for calling controller_main_rule_instance().
+ * Helper for calling controller_rule_instance().
  *
  * This does all the preparation work that needs to be synchronously performed within the same thread.
  * This will copy the rule by the alias to the instance structure.
@@ -124,18 +120,18 @@ extern "C" {
  *   F_found_not (with error bit) if unable to for a instance for the given rule id.
  *   F_interrupt (with error bit) on receiving a process signal, such as an interrupt signal.
  *
- *   Status from: controller_main_rule_instance().
+ *   Status from: controller_rule_instance().
  *
  *   Errors (with error bit) from: controller_rule_copy().
- *   Errors (with error bit) from: controller_main_rule_instance().
+ *   Errors (with error bit) from: controller_rule_instance().
  *
  * @see controller_rule_copy()
- * @see controller_main_rule_instance()
- * @see controller_main_rule_instance_begin()
+ * @see controller_rule_instance()
+ * @see controller_rule_instance_begin()
  */
-#ifndef _di_controller_main_rule_instance_do_
-  extern f_status_t controller_main_rule_instance_do(const uint8_t options_force, controller_instance_t * const instance);
-#endif // _di_controller_main_rule_instance_do_
+#ifndef _di_controller_rule_instance_do_
+  extern f_status_t controller_rule_instance_do(const uint8_t options_force, controller_instance_t * const instance);
+#endif // _di_controller_rule_instance_do_
 
 #ifdef __cplusplus
 } // extern "C"
