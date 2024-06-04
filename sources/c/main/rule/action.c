@@ -32,7 +32,7 @@ extern "C" {
 #endif // _di_controller_rule_action_type_to_action_execute_type_
 
 #ifndef _di_controller_rule_action_read_
-  f_status_t controller_rule_action_read(controller_t * const main, const bool is_normal, const uint8_t type, const uint8_t method, controller_cache_t * const cache, controller_rule_item_t * const item, controller_rule_actions_t * const actions, f_range_t * const range) {
+  f_status_t controller_rule_action_read(controller_t * const main, controller_cache_t * const cache, const bool is_normal, const uint8_t type, const uint8_t method, controller_rule_item_t * const item, controller_rule_actions_t * const actions, f_range_t * const range) {
 
     if (!main || !item || !actions || !range) return F_status_set_error(F_parameter);
 
@@ -415,7 +415,7 @@ extern "C" {
 #endif // _di_controller_rule_action_read_
 
 #ifndef _di_controller_rule_action_read_rerun_number_
-  f_status_t controller_rule_action_read_rerun_number(controller_t * const main, const f_string_t name, controller_cache_t * const cache, f_number_unsigned_t * const index, f_number_unsigned_t * const number) {
+  f_status_t controller_rule_action_read_rerun_number(controller_t * const main, controller_cache_t * const cache, const f_string_t name, f_number_unsigned_t * const index, f_number_unsigned_t * const number) {
 
     f_status_t status = F_okay;
     f_number_signed_t parsed = 0;

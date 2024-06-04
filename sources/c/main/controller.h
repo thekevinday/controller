@@ -104,6 +104,7 @@
 #include <program/controller/main/convert.h>
 #include <program/controller/main/lock.h>
 #include <program/controller/main/path.h>
+#include <program/controller/main/perform.h>
 #include <program/controller/main/print/action.h>
 #include <program/controller/main/print/data.h>
 #include <program/controller/main/print/debug.h>

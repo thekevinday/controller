@@ -57,6 +57,10 @@ extern "C" {
  *   Must not be NULL.
  *
  *   This does not alter main.setting.state.status.
+ * @param cache
+ *   A structure for containing and caching relevant data.
+ *
+ *   Must not be NULL.
  * @param options_force
  *   Force the given instance options, only supporting a subset of instance options.
  *
@@ -73,8 +77,6 @@ extern "C" {
  * @param stack
  *   A stack representing the instances already running in this rule instance dependency tree.
  *   This is used to prevent circular dependencies.
- * @param cache
- *   A structure for containing and caching relevant data.
  *
  * @return
  *   F_okay on success.
@@ -95,7 +97,7 @@ extern "C" {
  * @see f_thread_create()
  */
 #ifndef _di_controller_rule_instance_begin_
-  extern f_status_t controller_rule_instance_begin(controller_t * const main, const uint8_t options_force, const f_string_static_t alias_rule, const uint8_t action, const uint8_t options, const uint8_t type, const f_number_unsigneds_t stack, const controller_cache_t cache);
+  extern f_status_t controller_rule_instance_begin(controller_t * const main, controller_cache_t * const cache, const uint8_t options_force, const f_string_static_t alias_rule, const uint8_t action, const uint8_t options, const uint8_t type, const f_number_unsigneds_t stack);
 #endif // _di_controller_rule_instance_begin_
 
 /**

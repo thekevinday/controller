@@ -44,7 +44,7 @@ extern "C" {
  * @see controller_rule_setting_read()
  */
 #ifndef _di_controller_print_rule_setting_read_error_
-  extern f_status_t controller_print_rule_setting_read_error(fl_print_t * const print, const f_string_t message, const f_number_unsigned_t index, const f_number_unsigned_t line_item, controller_thread_t * const thread, controller_cache_t * const cache);
+  extern f_status_t controller_print_rule_setting_read_error(fl_print_t * const print, controller_thread_t * const thread, controller_cache_t * const cache, const f_string_t message, const f_number_unsigned_t index, const f_number_unsigned_t line_item);
 #endif // _di_controller_print_rule_setting_read_error_
 
 /**
@@ -79,7 +79,7 @@ extern "C" {
  * @see controller_rule_setting_read()
  */
 #ifndef _di_controller_print_rule_setting_read_error_with_range_
-  extern f_status_t controller_print_rule_setting_read_error_with_range(fl_print_t * const print, const f_string_t before, const f_range_t range, const f_string_t after, const f_number_unsigned_t index, const f_number_unsigned_t line_item, controller_thread_t * const thread, controller_cache_t * const cache);
+  extern f_status_t controller_print_rule_setting_read_error_with_range(fl_print_t * const print, controller_thread_t * const thread, controller_cache_t * const cache, const f_string_t before, const f_range_t range, const f_string_t after, const f_number_unsigned_t index, const f_number_unsigned_t line_item);
 #endif // _di_controller_print_rule_setting_read_error_with_range_
 
 /**
@@ -154,7 +154,7 @@ extern "C" {
  *   F_output_not (with error bit) if setting is NULL.
  */
 #ifndef _di_controller_print_rule_setting_read_values_
-  extern f_status_t controller_print_rule_setting_read_values(controller_t * const main, const f_string_static_t name, const f_number_unsigned_t index, controller_cache_t * const cache);
+  extern f_status_t controller_print_rule_setting_read_values(controller_t * const main, controller_cache_t * const cache, const f_string_static_t name, const f_number_unsigned_t index);
 #endif // _di_controller_print_rule_setting_read_values_
 
 #ifdef __cplusplus

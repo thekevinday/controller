@@ -566,7 +566,7 @@ extern "C" {
 #endif // _di_controller_rule_instance_
 
 #ifndef _di_controller_rule_instance_begin_
-  f_status_t controller_rule_instance_begin(controller_t * const main, const uint8_t options_force, const f_string_static_t alias_rule, const uint8_t action, const uint8_t options, const uint8_t type, const f_number_unsigneds_t stack, const controller_cache_t cache) {
+  f_status_t controller_rule_instance_begin(controller_t * const main, controller_cache_t * const cache, const uint8_t options_force, const f_string_static_t alias_rule, const uint8_t action, const uint8_t options, const uint8_t type, const f_number_unsigneds_t stack) {
 
     if (!main) return F_status_set_error(F_parameter);
 

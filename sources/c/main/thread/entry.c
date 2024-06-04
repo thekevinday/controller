@@ -29,7 +29,7 @@ extern "C" {
       *status = controller_entry_preprocess(main, F_true);
 
       if ((main->program.parameters.array[controller_parameter_simulate_e].result & f_console_result_found_e) && (main->program.parameters.array[controller_parameter_validate_e].result & f_console_result_found_e)) {
-        controller_entry_setting_validate(main, F_true);
+        controller_print_entry_validate_setting(main, F_true);
       }
     }
 
@@ -145,10 +145,10 @@ extern "C" {
       main->process.ready = controller_process_ready_done_e;
     }
     else if (*status != F_child) {
-      *status = controller_entry_preprocess(main, F_false, cache);
+      *status = controller_entry_preprocess(main, F_false);
 
       if ((main->program.parameters.array[controller_parameter_simulate_e].result & f_console_result_found_e) && (main->program.parameters.array[controller_parameter_validate_e].result & f_console_result_found_e)) {
-        controller_entry_setting_validate(main, F_false, cache);
+        controller_print_entry_validate_setting(main, F_false);
       }
     }
 

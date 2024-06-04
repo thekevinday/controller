@@ -5,7 +5,7 @@ extern "C" {
 #endif
 
 #ifndef _di_controller_convert_user_id_
-  f_status_t controller_convert_user_id(const f_string_static_t buffer, const f_range_t range, controller_cache_t * const cache, uid_t * const id) {
+  f_status_t controller_convert_user_id(controller_cache_t * const cache, const f_string_static_t buffer, const f_range_t range, uid_t * const id) {
 
     f_number_unsigned_t number = 0;
 
@@ -32,7 +32,7 @@ extern "C" {
 #endif // _di_controller_convert_user_id_
 
 #ifndef _di_controller_convert_group_id_
-  f_status_t controller_convert_group_id(const f_string_static_t buffer, const f_range_t range, controller_cache_t * const cache, gid_t * const id) {
+  f_status_t controller_convert_group_id(controller_cache_t * const cache, const f_string_static_t buffer, const f_range_t range, gid_t * const id) {
 
     f_number_unsigned_t number = 0;
 
@@ -144,6 +144,30 @@ extern "C" {
     return f_string_empty_s;
   }
 #endif // _di_controller_convert_rule_action_type_string_
+
+#ifndef _di_controller_convert_rule_item_type_string_
+  f_string_static_t controller_convert_rule_item_type_string(const uint8_t type) {
+
+    switch (type) {
+      case controller_rule_item_type_command_e:
+        return controller_command_s;
+
+      case controller_rule_item_type_script_e:
+        return controller_script_s;
+
+      case controller_rule_item_type_service_e:
+        return controller_service_s;
+
+      case controller_rule_item_type_settings_e:
+        return controller_settings_s;
+
+      case controller_rule_item_type_utility_e:
+        return controller_utility_s;
+    }
+
+    return f_string_empty_s;
+  }
+#endif // _di_controller_convert_rule_item_type_string_
 
 #ifdef __cplusplus
 } // extern "C"

@@ -43,7 +43,7 @@ extern "C" {
  * @see f_rip_dynamic_partial_nulless()
  */
 #ifndef _di_controller_convert_user_id_
-  f_status_t controller_convert_user_id(const f_string_static_t buffer, const f_range_t range, controller_cache_t * const cache, uid_t * const id);
+  f_status_t controller_convert_user_id(controller_cache_t * const cache, const f_string_static_t buffer, const f_range_t range, uid_t * const id);
 #endif // _di_controller_convert_user_id_
 
 /**
@@ -73,7 +73,7 @@ extern "C" {
  * @see f_rip_dynamic_partial_nulless()
  */
 #ifndef _di_controller_convert_group_id_
-  f_status_t controller_convert_group_id(const f_string_static_t buffer, const f_range_t range, controller_cache_t * const cache, gid_t * const id);
+  f_status_t controller_convert_group_id(controller_cache_t * const cache, const f_string_static_t buffer, const f_range_t range, gid_t * const id);
 #endif // _di_controller_convert_group_id_
 
 /**
@@ -103,6 +103,20 @@ extern "C" {
 #ifndef _di_controller_convert_rule_action_type_string_
   extern f_string_static_t controller_convert_rule_action_type_string(const uint8_t type);
 #endif // _di_controller_convert_rule_action_type_string_
+
+/**
+ * Convert the rule item type code to the string representation.
+ *
+ * @param type
+ *   The rule item type code.
+ *
+ * @return
+ *   The string with used > 0 on success.
+ *   The string with used == 0 if no match was found.
+ */
+#ifndef _di_controller_convert_rule_item_type_string_
+  extern f_string_static_t controller_convert_rule_item_type_string(const uint8_t type);
+#endif // _di_controller_convert_rule_item_type_string_
 
 #ifdef __cplusplus
 } // extern "C"

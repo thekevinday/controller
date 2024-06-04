@@ -47,7 +47,7 @@ extern "C" {
  * @see f_string_dynamic_partial_append_nulless()
  */
 #ifndef _di_controller_rule_item_read_
-  extern f_status_t controller_rule_item_read(controller_t * const main, const bool is_normal, controller_cache_t * const cache, controller_rule_item_t * const item);
+  extern f_status_t controller_rule_item_read(controller_t * const main, controller_cache_t * const cache, const bool is_normal, controller_rule_item_t * const item);
 #endif // _di_controller_rule_item_read_
 
 #ifdef __cplusplus

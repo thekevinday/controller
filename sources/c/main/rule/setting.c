@@ -86,7 +86,7 @@ extern "C" {
 #endif // _di_controller_rule_setting_limit_type_name_
 
 #ifndef _di_controller_rule_setting_read_
-  f_status_t controller_rule_setting_read(controller_t * const main, const bool is_normal, controller_cache_t * const cache, controller_rule_t * const rule) {
+  f_status_t controller_rule_setting_read(controller_t * const main, controller_cache_t * const cache, const bool is_normal, controller_rule_t * const rule) {
 
     if (!main || !cache || !rule) return F_status_set_error(F_parameter);
 

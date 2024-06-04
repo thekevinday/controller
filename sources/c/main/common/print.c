@@ -6,6 +6,8 @@ extern "C" {
 
 #ifndef _di_controller_f_a_
   const f_string_t controller_f_a[] = {
+    "controller_convert_group_id",
+    "controller_convert_user_id",
     "controller_lock_create",
     "controller_rule_copy",
     "controller_path_canonical_relative",
@@ -41,6 +43,7 @@ extern "C" {
     "fl_fss_extended_object_read",
     "fl_iki_read",
     "fll_control_group_prepare",
+    "fll_execute_into",
     "fll_execute_program",
     "fll_fss_basic_list_read",
     "fll_fss_extended_read",

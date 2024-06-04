@@ -42,7 +42,7 @@ extern "C" {
  *   A structure for containing and caching relevant data.
  */
 #ifndef _di_controller_rule_validate_
-  extern void controller_rule_validate(controller_t * const main, const controller_rule_t rule, const uint8_t action, const uint8_t options, controller_cache_t * const cache);
+  extern void controller_rule_validate(controller_t * const main, controller_cache_t * const cache, const controller_rule_t rule, const uint8_t action, const uint8_t options);
 #endif // _di_controller_rule_validate_
 
 #ifdef __cplusplus

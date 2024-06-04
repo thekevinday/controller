@@ -5,7 +5,7 @@ extern "C" {
 #endif
 
 #ifndef _di_controller_rule_read_
-  f_status_t controller_rule_read(controller_t * const main, const bool is_normal, const f_string_static_t alias, controller_cache_t * const cache, controller_entry_t * const entry, controller_rule_t * const rule) {
+  f_status_t controller_rule_read(controller_t * const main, controller_cache_t * const cache, const bool is_normal, const f_string_static_t alias, controller_entry_t * const entry, controller_rule_t * const rule) {
 
     if (!main || !cache || !entry || !rule) return F_status_set_error(F_parameter);
 

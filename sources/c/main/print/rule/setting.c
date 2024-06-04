@@ -5,7 +5,7 @@ extern "C" {
 #endif
 
 #ifndef _di_controller_print_rule_setting_read_error_
-  f_status_t controller_print_rule_setting_read_error(fl_print_t * const print, const f_string_t message, const f_number_unsigned_t index, const f_number_unsigned_t line_item, controller_thread_t * const thread, controller_cache_t * const cache) {
+  f_status_t controller_print_rule_setting_read_error(fl_print_t * const print, controller_thread_t * const thread, controller_cache_t * const cache, const f_string_t message, const f_number_unsigned_t index, const f_number_unsigned_t line_item) {
 
     if (!print->custom) return F_status_set_error(F_output_not);
     if (print->verbosity == f_console_verbosity_quiet_e) return F_output_not;
@@ -33,7 +33,7 @@ extern "C" {
 #endif // _di_controller_print_rule_setting_read_error_
 
 #ifndef _di_controller_print_rule_setting_read_error_with_range_
-  f_status_t controller_print_rule_setting_read_error_with_range(fl_print_t * const print, const f_string_t before, const f_range_t range, const f_string_t after, const f_number_unsigned_t index, const f_number_unsigned_t line_item, controller_thread_t * const thread, controller_cache_t * const cache) {
+  f_status_t controller_print_rule_setting_read_error_with_range(fl_print_t * const print, controller_thread_t * const thread, controller_cache_t * const cache, const f_string_t before, const f_range_t range, const f_string_t after, const f_number_unsigned_t index, const f_number_unsigned_t line_item) {
 
     if (!print->custom) return F_status_set_error(F_output_not);
     if (print->verbosity == f_console_verbosity_quiet_e) return F_output_not;
@@ -113,7 +113,7 @@ extern "C" {
 #endif // _di_controller_print_rule_setting_read_value_
 
 #ifndef _di_controller_print_rule_setting_read_values_
-  f_status_t controller_print_rule_setting_read_values(controller_t * const main, const f_string_static_t name, const f_number_unsigned_t index, controller_cache_t * const cache) {
+  f_status_t controller_print_rule_setting_read_values(controller_t * const main, controller_cache_t * const cache, const f_string_static_t name, const f_number_unsigned_t index) {
 
     if (main->program.error.verbosity != f_console_verbosity_debug_e) {
       if (!(main->program.error.verbosity == f_console_verbosity_verbose_e && (main->program.parameters.array[controller_parameter_simulate_e].result & f_console_result_found_e))) {

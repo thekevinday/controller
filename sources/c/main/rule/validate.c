@@ -5,7 +5,7 @@ extern "C" {
 #endif
 
 #ifndef _di_controller_rule_validate_
-  void controller_rule_validate(controller_t * const main, const controller_rule_t rule, const uint8_t action, const uint8_t options, controller_cache_t * const cache) {
+  void controller_rule_validate(controller_t * const main, controller_cache_t * const cache, const controller_rule_t rule, const uint8_t action, const uint8_t options) {
 
     if (!main || !cache) return;
 
@@ -339,7 +339,7 @@ extern "C" {
         fl_print_format("  %[%r%] {%r", main->program.output.to, main->program.context.set.important, controller_item_s, main->program.context.set.important, f_string_eol_s);
 
         // Type.
-        fl_print_format("    %[%r%] %Q%r", main->program.output.to, main->program.context.set.important, controller_type_s, main->program.context.set.important, controller_rule_item_type_name(item->type), f_string_eol_s);
+        fl_print_format("    %[%r%] %Q%r", main->program.output.to, main->program.context.set.important, controller_type_s, main->program.context.set.important, controller_convert_rule_item_type_string(item->type), f_string_eol_s);
 
         // Pid file.
         fl_print_format("    %[%r%]", main->program.output.to, main->program.context.set.important, controller_pid_file_s, main->program.context.set.important);
