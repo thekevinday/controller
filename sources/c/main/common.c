@@ -129,21 +129,21 @@ extern "C" {
     {
       const uint8_t codes[] = {
         controller_parameter_cgroup_e,
-        controller_parameter_daemon_e,
         controller_parameter_pid_e,
         controller_parameter_settings_e,
+        controller_parameter_socket_e,
       };
 
       const f_string_static_t strings[] = {
         controller_long_cgroup_s,
-        controller_long_daemon_s,
         controller_long_pid_s,
         controller_long_settings_s,
+        controller_long_socket_s,
       };
 
       for (index = 0; index < 4; ++index) {
 
-        if (main->program.parameters.array[controller_parameter_settings_e].result & codes[index]) {
+        if (main->program.parameters.array[codes[index]].result & f_console_result_found_e) {
           main->setting.state.status = F_status_set_error(F_parameter);
 
           fll_program_print_error_parameter_missing_value(&main->program.error, f_console_symbol_long_normal_s, strings[index]);
@@ -193,7 +193,11 @@ extern "C" {
       }
     }
 
-    if (!main->process.path_pid.used && !main->program.parameters.array[controller_parameter_pid_e].locations.used) {
+    if (main->program.parameters.array[controller_parameter_pid_e].result & f_console_result_value_e) {
+      main->setting.flag |= controller_main_flag_pid_e;
+    }
+
+    if (!main->process.path_pid.used && !(main->setting.flag & controller_main_flag_pid_e)) {
       main->setting.state.status = f_string_dynamic_append(controller_default_path_pid_s, &main->process.path_pid);
 
       if (F_status_is_error_not(main->setting.state.status)) {
@@ -284,6 +288,10 @@ extern "C" {
 
     if (main->program.parameters.array[controller_parameter_daemon_e].result & f_console_result_found_e) {
       main->setting.flag |= controller_main_flag_daemon_e;
+    }
+
+    if (main->program.parameters.array[controller_parameter_simulate_e].result & f_console_result_found_e) {
+      main->setting.flag |= controller_main_flag_simulate_e;
     }
 
     if (main->program.parameters.array[controller_parameter_validate_e].result & f_console_result_found_e) {

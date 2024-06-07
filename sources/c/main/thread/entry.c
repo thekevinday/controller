@@ -28,13 +28,13 @@ extern "C" {
     else if (*status != F_child) {
       *status = controller_entry_preprocess(main, F_true);
 
-      if ((main->program.parameters.array[controller_parameter_simulate_e].result & f_console_result_found_e) && (main->program.parameters.array[controller_parameter_validate_e].result & f_console_result_found_e)) {
+      if ((main->setting.flag & controller_main_flag_simulate_e) && (main->setting.flag & controller_main_flag_validate_e)) {
         controller_print_entry_validate_setting(main, F_true);
       }
     }
 
     if (F_status_is_error_not(*status) && *status != F_child) {
-      if (!(main->program.parameters.array[controller_parameter_validate_e].result & f_console_result_found_e) || (main->program.parameters.array[controller_parameter_simulate_e].result & f_console_result_found_e)) {
+      if (!(main->setting.flag & controller_main_flag_validate_e) || (main->setting.flag & controller_main_flag_simulate_e)) {
 
         if (main->process.entry.pid == controller_entry_pid_require_e && f_file_exists(main->process.path_pid, F_true) == F_true) {
           *status = F_status_set_error(F_available_not);
@@ -147,13 +147,13 @@ extern "C" {
     else if (*status != F_child) {
       *status = controller_entry_preprocess(main, F_false);
 
-      if ((main->program.parameters.array[controller_parameter_simulate_e].result & f_console_result_found_e) && (main->program.parameters.array[controller_parameter_validate_e].result & f_console_result_found_e)) {
+      if ((main->setting.flag & controller_main_flag_simulate_e) && (main->setting.flag & controller_main_flag_validate_e)) {
         controller_print_entry_validate_setting(main, F_false);
       }
     }
 
     if (F_status_is_error_not(*status) && *status != F_child && *status != F_file_found_not) {
-      if (!(main->program.parameters.array[controller_parameter_validate_e].result & f_console_result_found_e) || (main->program.parameters.array[controller_parameter_simulate_e].result & f_console_result_found_e)) {
+      if (!(main->setting.flag & controller_main_flag_validate_e) || (main->setting.flag & controller_main_flag_simulate_e)) {
 
         *status = controller_entry_process(main, F_false, F_false);
 

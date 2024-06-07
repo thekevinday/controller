@@ -109,7 +109,7 @@ extern "C" {
 
     f_file_stream_lock(print->to);
 
-    controller_entry_print_error_cache(print->to, main->thread.cache.action, is_entry);
+    controller_print_entry_error_cache(print->to, &main->thread.cache.action, is_entry);
 
     controller_unlock_print_flush(print->to, &main->thread);
   }
@@ -146,7 +146,7 @@ extern "C" {
 
     f_file_stream_lock(print->to);
 
-    controller_entry_print_error_cache(print->to, main->thread.cache.action, is_entry);
+    controller_print_entry_error_cache(print->to, &main->thread.cache.action, is_entry);
 
     controller_unlock_print_flush(print->to, &main->thread);
   }

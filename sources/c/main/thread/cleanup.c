@@ -16,7 +16,7 @@ extern "C" {
     if (main->thread.enabled != controller_thread_enabled_e) return 0;
 
     const f_time_spec_t delay = {
-      .tv_sec = (main->program.parameters.array[controller_parameter_simulate_e].result & f_console_result_found_e)
+      .tv_sec = (main->setting.flag & controller_main_flag_simulate_e)
         ? controller_thread_cleanup_interval_short_d
         : controller_thread_cleanup_interval_long_d,
       .tv_nsec = 0,

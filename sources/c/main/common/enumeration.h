@@ -29,7 +29,9 @@ extern "C" {
  *   - fine:                   Check if status is "fine".
  *   - help:                   Print help.
  *   - interruptible:          The process is interruptible.
+ *   - pid:                    Designate that a custom PID is specified.
  *   - pipe:                   Use the input pipe.
+ *   - simulate:               Perform simulation of rules rather than execution.
  *   - validate:               Perform validation of rules rather than execution.
  *   - version:                Print version.
  *   - version_copyright_help: A helper flag representing version, copyright, and help flag bits being set.
@@ -44,11 +46,13 @@ extern "C" {
     controller_main_flag_fine_e                   = 0x8,
     controller_main_flag_help_e                   = 0x10,
     controller_main_flag_interruptible_e          = 0x20,
-    controller_main_flag_pipe_e                   = 0x40,
-    controller_main_flag_validate_e               = 0x80,
-    controller_main_flag_version_e                = 0x100,
-    controller_main_flag_version_copyright_help_e = 0x111,
-    controller_main_flag_warning_e                = 0x200,
+    controller_main_flag_pid_e                    = 0x40,
+    controller_main_flag_pipe_e                   = 0x80,
+    controller_main_flag_simulate_e               = 0x100,
+    controller_main_flag_validate_e               = 0x200,
+    controller_main_flag_version_e                = 0x400,
+    controller_main_flag_version_copyright_help_e = 0x411,
+    controller_main_flag_warning_e                = 0x800,
   }; // enum
 #endif // _di_controller_main_flag_e_
 

@@ -35,7 +35,7 @@ extern "C" {
     status = f_memory_array_increase(controller_common_allocation_small_d, sizeof(f_number_unsigned_t), (void **) &cache->ats.array, &cache->ats.used, &cache->ats.size);
 
     if (F_status_is_error(status)) {
-      controller_entry_print_error(is_entry, &main->program.error, cache->action, F_status_set_fine(status), macro_controller_f(f_memory_array_increase), F_true, &main->thread);
+      controller_print_entry_error(&main->program.error, cache->action, is_entry, F_status_set_fine(status), macro_controller_f(f_memory_array_increase), F_true);
 
       return status;
     }
@@ -51,20 +51,13 @@ extern "C" {
     status = f_string_dynamic_append_nulless(entry->items.array[cache->ats.array[0]].name, &cache->action.name_item);
 
     if (F_status_is_error(status)) {
-      controller_entry_print_error(is_entry, &main->program.error, cache->action, F_status_set_fine(status), macro_controller_f(f_string_dynamic_append_nulless), F_true, &main->thread);
+      controller_print_entry_error(&main->program.error, cache->action, is_entry, F_status_set_fine(status), macro_controller_f(f_string_dynamic_append_nulless), F_true);
 
       return status;
     }
 
-    if ((main->program.parameters.array[controller_parameter_simulate_e].result & f_console_result_found_e) || main->program.error.verbosity == f_console_verbosity_verbose_e || main->program.error.verbosity == f_console_verbosity_debug_e) {
-      if ((main->program.error.verbosity > f_console_verbosity_error_e)) {
-        controller_lock_print(main->program.output.to, &main->thread);
-
-        fl_print_format("%rProcessing %r%r item '", main->program.output.to, f_string_eol_s, failsafe ? controller_entry_print_failsafe_s : f_string_empty_s, is_entry ? controller_entry_s : controller_exit_s);
-        fl_print_format("%[%Q%]'.%r", main->program.output.to, main->program.context.set.title, cache->action.name_item, main->program.context.set.notable, f_string_eol_s);
-
-        controller_unlock_print_flush(main->program.output.to, &main->thread);
-      }
+    if ((main->setting.flag & controller_main_flag_simulate_e) || main->program.message.verbosity > f_console_verbosity_normal_e) {
+      controller_print_entry_message_item_process(&main->program.message, is_entry, failsafe ? controller_print_entry_failsafe_s : f_string_empty_s, cache->action.name_item);
     }
 
     // The pre-process determines if ready is explicitly specified within the entry file and if it is not start as ready.
@@ -87,33 +80,14 @@ extern "C" {
         status = f_string_dynamic_append_nulless(controller_entry_action_type_name(entry_action->type), &cache->action.name_action);
 
         if (F_status_is_error(status)) {
-          controller_entry_print_error(is_entry, &main->program.error, cache->action, F_status_set_fine(status), macro_controller_f(f_string_dynamic_append_nulless), F_true, &main->thread);
+          controller_print_entry_error(&main->program.error, cache->action, is_entry, F_status_set_fine(status), macro_controller_f(f_string_dynamic_append_nulless), F_true);
 
           return status;
         }
 
         if (F_status_is_error(entry_action->status)) {
-          if (main->program.parameters.array[controller_parameter_simulate_e].result & f_console_result_found_e) {
-            if (main->program.error.verbosity > f_console_verbosity_quiet_e) {
-              controller_lock_print(main->program.output.to, &main->thread);
-
-              fl_print_format("%rThe %r item action '", main->program.output.to, f_string_eol_s, is_entry ? controller_entry_s : controller_exit_s);
-              fl_print_format(f_string_format_Q_single_s.string, main->program.output.to, main->program.context.set.title, cache->action.name_action, main->program.context.set.title);
-
-              if (entry_action->parameters.used) {
-                fl_print_format(" %[", main->program.output.to, main->program.context.set.notable);
-
-                controller_entry_action_parameters_print(&main->program.output, *entry_action);
-
-                fl_print_format("%]", main->program.output.to, main->program.context.set.notable);
-              }
-
-              fl_print_format("' is %[%r%] and is in a ", main->program.output.to, main->program.context.set.notable, entry_action->code & controller_entry_rule_code_require_d ? "required" : "optional", main->program.context.set.notable);
-
-              fl_print_format("%[failed%] state, skipping.%r", main->program.output.to, main->program.context.set.notable, main->program.context.set.notable, main->program.context.set.notable, f_string_eol_s);
-
-              controller_unlock_print_flush(main->program.output.to, &main->thread);
-            }
+          if (main->setting.flag & controller_main_flag_simulate_e) {
+            controller_print_entry_message_action_state_failed(&main->program.message, entry_action, is_entry, cache->action.name_action);
           }
           else {
             if ((entry_action->code & controller_entry_rule_code_require_d) && main->program.error.verbosity > f_console_verbosity_quiet_e || !(entry_action->code & controller_entry_rule_code_require_d) && (main->program.warning.verbosity == f_console_verbosity_verbose_e || main->program.warning.verbosity == f_console_verbosity_debug_e)) {
@@ -127,39 +101,7 @@ extern "C" {
               }
 
               if (print) {
-                controller_lock_print(print->to, &main->thread);
-
-                fl_print_format("%r%[%QThe %r item action '%]", print->to, f_string_eol_s, print->context, print->prefix, is_entry ? controller_entry_s : controller_exit_s, print->context);
-                fl_print_format(f_string_format_Q_single_s.string, print->to, print->notable, cache->action.name_action, print->notable);
-
-
-                if (entry_action->parameters.used) {
-                  fl_print_format(" %[", print->to, main->program.context.set.notable);
-
-                  controller_entry_action_parameters_print(print, *entry_action);
-
-                  fl_print_format("%]", print->to, main->program.context.set.notable);
-                }
-
-                if (entry_action->code & controller_entry_rule_code_require_d) {
-                  fl_print_format("%[' is%] %[required%]", print->to, print->context, print->context, print->notable, print->notable);
-                }
-                else {
-                  fl_print_format("%[' is%] %[optional%]", print->to, print->context, print->context, print->notable, print->notable);
-                }
-
-                fl_print_format(" %[and is in a%] %[failed%]", print->to, print->context, print->context, print->notable, print->notable);
-
-                if (entry_action->code & controller_entry_rule_code_require_d) {
-                  fl_print_format(" %[state, aborting.%]%r", print->to, print->context, print->context, f_string_eol_s);
-                }
-                else {
-                  fl_print_format(" %[state, skipping.%]%r", print->to, print->context, print->context, f_string_eol_s);
-                }
-
-                controller_entry_print_error_cache(is_entry, print, cache->action);
-
-                controller_unlock_print_flush(print->to, &main->thread);
+                controller_print_entry_message_action_state(print, &cache->action, entry_action, is_entry, cache->action.name_action);
               }
             }
 
@@ -173,42 +115,24 @@ extern "C" {
 
         if (entry_action->type == controller_entry_action_type_ready_e) {
           if ((entry_action->code & controller_entry_rule_code_wait_d) || main->setting.ready == controller_setting_ready_wait_e) {
-            if ((main->program.parameters.array[controller_parameter_simulate_e].result & f_console_result_found_e) || main->program.error.verbosity == f_console_verbosity_verbose_e || main->program.error.verbosity == f_console_verbosity_debug_e || entry->show == controller_entry_show_init_e) {
-              if (main->program.output.verbosity != f_console_verbosity_quiet_e && main->program.error.verbosity != f_console_verbosity_error_e) {
-                controller_lock_print(main->program.output.to, &main->thread);
-
-                fl_print_format("%rWaiting before processing %r item action '", main->program.output.to, f_string_eol_s, is_entry ? controller_entry_s : controller_exit_s);
-                fl_print_format(f_string_format_r_single_s.string, main->program.output.to, main->program.context.set.title, controller_ready_s, main->program.context.set.title);
-                fl_print_format("'.%r", main->program.output.to, f_string_eol_s);
-
-                controller_unlock_print_flush(main->program.output.to, &main->thread);
-              }
+            if ((main->setting.flag & controller_main_flag_simulate_e) || main->program.error.verbosity == f_console_verbosity_verbose_e || main->program.error.verbosity == f_console_verbosity_debug_e || entry->show == controller_entry_show_init_e) {
+              controller_print_entry_message_item_action_wait(&main->program.output, is_entry, controller_ready_s);
             }
 
-            if (!(main->program.parameters.array[controller_parameter_validate_e].result & f_console_result_found_e)) {
+            if (!(main->setting.flag & controller_main_flag_validate_e)) {
               status = controller_rule_wait_all(main, is_entry, F_false);
               if (F_status_is_error(status)) return status;
             }
           }
 
           if (main->setting.ready == controller_setting_ready_yes_e) {
-            if ((main->program.parameters.array[controller_parameter_simulate_e].result & f_console_result_found_e) || main->program.error.verbosity == f_console_verbosity_verbose_e || main->program.error.verbosity == f_console_verbosity_debug_e) {
-              if (main->program.output.verbosity != f_console_verbosity_quiet_e && main->program.error.verbosity != f_console_verbosity_error_e) {
-                controller_lock_print(main->program.output.to, &main->thread);
-
-                fl_print_format("%rIgnoring %r item action '", main->program.output.to, f_string_eol_s, is_entry ? controller_entry_s : controller_exit_s);
-                fl_print_format(f_string_format_r_single_s.string, main->program.output.to, main->program.context.set.title, controller_ready_s, main->program.context.set.title);
-                fl_print_format("', state already is ready.%r", main->program.output.to, f_string_eol_s);
-
-                controller_unlock_print_flush(main->program.output.to, &main->thread);
-              }
+            if ((main->setting.flag & controller_main_flag_simulate_e) || main->program.error.verbosity == f_console_verbosity_verbose_e || main->program.error.verbosity == f_console_verbosity_debug_e) {
+              controller_print_entry_message_item_action_ready(&main->program.output, is_entry, controller_ready_s);
             }
           }
           else {
-            if (!failsafe && (main->program.error.verbosity == f_console_verbosity_verbose_e || entry->show == controller_entry_show_init_e) && !(main->program.parameters.array[controller_parameter_simulate_e].result & f_console_result_found_e)) {
-              if (main->program.error.verbosity > f_console_verbosity_error_e) {
-                fl_print_format("%rState is now '%[%r%]'.%r", main->program.output.to, f_string_eol_s, main->program.context.set.notable, controller_ready_s, main->program.context.set.notable, f_string_eol_s);
-              }
+            if (!failsafe && (main->program.error.verbosity == f_console_verbosity_verbose_e || entry->show == controller_entry_show_init_e) && !(main->setting.flag & controller_main_flag_simulate_e)) {
+              controller_print_entry_message_state(&main->program.output, is_entry, controller_ready_s);
             }
 
             status = controller_perform_ready(main, is_entry);
@@ -219,17 +143,7 @@ extern "C" {
           if (entry_action->number == 0 || entry_action->number >= entry->items.used || failsafe && entry_action->number == main->setting.failsafe_item_id) {
 
             // This should not happen if the pre-process is working as intended, but in case it doesn't, return a critical error to prevent infinite recursion and similar errors.
-            if (main->program.error.verbosity > f_console_verbosity_quiet_e) {
-              controller_lock_print(main->program.error.to, &main->thread);
-
-              fl_print_format("%r%[Invalid %r item index '%]", main->program.error.to, f_string_eol_s, main->program.error.context, is_entry ? controller_entry_s : controller_exit_s, main->program.error.context);
-              fl_print_format("%[%un%]", main->program.error.to, main->program.error.notable, entry_action->number, main->program.error.notable);
-              fl_print_format("%[' detected.%]%r", main->program.error.to, main->program.error.context, main->program.error.context, f_string_eol_s);
-
-              controller_entry_print_error_cache(is_entry, &main->program.error, cache->action);
-
-              controller_unlock_print_flush(main->program.error.to, &main->thread);
-            }
+            controller_print_entry_error_item_invalid(&main->program.error, &cache->action, is_entry, entry_action->number);
 
             return F_status_is_error(F_critical);
           }
@@ -237,7 +151,7 @@ extern "C" {
           status = f_memory_array_increase(controller_common_allocation_small_d, sizeof(f_number_unsigned_t), (void **) &cache->ats.array, &cache->ats.used, &cache->ats.size);
 
           if (F_status_is_error(status)) {
-            controller_entry_print_error(is_entry, &main->program.error, cache->action, F_status_set_fine(status), macro_controller_f(f_memory_array_increase), F_true, &main->thread);
+            controller_print_entry_error(&main->program.error, cache->action, is_entry, F_status_set_fine(status), macro_controller_f(f_memory_array_increase), F_true);
 
             return status;
           }
@@ -260,21 +174,13 @@ extern "C" {
           status = f_string_dynamic_append_nulless(entry->items.array[cache->ats.array[at_i]].name, &cache->action.name_item);
 
           if (F_status_is_error(status)) {
-            controller_entry_print_error(is_entry, &main->program.error, cache->action, F_status_set_fine(status), macro_controller_f(f_string_dynamic_append_nulless), F_true, &main->thread);
+            controller_print_entry_error(&main->program.error, cache->action, is_entry, F_status_set_fine(status), macro_controller_f(f_string_dynamic_append_nulless), F_true);
 
             return status;
           }
 
-          if ((main->program.parameters.array[controller_parameter_simulate_e].result & f_console_result_found_e) || main->program.error.verbosity == f_console_verbosity_verbose_e || main->program.error.verbosity == f_console_verbosity_debug_e) {
-            if (main->program.output.verbosity != f_console_verbosity_quiet_e && main->program.error.verbosity != f_console_verbosity_error_e) {
-              controller_lock_print(main->program.output.to, &main->thread);
-
-              fl_print_format("%rProcessing %r item '", main->program.output.to, f_string_eol_s, is_entry ? controller_entry_s : controller_exit_s);
-              fl_print_format(f_string_format_Q_single_s.string, main->program.output.to, main->program.context.set.title, cache->action.name_item, main->program.context.set.title);
-              fl_print_format("'.%r", main->program.output.to, f_string_eol_s);
-
-              controller_unlock_print_flush(main->program.output.to, &main->thread);
-            }
+          if ((main->setting.flag & controller_main_flag_simulate_e) || main->program.message.verbosity > f_console_verbosity_normal_e) {
+            controller_print_entry_message_item_process(&main->program.message, is_entry, f_string_empty_s, cache->action.name_item);
           }
 
           // Exit inner loop to force restarting and start processing the requested item.
@@ -294,7 +200,7 @@ extern "C" {
           f_thread_unlock(&main->thread.lock.rule);
 
           if (F_status_is_error(status)) {
-            controller_entry_print_error(is_entry, &main->program.error, cache->action, F_status_set_fine(status), macro_controller_f(controller_rules_increase), F_true, &main->thread);
+            controller_print_entry_error(&main->program.error, cache->action, is_entry, F_status_set_fine(status), macro_controller_f(controller_rules_increase), F_true);
 
             return status;
           }
@@ -321,14 +227,14 @@ extern "C" {
 
           f_thread_unlock(&main->thread.lock.rule);
 
-          if ((main->program.parameters.array[controller_parameter_simulate_e].result & f_console_result_found_e) || main->program.error.verbosity == f_console_verbosity_verbose_e || main->program.error.verbosity == f_console_verbosity_debug_e || (entry->show == controller_entry_show_init_e && entry_action->type != controller_entry_action_type_consider_e)) {
+          if ((main->setting.flag & controller_main_flag_simulate_e) || main->program.error.verbosity == f_console_verbosity_verbose_e || main->program.error.verbosity == f_console_verbosity_debug_e || (entry->show == controller_entry_show_init_e && entry_action->type != controller_entry_action_type_consider_e)) {
             if (main->program.output.verbosity != f_console_verbosity_quiet_e && main->program.error.verbosity != f_console_verbosity_error_e) {
               controller_lock_print(main->program.output.to, &main->thread);
 
-              fl_print_format("%r%r %r item rule ", main->program.output.to, f_string_eol_s, entry_action->type == controller_entry_action_type_consider_e ? controller_entry_print_considering_s : controller_entry_print_processing_s, is_entry ? controller_entry_s : controller_exit_s);
+              fl_print_format("%r%r %r item rule ", main->program.output.to, f_string_eol_s, entry_action->type == controller_entry_action_type_consider_e ? controller_print_entry_considering_s : controller_print_entry_processing_s, is_entry ? controller_entry_s : controller_exit_s);
               fl_print_format("'%[%Q%]'", main->program.output.to, main->program.context.set.title, alias_rule, main->program.context.set.title);
 
-              if (entry->show == controller_entry_show_init_e && !(main->program.parameters.array[controller_parameter_simulate_e].result & f_console_result_found_e)) {
+              if (entry->show == controller_entry_show_init_e && !(main->setting.flag & controller_main_flag_simulate_e)) {
                 fl_print_format(" [%[%r%]]", main->program.output.to, main->program.context.set.notable, entry_action->code == controller_entry_rule_code_asynchronous_d ? controller_asynchronous_s : controller_synchronous_s, main->program.context.set.notable);
 
                 if (entry_action->code == controller_entry_rule_code_wait_d) {
@@ -405,7 +311,7 @@ extern "C" {
               if (main->program.error.verbosity > f_console_verbosity_quiet_e) {
                 controller_lock_print(main->program.error.to, &main->thread);
 
-                controller_entry_print_error_cache(is_entry, &main->program.error, cache->action);
+                controller_print_entry_error_cache(is_entry, &main->program.error, &cache->action);
 
                 controller_unlock_print_flush(main->program.error.to, &main->thread);
               }
@@ -413,7 +319,7 @@ extern "C" {
               // Designate the action as failed.
               entry_action->status = F_status_set_error(F_failure);
 
-              if (!(main->program.parameters.array[controller_parameter_simulate_e].result & f_console_result_found_e)) {
+              if (!(main->setting.flag & controller_main_flag_simulate_e)) {
                 f_thread_unlock(&main->thread.lock.rule);
 
                 if (entry_action->code & controller_entry_rule_code_require_d) {
@@ -436,7 +342,7 @@ extern "C" {
             options_force = 0;
             options_process = 0;
 
-            if (main->program.parameters.array[controller_parameter_simulate_e].result & f_console_result_found_e) {
+            if (main->setting.flag & controller_main_flag_simulate_e) {
               options_process |= controller_process_option_simulate_d;
             }
 
@@ -448,12 +354,12 @@ extern "C" {
               options_process |= controller_process_option_wait_d;
             }
 
-            if (main->program.parameters.array[controller_parameter_validate_e].result & f_console_result_found_e) {
+            if (main->setting.flag & controller_main_flag_validate_e) {
               options_process |= controller_process_option_validate_d;
             }
 
             if (entry_action->code & controller_entry_rule_code_asynchronous_d) {
-              if (!(main->program.parameters.array[controller_parameter_validate_e].result & f_console_result_found_e)) {
+              if (!(main->setting.flag & controller_main_flag_validate_e)) {
                 options_force |= controller_process_option_asynchronous_d;
               }
 
@@ -466,34 +372,17 @@ extern "C" {
               break;
             }
 
-            if (F_status_is_error(status) && !(main->program.parameters.array[controller_parameter_simulate_e].result & f_console_result_found_e) && (entry_action->code & controller_entry_rule_code_require_d)) {
+            if (F_status_is_error(status) && !(main->setting.flag & controller_main_flag_simulate_e) && (entry_action->code & controller_entry_rule_code_require_d)) {
               return F_status_set_error(F_require);
             }
           }
         }
         else if (entry_action->type == controller_entry_action_type_execute_e) {
-          if ((main->program.parameters.array[controller_parameter_simulate_e].result & f_console_result_found_e) || main->program.error.verbosity == f_console_verbosity_verbose_e || main->program.error.verbosity == f_console_verbosity_debug_e || entry->show == controller_entry_show_init_e) {
-            if (main->program.output.verbosity != f_console_verbosity_quiet_e && main->program.error.verbosity != f_console_verbosity_error_e) {
-              controller_lock_print(main->program.output.to, &main->thread);
-
-              fl_print_format("%r%Q is executing '", main->program.output.to, f_string_eol_s, is_entry ? controller_entry_s : controller_exit_s);
-
-              for (f_number_unsigned_t k = 0; k < entry_action->parameters.used; ++k) {
-
-                fl_print_format(f_string_format_Q_single_s.string, main->program.output.to, main->program.context.set.title, entry_action->parameters.array[k], main->program.context.set.title);
-
-                if (k + 1 < entry_action->parameters.used) {
-                  f_print_dynamic_raw(f_string_space_s, main->program.output.to);
-                }
-              } // for
-
-              fl_print_format("'.%r", main->program.output.to, f_string_eol_s);
-
-              controller_unlock_print_flush(main->program.output.to, &main->thread);
-            }
+          if ((main->setting.flag & controller_main_flag_simulate_e) || main->program.message.verbosity > f_console_verbosity_normal_e || entry->show == controller_entry_show_init_e) {
+            controller_print_entry_message_item_executing(&main->program.message, is_entry, &entry_action->parameters);
           }
 
-          if (main->program.parameters.array[controller_parameter_simulate_e].result & f_console_result_found_e) return F_execute;
+          if (main->setting.flag & controller_main_flag_simulate_e) return F_execute;
 
           controller_thread_process_cancel(main, is_entry, is_entry ? controller_thread_cancel_execute_e : controller_thread_cancel_exit_execute_e);
 
@@ -508,36 +397,16 @@ extern "C" {
 
           if (F_status_is_error(status)) {
             if (F_status_set_fine(status) == F_file_found_not) {
-              if (main->program.error.verbosity > f_console_verbosity_quiet_e) {
-                controller_lock_print(main->program.error.to, &main->thread);
-
-                fl_print_format("%r%[%QExecution failed, unable to find program or script '%]", main->program.error.to, f_string_eol_s, main->program.error.context, main->program.error.prefix, main->program.error.context);
-                fl_print_format(f_string_format_Q_single_s.string, main->program.error.to, main->program.error.notable, entry_action->parameters.array[0], main->program.error.notable);
-                fl_print_format(f_string_format_sentence_end_quote_s.string, main->program.error.to, main->program.error.context, main->program.error.context, f_string_eol_s);
-
-                controller_entry_print_error_cache(is_entry, &main->program.error, cache->action);
-
-                controller_unlock_print_flush(main->program.error.to, &main->thread);
-              }
+              controller_print_entry_error_item_action_execution_missing(&main->program.error, &cache->action, is_entry, entry_action->parameters.array[0]);
             }
             else {
-              controller_entry_print_error(is_entry, &main->program.error, cache->action, F_status_set_fine(status), macro_controller_f(fll_execute_into), F_true, &main->thread);
+              controller_print_entry_error(&main->program.error, cache->action, is_entry, F_status_set_fine(status), macro_controller_f(fll_execute_into), F_true);
             }
 
             return F_status_set_error(F_execute);
           }
           else if (result != 0) {
-            if (main->program.error.verbosity > f_console_verbosity_quiet_e) {
-              controller_lock_print(main->program.error.to, &main->thread);
-
-              fl_print_format("%r%[%QExecution failed with return value of '%]", main->program.error.to, f_string_eol_s, main->program.error.context, main->program.error.prefix, main->program.error.context);
-              fl_print_format("%[%i%]", main->program.error.to, main->program.error.notable, result, main->program.error.notable);
-              fl_print_format("$['.%]%r", main->program.error.to, main->program.error.context, main->program.error.context, f_string_eol_s);
-
-              controller_entry_print_error_cache(is_entry, &main->program.error, cache->action);
-
-              controller_unlock_print_flush(main->program.error.to, &main->thread);
-            }
+            controller_print_entry_error_item_action_execution_failure(&main->program.error, &cache->action, is_entry, result);
 
             return F_status_set_error(F_execute);
           }
@@ -548,52 +417,34 @@ extern "C" {
           if (entry_action->code == controller_entry_timeout_code_exit_d) {
             entry->timeout_exit = entry_action->number;
 
-            controller_entry_preprocess_print_simulate_setting_value(main, is_entry, controller_timeout_s, controller_exit_s, entry->items.array[main->setting.failsafe_item_id].name, controller_entry_print_suffix_megatime_s);
+            controller_entry_preprocess_print_simulate_setting_value(main, is_entry, controller_timeout_s, controller_exit_s, entry->items.array[main->setting.failsafe_item_id].name, controller_print_entry_suffix_megatime_s);
           }
           else if (entry_action->code == controller_entry_timeout_code_kill_d) {
             entry->timeout_kill = entry_action->number;
 
-            controller_entry_preprocess_print_simulate_setting_value(main, is_entry, controller_timeout_s, controller_kill_s, entry->items.array[main->setting.failsafe_item_id].name, controller_entry_print_suffix_megatime_s);
+            controller_entry_preprocess_print_simulate_setting_value(main, is_entry, controller_timeout_s, controller_kill_s, entry->items.array[main->setting.failsafe_item_id].name, controller_print_entry_suffix_megatime_s);
           }
           else if (entry_action->code == controller_entry_timeout_code_start_d) {
             entry->timeout_start = entry_action->number;
 
-            controller_entry_preprocess_print_simulate_setting_value(main, is_entry, controller_timeout_s, controller_start_s, entry->items.array[main->setting.failsafe_item_id].name, controller_entry_print_suffix_megatime_s);
+            controller_entry_preprocess_print_simulate_setting_value(main, is_entry, controller_timeout_s, controller_start_s, entry->items.array[main->setting.failsafe_item_id].name, controller_print_entry_suffix_megatime_s);
           }
           else if (entry_action->code == controller_entry_timeout_code_stop_d) {
             entry->timeout_stop = entry_action->number;
 
-            controller_entry_preprocess_print_simulate_setting_value(main, is_entry, controller_timeout_s, controller_stop_s, entry->items.array[main->setting.failsafe_item_id].name, controller_entry_print_suffix_megatime_s);
+            controller_entry_preprocess_print_simulate_setting_value(main, is_entry, controller_timeout_s, controller_stop_s, entry->items.array[main->setting.failsafe_item_id].name, controller_print_entry_suffix_megatime_s);
           }
         }
         else if (entry_action->type == controller_entry_action_type_failsafe_e) {
 
           if (failsafe) {
-            if (main->program.warning.verbosity == f_console_verbosity_debug_e) {
-              controller_lock_print(main->program.warning.to, &main->thread);
-
-              fl_print_format("%r%[%QFailsafe may not be specified when running in failsafe, ignoring.%]%r", main->program.warning.to, f_string_eol_s, main->program.warning.context, main->program.warning.prefix, main->program.warning.context, f_string_eol_s);
-
-              controller_entry_print_error_cache(is_entry, &main->program.warning, cache->action);
-
-              controller_unlock_print_flush(main->program.warning.to, &main->thread);
-            }
+            controller_print_entry_warning_item_action_failsafe_twice(&main->program.warning, &cache->action, is_entry);
           }
           else {
             if (entry_action->number == 0 || entry_action->number >= entry->items.used) {
 
               // This should not happen if the pre-process is working as designed, but in case it doesn't, return a critical error to prevent infinite recursion and similar errors.
-              if (main->program.error.verbosity > f_console_verbosity_quiet_e) {
-                controller_lock_print(main->program.error.to, &main->thread);
-
-                fl_print_format("%r%[%QInvalid %r item index '%]", main->program.error.to, f_string_eol_s, main->program.error.context, main->program.error.prefix, is_entry ? controller_entry_s : controller_exit_s, main->program.error.context);
-                fl_print_format("%[%un%]", main->program.error.to, main->program.error.notable, entry_action->number, main->program.error.notable);
-                fl_print_format("%[' detected.%]%r", main->program.error.to, main->program.error.context, main->program.error.context, f_string_eol_s);
-
-                controller_entry_print_error_cache(is_entry, &main->program.error, cache->action);
-
-                controller_unlock_print_flush(main->program.error.to, &main->thread);
-              }
+              controller_print_entry_error_item_invalid(&main->program.error, &cache->action, is_entry, entry_action->number);
 
               return F_status_is_error(F_critical);
             }
@@ -636,7 +487,7 @@ extern "C" {
         status = f_string_dynamic_append_nulless(entry->items.array[cache->ats.array[at_i]].name, &cache->action.name_item);
 
         if (F_status_is_error(status)) {
-          controller_entry_print_error(is_entry, &main->program.error, cache->action, F_status_set_fine(status), macro_controller_f(f_string_dynamic_append_nulless), F_true, &main->thread);
+          controller_print_entry_error(&main->program.error, cache->action, is_entry, F_status_set_fine(status), macro_controller_f(f_string_dynamic_append_nulless), F_true);
 
           break;
         }
@@ -656,13 +507,13 @@ extern "C" {
     }
 
     // Check to see if any required processes failed, but do not do this if already operating in failsafe.
-    if (F_status_is_error_not(status) && !failsafe && !(main->program.parameters.array[controller_parameter_validate_e].result & f_console_result_found_e) && main->setting.mode != controller_setting_mode_helper_e) {
+    if (F_status_is_error_not(status) && !failsafe && !(main->setting.flag & controller_main_flag_validate_e) && main->setting.mode != controller_setting_mode_helper_e) {
       const f_status_t status_wait = controller_rule_wait_all(main, is_entry, F_true);
       if (F_status_is_error(status_wait)) return status_wait;
       if (status_wait == F_require) return F_status_set_error(F_require);
     }
 
-    if (((main->program.parameters.array[controller_parameter_simulate_e].result & f_console_result_found_e) && main->program.error.verbosity > f_console_verbosity_quiet_e) && main->program.error.verbosity != f_console_verbosity_error_e || main->program.error.verbosity == f_console_verbosity_verbose_e) {
+    if (((main->setting.flag & controller_main_flag_simulate_e) && main->program.error.verbosity > f_console_verbosity_quiet_e) && main->program.error.verbosity != f_console_verbosity_error_e || main->program.error.verbosity == f_console_verbosity_verbose_e) {
       controller_lock_print(main->program.output.to, &main->thread);
 
       fl_print_format("%rDone processing %r item '", main->program.output.to, f_string_eol_s, is_entry ? controller_entry_s : controller_exit_s);

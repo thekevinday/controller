@@ -35,7 +35,7 @@ extern "C" {
     status = f_memory_array_increase(controller_common_allocation_small_d, sizeof(f_number_unsigned_t), (void **) &cache->ats.array, &cache->ats.used, &cache->ats.size);
 
     if (F_status_is_error(status)) {
-      controller_entry_print_error(&main->program.error, cache->action, is_entry, F_status_set_fine(status), macro_controller_f(f_memory_array_increase), F_true);
+      controller_print_entry_error(&main->program.error, cache->action, is_entry, F_status_set_fine(status), macro_controller_f(f_memory_array_increase), F_true);
 
       return status;
     }
@@ -51,7 +51,7 @@ extern "C" {
     status = f_string_dynamic_append_nulless(entry->items.array[0].name, &cache->action.name_item);
 
     if (F_status_is_error(status)) {
-      controller_entry_print_error(&main->program.error, cache->action, is_entry, F_status_set_fine(status), macro_controller_f(f_string_dynamic_append_nulless), F_true);
+      controller_print_entry_error(&main->program.error, cache->action, is_entry, F_status_set_fine(status), macro_controller_f(f_string_dynamic_append_nulless), F_true);
 
       return status;
     }
@@ -68,25 +68,14 @@ extern "C" {
         status2 = f_string_dynamic_append_nulless(controller_entry_action_type_name(actions->array[cache->ats.array[at_j]].type), &cache->action.name_action);
 
         if (F_status_is_error(status2)) {
-          controller_entry_print_error(&main->program.error, cache->action, is_entry, F_status_set_fine(status2), macro_controller_f(f_string_dynamic_append_nulless), F_true);
+          controller_print_entry_error(&main->program.error, cache->action, is_entry, F_status_set_fine(status2), macro_controller_f(f_string_dynamic_append_nulless), F_true);
 
           return status2;
         }
 
         if (actions->array[cache->ats.array[at_j]].type == controller_entry_action_type_ready_e) {
-
           if (main->setting.ready == controller_setting_ready_wait_e) {
-            if (main->program.warning.verbosity == f_console_verbosity_debug_e) {
-              controller_lock_print(main->program.warning.to, &main->thread);
-
-              fl_print_format("%r%[%QMultiple '%]", main->program.warning.to, f_string_eol_s, main->program.warning.context, main->program.warning.prefix, main->program.warning.context);
-              fl_print_format(f_string_format_r_single_s.string, main->program.warning.to, main->program.warning.notable, controller_ready_s, main->program.warning.notable);
-              fl_print_format("%[' %r item actions detected; only the first will be used.%]%r", main->program.warning.to, main->program.warning.context, is_entry ? controller_entry_s : controller_exit_s, main->program.warning.context, f_string_eol_s);
-
-              controller_entry_print_error_cache(is_entry, &main->program.warning, cache->action);
-
-              controller_unlock_print_flush(main->program.warning.to, &main->thread);
-            }
+            controller_print_entry_warning_item_action_multiple(&main->program.warning, &cache->action, is_entry, controller_ready_s);
           }
           else {
             main->setting.ready = controller_setting_ready_wait_e;
@@ -112,17 +101,7 @@ extern "C" {
               for (j = 2; j < cache->ats.used; j += 2) {
 
                 if (cache->ats.array[j] == i) {
-                  if (main->program.error.verbosity > f_console_verbosity_quiet_e) {
-                    controller_lock_print(main->program.error.to, &main->thread);
-
-                    fl_print_format("%r%[%QThe %r item named '%]", main->program.error.to, f_string_eol_s, main->program.error.context, is_entry ? controller_entry_s : controller_exit_s, main->program.error.prefix, main->program.error.context);
-                    fl_print_format(f_string_format_Q_single_s.string, main->program.error.to, main->program.error.notable, entry->items.array[i].name, main->program.error.notable);
-                    fl_print_format("%[' cannot be executed because recursion is not allowed.%]%r", main->program.error.to, main->program.error.context, main->program.error.context, f_string_eol_s);
-
-                    controller_entry_print_error_cache(is_entry, &main->program.error, cache->action);
-
-                    controller_unlock_print_flush(main->program.error.to, &main->thread);
-                  }
+                  controller_print_entry_error_item_failure(&main->program.error, &cache->action, entry->items.array[i].name, "cannot be executed because recursion is not allowed");
 
                   if (F_status_is_error_not(status)) {
                     status = F_status_set_error(F_recurse);
@@ -139,7 +118,7 @@ extern "C" {
               status2 = f_memory_array_increase(controller_common_allocation_small_d, sizeof(f_number_unsigned_t), (void **) &cache->ats.array, &cache->ats.used, &cache->ats.size);
 
               if (F_status_is_error(status2)) {
-                controller_entry_print_error(&main->program.error, cache->action, is_entry, F_status_set_fine(status2), macro_controller_f(f_memory_array_increase), F_true);
+                controller_print_entry_error(&main->program.error, cache->action, is_entry, F_status_set_fine(status2), macro_controller_f(f_memory_array_increase), F_true);
 
                 return status2;
               }
@@ -164,7 +143,7 @@ extern "C" {
               status2 = f_string_dynamic_append_nulless(entry->items.array[i].name, &cache->action.name_item);
 
               if (F_status_is_error(status2)) {
-                controller_entry_print_error(&main->program.error, cache->action, is_entry, F_status_set_fine(status2), macro_controller_f(f_string_dynamic_append_nulless), F_true);
+                controller_print_entry_error(&main->program.error, cache->action, is_entry, F_status_set_fine(status2), macro_controller_f(f_string_dynamic_append_nulless), F_true);
 
                 return status2;
               }
@@ -175,17 +154,7 @@ extern "C" {
 
           if (error_has || i >= entry->items.used) {
             if (i >= entry->items.used) {
-              if (main->program.error.verbosity > f_console_verbosity_quiet_e) {
-                controller_lock_print(main->program.error.to, &main->thread);
-
-                fl_print_format("%r%[%QThe %r item named '%]", main->program.error.to, f_string_eol_s, main->program.error.context, is_entry ? controller_entry_s : controller_exit_s, main->program.error.prefix, main->program.error.context);
-                fl_print_format(f_string_format_Q_single_s.string, main->program.error.to, main->program.error.notable, actions->array[cache->ats.array[at_j]].parameters.array[0], main->program.error.notable);
-                fl_print_format("%[' does not exist.%]%r", main->program.error.to, main->program.error.context, main->program.error.context, f_string_eol_s);
-
-                controller_entry_print_error_cache(is_entry, &main->program.error, cache->action);
-
-                controller_unlock_print_flush(main->program.error.to, &main->thread);
-              }
+              controller_print_entry_error_item_failure(&main->program.error, &cache->action, actions->array[cache->ats.array[at_j]].parameters.array[0], "does not exist");
 
               if (F_status_is_error_not(status)) {
                 status = F_status_set_error(F_valid_not);
@@ -219,7 +188,7 @@ extern "C" {
         status2 = f_string_dynamic_append_nulless(entry->items.array[cache->ats.array[at_i]].name, &cache->action.name_item);
 
         if (F_status_is_error(status2)) {
-          controller_entry_print_error(&main->program.error, cache->action, is_entry, F_status_set_fine(status2), macro_controller_f(f_string_dynamic_append_nulless), F_true);
+          controller_print_entry_error(&main->program.error, cache->action, is_entry, F_status_set_fine(status2), macro_controller_f(f_string_dynamic_append_nulless), F_true);
 
           return status2;
         }

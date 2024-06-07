@@ -285,7 +285,7 @@ extern "C" {
 
                 options_instance = 0;
 
-                if (main->program.parameters.array[controller_parameter_simulate_e].result & f_console_result_found_e) {
+                if (main->setting.flag & controller_main_flag_simulate_e) {
                   options_instance |= controller_instance_option_simulate_e;
                 }
 

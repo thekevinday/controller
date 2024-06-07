@@ -74,8 +74,7 @@ extern "C" {
           f_fss_apply_delimit(cache->delimits, &cache->buffer_file, &state);
 
           if (F_status_is_error(status)) {
-            controller_entry_print_error(is_entry, &main->program.error, cache->action, F_status_set_fine(status), "f_fss_apply_delimit", F_true, &main->thread);
-            controller_print_error_status(&main->program.error, macro_controller_f(fll_fss_basic_list_read), F_status_set_fine(status));
+            controller_print_entry_error(&main->program.error, cache->action, is_entry, F_status_set_fine(status), macro_controller_f(f_fss_apply_delimit), F_true);
           }
         }
       }
@@ -96,8 +95,7 @@ extern "C" {
       status = f_memory_array_increase_by(cache->object_items.used, &entry->items.array, &entry->items.used, &entry->items.size);
 
       if (F_status_is_error(status)) {
-        controller_entry_print_error(is_entry, &main->program.error, cache->action, F_status_set_fine(status), "f_memory_array_increase_by", F_true, &main->thread);
-        controller_print_error_status(&main->program.error, macro_controller_f(f_string_dynamic_append), F_status_set_fine(status));
+        controller_print_entry_error(&main->program.error, cache->action, is_entry, F_status_set_fine(status), macro_controller_f(f_memory_array_increase_by), F_true);
       }
       else {
 
@@ -140,7 +138,7 @@ extern "C" {
           status = controller_entry_items_increase_by(controller_common_allocation_small_d, &entry->items);
 
           if (F_status_is_error(status)) {
-            controller_entry_print_error(is_entry, &main->program.error, cache->action, F_status_set_fine(status), "controller_entry_items_increase_by", F_true, &main->thread);
+            controller_print_entry_error(&main->program.error, cache->action, is_entry, F_status_set_fine(status), macro_controller_f(controller_entry_items_increase_by), F_true);
 
             break;
           }
@@ -148,7 +146,7 @@ extern "C" {
           status = f_string_dynamic_partial_append(cache->buffer_file, cache->object_items.array[i], &cache->action.name_item);
 
           if (F_status_is_error(status)) {
-            controller_entry_print_error(is_entry, &main->program.error, cache->action, F_status_set_fine(status), "f_string_dynamic_partial_append", F_true, &main->thread);
+            controller_print_entry_error(&main->program.error, cache->action, is_entry, F_status_set_fine(status), macro_controller_f(f_string_dynamic_partial_append), F_true);
 
             break;
           }
@@ -156,7 +154,7 @@ extern "C" {
           f_fss_count_lines(cache->buffer_file, cache->object_items.array[i].start, &cache->action.line_item, &main->setting.state);
 
           if (F_status_is_error(status)) {
-            controller_entry_print_error(is_entry, &main->program.error, cache->action, F_status_set_fine(status), "f_fss_count_lines", F_true, &main->thread);
+            controller_print_entry_error(&main->program.error, cache->action, is_entry, F_status_set_fine(status), macro_controller_f(f_fss_count_lines), F_true);
 
             break;
           }
@@ -173,7 +171,7 @@ extern "C" {
                 fl_print_format(f_string_format_Q_single_s.string, main->program.warning.to, main->program.warning.notable, cache->action.name_file, main->program.warning.notable);
                 fl_print_format(f_string_format_sentence_end_quote_s.string, main->program.warning.to, main->program.warning.context, main->program.warning.context, f_string_eol_s);
 
-                controller_entry_print_error_cache(is_entry, &main->program.warning, cache->action);
+                controller_print_entry_error_cache(is_entry, &main->program.warning, &cache->action);
 
                 controller_unlock_print_flush(main->program.warning.to, &main->thread);
               }
@@ -230,7 +228,7 @@ extern "C" {
             if (F_status_set_fine(status) != F_interrupt) {
               controller_lock_print(main->program.error.to, &main->thread);
 
-              controller_entry_print_error_cache(is_entry, &main->program.error, cache->action);
+              controller_print_entry_error_cache(is_entry, &main->program.error, &cache->action);
 
               controller_unlock_print_flush(main->program.error.to, &main->thread);
             }
@@ -313,7 +311,7 @@ extern "C" {
                       fl_print_format(f_string_format_Q_single_s.string, main->program.error.to, main->program.error.notable, action->parameters.array[0], main->program.error.notable);
                       fl_print_format("%[' does not exist.%]%r", main->program.error.to, main->program.error.context, main->program.error.context, f_string_eol_s);
 
-                      controller_entry_print_error_cache(is_entry, &main->program.error, cache->action);
+                      controller_print_entry_error_cache(is_entry, &main->program.error, &cache->action);
 
                       controller_unlock_print_flush(main->program.error.to, &main->thread);
                     }
@@ -337,7 +335,7 @@ extern "C" {
 
     if (F_status_is_error(status)) {
       if (F_status_set_fine(status) != F_interrupt) {
-        controller_entry_print_error_cache(is_entry, &main->program.error, cache->action);
+        controller_print_entry_error_cache(is_entry, &main->program.error, &cache->action);
       }
 
       entry->status = controller_status_simplify_error(F_status_set_fine(status));

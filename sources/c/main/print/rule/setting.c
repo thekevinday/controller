@@ -66,7 +66,7 @@ extern "C" {
   f_status_t controller_print_rule_setting_read_mapping(controller_t * const main, const f_string_static_t name, const f_string_map_t map) {
 
     if (main->program.error.verbosity != f_console_verbosity_debug_e) {
-      if (!(main->program.error.verbosity == f_console_verbosity_verbose_e && (main->program.parameters.array[controller_parameter_simulate_e].result & f_console_result_found_e))) {
+      if (!(main->program.error.verbosity == f_console_verbosity_verbose_e && (main->setting.flag & controller_main_flag_simulate_e))) {
         return F_output_not;
       }
     }
@@ -87,7 +87,7 @@ extern "C" {
   f_status_t controller_print_rule_setting_read_value(controller_t * const main, const f_string_static_t name, const f_string_static_t name_sub, const f_string_static_t value, const f_string_t suffix) {
 
     if (main->program.error.verbosity != f_console_verbosity_debug_e) {
-      if (!(main->program.error.verbosity == f_console_verbosity_verbose_e && (main->program.parameters.array[controller_parameter_simulate_e].result & f_console_result_found_e))) {
+      if (!(main->program.error.verbosity == f_console_verbosity_verbose_e && (main->setting.flag & controller_main_flag_simulate_e))) {
         return F_output_not;
       }
     }
@@ -116,7 +116,7 @@ extern "C" {
   f_status_t controller_print_rule_setting_read_values(controller_t * const main, controller_cache_t * const cache, const f_string_static_t name, const f_number_unsigned_t index) {
 
     if (main->program.error.verbosity != f_console_verbosity_debug_e) {
-      if (!(main->program.error.verbosity == f_console_verbosity_verbose_e && (main->program.parameters.array[controller_parameter_simulate_e].result & f_console_result_found_e))) {
+      if (!(main->program.error.verbosity == f_console_verbosity_verbose_e && (main->setting.flag & controller_main_flag_simulate_e))) {
         return F_output_not;
       }
     }

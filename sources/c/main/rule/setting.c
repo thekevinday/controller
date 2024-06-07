@@ -1137,7 +1137,7 @@ extern "C" {
             rule->timeout_stop = number;
           }
 
-          if (main->program.error.verbosity == f_console_verbosity_debug_e || (main->program.error.verbosity == f_console_verbosity_verbose_e && (main->program.parameters.array[controller_parameter_simulate_e].result & f_console_result_found_e))) {
+          if (main->program.error.verbosity == f_console_verbosity_debug_e || (main->program.error.verbosity == f_console_verbosity_verbose_e && (main->setting.flag & controller_main_flag_simulate_e))) {
             f_string_static_t name_sub = controller_stop_s;
 
             if (timeout_code == controller_rule_timeout_code_kill_d) {
@@ -1300,7 +1300,7 @@ extern "C" {
             rule->nice = number;
             rule->has |= controller_rule_has_nice_d;
 
-            if ((main->program.parameters.array[controller_parameter_simulate_e].result & f_console_result_found_e) || main->program.error.verbosity == f_console_verbosity_verbose_e) {
+            if ((main->setting.flag & controller_main_flag_simulate_e) || main->program.error.verbosity == f_console_verbosity_verbose_e) {
               cache->action.generic.used = 0;
 
               status = f_string_dynamic_partial_append_nulless(cache->buffer_item, cache->content_actions.array[i].array[0], &cache->action.generic);
@@ -1376,7 +1376,7 @@ extern "C" {
             rule->user = number;
             rule->has |= controller_rule_has_user_d;
 
-            if (main->program.error.verbosity == f_console_verbosity_debug_e || (main->program.error.verbosity == f_console_verbosity_verbose_e && (main->program.parameters.array[controller_parameter_simulate_e].result & f_console_result_found_e))) {
+            if (main->program.error.verbosity == f_console_verbosity_debug_e || (main->program.error.verbosity == f_console_verbosity_verbose_e && (main->setting.flag & controller_main_flag_simulate_e))) {
               cache->action.generic.used = 0;
 
               status = f_string_dynamic_partial_append_nulless(cache->buffer_item, cache->content_actions.array[i].array[0], &cache->action.generic);
@@ -1593,7 +1593,7 @@ extern "C" {
           controller_print_rule_setting_read_values(main, controller_environment_s, i, cache);
         }
         else {
-          if (main->program.error.verbosity == f_console_verbosity_debug_e || (main->program.error.verbosity == f_console_verbosity_verbose_e && (main->program.parameters.array[controller_parameter_simulate_e].result & f_console_result_found_e))) {
+          if (main->program.error.verbosity == f_console_verbosity_debug_e || (main->program.error.verbosity == f_console_verbosity_verbose_e && (main->setting.flag & controller_main_flag_simulate_e))) {
             controller_lock_print(main->program.output.to, &main->thread);
 
             fl_print_format("%rProcessing rule item action '%[%r%]' setting value to an empty set.%r", main->program.output.to, f_string_eol_s, main->program.context.set.title, controller_environment_s, main->program.context.set.title, f_string_eol_s);
@@ -1806,7 +1806,7 @@ extern "C" {
         ++rule->ons.used;
       }
 
-      if (main->program.error.verbosity == f_console_verbosity_debug_e || (main->program.error.verbosity == f_console_verbosity_verbose_e && (main->program.parameters.array[controller_parameter_simulate_e].result & f_console_result_found_e))) {
+      if (main->program.error.verbosity == f_console_verbosity_debug_e || (main->program.error.verbosity == f_console_verbosity_verbose_e && (main->setting.flag & controller_main_flag_simulate_e))) {
         controller_lock_print(main->program.output.to, &main->thread);
 
         fl_print_format("%rProcessing rule item action '%[%r%]', adding ", main->program.output.to, f_string_eol_s, main->program.context.set.title, controller_on_s, main->program.context.set.title);

@@ -19,7 +19,7 @@ extern "C" {
     fl_print_format("%[%/Q%]", print.to.stream, print.notable, cache->buffer_file, range, print.notable);
     fl_print_format("%['%S.%]%r", print.to.stream, print.context, after, print.context, f_string_eol_s);
 
-    controller_entry_print_error_cache(is_entry, print, cache->action);
+    controller_print_entry_error_cache(is_entry, print, &cache->action);
 
     controller_unlock_print_flush(print.to, thread);
 
@@ -44,7 +44,7 @@ extern "C" {
     fl_print_format("%[%Q%]", main->warning.to.stream, main->warning.notable, cache->action.name_action, main->warning.notable);
     fl_print_format("%[' is being ignored.%]%r", main->warning.to.stream, main->warning.context, main->warning.context, f_string_eol_s);
 
-    controller_entry_print_error_cache(is_entry, main->warning, cache->action);
+    controller_print_entry_error_cache(is_entry, main->warning, &cache->action);
 
     controller_unlock_print_flush(main->warning.to, &main->thread);
 
@@ -72,7 +72,7 @@ extern "C" {
     fl_print_format("%[%un%]", main->error.to.stream, main->error.notable, maximum, main->error.notable);
     fl_print_format("%[ Content.%]%r", main->error.to.stream, main->error.context, main->error.context, f_string_eol_s);
 
-    controller_entry_print_error_cache(is_entry, main->error, cache->action);
+    controller_print_entry_error_cache(is_entry, main->error, &cache->action);
 
     controller_unlock_print_flush(main->error.to, &main->thread);
 
@@ -98,7 +98,7 @@ extern "C" {
     fl_print_format("%[%un%]", main->error.to.stream, main->error.notable, total, main->error.notable);
     fl_print_format("%[ Content.%]%r", main->error.to.stream, main->error.context, main->error.context, f_string_eol_s);
 
-    controller_entry_print_error_cache(is_entry, main->error, cache->action);
+    controller_print_entry_error_cache(is_entry, main->error, &cache->action);
 
     controller_unlock_print_flush(main->error.to, &main->thread);
 
@@ -122,7 +122,7 @@ extern "C" {
     fl_print_format("%[%Q%]", main->warning.to.stream, main->warning.notable, cache->action.name_action, main->warning.notable);
     fl_print_format("%['.%]%r", main->warning.to.stream, main->warning.context, main->warning.context, f_string_eol_s);
 
-    controller_entry_print_error_cache(is_entry, main->warning, cache->action);
+    controller_print_entry_error_cache(is_entry, main->warning, &cache->action);
 
     controller_unlock_print_flush(main->warning.to, &main->thread);
 
@@ -149,7 +149,7 @@ extern "C" {
     fl_print_format("%[%/Q%]", main->warning.to.stream, main->warning.notable, cache->buffer_file, cache->content_actions.array[index].array[0], main->warning.notable);
     fl_print_format("%['.%]%r", main->warning.to.stream, main->warning.context, main->warning.context, f_string_eol_s);
 
-    controller_entry_print_error_cache(is_entry, main->warning, cache->action);
+    controller_print_entry_error_cache(is_entry, main->warning, &cache->action);
 
     controller_unlock_print_flush(main->warning.to, &main->thread);
 
