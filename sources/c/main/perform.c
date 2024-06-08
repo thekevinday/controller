@@ -63,7 +63,7 @@ extern "C" {
 
     f_status_t status = F_okay;
 
-    if (main->setting.control.flag & controller_control_flag_readonly_e) {
+    if (main->process.control.flag & controller_control_flag_readonly_e) {
       if (f_file_exists(main->setting.path_control, F_true) != F_true) {
         controller_print_perform_debug_control_socket_missing_read_only(&main->program.debug);
 
@@ -71,7 +71,7 @@ extern "C" {
       }
     }
 
-    status = f_socket_create(&main->setting.control.server);
+    status = f_socket_create(&main->process.control.server);
 
     if (F_status_is_error(status)) {
       if (F_status_set_fine(status) == F_memory_not) {
@@ -85,7 +85,7 @@ extern "C" {
       return status;
     }
 
-    if (!(main->setting.control.flag & controller_control_flag_readonly_e)) {
+    if (!(main->process.control.flag & controller_control_flag_readonly_e)) {
       status = f_file_remove(main->setting.path_control);
 
       if (F_status_set_fine(status) == F_memory_not) {
@@ -95,14 +95,14 @@ extern "C" {
       }
     }
 
-    main->setting.control.server.name = main->setting.path_control;
+    main->process.control.server.name = main->setting.path_control;
 
-    status = f_socket_bind(&main->setting.control.server);
+    status = f_socket_bind(&main->process.control.server);
 
     if (F_status_is_error(status)) {
-      f_socket_disconnect(&main->setting.control.server, f_socket_close_fast_e);
+      f_socket_disconnect(&main->process.control.server, f_socket_close_fast_e);
 
-      if (!(main->setting.control.flag & controller_control_flag_readonly_e)) {
+      if (!(main->process.control.flag & controller_control_flag_readonly_e)) {
         f_file_remove(main->setting.path_control);
       }
 
@@ -116,13 +116,13 @@ extern "C" {
       return status;
     }
 
-    if (main->setting.control.flag & (controller_control_flag_has_user_e | controller_control_flag_has_group_e)) {
-      status = f_file_role_change(main->setting.path_control, main->setting.control.user, main->setting.control.group, F_true);
+    if (main->process.control.flag & (controller_control_flag_has_user_e | controller_control_flag_has_group_e)) {
+      status = f_file_role_change(main->setting.path_control, main->process.control.user, main->process.control.group, F_true);
 
       if (F_status_is_error(status)) {
-        f_socket_disconnect(&main->setting.control.server, f_socket_close_fast_e);
+        f_socket_disconnect(&main->process.control.server, f_socket_close_fast_e);
 
-        if (!(main->setting.control.flag & controller_control_flag_readonly_e)) {
+        if (!(main->process.control.flag & controller_control_flag_readonly_e)) {
           f_file_remove(main->setting.path_control);
         }
 
@@ -137,13 +137,13 @@ extern "C" {
       }
     }
 
-    if (main->setting.control.flag & controller_control_flag_has_mode_e) {
-      status = f_file_mode_set(main->setting.path_control, main->setting.control.mode);
+    if (main->process.control.flag & controller_control_flag_has_mode_e) {
+      status = f_file_mode_set(main->setting.path_control, main->process.control.mode);
 
       if (F_status_is_error(status)) {
-        f_socket_disconnect(&main->setting.control.server, f_socket_close_fast_e);
+        f_socket_disconnect(&main->process.control.server, f_socket_close_fast_e);
 
-        if (!(main->setting.control.flag & controller_control_flag_readonly_e)) {
+        if (!(main->process.control.flag & controller_control_flag_readonly_e)) {
           f_file_remove(main->setting.path_control);
         }
 
@@ -166,9 +166,9 @@ extern "C" {
     if (status == F_child) return status;
 
     if (F_status_is_error(status)) {
-      f_socket_disconnect(&main->setting.control.server, f_socket_close_fast_e);
+      f_socket_disconnect(&main->process.control.server, f_socket_close_fast_e);
 
-      if (!(main->setting.control.flag & controller_control_flag_readonly_e)) {
+      if (!(main->process.control.flag & controller_control_flag_readonly_e)) {
         f_file_remove(main->setting.path_control);
       }
 

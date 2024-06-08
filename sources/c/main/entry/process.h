@@ -27,8 +27,8 @@ extern "C" {
  *   If TRUE, operate in failsafe mode (starts at designated failsafe Item).
  *   If FALSE, operate in normal mode (starts at "main" Item).
  * @param is_entry
- *   If TRUE, then this operate as an entry.
- *   If FALSE, then this operate as an exit.
+ *   If TRUE, then this operates as an entry.
+ *   If FALSE, then this operates as an exit.
  *
  * @return
  *   F_okay on success.

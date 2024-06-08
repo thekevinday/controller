@@ -7,13 +7,19 @@ extern "C" {
 #ifndef _di_controller_entry_read_
   f_status_t controller_entry_read(controller_t * const main, controller_cache_t * const cache, const uint8_t is_entry) {
 
+    if (!main || !cache) return F_status_set_error(F_parameter);
+
     f_status_t status = F_okay;
 
     controller_entry_t * const entry = is_entry ? &main->process.entry : &main->process.exit;
 
     entry->status = F_known_not;
     entry->items.used = 0;
-    entry->session = (main->setting.flag & controller_main_flag_init_e) ? controller_entry_session_new_e : controller_entry_session_same_e;
+    entry->session = controller_entry_session_same_e;
+
+    if (main->callback.process_entry_setup) {
+      status = main->callback.process_entry_setup(main, cache, entry, is_entry);
+    }
 
     cache->action.line_action = 0;
     cache->action.line_item = 0;
@@ -51,18 +57,20 @@ extern "C" {
     cache->action.name_action.used = 0;
     cache->action.name_item.used = 0;
 
-    if (is_entry) {
-      status = controller_file_load(main, cache, F_true, controller_entries_s, main->setting.name_entry, controller_entry_s);
-    }
-    else {
-      status = controller_file_load(main, cache, F_false, controller_exits_s, main->setting.name_entry, controller_exit_s);
-      if (status == F_file_found_not) return F_file_found_not;
+    if (F_status_is_error_not(status)) {
+      if (is_entry) {
+        status = controller_file_load(main, cache, F_true, controller_entries_s, main->process.name_entry, controller_entry_s);
+      }
+      else {
+        status = controller_file_load(main, cache, F_false, controller_exits_s, main->process.name_entry, controller_exit_s);
+        if (status == F_file_found_not) return F_file_found_not;
+      }
     }
 
     if (F_status_is_error_not(status)) {
       if (cache->buffer_file.used) {
         controller_interrupt_t custom = macro_controller_interrupt_t_initialize_1(is_entry, main);
-        f_state_t state = macro_f_state_t_initialize_1(controller_common_allocation_large_d, controller_common_allocation_small_d, F_okay, 0, 0, 0, &controller_thread_signal_state_fss, 0, (void *) &custom, 0);
+        f_state_t state = macro_f_state_t_initialize_1(controller_allocation_large_d, controller_allocation_small_d, F_okay, 0, 0, 0, &controller_thread_signal_state_fss, 0, (void *) &custom, 0);
         f_range_t range = macro_f_range_t_initialize_2(cache->buffer_file.used);
 
         fll_fss_basic_list_read(cache->buffer_file, &range, &cache->object_items, &cache->content_items, &cache->delimits, 0, &cache->comments, &state);
@@ -74,7 +82,7 @@ extern "C" {
           f_fss_apply_delimit(cache->delimits, &cache->buffer_file, &state);
 
           if (F_status_is_error(status)) {
-            controller_print_entry_error(&main->program.error, cache->action, is_entry, F_status_set_fine(status), macro_controller_f(f_fss_apply_delimit), F_true);
+            controller_print_entry_error(&main->program.error, cache, is_entry, F_status_set_fine(status), macro_controller_f(f_fss_apply_delimit), F_true);
           }
         }
       }
@@ -95,7 +103,7 @@ extern "C" {
       status = f_memory_array_increase_by(cache->object_items.used, &entry->items.array, &entry->items.used, &entry->items.size);
 
       if (F_status_is_error(status)) {
-        controller_print_entry_error(&main->program.error, cache->action, is_entry, F_status_set_fine(status), macro_controller_f(f_memory_array_increase_by), F_true);
+        controller_print_entry_error(&main->program.error, cache, is_entry, F_status_set_fine(status), macro_controller_f(f_memory_array_increase_by), F_true);
       }
       else {
 
@@ -135,10 +143,10 @@ extern "C" {
           cache->action.name_action.used = 0;
           cache->action.name_item.used = 0;
 
-          status = controller_entry_items_increase_by(controller_common_allocation_small_d, &entry->items);
+          status = controller_entry_items_increase_by(controller_allocation_small_d, &entry->items);
 
           if (F_status_is_error(status)) {
-            controller_print_entry_error(&main->program.error, cache->action, is_entry, F_status_set_fine(status), macro_controller_f(controller_entry_items_increase_by), F_true);
+            controller_print_entry_error(&main->program.error, cache, is_entry, F_status_set_fine(status), macro_controller_f(controller_entry_items_increase_by), F_true);
 
             break;
           }
@@ -146,7 +154,7 @@ extern "C" {
           status = f_string_dynamic_partial_append(cache->buffer_file, cache->object_items.array[i], &cache->action.name_item);
 
           if (F_status_is_error(status)) {
-            controller_print_entry_error(&main->program.error, cache->action, is_entry, F_status_set_fine(status), macro_controller_f(f_string_dynamic_partial_append), F_true);
+            controller_print_entry_error(&main->program.error, cache, is_entry, F_status_set_fine(status), macro_controller_f(f_string_dynamic_partial_append), F_true);
 
             break;
           }
@@ -154,7 +162,7 @@ extern "C" {
           f_fss_count_lines(cache->buffer_file, cache->object_items.array[i].start, &cache->action.line_item, &main->setting.state);
 
           if (F_status_is_error(status)) {
-            controller_print_entry_error(&main->program.error, cache->action, is_entry, F_status_set_fine(status), macro_controller_f(f_fss_count_lines), F_true);
+            controller_print_entry_error(&main->program.error, cache, is_entry, F_status_set_fine(status), macro_controller_f(f_fss_count_lines), F_true);
 
             break;
           }

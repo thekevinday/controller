@@ -143,8 +143,8 @@ extern "C" {
  *   Must not be NULL.
  * @param name
  *   The parameter name whose value is unknown.
- * @param index
- *   The index in the content action cache representing the unknown value.
+ * @param unknown
+ *   The unknown value.
  *
  * @return
  *   F_okay on success.
@@ -160,7 +160,7 @@ extern "C" {
  * @see controller_unlock_print_flush()
  */
 #ifndef _di_controller_print_rule_item_error_action_unknown_
-  extern f_status_t controller_print_rule_item_error_action_unknown(fl_print_t * const print, controller_cache_t * const cache, const f_string_static_t name, const f_number_unsigned_t index);
+  extern f_status_t controller_print_rule_item_error_action_unknown(fl_print_t * const print, controller_cache_t * const cache, const f_string_static_t name, const f_string_static_t unknown);
 #endif // _di_controller_print_rule_item_error_action_unknown_
 
 /**

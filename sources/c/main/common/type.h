@@ -53,6 +53,23 @@ extern "C" {
 #endif // _di_controller_setting_t_
 
 /**
+ * The Controller callbacks.
+ *
+ * Properties:
+ *   - process_entry_setup: Perform any optional initialization on the entry.
+ */
+#ifndef _di_controller_t_
+  typedef struct {
+    f_status_t (*process_entry_setup)(controller_t * const main, controller_cache_t * const cache, controller_entry_t * const entry, const uint8_t is_entry);
+  } controller_callback_t;
+
+  #define controller_callback_t_initialize \
+    { \
+      0, \
+    }
+#endif // _di_controller_t_
+
+/**
  * The main program data.
  *
  * The typedef for this is located in the defs.h header.
@@ -60,16 +77,18 @@ extern "C" {
  * Properties:
  *   - program: The main program data.
  *
- *   - cache:   The cache.
- *   - process: The process data.
- *   - setting: The settings data.
- *   - thread:  The thread data.
+ *   - cache:    The cache.
+ *   - callback: The callbacks.
+ *   - process:  The process data.
+ *   - setting:  The settings data.
+ *   - thread:   The thread data.
  */
 #ifndef _di_controller_t_
   struct controller_t_ {
     fll_program_data_t program;
 
     controller_cache_t cache;
+    controller_callback_t callback;
     controller_process_t process;
     controller_setting_t setting;
     controller_thread_t thread;
@@ -79,6 +98,7 @@ extern "C" {
     { \
       fll_program_data_t_initialize, \
       controller_cache_t_initialize, \
+      controller_callback_t_initialize, \
       controller_process_t_initialize, \
       controller_setting_t_initialize, \
       controller_thread_t_initialize, \

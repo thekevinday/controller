@@ -287,7 +287,7 @@ extern "C" {
               item->reruns[type_rerun].is |= rerun_item == &item->reruns[type_rerun].failure ? controller_rule_rerun_is_failure_reset_d : controller_rule_rerun_is_success_reset_d;
             }
             else {
-              controller_print_rule_item_error_action_unknown(&main->program.error, cache, controller_rerun_s, i);
+              controller_print_rule_item_error_action_unknown(&main->program.error, cache, controller_rerun_s, cache->content_action.array[i]);
 
               return F_status_set_error(F_valid_not);
             }
@@ -312,7 +312,7 @@ extern "C" {
               item->with &= ~controller_with_session_new_d;
             }
             else {
-              controller_print_rule_item_error_action_unknown(&main->program.error, cache, controller_with_s, i);
+              controller_print_rule_item_error_action_unknown(&main->program.error, cache, controller_with_s, cache->content_action.array[i]);
 
               status = F_status_set_error(F_valid_not);
 

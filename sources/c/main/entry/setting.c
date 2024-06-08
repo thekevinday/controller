@@ -11,14 +11,14 @@ extern "C" {
 
     {
       controller_interrupt_t custom = macro_controller_interrupt_t_initialize_1(is_entry, main);
-      f_state_t state = macro_f_state_t_initialize_1(controller_common_allocation_large_d, controller_common_allocation_small_d, F_okay, 0, 0, 0, &controller_thread_signal_state_fss, 0, (void *) &custom, 0);
+      f_state_t state = macro_f_state_t_initialize_1(controller_allocation_large_d, controller_allocation_small_d, F_okay, 0, 0, 0, &controller_thread_signal_state_fss, 0, (void *) &custom, 0);
       f_range_t range = content_range;
 
       fll_fss_extended_read(cache->buffer_file, &range, &cache->object_actions, &cache->content_actions, 0, 0, &cache->delimits, 0, &state);
     }
 
     if (F_status_is_error(status)) {
-      controller_print_entry_error(&main->program.error, cache->action, is_entry, F_status_set_fine(status), macro_controller_f(fll_fss_extended_read), F_true);
+      controller_print_entry_error(&main->program.error, cache, is_entry, F_status_set_fine(status), macro_controller_f(fll_fss_extended_read), F_true);
 
       return status;
     }
@@ -30,7 +30,7 @@ extern "C" {
     }
 
     if (F_status_is_error(status)) {
-      controller_print_entry_error(&main->program.error, cache->action, is_entry, F_status_set_fine(status), macro_controller_f(f_fss_apply_delimit), F_true);
+      controller_print_entry_error(&main->program.error, cache, is_entry, F_status_set_fine(status), macro_controller_f(f_fss_apply_delimit), F_true);
 
       return status;
     }
@@ -49,7 +49,7 @@ extern "C" {
       f_fss_count_lines(cache->buffer_file, cache->object_actions.array[i].start, &cache->action.line_action, &main->setting.state);
 
       if (F_status_is_error(status)) {
-        controller_print_entry_error(&main->program.error, cache->action, is_entry, F_status_set_fine(status), macro_controller_f(f_fss_count_lines), F_true);
+        controller_print_entry_error(&main->program.error, cache, is_entry, F_status_set_fine(status), macro_controller_f(f_fss_count_lines), F_true);
 
         break;
       }
@@ -60,7 +60,7 @@ extern "C" {
       status = f_rip_dynamic_partial_nulless(cache->buffer_file, cache->object_actions.array[i], &cache->action.name_action);
 
       if (F_status_is_error(status)) {
-        controller_print_entry_error(&main->program.error, cache->action, is_entry, F_status_set_fine(status), macro_controller_f(f_rip_dynamic_partial_nulless), F_true);
+        controller_print_entry_error(&main->program.error, cache, is_entry, F_status_set_fine(status), macro_controller_f(f_rip_dynamic_partial_nulless), F_true);
 
         break;
       }
@@ -74,30 +74,16 @@ extern "C" {
 
         if (cache->content_actions.array[i].used == 2) {
           if (f_compare_dynamic_partial_string(controller_readonly_s.string, cache->buffer_file, controller_readonly_s.used, cache->content_actions.array[i].array[1]) == F_equal_to) {
-            main->setting.control.flag |= controller_control_flag_readonly_e;
+            main->process.control.flag |= controller_control_flag_readonly_e;
           }
           else {
-            if (main->program.error.verbosity > f_console_verbosity_quiet_e) {
-              controller_lock_print(main->program.error.to, &main->thread);
+            controller_print_entry_error_item_setting_support_not_option(&main->program.error, cache, is_entry, cache->content_actions.array[i].array[1]);
 
-              fl_print_format("%r%[%QThe %r item setting '%]", main->program.error.to, f_string_eol_s, main->program.error.context, main->program.error.prefix, is_entry ? controller_entry_s : controller_exit_s, main->program.error.context);
-              fl_print_format(f_string_format_Q_single_s.string, main->program.error.to, main->program.error.notable, controller_control_s, main->program.error.notable);
-              fl_print_format("%[' does not support the option '%]", main->program.error.to, main->program.error.context, main->program.error.context, f_string_eol_s);
-
-              fl_print_format(f_string_format_Q_range_single_s.string, main->program.error.to, main->program.error.notable, cache->buffer_file, cache->content_actions.array[i].array[1], main->program.error.notable);
-
-              fl_print_format(f_string_format_sentence_end_quote_s.string, main->program.error.to, main->program.error.context, main->program.error.context, f_string_eol_s);
-
-              controller_print_entry_error_cache(is_entry, &main->program.error, &cache->action);
-
-              controller_unlock_print_flush(main->program.error.to, &main->thread);
-
-              continue;
-            }
+            continue;
           }
         }
         else {
-          main->setting.control.flag &= ~controller_control_flag_readonly_e;
+          main->process.control.flag &= ~controller_control_flag_readonly_e;
         }
 
         cache->action.generic.used = 0;
@@ -106,7 +92,7 @@ extern "C" {
         status = f_rip_dynamic_partial_nulless(cache->buffer_file, cache->content_actions.array[i].array[0], &cache->action.generic);
 
         if (F_status_is_error(status)) {
-          controller_print_entry_error(&main->program.error, cache->action, is_entry, F_status_set_fine(status), macro_controller_f(f_rip_dynamic_partial_nulless), F_true);
+          controller_print_entry_error(&main->program.error, cache, is_entry, F_status_set_fine(status), macro_controller_f(f_rip_dynamic_partial_nulless), F_true);
 
           break;
         }
@@ -116,7 +102,7 @@ extern "C" {
         status = controller_path_canonical_relative(main->setting, cache->action.generic, &main->setting.path_control);
 
         if (F_status_is_error(status)) {
-          controller_print_entry_error_file(&main->program.error, &cache->action, is_entry, F_status_set_fine(status), macro_controller_f(controller_path_canonical_relative), F_true, cache->action.generic, f_file_operation_analyze_s, fll_error_file_type_path_e);
+          controller_print_entry_error_file(&main->program.error, cache, is_entry, F_status_set_fine(status), macro_controller_f(controller_path_canonical_relative), F_true, cache->action.generic, f_file_operation_analyze_s, fll_error_file_type_path_e);
 
           continue;
         }
@@ -130,23 +116,23 @@ extern "C" {
           status = F_status_set_fine(status);
 
           if (status == F_exist_not) {
-            controller_entry_setting_read_print_error_with_range(&main->program.error, cache, is_entry, " has an invalid group", cache->content_actions.array[i].array[0], ", because no group was found by that name");
+            controller_print_entry_error_setting_with_range(&main->program.error, cache, is_entry, " has an invalid group", cache->content_actions.array[i].array[0], ", because no group was found by that name");
           }
           else if (status == F_number_too_large) {
-            controller_entry_setting_read_print_error_with_range(&main->program.error, cache, is_entry, " has an invalid group", cache->content_actions.array[i].array[0], ", because the given ID is too large");
+            controller_print_entry_error_setting_with_range(&main->program.error, cache, is_entry, " has an invalid group", cache->content_actions.array[i].array[0], ", because the given ID is too large");
           }
           else if (status == F_number) {
-            controller_entry_setting_read_print_error_with_range(&main->program.error, cache, is_entry, " has an invalid group", cache->content_actions.array[i].array[0], ", because the given ID is not a valid supported number");
+            controller_print_entry_error_setting_with_range(&main->program.error, cache, is_entry, " has an invalid group", cache->content_actions.array[i].array[0], ", because the given ID is not a valid supported number");
           }
           else {
-            controller_print_entry_error(&main->program.error, cache->action, is_entry, F_status_set_fine(status), macro_controller_f(controller_convert_group_id), F_true);
+            controller_print_entry_error(&main->program.error, cache, is_entry, F_status_set_fine(status), macro_controller_f(controller_convert_group_id), F_true);
           }
 
           continue;
         }
 
-        main->setting.control.group = number;
-        main->setting.control.flag |= controller_control_flag_has_group_e;
+        main->process.control.group = number;
+        main->process.control.flag |= controller_control_flag_has_group_e;
       }
       else if (is_entry && f_compare_dynamic(controller_control_mode_s, cache->action.name_action) == F_equal_to) {
         mode_t mode = 0;
@@ -158,7 +144,7 @@ extern "C" {
         status = f_rip_dynamic_partial_nulless(cache->buffer_file, cache->content_actions.array[i].array[0], &cache->action.generic);
 
         if (F_status_is_error(status)) {
-          controller_print_entry_error(&main->program.error, cache->action, is_entry, F_status_set_fine(status), macro_controller_f(f_rip_dynamic_partial_nulless), F_true);
+          controller_print_entry_error(&main->program.error, cache, is_entry, F_status_set_fine(status), macro_controller_f(f_rip_dynamic_partial_nulless), F_true);
 
           break;
         }
@@ -166,7 +152,7 @@ extern "C" {
         status = f_file_mode_from_string(cache->action.generic, main->program.umask, &mode_file, &replace);
 
         if (F_status_is_error(status)) {
-          controller_entry_setting_read_print_error_with_range(&main->program.error, cache, is_entry, " has an unsupported mode", cache->content_actions.array[i].array[0], ", because the format is unknown or contains invalid data");
+          controller_print_entry_error_setting_with_range(&main->program.error, cache, is_entry, " has an unsupported mode", cache->content_actions.array[i].array[0], ", because the format is unknown or contains invalid data");
 
           continue;
         }
@@ -174,13 +160,13 @@ extern "C" {
         status = f_file_mode_to_mode(mode_file, &mode);
 
         if (F_status_is_error(status)) {
-          controller_print_entry_error(&main->program.error, cache->action, is_entry, F_status_set_fine(status), macro_controller_f(f_file_mode_to_mode), F_true);
+          controller_print_entry_error(&main->program.error, cache, is_entry, F_status_set_fine(status), macro_controller_f(f_file_mode_to_mode), F_true);
 
           continue;
         }
 
-        main->setting.control.mode = mode;
-        main->setting.control.flag |= controller_control_flag_has_mode_e;
+        main->process.control.mode = mode;
+        main->process.control.flag |= controller_control_flag_has_mode_e;
       }
       else if (is_entry && f_compare_dynamic(controller_control_user_s, cache->action.name_action) == F_equal_to) {
         uid_t number = 0;
@@ -191,27 +177,27 @@ extern "C" {
           status = F_status_set_fine(status);
 
           if (status == F_exist_not) {
-            controller_entry_setting_read_print_error_with_range(&main->program.error, cache, is_entry, " has an invalid user", cache->content_actions.array[i].array[0], ", because no user was found by that name");
+            controller_print_entry_error_setting_with_range(&main->program.error, cache, is_entry, " has an invalid user", cache->content_actions.array[i].array[0], ", because no user was found by that name");
           }
           else if (status == F_number_too_large) {
-            controller_entry_setting_read_print_error_with_range(&main->program.error, cache, is_entry, " has an invalid user", cache->content_actions.array[i].array[0], ", because the given ID is too large");
+            controller_print_entry_error_setting_with_range(&main->program.error, cache, is_entry, " has an invalid user", cache->content_actions.array[i].array[0], ", because the given ID is too large");
           }
           else if (status == F_number) {
-            controller_entry_setting_read_print_error_with_range(&main->program.error, cache, is_entry, " has an invalid user", cache->content_actions.array[i].array[0], ", because the given ID is not a valid supported number");
+            controller_print_entry_error_setting_with_range(&main->program.error, cache, is_entry, " has an invalid user", cache->content_actions.array[i].array[0], ", because the given ID is not a valid supported number");
           }
           else {
-            controller_print_entry_error(&main->program.error, cache->action, is_entry, F_status_set_fine(status), macro_controller_f(controller_convert_user_id), F_true);
+            controller_print_entry_error(&main->program.error, cache, is_entry, F_status_set_fine(status), macro_controller_f(controller_convert_user_id), F_true);
           }
 
           continue;
         }
 
-        main->setting.control.user = number;
-        main->setting.control.flag |= controller_control_flag_has_user_e;
+        main->process.control.user = number;
+        main->process.control.flag |= controller_control_flag_has_user_e;
       }
       else if (f_compare_dynamic(controller_define_s, cache->action.name_action) == F_equal_to) {
         if (cache->content_actions.array[i].used != 2) {
-          controller_entry_setting_read_print_setting_requires_exactly(main, is_entry, *cache, 2);
+          controller_print_entry_error_setting_requires_exactly(&main->program.error, cache, is_entry, 2);
 
           continue;
         }
@@ -219,14 +205,14 @@ extern "C" {
         status = controller_entry_setting_read_map(cache->buffer_file, cache->content_actions.array[i], &entry->define);
 
         if (F_status_is_error(status)) {
-          controller_print_entry_error(&main->program.error, cache->action, is_entry, F_status_set_fine(status), macro_controller_f(controller_entry_setting_read_map), F_true);
+          controller_print_entry_error(&main->program.error, cache, is_entry, F_status_set_fine(status), macro_controller_f(controller_entry_setting_read_map), F_true);
 
           continue;
         }
       }
       else if (is_entry && f_compare_dynamic(controller_mode_s, cache->action.name_action) == F_equal_to) {
         if (cache->content_actions.array[i].used != 1) {
-          controller_entry_setting_read_print_setting_requires_exactly(main, is_entry, *cache, 1);
+          controller_print_entry_error_setting_requires_exactly(&main->program.error, cache, is_entry, 1);
 
           continue;
         }
@@ -248,7 +234,7 @@ extern "C" {
       }
       else if (f_compare_dynamic(controller_parameter_s, cache->action.name_action) == F_equal_to) {
         if (cache->content_actions.array[i].used != 2) {
-          controller_entry_setting_read_print_setting_requires_exactly(main, is_entry, *cache, 2);
+          controller_print_entry_error_setting_requires_exactly(&main->program.error, cache, is_entry, 2);
 
           continue;
         }
@@ -256,14 +242,14 @@ extern "C" {
         status = controller_entry_setting_read_map(cache->buffer_file, cache->content_actions.array[i], &entry->parameter);
 
         if (F_status_is_error(status)) {
-          controller_print_entry_error(&main->program.error, cache->action, is_entry, F_status_set_fine(status), macro_controller_f(controller_entry_setting_read_map), F_true);
+          controller_print_entry_error(&main->program.error, cache, is_entry, F_status_set_fine(status), macro_controller_f(controller_entry_setting_read_map), F_true);
 
           continue;
         }
       }
       else if (f_compare_dynamic(controller_pid_s, cache->action.name_action) == F_equal_to) {
         if (cache->content_actions.array[i].used != 1) {
-          controller_entry_setting_read_print_setting_requires_exactly(main, is_entry, *cache, 1);
+          controller_print_entry_error_setting_requires_exactly(&main->program.error, cache, is_entry, 1);
 
           continue;
         }
@@ -285,7 +271,7 @@ extern "C" {
       }
       else if (is_entry && f_compare_dynamic(controller_pid_file_s, cache->action.name_action) == F_equal_to) {
         if (cache->content_actions.array[i].used != 1) {
-          controller_entry_setting_read_print_setting_requires_exactly(main, is_entry, *cache, 1);
+          controller_print_entry_error_setting_requires_exactly(&main->program.error, cache, is_entry, 1);
 
           continue;
         }
@@ -299,7 +285,7 @@ extern "C" {
           status = f_rip_dynamic_partial_nulless(cache->buffer_file, cache->content_actions.array[i].array[0], &cache->action.generic);
 
           if (F_status_is_error(status)) {
-            controller_print_entry_error(&main->program.error, cache->action, is_entry, F_status_set_fine(status), macro_controller_f(f_rip_dynamic_partial_nulless), F_true);
+            controller_print_entry_error(&main->program.error, cache, is_entry, F_status_set_fine(status), macro_controller_f(f_rip_dynamic_partial_nulless), F_true);
 
             continue;
           }
@@ -309,7 +295,7 @@ extern "C" {
           status = controller_path_canonical_relative(main->setting, cache->action.generic, &main->setting.path_pid);
 
           if (F_status_is_error(status)) {
-            controller_print_entry_error(&main->program.error, cache->action, is_entry, F_status_set_fine(status), macro_controller_f(controller_path_canonical_relative), F_true);
+            controller_print_entry_error(&main->program.error, cache, is_entry, F_status_set_fine(status), macro_controller_f(controller_path_canonical_relative), F_true);
 
             continue;
           }
@@ -317,7 +303,7 @@ extern "C" {
       }
       else if (f_compare_dynamic(controller_session_s, cache->action.name_action) == F_equal_to) {
         if (cache->content_actions.array[i].used != 1) {
-          controller_entry_setting_read_print_setting_requires_exactly(main, is_entry, *cache, 1);
+          controller_print_entry_error_setting_requires_exactly(&main->program.error, cache, is_entry, 1);
 
           continue;
         }
@@ -336,7 +322,7 @@ extern "C" {
       }
       else if (f_compare_dynamic(controller_show_s, cache->action.name_action) == F_equal_to) {
         if (cache->content_actions.array[i].used != 1) {
-          controller_entry_setting_read_print_setting_requires_exactly(main, is_entry, *cache, 1);
+          controller_print_entry_error_setting_requires_exactly(&main->program.error, cache, is_entry, 1);
 
           continue;
         }
@@ -416,20 +402,12 @@ extern "C" {
           *time = time_previous;
 
           if (F_status_set_fine(status) == F_memory_not) {
-            controller_print_entry_error(&main->program.error, cache->action, is_entry, F_status_set_fine(status), macro_controller_f(fl_conversion_dynamic_partial_to_unsigned_detect), F_true);
+            controller_print_entry_error(&main->program.error, cache, is_entry, F_status_set_fine(status), macro_controller_f(fl_conversion_dynamic_partial_to_unsigned_detect), F_true);
 
             continue;
           }
 
-          if (main->program.error.verbosity > f_console_verbosity_quiet_e) {
-            f_file_stream_lock(main->program.error.to);
-
-            fl_print_format("%r%[%QThe %r setting '%]", main->program.error.to, f_string_eol_s, main->program.error.context, main->program.error.prefix, is_entry ? controller_entry_s : controller_exit_s, main->program.error.context);
-            fl_print_format(f_string_format_Q_range_single_s.string, main->program.error.to, main->program.error.notable, cache->buffer_file, cache->content_actions.array[i].array[1], main->program.error.notable);
-            fl_print_format("%[' is not a valid supported number.%]", main->program.error.to, main->program.error.context, main->program.error.context, f_string_eol_s);
-
-            f_file_stream_unlock(main->program.error.to);
-          }
+          controller_print_entry_error_setting_support_not_number(&main->program.error, is_entry, cache->buffer_file, cache->content_actions.array[i].array[1]);
         }
       }
       else {
@@ -441,7 +419,7 @@ extern "C" {
       }
     } // for
 
-    return f_status_is_error(status) ? status : F_okay;
+    return F_status_is_error(status) ? status : F_okay;
   }
 #endif // _di_controller_entry_setting_read_
 
@@ -449,7 +427,7 @@ extern "C" {
   f_status_t controller_entry_setting_read_map(const f_string_static_t buffer, const f_ranges_t ranges, f_string_maps_t * const setting_maps) {
 
     {
-      f_status_t status = f_memory_array_increase(controller_common_allocation_small_d, sizeof(f_string_map_t), (void **) &setting_maps->array, &setting_maps->used, &setting_maps->size);
+      f_status_t status = f_memory_array_increase(controller_allocation_small_d, sizeof(f_string_map_t), (void **) &setting_maps->array, &setting_maps->used, &setting_maps->size);
       if (F_status_is_error(status)) return status;
 
       setting_maps->array[setting_maps->used].key.used = 0;

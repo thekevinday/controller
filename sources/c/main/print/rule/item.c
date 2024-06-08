@@ -108,7 +108,7 @@ extern "C" {
 #endif // _di_controller_print_rule_item_error_action_second_
 
 #ifndef _di_controller_print_rule_item_error_action_unknown_
-  f_status_t controller_print_rule_item_error_action_unknown(fl_print_t * const print, controller_cache_t * const cache, const f_string_static_t name, const f_number_unsigned_t index) {
+  f_status_t controller_print_rule_item_error_action_unknown(fl_print_t * const print, controller_cache_t * const cache, const f_string_static_t name, const f_string_static_t unknown) {
 
     if (!print || !print->custom || !cache) return F_status_set_error(F_output_not);
     if (print->verbosity < f_console_verbosity_error_e) return F_output_not;
@@ -120,7 +120,7 @@ extern "C" {
     fl_print_format("%r%[%QRule item action '%]", print->to, f_string_eol_s, print->context, print->prefix, print->context);
     fl_print_format(f_string_format_r_single_s.string, print->to, print->notable, name, print->notable);
     fl_print_format("%[' has an unknown value '%]", print->to, print->context, print->context);
-    fl_print_format(f_string_format_Q_range_single_s.string, print->to, print->notable, cache->buffer_item, cache->content_action.array[index], print->notable);
+    fl_print_format(f_string_format_Q_range_single_s.string, print->to, print->notable, cache->buffer_item, unknown, print->notable);
     fl_print_format(f_string_format_sentence_end_quote_s.string, print->to, print->context, print->context, f_string_eol_s);
 
     controller_print_rule_error_cache(print, cache->action, F_true);

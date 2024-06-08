@@ -28,8 +28,8 @@ extern "C" {
  *
  *   Must not be NULL.
  * @param is_entry
- *   If TRUE, then this operate as an entry.
- *   If FALSE, then this operate as an exit.
+ *   If TRUE, then this operates as an entry.
+ *   If FALSE, then this operates as an exit.
  *
  * @return
  *   F_okay on success.
@@ -54,8 +54,8 @@ extern "C" {
  *
  *   Must not be NULL.
  * @param is_entry
- *   If TRUE, then this operate as an entry.
- *   If FALSE, then this operate as an exit.
+ *   If TRUE, then this operates as an entry.
+ *   If FALSE, then this operates as an exit.
  *
  * @return
  *   F_okay on success.

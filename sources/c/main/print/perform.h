@@ -115,8 +115,8 @@ extern "C" {
  *   The status code to process.
  *   Make sure this has F_status_set_fine() called if the status code has any error or warning bits.
  * @param is_entry
- *   If TRUE, then this operate as an entry.
- *   If FALSE, then this operate as an exit.
+ *   If TRUE, then this operates as an entry.
+ *   If FALSE, then this operates as an exit.
  *
  * @return
  *   F_okay on success.
@@ -138,8 +138,8 @@ extern "C" {
  *
  *   This does not alter print.custom.setting.state.status.
  * @param is_entry
- *   If TRUE, then this operate as an entry.
- *   If FALSE, then this operate as an exit.
+ *   If TRUE, then this operates as an entry.
+ *   If FALSE, then this operates as an exit.
  *
  * @return
  *   F_okay on success.
@@ -166,8 +166,8 @@ extern "C" {
  *   The status code to process.
  *   Make sure this has F_status_set_fine() called if the status code has any error or warning bits.
  * @param is_entry
- *   If TRUE, then this operate as an entry.
- *   If FALSE, then this operate as an exit.
+ *   If TRUE, then this operates as an entry.
+ *   If FALSE, then this operates as an exit.
  *
  * @return
  *   F_okay on success.

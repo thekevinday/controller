@@ -36,6 +36,8 @@ extern "C" {
  *   F_okay on success.
  *   F_file_found_not on file not found for a an exit file (is_entry is FALSE).
  *
+ *   F_parameter (with error bit) if a parameter is invalid.
+ *
  *   Errors (with error bit) from: controller_entry_actions_read().
  *   Errors (with error bit) from: controller_entry_items_increase_by().
  *   Errors (with error bit) from: controller_file_load().
