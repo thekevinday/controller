@@ -43,7 +43,7 @@ extern "C" {
       status_lock = controller_lock_read_instance(instance, &instance->lock);
 
       if (F_status_is_error(status_lock)) {
-        controller_lock_print_error_critical(&instance->main->program.error, F_status_set_fine(status_lock), F_true);
+        controller_print_error_lock_critical(&instance->main->program.error, F_status_set_fine(status_lock), F_true);
 
         break;
       }

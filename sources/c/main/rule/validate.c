@@ -26,10 +26,10 @@ extern "C" {
           controller_lock_print(main->program.error.to, &main->thread);
 
           fl_print_format("%r%[%QUnsupported action type '%]", main->program.error.to, f_string_eol_s, main->program.error.context, main->program.error.prefix, main->program.error.context);
-          fl_print_format(f_string_format_r_single_s.string, main->program.error.to, main->program.error.notable, controller_convert_rule_action_type_string(action), main->program.error.notable);
+          fl_print_format(f_string_format_Q_single_s.string, main->program.error.to, main->program.error.notable, controller_convert_rule_action_type_string(action), main->program.error.notable);
           fl_print_format("%[' while attempting to validate rule execution.%]%r", main->program.error.to, main->program.error.context, main->program.error.context, f_string_eol_s);
 
-          controller_print_rule_error_cache(&main->program.error, cache->action, F_true);
+          controller_print_error_rule_cache(&main->program.error, cache->action, F_true);
 
           controller_unlock_print_flush(main->program.error.to, &main->thread);
         }

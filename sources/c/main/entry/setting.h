@@ -36,9 +36,9 @@ extern "C" {
  * @return
  *   F_okay on success.
  *
- *   Errors (with error bit) from: controller_print_entry_error_file().
+ *   Errors (with error bit) from: controller_print_error_entry_file().
  *
- * @see controller_print_entry_error_file()
+ * @see controller_print_error_entry_file()
  */
 #ifndef _di_controller_entry_setting_read_
   extern f_status_t controller_entry_setting_read(controller_t * const main, controller_cache_t * const cache, const uint8_t is_entry, const f_range_t content_range);

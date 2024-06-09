@@ -17,28 +17,6 @@ extern "C" {
 #endif
 
 /**
- * Print a r/w lock related error message, locking the print mutex during the print.
- *
- * This will ignore F_interrupt and not print any messages, if passed.
- *
- * @param print
- *   The output structure to print to.
- *
- *   Must not be NULL.
- *
- *   This does not alter print.custom.setting.state.status.
- * @param status
- *   The status code to process.
- *   Make sure this has F_status_set_fine() called if the status code has any error or warning bits.
- * @param is_read
- *   If TRUE, then this is for a read lock.
- *   If FALSE, then this is for a write lock.
- */
-#ifndef _di_controller_lock_print_error_critical_
-  extern void controller_lock_print_error_critical(fl_print_t * const print, const f_status_t status, const uint8_t is_read);
-#endif // _di_controller_lock_print_error_critical_
-
-/**
  * Lock the mutex and the stream.
  *
  * This is implemented as a compliment to controller_unlock_print_flush() for consistency reasons.

@@ -252,7 +252,7 @@ extern "C" {
           }
 
           if (!type_rerun) {
-            controller_print_rule_item_error_action_first(&main->program.error, cache);
+            controller_print_error_rule_item_action_first(&main->program.error, cache);
 
             return F_status_set_error(F_valid_not);
           }
@@ -270,7 +270,7 @@ extern "C" {
             }
           }
           else {
-            controller_print_rule_item_error_action_second(&main->program.error, cache);
+            controller_print_error_rule_item_action_second(&main->program.error, cache);
 
             return F_status_set_error(F_valid_not);
           }
@@ -287,7 +287,7 @@ extern "C" {
               item->reruns[type_rerun].is |= rerun_item == &item->reruns[type_rerun].failure ? controller_rule_rerun_is_failure_reset_d : controller_rule_rerun_is_success_reset_d;
             }
             else {
-              controller_print_rule_item_error_action_unknown(&main->program.error, cache, controller_rerun_s, cache->content_action.array[i]);
+              controller_print_error_rule_item_action_unknown(&main->program.error, cache, controller_rerun_s, cache->content_action.array[i]);
 
               return F_status_set_error(F_valid_not);
             }
@@ -312,7 +312,7 @@ extern "C" {
               item->with &= ~controller_with_session_new_d;
             }
             else {
-              controller_print_rule_item_error_action_unknown(&main->program.error, cache, controller_with_s, cache->content_action.array[i]);
+              controller_print_error_rule_item_action_unknown(&main->program.error, cache, controller_with_s, cache->content_action.array[i]);
 
               status = F_status_set_error(F_valid_not);
 
@@ -407,7 +407,7 @@ extern "C" {
     }
 
     if (F_status_is_error_not(status) && status == F_data_not) {
-      controller_print_rule_item_debug_action_empty(&main->program.debug, cache);
+      controller_print_debug_rule_action_empty(&main->program.debug, cache);
     }
 
     return status;
@@ -443,34 +443,7 @@ extern "C" {
           controller_print_error(&main->program.error, macro_controller_f(fl_conversion_dynamic_partial_to_signed_detect));
         }
         else {
-          controller_lock_print(main->program.error.to, &main->thread);
-
-          fl_print_format("%r%[%QRule item action '%]", main->program.error.to, f_string_eol_s, main->program.error.context, main->program.error.prefix, main->program.error.context);
-          fl_print_format(f_string_format_r_single_s.string, main->program.error.to, main->program.error.notable, controller_rerun_s, main->program.error.notable);
-          fl_print_format("%[' requires a positive whole number or 0 for the '%]", main->program.error.to, main->program.error.context, main->program.error.context);
-          fl_print_format("%[%S%]", main->program.error.to, main->program.error.notable, name, main->program.error.notable);
-          fl_print_format("%[' value", main->program.error.to, main->program.error.context, main->program.error.context);
-
-          if (*index + 1 == cache->content_action.used) {
-            fl_print_format(", but none were given.%]%r", main->program.error.to, main->program.error.context, f_string_eol_s);
-          }
-          else {
-            fl_print_format(", but '%]%[%/Q%]", main->program.error.to, main->program.error.context, main->program.error.notable, cache->buffer_item, cache->content_action.array[*index], main->program.error.notable);
-
-            if (status == F_number || status == F_number_decimal) {
-              fl_print_format("%[' was given.%]%r", main->program.error.to, main->program.error.context, main->program.error.context, f_string_eol_s);
-            }
-            else if (status == F_number_overflow) {
-              fl_print_format("%[' is too large.%]%r", main->program.error.to, main->program.error.context, main->program.error.context, f_string_eol_s);
-            }
-            else {
-              fl_print_format("%[' is negative.%]%r", main->program.error.to, main->program.error.context, main->program.error.context, f_string_eol_s);
-            }
-          }
-
-          controller_print_rule_error_cache(&main->program.error, cache->action, F_true);
-
-          controller_unlock_print_flush(main->program.error.to, &main->thread);
+          controller_print_error_rule_item_action_positive_number_not(&main->program.error, cache, name, *index);
         }
       }
 

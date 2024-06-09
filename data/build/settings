@@ -48,12 +48,17 @@ build_sources_library main/entry.c main/entry/action.c main/entry/preprocess.c m
 build_sources_library main/file.c main/lock.c main/path.c main/process.c
 build_sources_library main/rule.c main/rule/action.c main/rule/execute.c main/rule/expand.c main/rule/instance.c main/rule/is.c main/rule/item.c main/rule/parameter.c main/rule/read.c main/rule/setting.c main/rule/validate.c main/rule/wait.c
 build_sources_library main/perform.c
-build_sources_library main/print/action.c main/print/data.c main/print/debug.c main/print/error.c main/print/lock.c main/print/message.c main/print/rule.c main/print/verbose.c main/print/warning.c
-build_sources_library main/print/entry/error.c main/print/entry/error/item.c main/print/entry/error/setting.c
-build_sources_library main/print/entry/message.c main/print/entry/message/action.c main/print/entry/message/item.c
-build_sources_library main/print/entry/output/setting.c
-build_sources_library main/print/entry/warning/action.c main/print/entry/warning/setting.c
-build_sources_library main/print/rule/action.c main/print/rule/item.c main/print/rule/setting.c
+build_sources_library main/print/data.c
+build_sources_library main/print/debug.c main/print/debug/rule/action.c main/print/debug/rule/execute.c main/print/debug/perform/control.c main/print/debug/perform/pid.c
+build_sources_library main/print/error.c
+build_sources_library main/print/error/entry.c main/print/error/entry/action.c main/print/error/entry/item.c main/print/error/entry/setting.c
+build_sources_library main/print/error/perform/pid.c
+build_sources_library main/print/error/rule.c main/print/error/rule/action.c main/print/error/rule/item.c main/print/error/rule/setting.c
+build_sources_library main/print/lock.c main/print/error/lock.c
+build_sources_library main/print/output/entry/setting.c main/print/output/rule/execute.c
+build_sources_library main/print/message.c main/print/message/entry.c main/print/message/entry/action.c main/print/message/entry/item.c
+build_sources_library main/print/verbose.c
+build_sources_library main/print/warning.c main/print/warning/entry/action.c main/print/warning/entry/setting.c
 build_sources_library main/signal.c main/time.c
 build_sources_library main/thread.c main/thread/cleanup.c main/thread/control.c main/thread/entry.c main/thread/instance.c main/thread/is.c main/thread/rule.c main/thread/signal.c
 build_sources_library main/validate.c
@@ -68,12 +73,17 @@ build_sources_headers main/entry.h main/entry/action.h main/entry/preprocess.h m
 build_sources_headers main/file.h main/lock.h main/path.h main/process.h
 build_sources_headers main/rule.h main/rule/action.h main/rule/execute.h main/rule/expand.h main/rule/instance.h main/rule/is.h main/rule/item.h main/rule/parameter.h main/rule/read.h main/rule/setting.h main/rule/validate.h main/rule/wait.h
 build_sources_headers main/perform.h
-build_sources_headers main/print/action.h main/print/data.h main/print/debug.h main/print/error.h main/print/lock.h main/print/message.h main/print/rule.h main/print/verbose.h main/print/warning.h
-build_sources_headers main/print/entry/error.h main/print/entry/error/item.h main/print/entry/error/setting.h
-build_sources_headers main/print/entry/message.h main/print/entry/message/action.h main/print/entry/message/item.h
-build_sources_headers main/print/entry/output/setting.h
-build_sources_headers main/print/entry/warning/action.h main/print/entry/warning/setting.h
-build_sources_headers main/print/rule/action.h main/print/rule/item.h main/print/rule/setting.h
+build_sources_headers main/print/data.h
+build_sources_headers main/print/debug.h main/print/debug/rule/action.h main/print/debug/rule/execute.h main/print/debug/perform/control.h main/print/debug/perform/pid.h
+build_sources_headers main/print/error.h
+build_sources_headers main/print/error/entry.h main/print/error/entry/action.h main/print/error/entry/item.h main/print/error/entry/setting.h
+build_sources_headers main/print/error/perform/pid.h
+build_sources_headers main/print/error/rule.h main/print/error/rule/action.h main/print/error/rule/item.h main/print/error/rule/setting.h
+build_sources_headers main/print/lock.h main/print/error/lock.h
+build_sources_headers main/print/output/entry/setting.h main/print/output/rule/execute.h
+build_sources_headers main/print/message.h main/print/message/entry.h main/print/message/entry/action.h main/print/message/entry/item.h
+build_sources_headers main/print/verbose.h
+build_sources_headers main/print/warning.h main/print/warning/entry/action.h main/print/warning/entry/setting.h
 build_sources_headers main/signal.h main/time.h
 build_sources_headers main/thread.h main/thread/cleanup.h main/thread/control.h main/thread/entry.h main/thread/instance.h main/thread/is.h main/thread/rule.h main/thread/signal.h
 build_sources_headers main/validate.h

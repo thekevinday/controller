@@ -17,7 +17,7 @@ extern "C" {
       status = controller_lock_write(is_normal, &main->thread, &main->thread.lock.instance);
 
       if (F_status_is_error(status)) {
-        controller_lock_print_error_critical(&main->program.error, F_status_set_fine(status), F_false);
+        controller_print_error_lock_critical(&main->program.error, F_status_set_fine(status), F_false);
       }
       else {
         status = f_memory_array_increase(controller_allocation_small_d, sizeof(controller_instance_t), (void **) &main->thread.instances.array, &main->thread.instances.used, &main->thread.instances.size);
@@ -30,7 +30,7 @@ extern "C" {
         status = controller_lock_write(is_normal, &main->thread, &instance->lock);
 
         if (F_status_is_error(status)) {
-          controller_lock_print_error_critical(&main->program.error, F_status_set_fine(status), F_false);
+          controller_print_error_lock_critical(&main->program.error, F_status_set_fine(status), F_false);
         }
         else {
           instance->action = action;

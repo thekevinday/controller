@@ -252,7 +252,7 @@ extern "C" {
           status = controller_rule_expand(main, instance->rule.items.array[i].actions.array[j], instance);
 
           if (F_status_is_error(status)) {
-            controller_print_rule_error(&main->program.error, instance->cache.action, F_status_set_fine(status), "controller_rule_expand", F_true, F_false);
+            controller_print_error_rule(&main->program.error, instance->cache.action, F_status_set_fine(status), "controller_rule_expand", F_true, F_false);
 
             break;
           }
@@ -263,7 +263,7 @@ extern "C" {
             if (status == F_child || F_status_set_fine(status) == F_interrupt || F_status_set_fine(status) == F_lock) break;
             if (F_status_is_error(status) && F_status_set_fine(status) != F_failure) break;
 
-          } while (controller_rule_execute_rerun(controller_rule_action_type_to_action_execute_type(action), instance, &instance->rule.items.array[i]) > 0);
+          } while (controller_rule_execute_rerun(instance, &instance->rule.items.array[i], controller_rule_action_type_to_action_execute_type(action)) > 0);
 
           if (status == F_child || F_status_set_fine(status) == F_interrupt || F_status_set_fine(status) == F_lock) break;
 
@@ -282,7 +282,7 @@ extern "C" {
           status = controller_rule_expand(main, instance->rule.items.array[i].actions.array[j], instance);
 
           if (F_status_is_error(status)) {
-            controller_print_rule_error(&main->program.error, instance->cache.action, F_status_set_fine(status), "controller_rule_expand", F_true, F_false);
+            controller_print_error_rule(&main->program.error, instance->cache.action, F_status_set_fine(status), "controller_rule_expand", F_true, F_false);
 
             break;
           }
@@ -305,7 +305,7 @@ extern "C" {
             if (status == F_child || F_status_set_fine(status) == F_lock) break;
             if (F_status_is_error(status) && F_status_set_fine(status) != F_failure) break;
 
-          } while (controller_rule_execute_rerun(controller_rule_action_type_to_action_execute_type(action), instance, &instance->rule.items.array[i]) > 0);
+          } while (controller_rule_execute_rerun(instance, &instance->rule.items.array[i], controller_rule_action_type_to_action_execute_type(action)) > 0);
 
           if (status == F_child || F_status_set_fine(status) == F_interrupt || F_status_set_fine(status) == F_lock) break;
 
@@ -324,7 +324,7 @@ extern "C" {
           status = controller_rule_expand(main, instance->rule.items.array[i].actions.array[j], instance);
 
           if (F_status_is_error(status)) {
-            controller_print_rule_error(&main->program.error, instance->cache.action, F_status_set_fine(status), "controller_rule_expand", F_true, F_false);
+            controller_print_error_rule(&main->program.error, instance->cache.action, F_status_set_fine(status), "controller_rule_expand", F_true, F_false);
 
             break;
           }
@@ -336,7 +336,7 @@ extern "C" {
               if (status == F_child || F_status_set_fine(status) == F_interrupt || F_status_set_fine(status) == F_lock) break;
               if (F_status_is_error(status) && F_status_set_fine(status) != F_failure) break;
 
-            } while (controller_rule_execute_rerun(controller_rule_action_type_to_action_execute_type(action), instance, &instance->rule.items.array[i]) > 0);
+            } while (controller_rule_execute_rerun(instance, &instance->rule.items.array[i], controller_rule_action_type_to_action_execute_type(action)) > 0);
 
             if (status == F_child || F_status_set_fine(status) == F_interrupt || F_status_set_fine(status) == F_lock) break;
 
@@ -354,7 +354,7 @@ extern "C" {
           else {
             success = F_status_set_error(F_failure);
 
-            controller_print_rule_action_error_missing_pid(&main->program.error, instance->rule.alias);
+            controller_print_error_rule_action_missing_pid(&main->program.error, instance->rule.alias);
           }
         }
         else if (instance->rule.items.array[i].type == controller_rule_item_type_utility_e) {
@@ -362,7 +362,7 @@ extern "C" {
             status = controller_rule_expand(main, instance->rule.items.array[i].actions.array[j], instance);
 
             if (F_status_is_error(status)) {
-              controller_print_rule_error(&main->program.error, instance->cache.action, F_status_set_fine(status), "controller_rule_expand", F_true, F_false);
+              controller_print_error_rule(&main->program.error, instance->cache.action, F_status_set_fine(status), "controller_rule_expand", F_true, F_false);
 
               break;
             }
@@ -380,7 +380,7 @@ extern "C" {
               if (status == F_child || F_status_set_fine(status) == F_interrupt || F_status_set_fine(status) == F_lock) break;
               if (F_status_is_error(status) && F_status_set_fine(status) != F_failure) break;
 
-            } while (controller_rule_execute_rerun(controller_rule_action_type_to_action_execute_type(action), instance, &instance->rule.items.array[i]) > 0);
+            } while (controller_rule_execute_rerun(instance, &instance->rule.items.array[i], controller_rule_action_type_to_action_execute_type(action)) > 0);
 
             if (status == F_child || F_status_set_fine(status) == F_interrupt || F_status_set_fine(status) == F_lock) break;
 
@@ -398,19 +398,11 @@ extern "C" {
           else {
             success = F_status_set_error(F_failure);
 
-            controller_print_rule_action_error_missing_pid(&main->program.error, instance->rule.alias);
+            controller_print_error_rule_action_missing_pid(&main->program.error, instance->rule.alias);
           }
         }
         else {
-          if (main->program.warning.verbosity == f_console_verbosity_debug_e) {
-            controller_lock_print(main->program.warning.to, &main->thread);
-
-            fl_print_format("%r%[%QAction type is unknown, ignoring.%]%r", main->program.warning.to, f_string_eol_s, main->program.warning.context, main->program.warning.prefix, main->program.warning.context, f_string_eol_s);
-
-            controller_print_rule_error_cache(&main->program.warning, instance->cache.action, F_true);
-
-            controller_unlock_print_flush(main->program.warning.to, &main->thread);
-          }
+          controller_print_warning_rule_action_unknown(&main->program.warning, &instance->cache);
 
           if (success == F_false) {
             success = F_ignore;
@@ -435,21 +427,10 @@ extern "C" {
       success = F_false;
     }
 
-    if (!controller_thread_is_enabled_instance(instance)) {
-      return F_status_set_error(F_interrupt);
-    }
-
-    if (status == F_child || F_status_is_error(status)) {
-      return status;
-    }
-
-    if (success == F_false || success == F_failure) {
-      return F_status_set_error(F_failure);
-    }
-
-    if (success == F_ignore) {
-      return F_ignore;
-    }
+    if (!controller_thread_is_enabled_instance(instance)) return F_status_set_error(F_interrupt);
+    if (status == F_child || F_status_is_error(status)) return status;
+    if (success == F_false || success == F_failure) return F_status_set_error(F_failure);
+    if (success == F_ignore) return F_ignore;
 
     return F_okay;
   }
@@ -492,34 +473,7 @@ extern "C" {
     }
 
     if (options & controller_instance_option_simulate_e) {
-      if (main->program.output.verbosity != f_console_verbosity_quiet_e) {
-        controller_lock_print(main->program.output.to, &instance->main->thread);
-
-        fl_print_format("%rSimulating execution of '%[", main->program.output.to, f_string_eol_s, main->program.context.set.title);
-
-        if (program.used) {
-          f_print_dynamic_safely(program, main->program.output.to);
-        }
-        else {
-          f_print_dynamic_safely(arguments.array[0], main->program.output.to);
-        }
-
-        fl_print_format("%]' with the arguments: '%[", main->program.output.to, main->program.context.set.title, main->program.context.set.important);
-
-        for (f_number_unsigned_t i = program.used ? 0 : 1; i < arguments.used; ++i) {
-
-          if (program.used && i || !program.used && i > 1) {
-            f_print_dynamic_raw(f_string_space_s, main->program.output.to);
-          }
-
-          f_print_dynamic_safely(arguments.array[i], main->program.output.to);
-        } // for
-
-        fl_print_format("%]' from '", main->program.output.to, main->program.context.set.important);
-        fl_print_format("%[%Q%]'.%r", main->program.output.to, main->program.context.set.notable, instance->rule.name, main->program.context.set.notable, f_string_eol_s);
-
-        controller_unlock_print_flush(main->program.output.to, &instance->main->thread);
-      }
+      controller_print_entry_output_execute_simulate(&main->program.output, instance, program, arguments);
 
       // Sleep for less than a second to better show simulation of synchronous vs asynchronous.
       {
@@ -554,14 +508,11 @@ extern "C" {
       status_lock = controller_lock_write_instance(instance, &instance->active);
 
       if (F_status_is_error(status_lock)) {
-        controller_lock_print_error_critical(&main->program.error, F_status_set_fine(status_lock), F_false);
+        controller_print_error_lock_critical(&main->program.error, F_status_set_fine(status_lock), F_false);
 
         if (F_status_set_fine(status_lock) != F_interrupt) {
           status = controller_lock_read_instance(instance, &instance->active);
-
-          if (status == F_okay) {
-            return status_lock;
-          }
+          if (status == F_okay) return status_lock;
         }
 
         return F_status_set_error(F_lock);
@@ -575,7 +526,7 @@ extern "C" {
       status_lock = controller_lock_read_instance(instance, &instance->active);
 
       if (F_status_is_error(status_lock)) {
-        controller_lock_print_error_critical(&main->program.error, F_status_set_fine(status_lock), F_true);
+        controller_print_error_lock_critical(&main->program.error, F_status_set_fine(status_lock), F_true);
       }
 
       if (F_status_set_fine(status_lock) != F_interrupt) {
@@ -595,7 +546,7 @@ extern "C" {
       status_lock = controller_lock_write_instance(instance, &instance->active);
 
       if (F_status_is_error(status_lock)) {
-        controller_lock_print_error_critical(&main->program.error, F_status_set_fine(status_lock), F_false);
+        controller_print_error_lock_critical(&main->program.error, F_status_set_fine(status_lock), F_false);
 
         if (F_status_set_fine(status_lock) != F_interrupt) {
           status = controller_lock_read_instance(instance, &instance->active);
@@ -615,7 +566,7 @@ extern "C" {
       status_lock = controller_lock_read_instance(instance, &instance->active);
 
       if (F_status_is_error(status_lock)) {
-        controller_lock_print_error_critical(&main->program.error, F_status_set_fine(status_lock), F_true);
+        controller_print_error_lock_critical(&main->program.error, F_status_set_fine(status_lock), F_true);
 
         return F_status_set_error(F_lock);
       }
@@ -650,7 +601,7 @@ extern "C" {
       status = F_status_set_fine(status);
 
       if ((WIFEXITED(instance->result) && WEXITSTATUS(instance->result)) || status == F_control_group || status == F_failure || status == F_limit || status == F_processor || status == F_schedule) {
-        controller_print_rule_item_error_execute(&instance->main->program.error, instance, type == controller_rule_item_type_script_e, program.used ? program : arguments.array[0], status);
+        controller_print_error_rule_item_execute(&instance->main->program.error, instance, type == controller_rule_item_type_script_e, program.used ? program : arguments.array[0], status);
       }
       else {
         controller_print_error_status(&instance->main->program.error, macro_controller_f(fll_execute_program), F_status_set_fine(status));
@@ -737,34 +688,7 @@ extern "C" {
     }
 
     if (options & controller_instance_option_simulate_e) {
-      if (main->program.error.verbosity > f_console_verbosity_error_e) {
-        controller_lock_print(main->program.error.to, &instance->main->thread);
-
-        fl_print_format("%rSimulating execution of '%[", main->program.error.to, f_string_eol_s, main->program.context.set.title);
-
-        if (program.used) {
-          f_print_dynamic_safely(program, main->program.error.to);
-        }
-        else {
-          f_print_dynamic_safely(arguments.array[0], main->program.error.to);
-        }
-
-        fl_print_format("%]' with the arguments: '%[", main->program.error.to, main->program.context.set.title, main->program.context.set.important);
-
-        for (f_number_unsigned_t i = program.used ? 0 : 1; i < arguments.used; ++i) {
-
-          if (program.used && i || !program.used && i > 1) {
-            f_print_dynamic_raw(f_string_space_s, main->program.error.to);
-          }
-
-          f_print_dynamic_safely(arguments.array[i], main->program.error.to);
-        } // for
-
-        fl_print_format("%]' from '", main->program.error.to, main->program.context.set.important);
-        fl_print_format("%[%Q%]'.%r", main->program.error.to, main->program.context.set.notable, instance->rule.name, main->program.context.set.notable, f_string_eol_s);
-
-        controller_unlock_print_flush(main->program.error.to, &instance->main->thread);
-      }
+      controller_print_entry_output_execute_simulate(&main->program.output, instance, program, arguments);
 
       // Sleep for less than a second to better show simulation of synchronous vs asynchronous.
       {
@@ -800,14 +724,11 @@ extern "C" {
       status_lock = controller_lock_write_instance(instance, &instance->active);
 
       if (F_status_is_error(status_lock)) {
-        controller_lock_print_error_critical(&main->program.error, F_status_set_fine(status_lock), F_false);
+        controller_print_error_lock_critical(&main->program.error, F_status_set_fine(status_lock), F_false);
 
         if (F_status_set_fine(status_lock) != F_interrupt) {
           status = controller_lock_read_instance(instance, &instance->active);
-
-          if (status == F_okay) {
-            return status_lock;
-          }
+          if (status == F_okay) return status_lock;
         }
 
         return F_status_set_error(F_lock);
@@ -821,7 +742,7 @@ extern "C" {
       status_lock = controller_lock_read_instance(instance, &instance->active);
 
       if (F_status_is_error(status_lock)) {
-        controller_lock_print_error_critical(&main->program.error, F_status_set_fine(status_lock), F_true);
+        controller_print_error_lock_critical(&main->program.error, F_status_set_fine(status_lock), F_true);
       }
 
       if (F_status_set_fine(status_lock) != F_interrupt) {
@@ -831,11 +752,7 @@ extern "C" {
       }
 
       if (!controller_thread_is_enabled_instance(instance)) {
-        if (status_lock == F_okay) {
-          return F_status_set_error(F_interrupt);
-        }
-
-        return F_status_set_error(F_lock);
+        return status_lock == F_okay ? F_status_set_error(F_interrupt) : F_status_set_error(F_lock);
       }
 
       if (status_lock == F_okay) {
@@ -845,14 +762,11 @@ extern "C" {
       status_lock = controller_lock_write_instance(instance, &instance->active);
 
       if (F_status_is_error(status_lock)) {
-        controller_lock_print_error_critical(&main->program.error, F_status_set_fine(status_lock), F_false);
+        controller_print_error_lock_critical(&main->program.error, F_status_set_fine(status_lock), F_false);
 
         if (F_status_set_fine(status_lock) != F_interrupt) {
           status = controller_lock_read_instance(instance, &instance->active);
-
-          if (status == F_okay) {
-            return status_lock;
-          }
+          if (status == F_okay) return status_lock;
         }
 
         return F_status_set_error(F_lock);
@@ -868,7 +782,7 @@ extern "C" {
       status_lock = controller_lock_read_instance(instance, &instance->active);
 
       if (F_status_is_error(status_lock)) {
-        controller_lock_print_error_critical(&main->program.error, F_status_set_fine(status_lock), F_true);
+        controller_print_error_lock_critical(&main->program.error, F_status_set_fine(status_lock), F_true);
 
         return F_status_set_error(F_lock);
       }
@@ -883,9 +797,7 @@ extern "C" {
     else {
       main->program.child = result.status;
 
-      if (!controller_thread_is_enabled_instance(instance)) {
-        return F_status_set_error(F_interrupt);
-      }
+      if (!controller_thread_is_enabled_instance(instance)) return F_status_set_error(F_interrupt);
     }
 
     if (F_status_is_error(status)) {
@@ -899,15 +811,13 @@ extern "C" {
       }
     }
 
-    if (status == F_child || F_status_set_fine(status) == F_interrupt) {
-      return status;
-    }
+    if (status == F_child || F_status_set_fine(status) == F_interrupt) return status;
 
     if (F_status_is_error(status)) {
       status = F_status_set_fine(status);
 
       if ((WIFEXITED(instance->result) && WEXITSTATUS(instance->result)) || status == F_control_group || status == F_failure || status == F_limit || status == F_processor || status == F_schedule) {
-        controller_print_rule_item_error_execute(&instance->main->program.error, instance, type == controller_rule_item_type_utility_e, program.used ? program : arguments.array[0], status);
+        controller_print_error_rule_item_execute(&instance->main->program.error, instance, type == controller_rule_item_type_utility_e, program.used ? program : arguments.array[0], status);
       }
       else {
         controller_print_error_status(&instance->main->program.error, macro_controller_f(fll_execute_program), F_status_set_fine(status));
@@ -921,7 +831,7 @@ extern "C" {
 #endif // _di_controller_rule_execute_pid_with_
 
 #ifndef _di_controller_rule_execute_rerun_
-  int8_t controller_rule_execute_rerun(const uint8_t action, controller_instance_t * const instance, controller_rule_item_t * const item) {
+  int8_t controller_rule_execute_rerun(controller_instance_t * const instance, controller_rule_item_t * const item, const uint8_t action) {
 
     if (!instance || !instance->main || !item) return F_false;
 
@@ -934,27 +844,7 @@ extern "C" {
       if (!controller_thread_is_enabled_instance(instance)) return -2;
 
       if (!rerun_item->max || rerun_item->count < rerun_item->max) {
-        if (main->program.error.verbosity == f_console_verbosity_debug_e) {
-          controller_lock_print(main->program.output.to, &instance->main->thread);
-
-          fl_print_format("%rRe-running '", main->program.output.to, f_string_eol_s);
-          fl_print_format("%[%r%]' '", main->program.output.to, main->program.context.set.title, instance->rule.alias, main->program.context.set.title);
-          fl_print_format("%[%r%]' with a ", main->program.output.to, main->program.context.set.notable, controller_convert_rule_action_execute_type_string(action), main->program.context.set.notable);
-          fl_print_format("%[%r%] of ", main->program.output.to, main->program.context.set.notable, controller_delay_s, main->program.context.set.notable);
-          fl_print_format("%[%ul%] MegaTime", main->program.output.to, main->program.context.set.notable, rerun_item->delay, main->program.context.set.notable);
-
-          if (rerun_item->max) {
-            fl_print_format(" for %[%ul%]", main->program.output.to, main->program.context.set.notable, rerun_item->count, main->program.context.set.notable);
-            fl_print_format(" of %[%r%] ", main->program.output.to, main->program.context.set.notable, controller_max_s, main->program.context.set.notable);
-            fl_print_format(f_string_format_un_single_s.string, main->program.output.to, main->program.context.set.notable, rerun_item->max, main->program.context.set.notable);
-            fl_print_format(".%r", main->program.output.to, f_string_eol_s);
-          }
-          else {
-            fl_print_format(" with no %[%r%].%r", main->program.output.to, main->program.context.set.notable, controller_max_s, main->program.context.set.notable, f_string_eol_s);
-          }
-
-          controller_unlock_print_flush(main->program.output.to, &instance->main->thread);
-        }
+        controller_main_print_debug_rule_execute_rerun(&main->program.output, return_item, action);
 
         if (rerun_item->delay) {
           f_time_spec_t delay = f_time_spec_t_initialize;

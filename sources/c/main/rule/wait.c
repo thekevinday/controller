@@ -12,7 +12,7 @@ extern "C" {
     f_status_t status_lock = controller_lock_read(is_normal, &main->thread, &main->thread.lock.instance);
 
     if (F_status_is_error(status_lock)) {
-      controller_lock_print_error_critical(&main->program.error, F_status_set_fine(status_lock), F_true);
+      controller_print_error_lock_critical(&main->program.error, F_status_set_fine(status_lock), F_true);
 
       return status_lock;
     }
@@ -91,7 +91,7 @@ extern "C" {
           status_lock = controller_lock_write(is_normal, &main->thread, &instance_list[i]->lock);
 
           if (F_status_is_error(status_lock)) {
-            controller_lock_print_error_critical(&main->program.error, F_status_set_fine(status_lock), F_false);
+            controller_print_error_lock_critical(&main->program.error, F_status_set_fine(status_lock), F_false);
 
             f_thread_unlock(&instance_list[i]->active);
 
@@ -194,7 +194,7 @@ extern "C" {
     } // for
 
     if (F_status_is_error(status_lock)) {
-      controller_lock_print_error_critical(&main->program.error, F_status_set_fine(status_lock), F_true);
+      controller_print_error_lock_critical(&main->program.error, F_status_set_fine(status_lock), F_true);
 
       return status_lock;
     }

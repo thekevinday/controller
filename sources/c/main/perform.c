@@ -12,7 +12,7 @@ extern "C" {
 
     if (main->setting.flag & controller_main_flag_validate_e) {
       if ((main->setting.flag & controller_main_flag_simulate_e)) {
-        controller_print_perform_debug_pid_file_control_socket(&main->program.debug);
+        controller_print_debug_perform_pid_file_control_socket(&main->program.debug);
       }
 
       return F_okay;
@@ -28,19 +28,19 @@ extern "C" {
 
         // Always return immediately on memory errors.
         if (F_status_set_fine(status) == F_memory_not) {
-          controller_print_perform_error_pid_file_create(&main->program.error, macro_controller_f(controller_file_pid_create), is_entry);
+          controller_print_error_perform_pid_file_create(&main->program.error, macro_controller_f(controller_file_pid_create), is_entry);
 
           return status;
         }
 
-        controller_print_perform_debug_pid_file_create_problem(&main->program.debug, macro_controller_f(controller_file_pid_create), is_entry);
+        controller_print_debug_perform_pid_file_create_problem(&main->program.debug, macro_controller_f(controller_file_pid_create), is_entry);
 
         status = F_okay;
       }
       else {
         main->setting.flag |= controller_setting_flag_pid_created_e;
 
-        controller_print_perform_debug_pid_file_create_success(&main->program.debug, is_entry);
+        controller_print_debug_perform_pid_file_create_success(&main->program.debug, is_entry);
       }
     }
 
@@ -65,7 +65,7 @@ extern "C" {
 
     if (main->process.control.flag & controller_control_flag_readonly_e) {
       if (f_file_exists(main->setting.path_control, F_true) != F_true) {
-        controller_print_perform_debug_control_socket_missing_read_only(&main->program.debug);
+        controller_print_debug_perform_control_socket_missing_read_only(&main->program.debug);
 
         return F_data_not;
       }
@@ -78,8 +78,8 @@ extern "C" {
         controller_print_error_status(&main->program.error, macro_controller_f(f_socket_create), F_status_set_fine(status));
       }
       else {
-        // @todo make all message strings passed to controller_print_perform_debug_control_socket_failure() into global static strings and update the function accordingly.
-        controller_print_perform_debug_control_socket_failure(&main->program.debug, F_status_set_fine(status), "could not be created");
+        // @todo make all message strings passed to controller_print_debug_perform_control_socket_failure() into global static strings and update the function accordingly.
+        controller_print_debug_perform_control_socket_failure(&main->program.debug, F_status_set_fine(status), "could not be created");
       }
 
       return status;
@@ -110,7 +110,7 @@ extern "C" {
         controller_print_error(global->thread, &main->program.error, F_status_set_fine(status), macro_controller_f(f_socket_bind), F_true);
       }
       else {
-        controller_print_perform_debug_control_socket_failure(&main->program.debug, F_status_set_fine(status), "could not be bound");
+        controller_print_debug_perform_control_socket_failure(&main->program.debug, F_status_set_fine(status), "could not be bound");
       }
 
       return status;
@@ -130,7 +130,7 @@ extern "C" {
           controller_print_error(global->thread, &main->program.error, F_status_set_fine(status), macro_controller_f(f_file_role_change), F_true);
         }
         else {
-          controller_print_perform_debug_control_socket_failure(&main->program.debug, F_status_set_fine(status), "failed to set file roles");
+          controller_print_debug_perform_control_socket_failure(&main->program.debug, F_status_set_fine(status), "failed to set file roles");
         }
 
         return status;
@@ -151,7 +151,7 @@ extern "C" {
           controller_print_error(global->thread, &main->program.error, F_status_set_fine(status), macro_controller_f(f_file_role_change), F_true);
         }
         else {
-          controller_print_perform_debug_control_socket_failure(&main->program.debug, F_status_set_fine(status), "failed to set file mode");
+          controller_print_debug_perform_control_socket_failure(&main->program.debug, F_status_set_fine(status), "failed to set file mode");
         }
 
         return status;

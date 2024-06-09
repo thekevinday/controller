@@ -18,7 +18,7 @@ extern "C" {
     }
 
     if (F_status_is_error(status)) {
-      controller_print_entry_error(&main->program.error, cache, is_entry, F_status_set_fine(status), macro_controller_f(fll_fss_extended_read), F_true);
+      controller_print_error_entry(&main->program.error, cache, is_entry, F_status_set_fine(status), macro_controller_f(fll_fss_extended_read), F_true);
 
       return status;
     }
@@ -30,7 +30,7 @@ extern "C" {
     }
 
     if (F_status_is_error(status)) {
-      controller_print_entry_error(&main->program.error, cache, is_entry, F_status_set_fine(status), macro_controller_f(f_fss_apply_delimit), F_true);
+      controller_print_error_entry(&main->program.error, cache, is_entry, F_status_set_fine(status), macro_controller_f(f_fss_apply_delimit), F_true);
 
       return status;
     }
@@ -49,7 +49,7 @@ extern "C" {
       f_fss_count_lines(cache->buffer_file, cache->object_actions.array[i].start, &cache->action.line_action, &main->setting.state);
 
       if (F_status_is_error(status)) {
-        controller_print_entry_error(&main->program.error, cache, is_entry, F_status_set_fine(status), macro_controller_f(f_fss_count_lines), F_true);
+        controller_print_error_entry(&main->program.error, cache, is_entry, F_status_set_fine(status), macro_controller_f(f_fss_count_lines), F_true);
 
         break;
       }
@@ -60,7 +60,7 @@ extern "C" {
       status = f_rip_dynamic_partial_nulless(cache->buffer_file, cache->object_actions.array[i], &cache->action.name_action);
 
       if (F_status_is_error(status)) {
-        controller_print_entry_error(&main->program.error, cache, is_entry, F_status_set_fine(status), macro_controller_f(f_rip_dynamic_partial_nulless), F_true);
+        controller_print_error_entry(&main->program.error, cache, is_entry, F_status_set_fine(status), macro_controller_f(f_rip_dynamic_partial_nulless), F_true);
 
         break;
       }
@@ -77,7 +77,7 @@ extern "C" {
             main->process.control.flag |= controller_control_flag_readonly_e;
           }
           else {
-            controller_print_entry_error_item_setting_support_not_option(&main->program.error, cache, is_entry, cache->content_actions.array[i].array[1]);
+            controller_print_error_entry_item_setting_support_not_option(&main->program.error, cache, is_entry, cache->content_actions.array[i].array[1]);
 
             continue;
           }
@@ -92,7 +92,7 @@ extern "C" {
         status = f_rip_dynamic_partial_nulless(cache->buffer_file, cache->content_actions.array[i].array[0], &cache->action.generic);
 
         if (F_status_is_error(status)) {
-          controller_print_entry_error(&main->program.error, cache, is_entry, F_status_set_fine(status), macro_controller_f(f_rip_dynamic_partial_nulless), F_true);
+          controller_print_error_entry(&main->program.error, cache, is_entry, F_status_set_fine(status), macro_controller_f(f_rip_dynamic_partial_nulless), F_true);
 
           break;
         }
@@ -102,7 +102,7 @@ extern "C" {
         status = controller_path_canonical_relative(main->setting, cache->action.generic, &main->setting.path_control);
 
         if (F_status_is_error(status)) {
-          controller_print_entry_error_file(&main->program.error, cache, is_entry, F_status_set_fine(status), macro_controller_f(controller_path_canonical_relative), F_true, cache->action.generic, f_file_operation_analyze_s, fll_error_file_type_path_e);
+          controller_print_error_entry_file(&main->program.error, cache, is_entry, F_status_set_fine(status), macro_controller_f(controller_path_canonical_relative), F_true, cache->action.generic, f_file_operation_analyze_s, fll_error_file_type_path_e);
 
           continue;
         }
@@ -116,16 +116,16 @@ extern "C" {
           status = F_status_set_fine(status);
 
           if (status == F_exist_not) {
-            controller_print_entry_error_setting_with_range(&main->program.error, cache, is_entry, " has an invalid group", cache->content_actions.array[i].array[0], ", because no group was found by that name");
+            controller_print_error_entry_setting_with_range(&main->program.error, cache, is_entry, " has an invalid group", cache->content_actions.array[i].array[0], ", because no group was found by that name");
           }
           else if (status == F_number_too_large) {
-            controller_print_entry_error_setting_with_range(&main->program.error, cache, is_entry, " has an invalid group", cache->content_actions.array[i].array[0], ", because the given ID is too large");
+            controller_print_error_entry_setting_with_range(&main->program.error, cache, is_entry, " has an invalid group", cache->content_actions.array[i].array[0], ", because the given ID is too large");
           }
           else if (status == F_number) {
-            controller_print_entry_error_setting_with_range(&main->program.error, cache, is_entry, " has an invalid group", cache->content_actions.array[i].array[0], ", because the given ID is not a valid supported number");
+            controller_print_error_entry_setting_with_range(&main->program.error, cache, is_entry, " has an invalid group", cache->content_actions.array[i].array[0], ", because the given ID is not a valid supported number");
           }
           else {
-            controller_print_entry_error(&main->program.error, cache, is_entry, F_status_set_fine(status), macro_controller_f(controller_convert_group_id), F_true);
+            controller_print_error_entry(&main->program.error, cache, is_entry, F_status_set_fine(status), macro_controller_f(controller_convert_group_id), F_true);
           }
 
           continue;
@@ -144,7 +144,7 @@ extern "C" {
         status = f_rip_dynamic_partial_nulless(cache->buffer_file, cache->content_actions.array[i].array[0], &cache->action.generic);
 
         if (F_status_is_error(status)) {
-          controller_print_entry_error(&main->program.error, cache, is_entry, F_status_set_fine(status), macro_controller_f(f_rip_dynamic_partial_nulless), F_true);
+          controller_print_error_entry(&main->program.error, cache, is_entry, F_status_set_fine(status), macro_controller_f(f_rip_dynamic_partial_nulless), F_true);
 
           break;
         }
@@ -152,7 +152,7 @@ extern "C" {
         status = f_file_mode_from_string(cache->action.generic, main->program.umask, &mode_file, &replace);
 
         if (F_status_is_error(status)) {
-          controller_print_entry_error_setting_with_range(&main->program.error, cache, is_entry, " has an unsupported mode", cache->content_actions.array[i].array[0], ", because the format is unknown or contains invalid data");
+          controller_print_error_entry_setting_with_range(&main->program.error, cache, is_entry, " has an unsupported mode", cache->content_actions.array[i].array[0], ", because the format is unknown or contains invalid data");
 
           continue;
         }
@@ -160,7 +160,7 @@ extern "C" {
         status = f_file_mode_to_mode(mode_file, &mode);
 
         if (F_status_is_error(status)) {
-          controller_print_entry_error(&main->program.error, cache, is_entry, F_status_set_fine(status), macro_controller_f(f_file_mode_to_mode), F_true);
+          controller_print_error_entry(&main->program.error, cache, is_entry, F_status_set_fine(status), macro_controller_f(f_file_mode_to_mode), F_true);
 
           continue;
         }
@@ -177,16 +177,16 @@ extern "C" {
           status = F_status_set_fine(status);
 
           if (status == F_exist_not) {
-            controller_print_entry_error_setting_with_range(&main->program.error, cache, is_entry, " has an invalid user", cache->content_actions.array[i].array[0], ", because no user was found by that name");
+            controller_print_error_entry_setting_with_range(&main->program.error, cache, is_entry, " has an invalid user", cache->content_actions.array[i].array[0], ", because no user was found by that name");
           }
           else if (status == F_number_too_large) {
-            controller_print_entry_error_setting_with_range(&main->program.error, cache, is_entry, " has an invalid user", cache->content_actions.array[i].array[0], ", because the given ID is too large");
+            controller_print_error_entry_setting_with_range(&main->program.error, cache, is_entry, " has an invalid user", cache->content_actions.array[i].array[0], ", because the given ID is too large");
           }
           else if (status == F_number) {
-            controller_print_entry_error_setting_with_range(&main->program.error, cache, is_entry, " has an invalid user", cache->content_actions.array[i].array[0], ", because the given ID is not a valid supported number");
+            controller_print_error_entry_setting_with_range(&main->program.error, cache, is_entry, " has an invalid user", cache->content_actions.array[i].array[0], ", because the given ID is not a valid supported number");
           }
           else {
-            controller_print_entry_error(&main->program.error, cache, is_entry, F_status_set_fine(status), macro_controller_f(controller_convert_user_id), F_true);
+            controller_print_error_entry(&main->program.error, cache, is_entry, F_status_set_fine(status), macro_controller_f(controller_convert_user_id), F_true);
           }
 
           continue;
@@ -197,7 +197,7 @@ extern "C" {
       }
       else if (f_compare_dynamic(controller_define_s, cache->action.name_action) == F_equal_to) {
         if (cache->content_actions.array[i].used != 2) {
-          controller_print_entry_error_setting_requires_exactly(&main->program.error, cache, is_entry, 2);
+          controller_print_error_entry_setting_requires_exactly(&main->program.error, cache, is_entry, 2);
 
           continue;
         }
@@ -205,14 +205,14 @@ extern "C" {
         status = controller_entry_setting_read_map(cache->buffer_file, cache->content_actions.array[i], &entry->define);
 
         if (F_status_is_error(status)) {
-          controller_print_entry_error(&main->program.error, cache, is_entry, F_status_set_fine(status), macro_controller_f(controller_entry_setting_read_map), F_true);
+          controller_print_error_entry(&main->program.error, cache, is_entry, F_status_set_fine(status), macro_controller_f(controller_entry_setting_read_map), F_true);
 
           continue;
         }
       }
       else if (is_entry && f_compare_dynamic(controller_mode_s, cache->action.name_action) == F_equal_to) {
         if (cache->content_actions.array[i].used != 1) {
-          controller_print_entry_error_setting_requires_exactly(&main->program.error, cache, is_entry, 1);
+          controller_print_error_entry_setting_requires_exactly(&main->program.error, cache, is_entry, 1);
 
           continue;
         }
@@ -234,7 +234,7 @@ extern "C" {
       }
       else if (f_compare_dynamic(controller_parameter_s, cache->action.name_action) == F_equal_to) {
         if (cache->content_actions.array[i].used != 2) {
-          controller_print_entry_error_setting_requires_exactly(&main->program.error, cache, is_entry, 2);
+          controller_print_error_entry_setting_requires_exactly(&main->program.error, cache, is_entry, 2);
 
           continue;
         }
@@ -242,14 +242,14 @@ extern "C" {
         status = controller_entry_setting_read_map(cache->buffer_file, cache->content_actions.array[i], &entry->parameter);
 
         if (F_status_is_error(status)) {
-          controller_print_entry_error(&main->program.error, cache, is_entry, F_status_set_fine(status), macro_controller_f(controller_entry_setting_read_map), F_true);
+          controller_print_error_entry(&main->program.error, cache, is_entry, F_status_set_fine(status), macro_controller_f(controller_entry_setting_read_map), F_true);
 
           continue;
         }
       }
       else if (f_compare_dynamic(controller_pid_s, cache->action.name_action) == F_equal_to) {
         if (cache->content_actions.array[i].used != 1) {
-          controller_print_entry_error_setting_requires_exactly(&main->program.error, cache, is_entry, 1);
+          controller_print_error_entry_setting_requires_exactly(&main->program.error, cache, is_entry, 1);
 
           continue;
         }
@@ -271,7 +271,7 @@ extern "C" {
       }
       else if (is_entry && f_compare_dynamic(controller_pid_file_s, cache->action.name_action) == F_equal_to) {
         if (cache->content_actions.array[i].used != 1) {
-          controller_print_entry_error_setting_requires_exactly(&main->program.error, cache, is_entry, 1);
+          controller_print_error_entry_setting_requires_exactly(&main->program.error, cache, is_entry, 1);
 
           continue;
         }
@@ -285,7 +285,7 @@ extern "C" {
           status = f_rip_dynamic_partial_nulless(cache->buffer_file, cache->content_actions.array[i].array[0], &cache->action.generic);
 
           if (F_status_is_error(status)) {
-            controller_print_entry_error(&main->program.error, cache, is_entry, F_status_set_fine(status), macro_controller_f(f_rip_dynamic_partial_nulless), F_true);
+            controller_print_error_entry(&main->program.error, cache, is_entry, F_status_set_fine(status), macro_controller_f(f_rip_dynamic_partial_nulless), F_true);
 
             continue;
           }
@@ -295,7 +295,7 @@ extern "C" {
           status = controller_path_canonical_relative(main->setting, cache->action.generic, &main->setting.path_pid);
 
           if (F_status_is_error(status)) {
-            controller_print_entry_error(&main->program.error, cache, is_entry, F_status_set_fine(status), macro_controller_f(controller_path_canonical_relative), F_true);
+            controller_print_error_entry(&main->program.error, cache, is_entry, F_status_set_fine(status), macro_controller_f(controller_path_canonical_relative), F_true);
 
             continue;
           }
@@ -303,7 +303,7 @@ extern "C" {
       }
       else if (f_compare_dynamic(controller_session_s, cache->action.name_action) == F_equal_to) {
         if (cache->content_actions.array[i].used != 1) {
-          controller_print_entry_error_setting_requires_exactly(&main->program.error, cache, is_entry, 1);
+          controller_print_error_entry_setting_requires_exactly(&main->program.error, cache, is_entry, 1);
 
           continue;
         }
@@ -322,7 +322,7 @@ extern "C" {
       }
       else if (f_compare_dynamic(controller_show_s, cache->action.name_action) == F_equal_to) {
         if (cache->content_actions.array[i].used != 1) {
-          controller_print_entry_error_setting_requires_exactly(&main->program.error, cache, is_entry, 1);
+          controller_print_error_entry_setting_requires_exactly(&main->program.error, cache, is_entry, 1);
 
           continue;
         }
@@ -402,12 +402,12 @@ extern "C" {
           *time = time_previous;
 
           if (F_status_set_fine(status) == F_memory_not) {
-            controller_print_entry_error(&main->program.error, cache, is_entry, F_status_set_fine(status), macro_controller_f(fl_conversion_dynamic_partial_to_unsigned_detect), F_true);
+            controller_print_error_entry(&main->program.error, cache, is_entry, F_status_set_fine(status), macro_controller_f(fl_conversion_dynamic_partial_to_unsigned_detect), F_true);
 
             continue;
           }
 
-          controller_print_entry_error_setting_support_not_number(&main->program.error, is_entry, cache->buffer_file, cache->content_actions.array[i].array[1]);
+          controller_print_error_entry_setting_support_not_number(&main->program.error, is_entry, cache->buffer_file, cache->content_actions.array[i].array[1]);
         }
       }
       else {

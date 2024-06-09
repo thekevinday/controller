@@ -140,12 +140,16 @@ extern "C" {
 /**
  * Determine whether or not an execute rule should be re-run, applying a delay as requested.
  *
- * @param action
- *   The action type.
  * @param instance
  *   The instance data for processing this rule.
+ *
+ *   Must not be NULL.
  * @param item
  *   The rule item being executed.
+ *
+ *   Must not be NULL.
+ * @param action
+ *   The action type.
  *
  * @return
  *   A positive number to designate re-run.
@@ -157,7 +161,7 @@ extern "C" {
  *   -2 to designate exit due to signal/disabled thread.
  */
 #ifndef _di_controller_rule_execute_rerun_
-  extern int8_t controller_rule_execute_rerun(const uint8_t action, controller_instance_t * const instance, controller_rule_item_t * const item);
+  extern int8_t controller_rule_execute_rerun(controller_instance_t * const instance, controller_rule_item_t * const item, const uint8_t action);
 #endif // _di_controller_rule_execute_rerun_
 
 #ifdef __cplusplus

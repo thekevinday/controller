@@ -88,7 +88,7 @@ extern "C" {
               status = f_thread_lock_write(&instance->lock);
 
               if (F_status_is_error(status)) {
-                controller_lock_print_error_critical(&main->program.error, F_status_set_fine(status), F_false);
+                controller_print_error_lock_critical(&main->program.error, F_status_set_fine(status), F_false);
 
                 f_thread_unlock(&instance->active);
 
