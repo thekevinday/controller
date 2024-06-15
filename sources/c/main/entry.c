@@ -100,7 +100,7 @@ extern "C" {
     }
 
     if (F_status_is_error_not(status) && cache->object_items.used) {
-      status = f_memory_array_increase_by(cache->object_items.used, &entry->items.array, &entry->items.used, &entry->items.size);
+      status = f_memory_array_increase_by(cache->object_items.used, sizeof(f_range_t), (void **) &cache->object_items.array, &cache->object_items.used, &cache->object_items.size);
 
       if (F_status_is_error(status)) {
         controller_print_error_entry(&main->program.error, cache, is_entry, F_status_set_fine(status), macro_controller_f(f_memory_array_increase_by), F_true);
@@ -143,10 +143,10 @@ extern "C" {
           cache->action.name_action.used = 0;
           cache->action.name_item.used = 0;
 
-          status = controller_entry_items_increase_by(controller_allocation_small_d, &entry->items);
+          status = f_memory_array_increase(controller_allocation_small_d, sizeof(controller_entry_item_t), (void **) &entry->items.array, &entry->items.used, &entry->items.size);
 
           if (F_status_is_error(status)) {
-            controller_print_error_entry(&main->program.error, cache, is_entry, F_status_set_fine(status), macro_controller_f(controller_entry_items_increase_by), F_true);
+            controller_print_error_entry(&main->program.error, cache, is_entry, F_status_set_fine(status), macro_controller_f(f_memory_array_increase), F_true);
 
             break;
           }
@@ -179,7 +179,7 @@ extern "C" {
                 fl_print_format(f_string_format_Q_single_s.string, main->program.warning.to, main->program.warning.notable, cache->action.name_file, main->program.warning.notable);
                 fl_print_format(f_string_format_sentence_end_quote_s.string, main->program.warning.to, main->program.warning.context, main->program.warning.context, f_string_eol_s);
 
-                controller_print_error_entry_cache(is_entry, &main->program.warning, &cache->action);
+                controller_print_error_entry_cache(&main->program.warning, &cache->action, is_entry);
 
                 controller_unlock_print_flush(main->program.warning.to, &main->thread);
               }

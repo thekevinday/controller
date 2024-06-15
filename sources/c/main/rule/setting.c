@@ -1721,10 +1721,10 @@ extern "C" {
           continue;
         }
 
-        status = f_memory_array_increase_by(controller_allocation_small_d, sizeof(f_string_dynamic_t), (void **) &setting_values->array, &setting_values->used, &setting_values->size);
+        status = f_memory_array_increase(controller_allocation_small_d, sizeof(f_string_dynamic_t), (void **) &setting_values->array, &setting_values->used, &setting_values->size);
 
         if (F_status_is_error(status)) {
-          controller_print_error_rule(&main->program.error, cache->action, F_status_set_fine(status), "f_memory_array_increase_by", F_true, F_false);
+          controller_print_error_rule(&main->program.error, cache->action, F_status_set_fine(status), macro_controller_f(f_memory_array_increase), F_true, F_false);
         }
       }
 

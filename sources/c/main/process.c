@@ -73,7 +73,7 @@ extern "C" {
       }
     }
 
-    // Only make the rule and control threads available once any/all pre-processing are complete.
+    // Only make the rule and control threads available once any/all pre-processing is complete.
     if (F_status_is_error_not(status) && status != F_failure && status != F_child && main->thread.enabled == controller_thread_enabled_e) {
       if (!(main->setting.flag & controller_main_flag_validate_e)) {
 
@@ -135,15 +135,17 @@ extern "C" {
     controller_thread_delete(&main->thread);
 
     if (F_status_set_fine(status) == F_interrupt) {
-      fll_program_print_signal_received(&main->program.warning, main->thread.signal);
+      main->setting.state.status = F_status_set_error(F_interrupt);
 
-      if (main->program.output.verbosity > f_console_verbosity_quiet_e) {
-        fll_print_dynamic_raw(f_string_eol_s, main->program.output.to);
+      if (main->thread.signal) {
+        main->program.signal_received = main->thread.signal;
+      }
+
+      if (main->program.message.verbosity > f_console_verbosity_error_e) {
+        fll_print_dynamic_raw(f_string_eol_s, main->program.message.to);
       }
 
       fll_program_print_signal_received(&main->program.warning, main->program.signal_received);
-
-      main->setting.state.status = F_status_set_error(F_interrupt);
     }
     else {
       main->setting.state.status = F_status_is_error(status) ? F_status_set_error(F_failure) : F_okay;

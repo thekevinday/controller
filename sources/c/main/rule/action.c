@@ -160,10 +160,10 @@ extern "C" {
 
         for (i = 0; i < cache->object_actions.used; ++i) {
 
-          status = f_memory_array_increase_by(controller_allocation_small_d, sizeof(controller_rule_action_t), (void **) &actions->array, &actions->used, &actions->size);
+          status = f_memory_array_increase(controller_allocation_small_d, sizeof(controller_rule_action_t), (void **) &actions->array, &actions->used, &actions->size);
 
           if (F_status_is_error(status)) {
-            controller_print_error(&main->program.error, macro_controller_f(f_memory_array_increase_by));
+            controller_print_error(&main->program.error, macro_controller_f(f_memory_array_increase));
 
             return status;
           }

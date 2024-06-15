@@ -161,7 +161,7 @@ extern "C" {
         method = controller_rule_action_method_extended_e;
       }
 
-      status = f_memory_array_increase_by(controller_allocation_small_d, sizeof(controller_rule_action_t), (void **) &item->actions.array, &item->actions.used, &item->actions.size);
+      status = f_memory_array_increase(controller_allocation_small_d, sizeof(controller_rule_action_t), (void **) &item->actions.array, &item->actions.used, &item->actions.size);
 
       if (F_status_is_error(status)) {
         controller_print_error_status(&main->program.error, macro_controller_f(f_memory_array_increase_by), F_status_set_fine(status));

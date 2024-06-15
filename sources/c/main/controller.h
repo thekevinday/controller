@@ -120,6 +120,7 @@
 #include <program/controller/main/print/error/entry/action.h>
 #include <program/controller/main/print/error/entry/item.h>
 #include <program/controller/main/print/error/entry/setting.h>
+#include <program/controller/main/print/error/lock.h>
 #include <program/controller/main/print/error/perform/pid.h>
 #include <program/controller/main/print/error/rule.h>
 #include <program/controller/main/print/error/rule/action.h>

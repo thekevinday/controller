@@ -46,17 +46,14 @@ extern "C" {
     f_number_unsigned_t j = 0;
     pid_t pid = 0;
 
-    // A simple but inaccurate interval counter (expect this to be replaced in the future).
+    // A simple but inaccurate interval counter.
     const f_number_unsigned_t interval_nanoseconds = entry->timeout_exit < 1000 ? (entry->timeout_exit < 100 ? 5000000 : 100000000) : 500000000;
     const f_number_unsigned_t interval_milliseconds = entry->timeout_exit < 1000 ? (entry->timeout_exit < 100 ? 5 : 100) : 500;
 
     time.tv_sec = 0;
     time.tv_nsec = interval_nanoseconds;
 
-    if (main->process.mode == controller_process_mode_helper_e && main->program.parameters.array[controller_parameter_validate_e].result == f_console_result_none_e) {
-      int value = 0;
-      f_number_unsigned_t lapsed = 0;
-
+    if (main->process.mode == controller_process_mode_helper_e && !(main->setting.flag & controller_main_flag_validate_e)) {
       for (i = 0; i < main->thread.instances.used; ++i) {
 
         if (!main->thread.instances.array[i]) continue;
@@ -116,7 +113,7 @@ extern "C" {
       main->thread.id_signal = 0;
     }
 
-    if (main->process.mode == controller_process_mode_helper_e && main->program.parameters.array[controller_parameter_validate_e].result == f_console_result_none_e) {
+    if (main->process.mode == controller_process_mode_helper_e && !(main->setting.flag & controller_main_flag_validate_e)) {
       f_thread_mutex_unlock(&main->thread.lock.cancel);
 
       return;
@@ -170,7 +167,7 @@ extern "C" {
 
           while (instance->childs.array[j] > 0 && lapsed < entry->timeout_exit) {
 
-            // A hackish way to determine if the child instance exists while waiting.
+            // A hackish way to determine if the child instance exists while waiting (@todo look into pidfd() and epoll_wait()).
             if (getpgid(instance->childs.array[j]) >= 0) {
               time.tv_sec = 0;
               time.tv_nsec = interval_nanoseconds;
@@ -195,7 +192,7 @@ extern "C" {
             if (pid) {
               while (lapsed < entry->timeout_exit) {
 
-                // A hackish way to determine if the instance exists while waiting.
+                // A hackish way to determine if the instance exists while waiting (@todo look into pidfd() and epoll_wait()).
                 if (getpgid(pid) >= 0) {
                   time.tv_sec = 0;
                   time.tv_nsec = interval_nanoseconds;
@@ -255,7 +252,7 @@ extern "C" {
 
           if (instance->childs.array[j]) {
 
-            // A hackish way to determine if the child instance exists, and if it does then forcibly terminate it.
+            // A hackish way to determine if the child instance exists, and if it does then forcibly terminate it (@todo look into pidfd() and epoll_wait()).
             if (getpgid(instance->childs.array[j]) >= 0) {
               f_signal_send(F_signal_kill, instance->childs.array[j]);
             }
@@ -312,9 +309,7 @@ extern "C" {
 #ifndef _di_controller_thread_instance_exit_
   void controller_thread_instance_exit(controller_t * const main) {
 
-    if (!main) return;
-
-    if (main->thread.enabled != controller_thread_enabled_exit_e) return;
+    if (!main || main->thread.enabled != controller_thread_enabled_exit_e) return;
 
     if (main->process.ready == controller_process_ready_done_e) {
 
