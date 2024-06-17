@@ -5,34 +5,33 @@ extern "C" {
 #endif
 
 #ifndef _di_controller_file_load_
-  f_status_t controller_file_load(controller_t * const main, controller_cache_t * const cache, const bool required, const f_string_static_t path_prefix, const f_string_static_t path_name, const f_string_static_t path_suffix) {
+  f_status_t controller_file_load(controller_t * const main, const bool required, const f_string_static_t path_prefix, const f_string_static_t path_name, const f_string_static_t path_suffix) {
 
-    if (!main || !cache) return F_status_set_error(F_parameter);
+    if (!main) return F_status_set_error(F_parameter);
 
-    f_status_t status = F_okay;
     f_file_t file = f_file_t_initialize;
 
-    cache->action.name_file.used = 0;
-    cache->buffer_file.used = 0;
-    cache->timestamp.seconds = 0;
-    cache->timestamp.seconds_nano = 0;
+    main->thread.cache.action.name_file.used = 0;
+    main->thread.cache.buffer_file.used = 0;
+    main->thread.cache.timestamp.seconds = 0;
+    main->thread.cache.timestamp.seconds_nano = 0;
 
-    status = f_string_dynamic_append(path_prefix, &cache->action.name_file);
+    f_status_t status = f_string_dynamic_append(path_prefix, &main->thread.cache.action.name_file);
 
     if (F_status_is_error_not(status)) {
-      status = f_string_dynamic_append(f_path_separator_s, &cache->action.name_file);
+      status = f_string_dynamic_append(f_path_separator_s, &main->thread.cache.action.name_file);
     }
 
     if (F_status_is_error_not(status)) {
-      status = f_string_dynamic_append(path_name, &cache->action.name_file);
+      status = f_string_dynamic_append(path_name, &main->thread.cache.action.name_file);
     }
 
     if (F_status_is_error_not(status)) {
-      status = f_string_dynamic_append(f_path_extension_separator_s, &cache->action.name_file);
+      status = f_string_dynamic_append(f_path_extension_separator_s, &main->thread.cache.action.name_file);
     }
 
     if (F_status_is_error_not(status)) {
-      status = f_string_dynamic_append(path_suffix, &cache->action.name_file);
+      status = f_string_dynamic_append(path_suffix, &main->thread.cache.action.name_file);
     }
 
     if (F_status_is_error(status)) {
@@ -44,10 +43,10 @@ extern "C" {
     f_string_static_t path = f_string_static_t_initialize;
 
     if (main->setting.path_setting.used) {
-      path.used = main->setting.path_setting.used + F_path_separator_s_length + cache->action.name_file.used;
+      path.used = main->setting.path_setting.used + F_path_separator_s_length + main->thread.cache.action.name_file.used;
     }
     else {
-      path.used = cache->action.name_file.used;
+      path.used = main->thread.cache.action.name_file.used;
     }
 
     f_char_t path_string[path.used + 1];
@@ -55,12 +54,12 @@ extern "C" {
 
     if (main->setting.path_setting.used) {
       memcpy(path_string, main->setting.path_setting.string, sizeof(f_char_t) * main->setting.path_setting.used);
-      memcpy(path_string + main->setting.path_setting.used + F_path_separator_s_length, cache->action.name_file.string, sizeof(f_char_t) * cache->action.name_file.used);
+      memcpy(path_string + main->setting.path_setting.used + F_path_separator_s_length, main->thread.cache.action.name_file.string, sizeof(f_char_t) * main->thread.cache.action.name_file.used);
 
       path_string[main->setting.path_setting.used] = f_path_separator_s.string[0];
     }
     else {
-      memcpy(path_string, cache->action.name_file.string, sizeof(f_char_t) * cache->action.name_file.used);
+      memcpy(path_string, main->thread.cache.action.name_file.string, sizeof(f_char_t) * main->thread.cache.action.name_file.used);
     }
 
     path_string[path.used] = 0;
@@ -81,7 +80,7 @@ extern "C" {
       }
     }
     else {
-      status = f_file_stream_read(file, &cache->buffer_file);
+      status = f_file_stream_read(file, &main->thread.cache.buffer_file);
 
       if (F_status_is_error(status)) {
         controller_print_error_file_status(&main->program.error, macro_controller_f(f_file_stream_read), path, f_file_operation_read_s, fll_error_file_type_file_e, F_status_set_fine(status));
@@ -100,8 +99,8 @@ extern "C" {
         controller_print_error_file_status(&main->program.error, macro_controller_f(f_file_stat), path, f_file_operation_stat_s, fll_error_file_type_file_e, F_status_set_fine(status));
       }
       else {
-        cache->timestamp.seconds = stat_file.st_ctim.tv_sec;
-        cache->timestamp.seconds_nano = stat_file.st_ctim.tv_nsec;
+        main->thread.cache.timestamp.seconds = stat_file.st_ctim.tv_sec;
+        main->thread.cache.timestamp.seconds_nano = stat_file.st_ctim.tv_nsec;
       }
     }
 

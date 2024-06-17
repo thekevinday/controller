@@ -73,9 +73,6 @@ extern "C" {
  *   This requires print.custom to be controller_t.
  *
  *   This does not alter print.custom.setting.state.status.
- * @param is_entry
- *   If TRUE, then this operates as an entry.
- *   If FALSE, then this operates as an exit.
  *
  * @return
  *   F_okay on success.
@@ -84,7 +81,7 @@ extern "C" {
  *   F_output_not (with error bit) if setting is NULL.
  */
 #ifndef _di_controller_print_debug_perform_pid_file_create_success_
-  extern f_status_t controller_print_debug_perform_pid_file_create_success(fl_print_t * const print, const uint8_t is_entry);
+  extern f_status_t controller_print_debug_perform_pid_file_create_success(fl_print_t * const print);
 #endif // _di_controller_print_debug_perform_pid_file_create_success_
 
 #ifdef __cplusplus

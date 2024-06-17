@@ -53,9 +53,6 @@ extern "C" {
  *   The main program data.
  *
  *   Must not be NULL.
- * @param is_entry
- *   If TRUE, then this operates as an entry.
- *   If FALSE, then this operates as an exit.
  *
  * @return
  *   F_okay on success.
@@ -76,7 +73,7 @@ extern "C" {
  * @see f_thread_create()
  */
 #ifndef _di_controller_perform_ready_socket_
-  extern f_status_t controller_perform_ready_socket(controller_t * const main, const uint8_t is_entry);
+  extern f_status_t controller_perform_ready_socket(controller_t * const main);
 #endif // _di_controller_perform_ready_socket_
 
 #ifdef __cplusplus

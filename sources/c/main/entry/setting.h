@@ -23,10 +23,6 @@ extern "C" {
  *   The main program data.
  *
  *   Must not be NULL.
- * @param cache
- *   A structure for containing and caching relevant data.
- *
- *   Must not be NULL.
  * @param is_entry
  *   If TRUE, then this loads as an entry.
  *   If FALSE, then this loads as an exit.
@@ -35,13 +31,35 @@ extern "C" {
  *
  * @return
  *   F_okay on success.
+ *   F_parameter (with error bit) if a parameter is invalid.
  *
- *   Errors (with error bit) from: controller_print_error_entry_file().
+ *   Errors (with error bit) from: f_file_mode_from_string().
+ *   Errors (with error bit) from: f_file_mode_to_mode().
+ *   Errors (with error bit) from: f_fss_apply_delimit().
+ *   Errors (with error bit) from: f_fss_count_lines().
+ *   Errors (with error bit) from: f_rip_dynamic_partial_nulless().
+ *   Errors (with error bit) from: fl_conversion_dynamic_partial_to_unsigned_detect().
+ *   Errors (with error bit) from: fll_fss_extended_read().
  *
- * @see controller_print_error_entry_file()
+ *   Errors (with error bit) from: controller_convert_group_id().
+ *   Errors (with error bit) from: controller_convert_user_id().
+ *   Errors (with error bit) from: controller_entry_setting_read_map().
+ *   Errors (with error bit) from: controller_path_canonical_relative().
+ *
+ * @see f_file_mode_from_string()
+ * @see f_fss_apply_delimit()
+ * @see f_fss_count_lines()
+ * @see f_rip_dynamic_partial_nulless()
+ * @see fl_conversion_dynamic_partial_to_unsigned_detect()
+ * @see fll_fss_extended_read()
+ *
+ * @see controller_convert_group_id()
+ * @see controller_convert_user_id()
+ * @see controller_entry_setting_read_map()
+ * @see controller_path_canonical_relative()
  */
 #ifndef _di_controller_entry_setting_read_
-  extern f_status_t controller_entry_setting_read(controller_t * const main, controller_cache_t * const cache, const uint8_t is_entry, const f_range_t content_range);
+  extern f_status_t controller_entry_setting_read(controller_t * const main, const uint8_t is_entry, const f_range_t content_range);
 #endif // _di_controller_entry_setting_read_
 
 /**

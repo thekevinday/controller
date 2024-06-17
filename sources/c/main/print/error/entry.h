@@ -27,10 +27,6 @@ extern "C" {
  *   This does not alter print.custom.setting.state.status.
  *
  *   Must not be NULL.
- * @param cache
- *   The cache.
- *
- *   Must not be NULL.
  * @param is_entry
  *   If TRUE, then this loads as an entry.
  *   If FALSE, then this loads as an exit.
@@ -55,11 +51,11 @@ extern "C" {
  * @see controller_print_error_entry_cache()
  */
 #ifndef _di_controller_print_error_entry_
-  extern f_status_t controller_print_error_entry(fl_print_t * const print, controller_cache_t * const cache, const uint8_t is_entry, const f_status_t status, const char * const function, const bool fallback);
+  extern f_status_t controller_print_error_entry(fl_print_t * const print, const uint8_t is_entry, const f_status_t status, const char * const function, const bool fallback);
 #endif // _di_controller_print_error_entry_
 
 /**
- * Print additional error/warning information in addition to existing error that is found within the cache.
+ * Print additional error/warning information in addition to existing error that is found within the given action cache.
  *
  * This is explicitly intended to be used in addition to the error message.
  *
@@ -105,10 +101,6 @@ extern "C" {
  *   This does not alter print.custom.setting.state.status.
  *
  *   Must not be NULL.
- * @param cache
- *   The cache.
- *
- *   Must not be NULL.
  * @param is_entry
  *   If TRUE, then this loads as an entry.
  *   If FALSE, then this loads as an exit.
@@ -135,10 +127,9 @@ extern "C" {
  *   F_output_not (with error bit) if setting is NULL.
  *
  * @see fll_error_file_print()
- * @see controller_print_error_entry_cache()
  */
 #ifndef _di_controller_print_error_entry_file_
-  extern f_status_t controller_print_error_entry_file(fl_print_t * const print, controller_cache_t * const cache, const uint8_t is_entry, const f_status_t status, const char * const function, const uint8_t fallback, const f_string_static_t name, const f_string_static_t operation, const uint8_t type);
+  extern f_status_t controller_print_error_entry_file(fl_print_t * const print, const uint8_t is_entry, const f_status_t status, const char * const function, const uint8_t fallback, const f_string_static_t name, const f_string_static_t operation, const uint8_t type);
 #endif // _di_controller_print_error_entry_file_
 
 #ifdef __cplusplus

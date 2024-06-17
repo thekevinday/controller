@@ -57,7 +57,7 @@ extern "C" {
 #endif // _di_controller_print_debug_perform_pid_file_create_problem_
 
 #ifndef _di_controller_print_debug_perform_pid_file_create_success_
-  f_status_t controller_print_debug_perform_pid_file_create_success(fl_print_t * const print, const uint8_t is_entry) {
+  f_status_t controller_print_debug_perform_pid_file_create_success(fl_print_t * const print) {
 
     if (!print || !print->custom) return F_status_set_error(F_output_not);
     if (print->verbosity < f_console_verbosity_debug_e) return F_output_not;

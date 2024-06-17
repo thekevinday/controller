@@ -5,7 +5,9 @@ extern "C" {
 #endif
 
 #ifndef _di_controller_entry_setting_read_
-  f_status_t controller_entry_setting_read(controller_t * const main, controller_cache_t * const cache, const uint8_t is_entry, const f_range_t content_range) {
+  f_status_t controller_entry_setting_read(controller_t * const main, const uint8_t is_entry, const f_range_t content_range) {
+
+    if (!main) return F_status_set_error(F_parameter);
 
     f_status_t status = F_okay;
 
@@ -39,7 +41,7 @@ extern "C" {
 
     f_number_unsigned_t i = 0;
 
-    controller_entry_t *entry = is_entry ? &main->setting.entry : &main->setting.exit;
+    controller_entry_t * const entry = is_entry ? &main->setting.entry : &main->setting.exit;
     f_state_t state = f_state_t_initialize;
 
     for (; i < cache->object_actions.used; ++i) {
@@ -102,7 +104,7 @@ extern "C" {
         status = controller_path_canonical_relative(main->setting, cache->action.generic, &main->setting.path_control);
 
         if (F_status_is_error(status)) {
-          controller_print_error_entry_file(&main->program.error, cache, is_entry, F_status_set_fine(status), macro_controller_f(controller_path_canonical_relative), F_true, cache->action.generic, f_file_operation_analyze_s, fll_error_file_type_path_e);
+          controller_print_error_entry_file(&main->program.error, is_entry, F_status_set_fine(status), macro_controller_f(controller_path_canonical_relative), F_true, cache->action.generic, f_file_operation_analyze_s, fll_error_file_type_path_e);
 
           continue;
         }

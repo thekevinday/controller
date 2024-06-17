@@ -40,7 +40,7 @@ extern "C" {
       else {
         main->setting.flag |= controller_setting_flag_pid_created_e;
 
-        controller_print_debug_perform_pid_file_create_success(&main->program.debug, is_entry);
+        controller_print_debug_perform_pid_file_create_success(&main->program.debug);
       }
     }
 
@@ -59,7 +59,7 @@ extern "C" {
 #endif // _di_controller_perform_ready_
 
 #ifndef _di_controller_perform_ready_socket_
-  f_status_t controller_perform_ready_socket(controller_t * const main, const uint8_t is_entry) {
+  f_status_t controller_perform_ready_socket(controller_t * const main) {
 
     f_status_t status = F_okay;
 

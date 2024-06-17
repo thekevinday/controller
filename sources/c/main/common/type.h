@@ -60,7 +60,7 @@ extern "C" {
  */
 #ifndef _di_controller_t_
   typedef struct {
-    f_status_t (*process_entry_setup)(controller_t * const main, controller_cache_t * const cache, controller_entry_t * const entry, const uint8_t is_entry);
+    f_status_t (*process_entry_setup)(controller_t * const main, controller_entry_t * const entry);
   } controller_callback_t;
 
   #define controller_callback_t_initialize \
@@ -77,7 +77,6 @@ extern "C" {
  * Properties:
  *   - program: The main program data.
  *
- *   - cache:    The cache.
  *   - callback: The callbacks.
  *   - process:  The process data.
  *   - setting:  The settings data.
@@ -87,7 +86,6 @@ extern "C" {
   struct controller_t_ {
     fll_program_data_t program;
 
-    controller_cache_t cache;
     controller_callback_t callback;
     controller_process_t process;
     controller_setting_t setting;
@@ -97,7 +95,6 @@ extern "C" {
   #define controller_t_initialize \
     { \
       fll_program_data_t_initialize, \
-      controller_cache_t_initialize, \
       controller_callback_t_initialize, \
       controller_process_t_initialize, \
       controller_setting_t_initialize, \

@@ -5,9 +5,9 @@ extern "C" {
 #endif
 
 #ifndef _di_controller_print_error_entry_
-  f_status_t controller_print_error_entry(fl_print_t * const print, controller_cache_t * const cache, const uint8_t is_entry, const f_status_t status, const char * const function, const bool fallback) {
+  f_status_t controller_print_error_entry(fl_print_t * const print, const uint8_t is_entry, const f_status_t status, const char * const function, const bool fallback) {
 
-    if (!print || !print->custom || !cache) return F_status_set_error(F_output_not);
+    if (!print || !print->custom) return F_status_set_error(F_output_not);
     if (print->verbosity < f_console_verbosity_error_e) return F_output_not;
     if (status == F_interrupt) return F_status_set_error(F_output_not);
 
@@ -20,7 +20,7 @@ extern "C" {
 
     f_file_stream_lock(print->to);
 
-    controller_print_error_entry_cache(print, &cache->action, is_entry);
+    controller_print_error_entry_cache(print, &main->thread.cache.action, is_entry);
 
     controller_unlock_print_flush(print->to, &main->thread);
 
@@ -64,7 +64,7 @@ extern "C" {
 #endif // _di_controller_print_error_entry_cache_
 
 #ifndef _di_controller_print_error_entry_file_
-  f_status_t controller_print_error_entry_file(fl_print_t * const print, controller_cache_t * const cache, const uint8_t is_entry, const f_status_t status, const char * const function, const bool fallback, const f_string_static_t name, const f_string_static_t operation, const uint8_t type) {
+  f_status_t controller_print_error_entry_file(fl_print_t * const print, const uint8_t is_entry, const f_status_t status, const char * const function, const bool fallback, const f_string_static_t name, const f_string_static_t operation, const uint8_t type) {
 
     if (!print || !print->custom || !cache) return F_status_set_error(F_output_not);
     if (print->verbosity < f_console_verbosity_error_e) return F_output_not;
@@ -79,7 +79,7 @@ extern "C" {
 
     f_file_stream_lock(print->to);
 
-    controller_print_error_entry_cache(print, &cache->action, is_entry);
+    controller_print_error_entry_cache(print, &main->thread.cache.action, is_entry);
 
     controller_unlock_print_flush(print->to, &main->thread);
 

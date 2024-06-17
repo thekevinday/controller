@@ -17,7 +17,7 @@ extern "C" {
 
     f_status_t * const status = &main->thread.status;
 
-    *status = controller_entry_read(main, F_true);
+    *status = controller_entry_read(main, &main->process.entry);
 
     if (F_status_set_fine(*status) == F_interrupt) {
       main->process.ready = controller_process_ready_abort_e;
@@ -130,10 +130,9 @@ extern "C" {
     f_thread_cancel_state_set(PTHREAD_CANCEL_DEFERRED, 0);
 
     controller_t * const main = (controller_t *) argument;
-    controller_cache_t * const cache = &main->thread.cache;
     f_status_t * const status = &main->thread.status;
 
-    *status = controller_entry_read(main, F_false);
+    *status = controller_entry_read(main, &main->process.exit);
 
     if (F_status_set_fine(*status) == F_interrupt) {
       main->process.ready = controller_process_ready_abort_e;

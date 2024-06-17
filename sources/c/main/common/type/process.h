@@ -70,7 +70,7 @@ extern "C" {
     f_string_dynamic_t_initialize, \
     f_string_dynamic_t_initialize, \
     controller_control_t_initialize, \
-    controller_entry_t_initialize, \
+    macro_controller_entry_t_initialize_1(controller_entry_flag_is_e), \
     controller_entry_t_initialize, \
     controller_rules_t_initialize, \
   }

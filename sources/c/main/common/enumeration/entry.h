@@ -80,19 +80,21 @@ extern "C" {
  * Controller Entry flags.
  *
  * controller_entry_flag_*_e:
- *   - none_e:             No flags are set.
- *   - timeout_exit_no_e:  The exit timeout is disabled.
- *   - timeout_kill_no_e:  The kill timeout is disabled for Rules by default.
- *   - timeout_start_no_e: The start timeout is disabled for Rules by default.
- *   - timeout_stop_no_e:  The stop timeout is disabled for Rules by default.
+ *   - none:             No flags are set.
+ *   - is:               Designate that this is an entry rather than an exit.
+ *   - timeout_exit_no:  The exit timeout is disabled.
+ *   - timeout_kill_no:  The kill timeout is disabled for Rules by default.
+ *   - timeout_start_no: The start timeout is disabled for Rules by default.
+ *   - timeout_stop_no:  The stop timeout is disabled for Rules by default.
  */
 #ifndef _di_controller_entry_flag_e_
   enum {
     controller_entry_flag_none_e             = 0x0,
-    controller_entry_flag_timeout_exit_no_e  = 0x1,
-    controller_entry_flag_timeout_kill_no_e  = 0x2,
-    controller_entry_flag_timeout_start_no_e = 0x4,
-    controller_entry_flag_timeout_stop_no_e  = 0x8,
+    controller_entry_flag_is_e               = 0x1,
+    controller_entry_flag_timeout_exit_no_e  = 0x2,
+    controller_entry_flag_timeout_kill_no_e  = 0x4,
+    controller_entry_flag_timeout_start_no_e = 0x8,
+    controller_entry_flag_timeout_stop_no_e  = 0x10,
   }; // enum
 #endif // _di_controller_entry_flag_e_
 

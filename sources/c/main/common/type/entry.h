@@ -134,9 +134,11 @@ extern "C" {
  * Entry and Exit files are essentially the same structure with minor differences in settings and behavior.
  * The structure is identical and due to lacking any particularly good name to represent both "entry" or "exit", the name "entry" is being used for both.
  *
+ * A special macro_controller_entry_t_initialize_1() is provided to easily initialize with a specific set of flags.
+ *
  * Properties:
  *   - define:        Any defines (environment variables) made available to all Rules in this entry for IKI substitution or just as environment variables.
- *   - flag:          A set of flags, primarily used to designate that timeouts are disabled.
+ *   - flag:          A set of flags associated with the entry.
  *   - items:         The array of entry items.
  *   - parameter:     Any parameters made available to all Rules in this entry for IKI substitution.
  *   - pid:           The PID file generation setting.
@@ -174,6 +176,21 @@ extern "C" {
     0, \
     0, \
     0, \
+    controller_thread_exit_timeout_d, \
+    0, \
+    0, \
+    0, \
+    f_string_maps_t_initialize, \
+    f_string_maps_t_initialize, \
+    controller_entry_items_t_initialize, \
+  }
+
+  #define macro_controller_entry_t_initialize_1(flag) { \
+    F_known_not, \
+    controller_entry_pid_require_e, \
+    0, \
+    0, \
+    flag, \
     controller_thread_exit_timeout_d, \
     0, \
     0, \

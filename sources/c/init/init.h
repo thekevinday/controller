@@ -25,10 +25,6 @@ extern "C" {
  *   The main program data.
  *
  *   Must not be NULL.
- * @param cache
- *   The cache.
- *
- *   Must not be NULL.
  * @param entry
  *   The entry data.
  *
@@ -43,7 +39,7 @@ extern "C" {
  *   F_parameter (with error bit) if a parameter is invalid.
  */
 #ifndef _di_controller_init_process_entry_setup_
-  extern f_status_t controller_init_process_entry_setup(controller_t * const main, controller_cache_t * const cache, controller_entry_t * const entry, const uint8_t is_entry);
+  extern f_status_t controller_init_process_entry_setup(controller_t * const main, controller_entry_t * const entry);
 #endif // _di_controller_init_process_entry_setup_
 
 #ifdef __cplusplus

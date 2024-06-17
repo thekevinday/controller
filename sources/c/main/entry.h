@@ -23,14 +23,10 @@ extern "C" {
  *   The main program data.
  *
  *   Must not be NULL.
- * @param cache
- *   The cache for the specific thread.
- *   This should be the cache global.thread->asynchronouss.array[global.id].cache.
+ * @param entry
+ *   The entry data.
  *
  *   Must not be NULL.
- * @param is_entry
- *   If TRUE, then this loads as an entry.
- *   If FALSE, then this loads as an exit.
  *
  * @return
  *   F_okay on success.
@@ -67,7 +63,7 @@ extern "C" {
  * @see fll_fss_basic_list_read()
  */
 #ifndef _di_controller_entry_read_
-  extern f_status_t controller_entry_read(controller_t * const main, controller_cache_t * const cache, const uint8_t is_entry);
+  extern f_status_t controller_entry_read(controller_t * const main, controller_entry_t * const entry);
 #endif // _di_controller_entry_read_
 
 #ifdef __cplusplus
