@@ -34,7 +34,7 @@ extern "C" {
  *
  *   F_parameter (with error bit) if a parameter is invalid.
  *
- *   Errors (with error bit) from: controller_entry_actions_read().
+ *   Errors (with error bit) from: controller_entry_action_read().
  *   Errors (with error bit) from: controller_entry_items_increase_by().
  *   Errors (with error bit) from: controller_file_load().
  *   Errors (with error bit) from: controller_status_simplify_error().
@@ -48,7 +48,7 @@ extern "C" {
  *   Errors (with error bit) from: f_fss_apply_delimit().
  *   Errors (with error bit) from: fll_fss_basic_list_read().
  *
- * @see controller_entry_actions_read()
+ * @see controller_entry_action_read()
  * @see controller_entry_items_increase_by()
  * @see controller_file_load()
  * @see controller_status_simplify_error()

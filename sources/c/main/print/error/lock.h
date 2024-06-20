@@ -39,9 +39,6 @@ extern "C" {
  *   F_output_not on success, but no printing is performed.
  *
  *   F_output_not (with error bit) if setting is NULL.
- *
- * @see fll_error_print()
- * @see controller_print_error_entry_cache()
  */
 #ifndef _di_controller_print_error_lock_critical_
   extern f_status_t controller_print_error_lock_critical(fl_print_t * const print, const f_status_t status, const uint8_t is_read);

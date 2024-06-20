@@ -22,8 +22,8 @@ extern "C" {
  * @param main
  *   The main program data.
  *
- *   The following within the main.thread.cache is updated:
- *   - name_file: The partial path of the file is inserted.
+ *   The following within the main.thread.cache is changed:
+ *   - action.name_file: The partial path of the file is inserted.
  *   - buffer_file: The contents of the file is inserted.
  *   - timestamp: This is updated to reflect the last changed timestamp.
  *
@@ -54,7 +54,7 @@ extern "C" {
  * @see f_string_append()
  */
 #ifndef _di_controller_file_load_
-  extern f_status_t controller_file_load(controller_t * const main, const bool required, const f_string_static_t path_prefix, const f_string_static_t path_name, const f_string_static_t path_suffix);
+  extern f_status_t controller_file_load(controller_t * const main, const uint8_t required, const f_string_static_t path_prefix, const f_string_static_t path_name, const f_string_static_t path_suffix);
 #endif // _di_controller_file_load_
 
 /**

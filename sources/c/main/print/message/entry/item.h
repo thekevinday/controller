@@ -39,9 +39,6 @@ extern "C" {
  *   F_output_not on success, but no printing is performed.
  *
  *   F_output_not (with error bit) if setting is NULL.
- *
- * @see fll_error_file_print()
- * @see controller_print_error_entry_cache()
  */
 #ifndef _di_controller_print_message_entry_item_done_
   extern f_status_t controller_print_message_entry_item_done(fl_print_t * const print, const uint8_t is_entry, const uint8_t failsafe, const f_string_static_t name);
@@ -71,9 +68,6 @@ extern "C" {
  *   F_output_not on success, but no printing is performed.
  *
  *   F_output_not (with error bit) if setting is NULL.
- *
- * @see fll_error_file_print()
- * @see controller_print_error_entry_cache()
  */
 #ifndef _di_controller_print_message_entry_item_executing_
   extern f_status_t controller_print_message_entry_item_executing(fl_print_t * const print, const uint8_t is_entry, f_string_dynamics_t * const parameters);
@@ -104,9 +98,6 @@ extern "C" {
  *   F_output_not on success, but no printing is performed.
  *
  *   F_output_not (with error bit) if setting is NULL.
- *
- * @see fll_error_file_print()
- * @see controller_print_error_entry_cache()
  */
 #ifndef _di_controller_print_message_entry_item_process_
   extern f_status_t controller_print_message_entry_item_process(fl_print_t * const print, const uint8_t is_entry, const f_string_static_t prepend, const f_string_static_t name);
@@ -134,9 +125,6 @@ extern "C" {
  *   F_output_not on success, but no printing is performed.
  *
  *   F_output_not (with error bit) if setting is NULL.
- *
- * @see fll_error_file_print()
- * @see controller_print_error_entry_cache()
  */
 #ifndef _di_controller_print_message_entry_item_required_
   extern f_status_t controller_print_message_entry_item_required(fl_print_t * const print, const uint8_t is_entry, const f_string_static_t name, const f_string_t detail);
@@ -172,9 +160,6 @@ extern "C" {
  *   F_output_not on success, but no printing is performed.
  *
  *   F_output_not (with error bit) if setting is NULL.
- *
- * @see fll_error_file_print()
- * @see controller_print_error_entry_cache()
  */
 #ifndef _di_controller_print_message_entry_item_rule_
   extern f_status_t controller_print_message_entry_item_rule(fl_print_t * const print, controller_entry_t * const entry, controller_entry_action_t * const action, const uint8_t is_entry, const f_string_static_t alias_rule);

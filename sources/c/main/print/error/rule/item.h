@@ -36,8 +36,6 @@ extern "C" {
  *   F_output_not on success, but no printing is performed.
  *
  *   F_output_not (with error bit) if setting is NULL.
- *
- * @see controller_print_error_rule_cache()
  */
 #ifndef _di_controller_print_error_rule_item_
   extern f_status_t controller_print_error_rule_item(fl_print_t * const print, const controller_cache_action_t cache, const bool item, const f_status_t status);
@@ -60,13 +58,6 @@ extern "C" {
  *   F_output_not on success, but no printing is performed.
  *
  *   F_output_not (with error bit) if setting is NULL.
- *
- * @see fl_print_format()
- * @see fll_error_print()
- *
- * @see controller_lock_print()
- * @see controller_print_error_rule_cache()
- * @see controller_unlock_print_flush()
  */
 #ifndef _di_controller_print_error_rule_item_action_first_
   extern f_status_t controller_print_error_rule_item_action_first(fl_print_t * const print, controller_cache_t * const cache);
@@ -93,13 +84,6 @@ extern "C" {
  *   F_output_not on success, but no printing is performed.
  *
  *   F_output_not (with error bit) if setting is NULL.
- *
- * @see fl_print_format()
- * @see fll_error_print()
- *
- * @see controller_lock_print()
- * @see controller_print_error_rule_cache()
- * @see controller_unlock_print_flush()
  */
 #ifndef _di_controller_print_error_rule_item_action_positive_number_not_
   extern f_status_t controller_print_error_rule_item_action_positive_number_not(fl_print_t * const print, controller_cache_t * const cache, const f_string_static_t name, const f_number_unsigned_t index);
@@ -122,13 +106,6 @@ extern "C" {
  *   F_output_not on success, but no printing is performed.
  *
  *   F_output_not (with error bit) if setting is NULL.
- *
- * @see fl_print_format()
- * @see fll_error_print()
- *
- * @see controller_lock_print()
- * @see controller_print_error_rule_cache()
- * @see controller_unlock_print_flush()
  */
 #ifndef _di_controller_print_error_rule_item_action_second_
   extern f_status_t controller_print_error_rule_item_action_second(fl_print_t * const print, controller_cache_t * const cache);
@@ -155,13 +132,6 @@ extern "C" {
  *   F_output_not on success, but no printing is performed.
  *
  *   F_output_not (with error bit) if setting is NULL.
- *
- * @see fl_print_format()
- * @see fll_error_print()
- *
- * @see controller_lock_print()
- * @see controller_print_error_rule_cache()
- * @see controller_unlock_print_flush()
  */
 #ifndef _di_controller_print_error_rule_item_action_unknown_
   extern f_status_t controller_print_error_rule_item_action_unknown(fl_print_t * const print, controller_cache_t * const cache, const f_string_static_t name, const f_string_static_t unknown);

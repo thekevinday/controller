@@ -37,9 +37,6 @@ extern "C" {
  *   F_output_not on success, but no printing is performed.
  *
  *   F_output_not (with error bit) if setting is NULL.
- *
- * @see fll_error_file_print()
- * @see controller_print_error_entry_cache()
  */
 #ifndef _di_controller_print_warning_entry_action_multiple_
   extern f_status_t controller_print_warning_rule_action_unknown(fl_print_t * const print, controller_cache_t * const cache);

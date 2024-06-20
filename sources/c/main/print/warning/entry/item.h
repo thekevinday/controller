@@ -5,21 +5,19 @@
  * API Version: 0.7
  * Licenses: lgpl-2.1-or-later
  *
- * Provides the print entry message functionality.
+ * Provides the print entry item warning functionality.
  *
  * This is auto-included and should not need to be explicitly included.
  */
-#ifndef _controller_main_print_entry_message_h
-#define _controller_main_print_entry_message_h
+#ifndef _controller_main_print_warning_entry_item_h
+#define _controller_main_print_warning_entry_item_h
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
 /**
- * Print message about the specified entry being in the given state.
- *
- * This generally only applies to the "ready" entry item action.
+ * Print warning message about duplicate items.
  *
  * @param print
  *   The output structure to print to.
@@ -29,11 +27,15 @@ extern "C" {
  *   This does not alter print.custom.setting.state.status.
  *
  *   Must not be NULL.
+ * @param cache
+ *   The cache.
+ *
+ *   Must not be NULL.
  * @param is_entry
  *   If TRUE, then this loads as an entry.
  *   If FALSE, then this loads as an exit.
  * @param name
- *   The name of the state.
+ *   The item name.
  *
  * @return
  *   F_okay on success.
@@ -41,12 +43,12 @@ extern "C" {
  *
  *   F_output_not (with error bit) if setting is NULL.
  */
-#ifndef _di_controller_print_message_entry_state_
-  extern f_status_t controller_print_message_entry_state(fl_print_t * const print, const uint8_t is_entry, const f_string_static_t name);
-#endif // _di_controller_print_message_entry_state_
+#ifndef _di_controller_print_warning_entry_item_duplicate_ignore_
+  extern f_status_t controller_print_warning_entry_item_duplicate_ignore(fl_print_t * const print, controller_cache_t * const cache, const uint8_t is_entry, const f_string_static_t name);
+#endif // _di_controller_print_warning_entry_item_duplicate_ignore_
 
 #ifdef __cplusplus
 } // extern "C"
 #endif
 
-#endif // _controller_main_print_entry_message_h
+#endif // _controller_main_print_warning_entry_item_h

@@ -136,6 +136,7 @@
 #include <program/controller/main/print/verbose.h>
 #include <program/controller/main/print/warning.h>
 #include <program/controller/main/print/warning/entry/action.h>
+#include <program/controller/main/print/warning/entry/item.h>
 #include <program/controller/main/print/warning/entry/setting.h>
 #include <program/controller/main/signal.h>
 #include <program/controller/main/time.h>

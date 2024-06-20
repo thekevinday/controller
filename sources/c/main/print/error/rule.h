@@ -50,9 +50,6 @@ extern "C" {
  *   F_output_not on success, but no printing is performed.
  *
  *   F_output_not (with error bit) if setting is NULL.
- *
- * @see fll_error_print()
- * @see controller_print_error_rule_cache()
  */
 #ifndef _di_controller_print_error_rule_
   extern f_status_t controller_print_error_rule(fl_print_t * const print, controller_cache_action_t * const cache, const f_status_t status, const f_string_t function, const uint8_t fallback, const uint8_t item);
@@ -86,9 +83,6 @@ extern "C" {
  *   F_output_not on success, but no printing is performed.
  *
  *   F_output_not (with error bit) if setting is NULL.
- *
- * @see fll_error_print()
- * @see controller_print_error_entry_cache()
  */
 #ifndef _di_controller_print_error_rule_cache_
   extern f_status_t controller_print_error_rule_cache(fl_print_t * const print, controller_cache_action_t * const cache, const uint8_t item);

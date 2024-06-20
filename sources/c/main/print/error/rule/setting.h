@@ -40,8 +40,6 @@ extern "C" {
  *   F_output_not on success, but no printing is performed.
  *
  *   F_output_not (with error bit) if setting is NULL.
- *
- * @see controller_rule_setting_read()
  */
 #ifndef _di_controller_print_error_rule_setting_
   extern f_status_t controller_print_error_rule_setting(fl_print_t * const print, controller_thread_t * const thread, controller_cache_t * const cache, const f_string_t message, const f_number_unsigned_t index, const f_number_unsigned_t line_item);
@@ -75,8 +73,6 @@ extern "C" {
  *   F_output_not on success, but no printing is performed.
  *
  *   F_output_not (with error bit) if setting is NULL.
- *
- * @see controller_rule_setting_read()
  */
 #ifndef _di_controller_print_error_rule_setting_with_range_
   extern f_status_t controller_print_error_rule_setting_with_range(fl_print_t * const print, controller_thread_t * const thread, controller_cache_t * const cache, const f_string_t before, const f_range_t range, const f_string_t after, const f_number_unsigned_t index, const f_number_unsigned_t line_item);

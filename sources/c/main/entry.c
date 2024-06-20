@@ -89,7 +89,7 @@ extern "C" {
       status = f_memory_array_increase_by(main->thread.cache.object_items.used, sizeof(f_range_t), (void **) &main->thread.cache.object_items.array, &main->thread.cache.object_items.used, &main->thread.cache.object_items.size);
 
       if (F_status_is_error(status)) {
-        controller_print_error_entry(&main->program.error, cache, entry->flag & controller_entry_flag_is_e, F_status_set_fine(status), macro_controller_f(f_memory_array_increase_by), F_true);
+        controller_print_error_entry(&main->program.error, entry->flag & controller_entry_flag_is_e, F_status_set_fine(status), macro_controller_f(f_memory_array_increase_by), F_true);
       }
       else {
 
@@ -152,17 +152,7 @@ extern "C" {
           for (j = (code & 0x1) ? 1 : 0; j < entry->items.used; ++j) {
 
             if (f_compare_dynamic(entry->items.array[j].name, main->thread.cache.action.name_item) == F_equal_to) {
-              if (main->program.warning.verbosity == f_console_verbosity_debug_e) {
-                controller_lock_print(main->program.warning.to, &main->thread);
-
-                fl_print_format("%r%[%QIgnoring duplicate %r item '%]", main->program.warning.to, f_string_eol_s, main->program.warning.context, main->program.warning.prefix, (entry->flag & controller_entry_flag_is_e) ? controller_entry_s : controller_exit_s, main->program.warning.context);
-                fl_print_format(f_string_format_Q_single_s.string, main->program.warning.to, main->program.warning.notable, main->thread.cache.action.name_file, main->program.warning.notable);
-                fl_print_format(f_string_format_sentence_end_quote_s.string, main->program.warning.to, main->program.warning.context, main->program.warning.context, f_string_eol_s);
-
-                controller_print_error_entry_cache(&main->program.warning, &main->thread.cache.action, entry->flag & controller_entry_flag_is_e);
-
-                controller_unlock_print_flush(main->program.warning.to, &main->thread);
-              }
+              controller_print_warning_entry_item_duplicate_ignore(&main->program.warning, &main->thread.cache, entry->flag & controller_entry_flag_is_e, main->thread.cache.action.name_item);
 
               code |= 0x2;
 
@@ -176,7 +166,6 @@ extern "C" {
 
           if (f_compare_dynamic(controller_main_s, main->thread.cache.action.name_item) == F_equal_to) {
             code |= 0x1;
-
             at = 0;
 
             if (!entry->items.used) {
@@ -184,7 +173,7 @@ extern "C" {
             }
           }
           else if (f_compare_dynamic(controller_settings_s, main->thread.cache.action.name_item) == F_equal_to) {
-            status = controller_entry_setting_read(main, cache, entry->flag & controller_entry_flag_is_e, *range);
+            status = controller_entry_setting_read(main, entry->flag & controller_entry_flag_is_e, *range);
 
             continue;
           }
@@ -193,7 +182,7 @@ extern "C" {
           }
           else {
 
-            // skip position 0, which is reserved for "main".
+            // Skip position 0, which is reserved for "main".
             entry->items.array[0].name.used = 0;
 
             at = 1;
@@ -210,13 +199,13 @@ extern "C" {
             break;
           }
 
-          status = controller_entry_actions_read(main, cache, entry->flag & controller_entry_flag_is_e, *range, &entry->items.array[at].actions);
+          status = controller_entry_action_read(main, entry->flag & controller_entry_flag_is_e, *range, &entry->items.array[at].actions);
 
           if (F_status_is_error(status)) {
             if (F_status_set_fine(status) != F_interrupt) {
               controller_lock_print(main->program.error.to, &main->thread);
 
-              controller_print_error_entry_cache(entry->flag & controller_entry_flag_is_e, &main->program.error, &main->thread.cache.action);
+              controller_print_error_entry_cache(&main->program.error, &main->thread.cache.action, entry->flag & controller_entry_flag_is_e);
 
               controller_unlock_print_flush(main->program.error.to, &main->thread);
             }
@@ -305,7 +294,7 @@ extern "C" {
 
     if (F_status_is_error(status)) {
       if (F_status_set_fine(status) != F_interrupt) {
-        controller_print_error_entry_cache(entry->flag & controller_entry_flag_is_e, &main->program.error, &main->thread.cache.action);
+        controller_print_error_entry_cache(&main->program.error, &main->thread.cache.action, entry->flag & controller_entry_flag_is_e);
       }
 
       entry->status = controller_status_simplify_error(F_status_set_fine(status));

@@ -44,9 +44,6 @@ extern "C" {
  *   F_output_not on success, but no printing is performed.
  *
  *   F_output_not (with error bit) if setting is NULL.
- *
- * @see fll_error_file_print()
- * @see controller_print_error_entry_cache()
  */
 #ifndef _di_controller_print_error_entry_item_failure_
   extern f_status_t controller_print_error_entry_item_failure(fl_print_t * const print, controller_cache_t * const cache, const uint8_t is_entry, const f_string_static_t name, const f_string_static_t message);
@@ -78,9 +75,6 @@ extern "C" {
  *   F_output_not on success, but no printing is performed.
  *
  *   F_output_not (with error bit) if setting is NULL.
- *
- * @see fll_error_file_print()
- * @see controller_print_error_entry_cache()
  */
 #ifndef _di_controller_print_error_entry_item_invalid_
   extern f_status_t controller_print_error_entry_item_invalid(fl_print_t * const print, controller_cache_t * const cache, const uint8_t is_entry, const f_number_unsigned_t number);
@@ -112,9 +106,6 @@ extern "C" {
  *   F_output_not on success, but no printing is performed.
  *
  *   F_output_not (with error bit) if setting is NULL.
- *
- * @see fll_error_file_print()
- * @see controller_print_error_entry_cache()
  */
 #ifndef _di_controller_print_error_entry_item_setting_support_not_option_
   extern f_status_t controller_print_error_entry_item_setting_support_not_option(fl_print_t * const print, controller_cache_t * const cache, const uint8_t is_entry, const f_string_static_t setting);

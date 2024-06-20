@@ -5,7 +5,7 @@
  * API Version: 0.7
  * Licenses: lgpl-2.1-or-later
  *
- * Provides the print entry warning action functionality.
+ * Provides the print entry action warning functionality.
  *
  * This is auto-included and should not need to be explicitly included.
  */
@@ -40,9 +40,6 @@ extern "C" {
  *   F_output_not on success, but no printing is performed.
  *
  *   F_output_not (with error bit) if setting is NULL.
- *
- * @see fll_error_file_print()
- * @see controller_print_error_entry_cache()
  */
 #ifndef _di_controller_print_warning_entry_action_failsafe_twice_
   extern f_status_t controller_print_warning_entry_action_failsafe_twice(fl_print_t * const print, controller_cache_t * const cache, const uint8_t is_entry);
@@ -74,9 +71,6 @@ extern "C" {
  *   F_output_not on success, but no printing is performed.
  *
  *   F_output_not (with error bit) if setting is NULL.
- *
- * @see fll_error_file_print()
- * @see controller_print_error_entry_cache()
  */
 #ifndef _di_controller_print_warning_entry_action_multiple_
   extern f_status_t controller_print_warning_entry_action_multiple(fl_print_t * const print, controller_cache_t * const cache, const uint8_t is_entry, const f_string_static_t name);

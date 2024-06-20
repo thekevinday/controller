@@ -5,7 +5,7 @@ extern "C" {
 #endif
 
 #ifndef _di_controller_file_load_
-  f_status_t controller_file_load(controller_t * const main, const bool required, const f_string_static_t path_prefix, const f_string_static_t path_name, const f_string_static_t path_suffix) {
+  f_status_t controller_file_load(controller_t * const main, const uint8_t required, const f_string_static_t path_prefix, const f_string_static_t path_name, const f_string_static_t path_suffix) {
 
     if (!main) return F_status_set_error(F_parameter);
 
@@ -16,26 +16,26 @@ extern "C" {
     main->thread.cache.timestamp.seconds = 0;
     main->thread.cache.timestamp.seconds_nano = 0;
 
-    f_status_t status = f_string_dynamic_append(path_prefix, &main->thread.cache.action.name_file);
+    f_status_t status = f_string_dynamic_append_nulless(path_prefix, &main->thread.cache.action.name_file);
 
     if (F_status_is_error_not(status)) {
-      status = f_string_dynamic_append(f_path_separator_s, &main->thread.cache.action.name_file);
+      status = f_string_dynamic_append_nulless(f_path_separator_s, &main->thread.cache.action.name_file);
     }
 
     if (F_status_is_error_not(status)) {
-      status = f_string_dynamic_append(path_name, &main->thread.cache.action.name_file);
+      status = f_string_dynamic_append_nulless(path_name, &main->thread.cache.action.name_file);
     }
 
     if (F_status_is_error_not(status)) {
-      status = f_string_dynamic_append(f_path_extension_separator_s, &main->thread.cache.action.name_file);
+      status = f_string_dynamic_append_nulless(f_path_extension_separator_s, &main->thread.cache.action.name_file);
     }
 
     if (F_status_is_error_not(status)) {
-      status = f_string_dynamic_append(path_suffix, &main->thread.cache.action.name_file);
+      status = f_string_dynamic_append_nulless(path_suffix, &main->thread.cache.action.name_file);
     }
 
     if (F_status_is_error(status)) {
-      controller_print_error_status(&main->program.error, macro_controller_f(f_string_dynamic_append), F_status_set_fine(status));
+      controller_print_error_status(&main->program.error, macro_controller_f(f_string_dynamic_append_nulless), F_status_set_fine(status));
 
       return status;
     }

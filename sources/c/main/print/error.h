@@ -33,8 +33,6 @@ extern "C" {
  *   F_output_not on success, but no printing is performed.
  *
  *   F_output_not (with error bit) if setting is NULL.
- *
- * @see fll_error_print()
  */
 #ifndef _di_controller_print_error_
   extern f_status_t controller_print_error(fl_print_t * const print, const f_string_t function);
@@ -63,8 +61,6 @@ extern "C" {
  *   F_output_not on success, but no printing is performed.
  *
  *   F_output_not (with error bit) if setting is NULL.
- *
- * @see fll_error_print()
  */
 #ifndef _di_controller_print_error_failsafe_item_
   extern f_status_t controller_print_error_failsafe_item(fl_print_t * const print, controller_thread_t * const thread, f_string_dynamic_t * const name);
@@ -96,8 +92,6 @@ extern "C" {
  *   F_output_not on success, but no printing is performed.
  *
  *   F_output_not (with error bit) if a parameter is NULL.
- *
- * @see fll_error_file_print()
  */
 #ifndef _di_controller_print_error_file_
   extern f_status_t controller_print_error_file(fl_print_t * const print, const f_string_t function, const f_string_static_t name, const f_string_static_t operation, const uint8_t type);
@@ -131,8 +125,6 @@ extern "C" {
  *   F_output_not on success, but no printing is performed.
  *
  *   F_output_not (with error bit) if a parameter is NULL.
- *
- * @see fll_error_file_print()
  */
 #ifndef _di_controller_print_error_file_status_
   extern f_status_t controller_print_error_file_status(fl_print_t * const print, const f_string_t function, const f_string_static_t name, const f_string_static_t operation, const uint8_t type, const f_status_t status);
@@ -157,8 +149,6 @@ extern "C" {
  *   F_output_not on success, but no printing is performed.
  *
  *   F_output_not (with error bit) if setting is NULL.
- *
- * @see fll_error_print()
  */
 #ifndef _di_controller_print_error_status_
   extern f_status_t controller_print_error_status(fl_print_t * const print, const f_string_t function, const f_status_t status);
@@ -185,8 +175,6 @@ extern "C" {
  *   F_output_not on success, but no printing is performed.
  *
  *   F_output_not (with error bit) if setting is NULL.
- *
- * @see fll_error_print()
  */
 #ifndef _di_controller_print_error_file_pid_exists_
   extern f_status_t controller_print_error_file_pid_exists(fl_print_t * const print, controller_thread_t * const thread, const f_string_dynamic_t path);

@@ -27,9 +27,6 @@ extern "C" {
  *   (optonal) The thread containing the print mutex to lock.
  *
  *   Set to NULL to not use.
- *
- * @see f_file_stream_lock()
- * @see f_thread_mutex_unlock()
  */
 #ifndef _di_controller_lock_print_
   extern void controller_lock_print(const f_file_t to, controller_thread_t * const thread);
@@ -51,13 +48,9 @@ extern "C" {
  *   (optonal) The thread containing the print mutex to unlock.
  *
  *   Set to NULL to not use.
- *
- * @see f_file_stream_unlock()
- *
- * @see f_thread_mutex_unlock()
  */
 #ifndef _di_controller_unlock_print_flush_
-  void controller_unlock_print_flush(const f_file_t to, controller_thread_t * const thread);
+  extern void controller_unlock_print_flush(const f_file_t to, controller_thread_t * const thread);
 #endif // _di_controller_unlock_print_flush_
 
 #ifdef __cplusplus
