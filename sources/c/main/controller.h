@@ -103,6 +103,7 @@
 #include <program/controller/main/common.h>
 #include <program/controller/main/convert.h>
 #include <program/controller/main/entry.h>
+#include <program/controller/main/entry/action.h>
 #include <program/controller/main/entry/preprocess.h>
 #include <program/controller/main/entry/process.h>
 #include <program/controller/main/entry/setting.h>
@@ -139,6 +140,7 @@
 #include <program/controller/main/print/warning/entry/item.h>
 #include <program/controller/main/print/warning/entry/setting.h>
 #include <program/controller/main/signal.h>
+#include <program/controller/main/status.h>
 #include <program/controller/main/time.h>
 #include <program/controller/main/thread/cleanup.h>
 #include <program/controller/main/thread/control.h>

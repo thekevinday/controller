@@ -59,7 +59,7 @@ build_sources_library main/print/output/entry/setting.c main/print/output/rule/e
 build_sources_library main/print/message.c main/print/message/entry.c main/print/message/entry/action.c main/print/message/entry/item.c
 build_sources_library main/print/verbose.c
 build_sources_library main/print/warning.c main/print/warning/entry/action.c main/print/warning/entry/item.c main/print/warning/entry/setting.c
-build_sources_library main/signal.c main/time.c
+build_sources_library main/signal.c main/status.c main/time.c
 build_sources_library main/thread.c main/thread/cleanup.c main/thread/control.c main/thread/entry.c main/thread/instance.c main/thread/is.c main/thread/rule.c main/thread/signal.c
 build_sources_library main/validate.c
 
@@ -84,7 +84,7 @@ build_sources_headers main/print/output/entry/setting.h main/print/output/rule/e
 build_sources_headers main/print/message.h main/print/message/entry.h main/print/message/entry/action.h main/print/message/entry/item.h
 build_sources_headers main/print/verbose.h
 build_sources_headers main/print/warning.h main/print/warning/entry/action.h main/print/warning/entry/item.h main/print/warning/entry/setting.h
-build_sources_headers main/signal.h main/time.h
+build_sources_headers main/signal.h main/status.h main/time.h
 build_sources_headers main/thread.h main/thread/cleanup.h main/thread/control.h main/thread/entry.h main/thread/instance.h main/thread/is.h main/thread/rule.h main/thread/signal.h
 build_sources_headers main/validate.h
 

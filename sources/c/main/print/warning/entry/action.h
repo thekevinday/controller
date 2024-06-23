@@ -76,6 +76,32 @@ extern "C" {
   extern f_status_t controller_print_warning_entry_action_multiple(fl_print_t * const print, controller_cache_t * const cache, const uint8_t is_entry, const f_string_static_t name);
 #endif // _di_controller_print_warning_entry_action_multiple_
 
+/**
+ * Print warnng message about a entry item action being unknown.
+ *
+ * @param print
+ *   The output structure to print to.
+ *
+ *   Must not be NULL.
+ * @param cache
+ *   A structure for containing and caching relevant data.
+ *
+ *   Must not be NULL.
+ * @param name
+ *   The parameter name whose value is unknown.
+ * @param unknown
+ *   The unknown value.
+ *
+ * @return
+ *   F_okay on success.
+ *   F_output_not on success, but no printing is performed.
+ *
+ *   F_output_not (with error bit) if setting is NULL.
+ */
+#ifndef _di_controller_print_warning_entry_action_unknown_
+  extern f_status_t controller_print_warning_entry_action_unknown(fl_print_t * const print, controller_cache_t * const cache, const uint8_t is_entry, const f_string_static_t name);
+#endif // _di_controller_print_warning_entry_action_unknown_
+
 #ifdef __cplusplus
 } // extern "C"
 #endif

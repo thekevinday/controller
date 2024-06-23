@@ -28,12 +28,12 @@ extern "C" {
 
         // Always return immediately on memory errors.
         if (F_status_set_fine(status) == F_memory_not) {
-          controller_print_error_perform_pid_file_create(&main->program.error, macro_controller_f(controller_file_pid_create), is_entry);
+          controller_print_error_perform_pid_file_create(&main->program.error, F_status_set_fine(status), macro_controller_f(controller_file_pid_create), is_entry);
 
           return status;
         }
 
-        controller_print_debug_perform_pid_file_create_problem(&main->program.debug, macro_controller_f(controller_file_pid_create), is_entry);
+        controller_print_debug_perform_pid_file_create_problem(&main->program.debug, F_status_set_fine(status), macro_controller_f(controller_file_pid_create), is_entry);
 
         status = F_okay;
       }

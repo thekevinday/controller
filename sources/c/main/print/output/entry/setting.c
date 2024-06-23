@@ -60,13 +60,13 @@ extern "C" {
 
 
     // Mode.
-    if (main->setting.mode == controller_setting_mode_service_e) {
+    if (main->setting.mode == controller_process_mode_service_e) {
       string = &controller_mode_s;
     }
-    else if (main->setting.mode == controller_setting_mode_helper_e) {
+    else if (main->setting.mode == controller_process_mode_helper_e) {
       string = &controller_helper_s;
     }
-    else if (main->setting.mode == controller_setting_mode_program_e) {
+    else if (main->setting.mode == controller_process_mode_program_e) {
       string = &controller_program_s;
     }
     else {

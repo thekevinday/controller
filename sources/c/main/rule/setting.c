@@ -1341,7 +1341,7 @@ extern "C" {
         else if (type == controller_rule_setting_type_user_e) {
           uid_t number = 0;
 
-          status = controller_convert_user_id(cache->buffer_item, cache->content_actions.array[i].array[0], cache, &number);
+          status = controller_convert_user_id(cache, cache->buffer_item, cache->content_actions.array[i].array[0], &number);
 
           if (F_status_is_error(status)) {
             status = F_status_set_fine(status);
@@ -1432,7 +1432,7 @@ extern "C" {
             continue;
           }
 
-          status = controller_convert_group_id(cache->buffer_item, cache->content_actions.array[i].array[j], cache, &number);
+          status = controller_convert_group_id(cache, cache->buffer_item, cache->content_actions.array[i].array[j], &number);
 
           if (F_status_is_error(status)) {
             status = F_status_set_fine(status);

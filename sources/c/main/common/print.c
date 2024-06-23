@@ -39,6 +39,7 @@ extern "C" {
     "f_thread_create",
     "f_time_spec_millisecond",
     "fl_conversion_dynamic_partial_to_signed_detect",
+    "fl_conversion_dynamic_partial_to_unsigned_detect",
     "fl_conversion_dynamic_to_unsigned_detect ",
     "fl_environment_load_names",
     "fl_fss_extended_list_content_read",

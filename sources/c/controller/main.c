@@ -3,8 +3,6 @@
 int main(const int argc, const f_string_t *argv, const f_string_t *envp) {
 
   controller_t data = controller_t_initialize;
-  controller_process_t process = controller_process_t_initialize;
-  controller_thread_t thread = controller_thread_t_initialize;
 
   data.program.debug.flag |= controller_print_flag_debug_e | controller_print_flag_out_e;
   data.program.error.flag |= controller_print_flag_error_e | controller_print_flag_out_e;
@@ -27,9 +25,7 @@ int main(const int argc, const f_string_t *argv, const f_string_t *envp) {
     data.program.pipe = fll_program_data_pipe_input_e;
   }
 
-  data.process = &process;
   data.setting.flag |= controller_main_flag_interruptible_e;
-  data.thread = &thread;
 
   fll_program_standard_set_up(&data.program);
 

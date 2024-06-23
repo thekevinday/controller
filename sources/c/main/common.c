@@ -175,7 +175,7 @@ extern "C" {
     if (main->program.parameters.array[controller_parameter_settings_e].locations.used) {
       index = main->program.parameters.array[controller_parameter_settings_e].values.array[main->program.parameters.array[controller_parameter_settings_e].values.used - 1];
 
-      controller_path_canonical_relative(main, main->process.path_current, args[index], &main->process.path_setting);
+      main->setting.state.status = controller_path_canonical_relative(main, main->process.path_current, args[index], &main->process.path_setting);
 
       if (F_status_is_error(main->setting.state.status)) {
         controller_print_error_file(&main->program.error, macro_controller_f(controller_path_canonical_relative), args[index], f_file_operation_verify_s, fll_error_file_type_path_e);
@@ -227,7 +227,7 @@ extern "C" {
       index = main->program.parameters.array[controller_parameter_cgroup_e].values.array[main->program.parameters.array[controller_parameter_cgroup_e].values.used - 1];
 
       if (args[index].used) {
-        controller_path_canonical_relative(main, main->process.path_current, args[index], &main->process.path_cgroup);
+        main->setting.state.status = controller_path_canonical_relative(main, main->process.path_current, args[index], &main->process.path_cgroup);
 
         if (F_status_is_error(main->setting.state.status)) {
           controller_print_error_file(&main->program.error, macro_controller_f(controller_path_canonical_relative), args[index], f_file_operation_verify_s, fll_error_file_type_path_e);

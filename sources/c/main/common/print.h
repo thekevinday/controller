@@ -72,6 +72,7 @@ extern "C" {
     controller_f_f_thread_create_e,
     controller_f_f_time_spec_millisecond_e,
     controller_f_fl_conversion_dynamic_partial_to_signed_detect_e,
+    controller_f_fl_conversion_dynamic_partial_to_unsigned_detect_e,
     controller_f_fl_conversion_dynamic_to_unsigned_detect_e,
     controller_f_fl_environment_load_names_e,
     controller_f_fl_fss_extended_list_content_read_e,

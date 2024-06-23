@@ -5,12 +5,14 @@ extern "C" {
 #endif
 
 #ifndef _di_controller_path_canonical_relative_
-  void controller_path_canonical_relative(controller_t * const main, const f_string_static_t current, const f_string_static_t source, f_string_dynamic_t * const destination) {
+  f_status_t controller_path_canonical_relative(controller_t * const main, const f_string_static_t current, const f_string_static_t source, f_string_dynamic_t * const destination) {
 
-    if (!main || !destination) return;
+    if (!main || !destination) return F_status_set_error(F_parameter);
 
-    main->setting.state.status = fl_path_canonical(source, destination);
-    if (F_status_is_error(main->setting.state.status)) return;
+    {
+      const f_status_t status = fl_path_canonical(source, destination);
+      if (F_status_is_error(status)) return status;
+    }
 
     if (destination->used >= current.used) {
       const f_range_t range = macro_f_range_t_initialize_2(current.used);
@@ -30,7 +32,7 @@ extern "C" {
       }
     }
 
-    main->setting.state.status = F_okay;
+    return F_okay;
   }
 #endif // _di_controller_path_canonical_relative_
 

@@ -43,12 +43,19 @@ extern "C" {
  *   The resulting relative canonical path.
  *   The destination will be completely replaced on success.
  *
+ *   Must not be NULL.
+ *
+ * @return
+ *   F_okay on success.
+ *
+ *   F_parameter (with error bit) if a parameter is invalid.
+ *
  * @see fl_path_canonical()
  *
  * @see memmove()
  */
 #ifndef _di_controller_path_canonical_relative_
-  extern void controller_path_canonical_relative(controller_t * const main, const f_string_static_t current, const f_string_static_t source, f_string_dynamic_t * const destination);
+  extern f_status_t controller_path_canonical_relative(controller_t * const main, const f_string_static_t current, const f_string_static_t source, f_string_dynamic_t * const destination);
 #endif // _di_controller_path_canonical_relative_
 
 #ifdef __cplusplus
