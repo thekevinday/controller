@@ -278,10 +278,10 @@ extern "C" {
           for (i = 2; i < cache->content_action.used; ++i) {
 
             if (f_compare_dynamic_partial_string(controller_delay_s.string, cache->buffer_item, controller_delay_s.used, cache->content_action.array[i]) == F_equal_to) {
-              status = controller_rule_action_read_rerun_number(main, controller_delay_s.string, cache, &i, &rerun_item->delay);
+              status = controller_rule_action_read_rerun_number(main, cache, controller_delay_s.string, &i, &rerun_item->delay);
             }
             else if (f_compare_dynamic_partial_string(controller_max_s.string, cache->buffer_item, controller_max_s.used, cache->content_action.array[i]) == F_equal_to) {
-              status = controller_rule_action_read_rerun_number(main, controller_max_s.string, cache, &i, &rerun_item->max);
+              status = controller_rule_action_read_rerun_number(main, cache, controller_max_s.string, &i, &rerun_item->max);
             }
             else if (f_compare_dynamic_partial_string(controller_reset_s.string, cache->buffer_item, controller_reset_s.used, cache->content_action.array[i]) == F_equal_to) {
               item->reruns[type_rerun].is |= rerun_item == &item->reruns[type_rerun].failure ? controller_rule_rerun_is_failure_reset_d : controller_rule_rerun_is_success_reset_d;

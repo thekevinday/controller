@@ -55,7 +55,7 @@ extern "C" {
  * @see fll_fss_basic_list_read().
  */
 #ifndef _di_controller_rule_read_
-  extern f_status_t controller_rule_read(controller_t * const main, controller_cache_t * const cache, const bool is_normal, const f_string_static_t alias, controller_entry_t * const entry, controller_rule_t * const rule);
+  extern f_status_t controller_rule_read(controller_t * const main, controller_cache_t * const cache, const uint8_t is_normal, const f_string_static_t alias, controller_entry_t * const entry, controller_rule_t * const rule);
 #endif // _di_controller_rule_read_
 
 

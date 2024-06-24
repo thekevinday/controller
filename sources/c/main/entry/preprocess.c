@@ -101,7 +101,7 @@ extern "C" {
               for (j = 2; j < cache->ats.used; j += 2) {
 
                 if (cache->ats.array[j] == i) {
-                  controller_print_error_entry_item_failure(&main->program.error, cache, entry->items.array[i].name, "cannot be executed because recursion is not allowed");
+                  controller_print_error_entry_item_failure(&main->program.error, cache, is_entry, entry->items.array[i].name, "cannot be executed because recursion is not allowed");
 
                   if (F_status_is_error_not(status)) {
                     status = F_status_set_error(F_recurse);
@@ -154,7 +154,7 @@ extern "C" {
 
           if (error_has || i >= entry->items.used) {
             if (i >= entry->items.used) {
-              controller_print_error_entry_item_failure(&main->program.error, cache, actions->array[cache->ats.array[at_j]].parameters.array[0], "does not exist");
+              controller_print_error_entry_item_failure(&main->program.error, cache, is_entry, actions->array[cache->ats.array[at_j]].parameters.array[0], "does not exist");
 
               if (F_status_is_error_not(status)) {
                 status = F_status_set_error(F_valid_not);

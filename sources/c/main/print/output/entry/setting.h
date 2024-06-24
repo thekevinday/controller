@@ -71,9 +71,9 @@ extern "C" {
  *
  *   F_output_not (with error bit) if setting is NULL.
  */
-#ifndef _di_controller_print_entry_output_setting_validate_
-  extern f_status_t controller_print_entry_output_setting_validate(fl_print_t * const print, const uint8_t is_entry);
-#endif // _di_controller_print_entry_output_setting_validate_
+#ifndef _di_controller_print_output_entry_setting_validate_
+  extern f_status_t controller_print_output_entry_setting_validate(fl_print_t * const print, const uint8_t is_entry);
+#endif // _di_controller_print_output_entry_setting_validate_
 
 #ifdef __cplusplus
 } // extern "C"

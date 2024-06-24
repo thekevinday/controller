@@ -10,7 +10,7 @@ extern "C" {
     if (!instance || !instance->main) return;
     if (!controller_thread_is_enabled(is_normal, &instance->main->thread)) return;
 
-    const f_status_t status = controller_rule_instance_do(controller_instance_option_asynchronous_e, instance);
+    const f_status_t status = controller_rule_instance_perform(controller_instance_option_asynchronous_e, instance);
 
     // A forked child instance should de-allocate memory on exit.
     // It seems that this function doesn't return to the calling thread for a forked child instance, even with the "return 0;" below.

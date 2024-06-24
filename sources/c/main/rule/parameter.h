@@ -5,12 +5,12 @@
  * API Version: 0.7
  * Licenses: lgpl-2.1-or-later
  *
- * Provides the rule "read" functionality.
+ * Provides the rule "parameter" functionality.
  *
  * This is auto-included and should not need to be explicitly included.
  */
-#ifndef _controller_main_rule_read_h
-#define _controller_main_rule_read_h
+#ifndef _controller_main_rule_parameter_h
+#define _controller_main_rule_parameter_h
 
 #ifdef __cplusplus
 extern "C" {
@@ -66,4 +66,4 @@ extern "C" {
 } // extern "C"
 #endif
 
-#endif // _controller_main_rule_read_h
+#endif // _controller_main_rule_parameter_h

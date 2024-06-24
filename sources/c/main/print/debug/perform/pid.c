@@ -15,11 +15,11 @@ extern "C" {
     controller_lock_print(print->to, &main->thread);
 
     fl_print_format("%rPID file '", print->to, f_string_eol_s);
-    fl_print_format("%[%Q%]'.%r", print->to, print->notable, main->setting.path_pid, print->notable, f_string_eol_s);
+    fl_print_format("%[%Q%]'.%r", print->to, print->notable, main->process.path_pid, print->notable, f_string_eol_s);
 
-    if (main->setting.path_control.used) {
+    if (main->process.path_control.used) {
       fl_print_format("%rControl socket '", print->to, f_string_eol_s);
-      fl_print_format(f_string_format_Q_single_s.string, print->to, print->notable, main->setting.path_control, print->notable);
+      fl_print_format(f_string_format_Q_single_s.string, print->to, print->notable, main->process.path_control, print->notable);
       fl_print_format("'.%r", print->to, f_string_eol_s);
     }
 
@@ -41,16 +41,16 @@ extern "C" {
 
     if (F_status_set_fine(status) == F_read_only) {
       fl_print_format("%r%[%QThe pid file '%]", print->to, f_string_eol_s, print->context, print->prefix, print->context);
-      fl_print_format(f_string_format_Q_single_s.string, print->to, print->notable, main->setting.path_pid, print->notable);
+      fl_print_format(f_string_format_Q_single_s.string, print->to, print->notable, main->process.path_pid, print->notable);
       fl_print_format("%[' could not be written because the destination is read only.%]%r", print->to, print->context, print->context, f_string_eol_s);
     }
     else {
-      controller_print_error_file_status(print, function, F_true, main->setting.path_pid, f_file_operation_create_s, fll_error_file_type_file_e, status);
+      controller_print_error_file_status(print, function, F_true, main->process.path_pid, f_file_operation_create_s, fll_error_file_type_file_e, status);
     }
 
     f_file_stream_lock(print->to);
 
-    controller_print_error_entry_cache(print->to, &main->thread.cache.action, is_entry);
+    controller_print_error_entry_cache(print, &main->thread.cache.action, is_entry);
 
     controller_unlock_print_flush(print->to, &main->thread);
   }
@@ -67,7 +67,7 @@ extern "C" {
     controller_lock_print(print->to, &main->thread);
 
     fl_print_format("%rPID file '", print->to, f_string_eol_s);
-    fl_print_format("%[%Q%]' created.%r", print->to, print->notable, main->setting.path_pid, print->notable, f_string_eol_s);
+    fl_print_format("%[%Q%]' created.%r", print->to, print->notable, main->process.path_pid, print->notable, f_string_eol_s);
 
     controller_unlock_print_flush(print->to, &main->thread);
   }

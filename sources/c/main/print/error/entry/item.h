@@ -17,7 +17,7 @@ extern "C" {
 #endif
 
 /**
- * Print the entry item related error.
+ * Print the Entry Item related error.
  *
  * @param print
  *   The output structure to print to.
@@ -46,11 +46,11 @@ extern "C" {
  *   F_output_not (with error bit) if setting is NULL.
  */
 #ifndef _di_controller_print_error_entry_item_failure_
-  extern f_status_t controller_print_error_entry_item_failure(fl_print_t * const print, controller_cache_t * const cache, const uint8_t is_entry, const f_string_static_t name, const f_string_static_t message);
+  extern f_status_t controller_print_error_entry_item_failure(fl_print_t * const print, controller_cache_t * const cache, const uint8_t is_entry, const f_string_static_t name, const f_string_t message);
 #endif // _di_controller_print_error_entry_item_failure_
 
 /**
- * Print an error message for an invalid entry item.
+ * Print an error message for an invalid Entry Item.
  *
  * @param print
  *   The output structure to print to.
@@ -81,7 +81,7 @@ extern "C" {
 #endif // _di_controller_print_error_entry_item_invalid_
 
 /**
- * Print an error message about an entry it setting option not being supported.
+ * Print an error message about an Entry Item Setting option not being supported.
  *
  * @param print
  *   The output structure to print to.

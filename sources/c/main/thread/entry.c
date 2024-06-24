@@ -29,7 +29,7 @@ extern "C" {
       *status = controller_entry_preprocess(main, F_true);
 
       if ((main->setting.flag & controller_main_flag_simulate_e) && (main->setting.flag & controller_main_flag_validate_e)) {
-        controller_print_entry_output_setting_validate(main, F_true);
+        controller_print_output_entry_setting_validate(&main->program.output, F_true);
       }
     }
 
@@ -147,7 +147,7 @@ extern "C" {
       *status = controller_entry_preprocess(main, F_false);
 
       if ((main->setting.flag & controller_main_flag_simulate_e) && (main->setting.flag & controller_main_flag_validate_e)) {
-        controller_print_entry_output_setting_validate(main, F_false);
+        controller_print_output_entry_setting_validate(&main->program.output, F_false);
       }
     }
 

@@ -747,7 +747,7 @@ extern "C" {
         }
       }
       else {
-        status = controller_rule_instance_do(options_force, instance);
+        status = controller_rule_instance_perform(options_force, instance);
 
         if (status == F_child || F_status_set_fine(status) == F_interrupt) {
           f_thread_unlock(&instance->active);
@@ -794,8 +794,8 @@ extern "C" {
   }
 #endif // _di_controller_rule_instance_begin_
 
-#ifndef _di_controller_rule_instance_do_
-  f_status_t controller_rule_instance_do(const uint8_t options_force, controller_instance_t * const instance) {
+#ifndef _di_controller_rule_instance_perform_
+  f_status_t controller_rule_instance_perform(const uint8_t options_force, controller_instance_t * const instance) {
 
     if (!instance || !instance->main) return F_status_set_error(F_parameter);
 
@@ -1063,7 +1063,7 @@ extern "C" {
 
     return controller_thread_is_enabled_instance(instance) ? status : F_status_set_error(F_interrupt);
   }
-#endif // _di_controller_rule_instance_do_
+#endif // _di_controller_rule_instance_perform_
 
 #ifdef __cplusplus
 } // extern "C"

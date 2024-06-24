@@ -41,6 +41,7 @@ extern "C" {
   enum {
     controller_f_controller_convert_group_id_e,
     controller_f_controller_convert_user_id_e,
+    controller_f_controller_entry_setting_read_map_e,
     controller_f_controller_file_load_e,
     controller_f_controller_lock_create_e,
     controller_f_controller_rule_copy_e,
@@ -48,6 +49,7 @@ extern "C" {
     controller_f_f_console_parameter_process_e,
     controller_f_f_environment_get_all_e,
     controller_f_f_file_exists_e,
+    controller_f_f_file_mode_to_mode_e,
     controller_f_f_file_name_base_e,
     controller_f_f_file_stat_e,
     controller_f_f_file_stream_open_e,

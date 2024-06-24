@@ -5,7 +5,7 @@ extern "C" {
 #endif
 
 #ifndef _di_controller_rule_read_
-  f_status_t controller_rule_read(controller_t * const main, controller_cache_t * const cache, const bool is_normal, const f_string_static_t alias, controller_entry_t * const entry, controller_rule_t * const rule) {
+  f_status_t controller_rule_read(controller_t * const main, controller_cache_t * const cache, const uint8_t is_normal, const f_string_static_t alias, controller_entry_t * const entry, controller_rule_t * const rule) {
 
     if (!main || !cache || !entry || !rule) return F_status_set_error(F_parameter);
 
@@ -280,7 +280,7 @@ extern "C" {
               fl_print_format(f_string_format_Q_single_s.string, main->program.warning.to, main->program.warning.notable, cache->action.name_item, main->program.warning.notable);
               fl_print_format(f_string_format_sentence_end_quote_s.string, main->program.warning.to, main->program.warning.context, main->program.warning.context, f_string_eol_s);
 
-              controller_print_error_rule_cache(&main->program.warning, cache->action, F_true);
+              controller_print_error_rule_cache(&main->program.warning, &cache->action, F_true);
 
               controller_unlock_print_flush(main->program.warning.to, &main->thread);
             }

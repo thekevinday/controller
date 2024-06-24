@@ -101,7 +101,7 @@ extern "C" {
 #endif // _di_controller_rule_instance_begin_
 
 /**
- * Helper for calling controller_rule_instance().
+ * Perform the work
  *
  * This does all the preparation work that needs to be synchronously performed within the same thread.
  * This will copy the rule by the alias to the instance structure.
@@ -113,6 +113,8 @@ extern "C" {
  *   If not controller_instance_option_asynchronous_e, then synchronously execute.
  * @param instance
  *   The instance data.
+ *
+ *   Must not be NULL.
  *
  * @return
  *   F_okay on success.
@@ -131,9 +133,9 @@ extern "C" {
  * @see controller_rule_instance()
  * @see controller_rule_instance_begin()
  */
-#ifndef _di_controller_rule_instance_do_
-  extern f_status_t controller_rule_instance_do(const uint8_t options_force, controller_instance_t * const instance);
-#endif // _di_controller_rule_instance_do_
+#ifndef _di_controller_rule_instance_perform_
+  extern f_status_t controller_rule_instance_perform(const uint8_t options_force, controller_instance_t * const instance);
+#endif // _di_controller_rule_instance_perform_
 
 #ifdef __cplusplus
 } // extern "C"

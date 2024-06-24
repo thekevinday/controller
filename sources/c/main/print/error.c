@@ -19,7 +19,7 @@ extern "C" {
 #endif // _di_controller_print_error_
 
 #ifndef _di_controller_print_error_failsafe_item_
-  f_status_t controller_print_error_failsafe_item(fl_print_t * const print, controller_thread_t * const thread, f_string_dynamic_t * const name) {
+  f_status_t controller_print_error_failsafe_item(fl_print_t * const print, controller_thread_t * const thread, const f_string_dynamic_t name) {
 
     if (!print) return F_status_set_error(F_output_not);
     if (print->verbosity < f_console_verbosity_error_e) return F_output_not;

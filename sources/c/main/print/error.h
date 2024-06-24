@@ -54,8 +54,6 @@ extern "C" {
  * @param name
  *   The name of the item.
  *
- *   Must not be NULL.
- *
  * @return
  *   F_okay on success.
  *   F_output_not on success, but no printing is performed.
@@ -63,7 +61,7 @@ extern "C" {
  *   F_output_not (with error bit) if setting is NULL.
  */
 #ifndef _di_controller_print_error_failsafe_item_
-  extern f_status_t controller_print_error_failsafe_item(fl_print_t * const print, controller_thread_t * const thread, f_string_dynamic_t * const name);
+  extern f_status_t controller_print_error_failsafe_item(fl_print_t * const print, controller_thread_t * const thread, const f_string_dynamic_t name);
 #endif // _di_controller_print_error_failsafe_item_
 
 /**

@@ -38,8 +38,8 @@ extern "C" {
   }
 #endif // _di_controller_print_output_entry_setting_simulate_value_
 
-#ifndef _di_controller_print_entry_output_setting_validate_
-  f_status_t controller_print_entry_output_setting_validate(fl_print_t * const print, const uint8_t is_entry) {
+#ifndef _di_controller_print_output_entry_setting_validate_
+  f_status_t controller_print_output_entry_setting_validate(fl_print_t * const print, const uint8_t is_entry) {
 
     if (!print || !print->custom) return F_status_set_error(F_output_not);
     if (print->verbosity < f_console_verbosity_error_e) return F_output_not;
@@ -60,13 +60,13 @@ extern "C" {
 
 
     // Mode.
-    if (main->setting.mode == controller_process_mode_service_e) {
+    if (main->process.mode == controller_process_mode_service_e) {
       string = &controller_mode_s;
     }
-    else if (main->setting.mode == controller_process_mode_helper_e) {
+    else if (main->process.mode == controller_process_mode_helper_e) {
       string = &controller_helper_s;
     }
-    else if (main->setting.mode == controller_process_mode_program_e) {
+    else if (main->process.mode == controller_process_mode_program_e) {
       string = &controller_program_s;
     }
     else {
@@ -148,8 +148,8 @@ extern "C" {
     // Pid File.
     fl_print_format("  %[%r%]", print->to, print->set.important, controller_pid_file_s, print->set.important);
 
-    if (main->setting.path_pid.used) {
-      fl_print_format(" %r", print->to, main->setting.path_pid);
+    if (main->process.path_pid.used) {
+      fl_print_format(" %r", print->to, main->process.path_pid);
     }
 
     fl_print_format("%r", print->to, f_string_eol_s);
@@ -158,8 +158,8 @@ extern "C" {
     // Control.
     fl_print_format("  %[%r%]", print->to, print->set.important, controller_control_s, print->set.important);
 
-    if (main->setting.path_control.used) {
-      fl_print_format(" %Q", print->to, main->setting.path_control);
+    if (main->process.path_control.used) {
+      fl_print_format(" %Q", print->to, main->process.path_control);
     }
 
     fl_print_format("%r", print->to, f_string_eol_s);
@@ -434,7 +434,7 @@ extern "C" {
 
     return F_okay;
   }
-#endif // _di_controller_print_entry_output_setting_validate_
+#endif // _di_controller_print_output_entry_setting_validate_
 
 #ifdef __cplusplus
 } // extern "C"

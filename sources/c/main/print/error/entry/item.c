@@ -5,7 +5,7 @@ extern "C" {
 #endif
 
 #ifndef _di_controller_print_error_entry_item_failure_
-  f_status_t controller_print_error_entry_item_failure(fl_print_t * const print, controller_cache_t * const cache, const uint8_t is_entry, const f_string_static_t name, const f_string_static_t message) {
+  f_status_t controller_print_error_entry_item_failure(fl_print_t * const print, controller_cache_t * const cache, const uint8_t is_entry, const f_string_static_t name, const f_string_t message) {
 
     if (!print || !print->custom || !cache) return F_status_set_error(F_output_not);
     if (print->verbosity < f_console_verbosity_error_e) return F_output_not;

@@ -27,7 +27,7 @@ extern "C" {
  *
  *   Must not be NULL.
  *
- * @see controller_rule_instance_do()
+ * @see controller_rule_instance_perform()
  */
 #ifndef _di_controller_thread_instance_
   extern void controller_thread_instance(const uint8_t is_normal, controller_instance_t * const instance);

@@ -129,7 +129,7 @@ extern "C" {
           fl_print_format(f_string_format_Q_single_s.string, main->program.warning.to, main->program.warning.notable, cache->action.name_action, main->program.warning.notable);
           fl_print_format(f_string_format_sentence_end_quote_s.string, main->program.warning.to, main->program.warning.context, main->program.warning.context, f_string_eol_s);
 
-          controller_print_error_rule_cache(&main->program.warning, cache->action, F_true);
+          controller_print_error_rule_cache(&main->program.warning, &cache->action, F_true);
 
           controller_unlock_print_flush(main->program.warning.to, &main->thread);
         }

@@ -8,6 +8,7 @@ extern "C" {
   const f_string_t controller_f_a[] = {
     "controller_convert_group_id",
     "controller_convert_user_id",
+    "controller_entry_setting_read_map",
     "controller_file_load",
     "controller_lock_create",
     "controller_rule_copy",
@@ -15,6 +16,7 @@ extern "C" {
     "f_console_parameter_process",
     "f_environment_get_all",
     "f_file_exists",
+    "f_file_mode_to_mode",
     "f_file_name_base",
     "f_file_stat",
     "f_file_stream_open",

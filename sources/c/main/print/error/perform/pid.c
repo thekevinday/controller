@@ -14,7 +14,7 @@ extern "C" {
 
     controller_lock_print(print->to, &main->thread);
 
-    controller_print_error_file_status(print, function, F_true, main->setting.path_pid, f_file_operation_create_s, fll_error_file_type_file_e, status);
+    controller_print_error_file_status(print, function, F_true, main->process.path_pid, f_file_operation_create_s, fll_error_file_type_file_e, status);
 
     f_file_stream_lock(print->to);
 

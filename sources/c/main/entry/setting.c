@@ -16,7 +16,7 @@ extern "C" {
       f_state_t state = macro_f_state_t_initialize_1(controller_allocation_large_d, controller_allocation_small_d, F_okay, 0, 0, 0, &controller_thread_signal_state_fss, 0, (void *) &custom, 0);
       f_range_t range = content_range;
 
-      fll_fss_extended_read(cache->buffer_file, &range, &cache->object_actions, &cache->content_actions, 0, 0, &cache->delimits, 0, &state);
+      fll_fss_extended_read(main->thread.cache.buffer_file, &range, &cache->object_actions, &cache->content_actions, 0, 0, &cache->delimits, 0, &state);
     }
 
     if (F_status_is_error(status)) {
@@ -41,7 +41,7 @@ extern "C" {
 
     f_number_unsigned_t i = 0;
 
-    controller_entry_t * const entry = is_entry ? &main->setting.entry : &main->setting.exit;
+    controller_entry_t * const entry = is_entry ? &main->process.entry : &main->process.exit;
     f_state_t state = f_state_t_initialize;
 
     for (; i < cache->object_actions.used; ++i) {
@@ -69,7 +69,7 @@ extern "C" {
 
       if (is_entry && f_compare_dynamic(controller_control_s, cache->action.name_action) == F_equal_to) {
         if (cache->content_actions.array[i].used < 1 || cache->content_actions.array[i].used > 2) {
-          controller_entry_setting_read_print_setting_requires_between(main, is_entry, *cache, 1, 2);
+          controller_print_error_entry_setting_requires_between(&main->program.error, cache, is_entry, 1, 2);
 
           continue;
         }
@@ -89,7 +89,7 @@ extern "C" {
         }
 
         cache->action.generic.used = 0;
-        main->setting.path_control.used = 0;
+        main->process.path_control.used = 0;
 
         status = f_rip_dynamic_partial_nulless(cache->buffer_file, cache->content_actions.array[i].array[0], &cache->action.generic);
 
@@ -99,7 +99,7 @@ extern "C" {
           break;
         }
 
-        main->setting.path_control.used = 0;
+        main->process.path_control.used = 0;
 
         status = controller_path_canonical_relative(main, main->process.path_current, cache->action.generic, &main->process.path_control);
 
@@ -220,16 +220,16 @@ extern "C" {
         }
 
         if (f_compare_dynamic_partial_string(controller_service_s.string, cache->buffer_file, controller_service_s.used, cache->content_actions.array[i].array[0]) == F_equal_to) {
-          main->setting.mode = controller_process_mode_service_e;
+          main->process.mode = controller_process_mode_service_e;
         }
         else if (f_compare_dynamic_partial_string(controller_helper_s.string, cache->buffer_file, controller_helper_s.used, cache->content_actions.array[i].array[0]) == F_equal_to) {
-          main->setting.mode = controller_process_mode_helper_e;
+          main->process.mode = controller_process_mode_helper_e;
         }
         else if (f_compare_dynamic_partial_string(controller_program_s.string, cache->buffer_file, controller_program_s.used, cache->content_actions.array[i].array[0]) == F_equal_to) {
-          main->setting.mode = controller_process_mode_program_e;
+          main->process.mode = controller_process_mode_program_e;
         }
         else {
-          controller_entry_setting_read_print_setting_unknown_action_value(main, is_entry, *cache, i);
+          controller_entry_setting_read_print_setting_unknown_action_value(main, cache, is_entry, cache->action.name_action, cache->content_actions.array[i].array[0]);
 
           continue;
         }
@@ -266,7 +266,7 @@ extern "C" {
           entry->pid = controller_entry_pid_require_e;
         }
         else {
-          controller_entry_setting_read_print_setting_unknown_action_value(main, is_entry, *cache, i);
+          controller_print_warning_entry_setting_unknown_action_value(&main->program.warning, cache, is_entry, cache->action.name_action, cache->content_actions.array[i].array[0]);
 
           continue;
         }
@@ -292,9 +292,9 @@ extern "C" {
             continue;
           }
 
-          main->setting.path_pid.used = 0;
+          main->process.path_pid.used = 0;
 
-          status = controller_path_canonical_relative(main, main->process.path_current, cache->action.generic, &main->setting.path_pid);
+          status = controller_path_canonical_relative(main, main->process.path_current, cache->action.generic, &main->process.path_pid);
 
           if (F_status_is_error(status)) {
             controller_print_error_entry(&main->program.error, is_entry, F_status_set_fine(status), macro_controller_f(controller_path_canonical_relative), F_true);
@@ -317,7 +317,7 @@ extern "C" {
           entry->session = controller_entry_session_same_e;
         }
         else {
-          controller_entry_setting_read_print_setting_unknown_action_value(main, is_entry, *cache, i);
+          controller_print_warning_entry_setting_unknown_action_value(&main->program.warning, cache, is_entry, cache->action.name_action, cache->content_actions.array[i].array[0]);
 
           continue;
         }
@@ -336,14 +336,14 @@ extern "C" {
           entry->show = controller_entry_show_init_e;
         }
         else {
-          controller_entry_setting_read_print_setting_unknown_action_value(main, is_entry, *cache, i);
+          controller_print_warning_entry_setting_unknown_action_value(&main->program.warning, cache, is_entry, cache->action.name_action, cache->content_actions.array[i].array[0]);
 
           continue;
         }
       }
       else if (f_compare_dynamic(controller_timeout_s, cache->action.name_action) == F_equal_to) {
         if (cache->content_actions.array[i].used < 1 || cache->content_actions.array[i].used > 2) {
-          controller_entry_setting_read_print_setting_requires_between(main, is_entry, *cache, 1, 2);
+          controller_print_error_entry_setting_requires_between(&main->program.error, cache, is_entry, 1, 2);
 
           continue;
         }
@@ -391,7 +391,7 @@ extern "C" {
           time = &entry->timeout_stop;
         }
         else {
-          controller_entry_setting_read_print_setting_unknown_action_value(main, is_entry, *cache, i);
+          controller_print_warning_entry_setting_unknown_action_value(&main->program.warning, cache, is_entry, cache->action.name_action, cache->content_actions.array[i].array[0]);
 
           continue;
         }
