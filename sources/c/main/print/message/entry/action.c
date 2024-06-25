@@ -36,7 +36,7 @@ extern "C" {
     controller_lock_print(print->to, &main->thread);
 
     fl_print_format("%rIgnoring %r item action '", print->to, f_string_eol_s, is_entry ? controller_entry_s : controller_exit_s);
-    fl_print_format(f_string_format_Q_single_s.string, print->to, print->set.title, name, print->set.title);
+    fl_print_format(f_string_format_Q_single_s.string, print->to, print->set->title, name, print->set->title);
     fl_print_format("', state already is ready.%r", print->to, f_string_eol_s);
 
     controller_unlock_print_flush(print->to, &main->thread);
@@ -59,11 +59,11 @@ extern "C" {
     fl_print_format(f_string_format_Q_single_s.string, print->to, print->notable, cache->action.name_action, print->notable);
 
     if (action->parameters.used) {
-      fl_print_format(" %[", print->to, context->notable);
+      fl_print_format(" %[", print->to, print->notable);
 
       controller_print_message_entry_action_parameters(print, action);
 
-      fl_print_format("%]", print->to, context->notable);
+      fl_print_format("%]", print->to, print->notable);
     }
 
     if (action->code & controller_entry_rule_code_require_d) {
@@ -101,19 +101,19 @@ extern "C" {
     controller_lock_print(print->to, &main->thread);
 
     fl_print_format("%rThe %r item action '", print->to, f_string_eol_s, is_entry ? controller_entry_s : controller_exit_s);
-    fl_print_format(f_string_format_Q_single_s.string, print->to, context->set.title, cache->action.name_action, context->set.title);
+    fl_print_format(f_string_format_Q_single_s.string, print->to, print->set->title, cache->action.name_action, print->set->title);
 
     if (action->parameters.used) {
-      fl_print_format(" %[", print->to, context->notable);
+      fl_print_format(" %[", print->to, print->notable);
 
       controller_print_message_entry_action_parameters(print, action);
 
-      fl_print_format("%]", print->to, context->notable);
+      fl_print_format("%]", print->to, print->notable);
     }
 
-    fl_print_format("' is %[%r%] and is in a ", print->to, context->notable, action->code & controller_entry_rule_code_require_d ? "required" : "optional", context->notable);
+    fl_print_format("' is %[%r%] and is in a ", print->to, print->notable, action->code & controller_entry_rule_code_require_d ? "required" : "optional", print->notable);
 
-    fl_print_format("%[failed%] state, skipping.%r", print->to, context->notable, context->notable, context->notable, f_string_eol_s);
+    fl_print_format("%[failed%] state, skipping.%r", print->to, print->notable, print->notable, print->notable, f_string_eol_s);
 
     controller_unlock_print_flush(print->to, &main->thread);
 
@@ -132,7 +132,7 @@ extern "C" {
     controller_lock_print(print->to, &main->thread);
 
     fl_print_format("%rWaiting before processing %r item action '", print->to, f_string_eol_s, is_entry ? controller_entry_s : controller_exit_s);
-    fl_print_format(f_string_format_Q_single_s.string, print->to, print->set.title, name, print->set.title);
+    fl_print_format(f_string_format_Q_single_s.string, print->to, print->set->title, name, print->set->title);
     fl_print_format("'.%r", print->to, f_string_eol_s);
 
     controller_unlock_print_flush(print->to, &main->thread);

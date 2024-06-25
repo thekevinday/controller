@@ -86,7 +86,7 @@ extern "C" {
  * @see controller_path_canonical_relative()
  */
 #ifndef _di_controller_rule_setting_read_
-  extern f_status_t controller_rule_setting_read(controller_t * const main, controller_cache_t * const cache, const bool is_normal, controller_rule_t * const rule);
+  extern f_status_t controller_rule_setting_read(controller_t * const main, controller_cache_t * const cache, const uint8_t is_normal, controller_rule_t * const rule);
 #endif // _di_controller_rule_setting_read_
 
 #ifdef __cplusplus

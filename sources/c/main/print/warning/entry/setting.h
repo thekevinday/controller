@@ -67,8 +67,10 @@ extern "C" {
  *   If FALSE, then this loads as an exit.
  * @param name
  *   The parameter name whose value is unknown.
- * @param unknown
- *   The unknown value.
+ * @param buffer
+ *   The buffer containing the unknown value.
+ * @param range
+ *   The range within the buffer representing the unknown value.
  *
  * @return
  *   F_okay on success.
@@ -77,7 +79,7 @@ extern "C" {
  *   F_output_not (with error bit) if setting is NULL.
  */
 #ifndef _di_controller_print_warning_entry_setting_unknown_action_value_
-  extern f_status_t controller_print_warning_entry_setting_unknown_action_value(fl_print_t * const print, controller_cache_t * const cache, const uint8_t is_entry, const f_string_static_t name, const f_string_static_t unknown);
+  extern f_status_t controller_print_warning_entry_setting_unknown_action_value(fl_print_t * const print, controller_cache_t * const cache, const uint8_t is_entry, const f_string_static_t name, const f_string_static_t buffer, const f_range_t range);
 #endif // _di_controller_print_warning_entry_setting_unknown_action_value_
 
 #ifdef __cplusplus

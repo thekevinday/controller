@@ -52,12 +52,12 @@ extern "C" {
 
     main->thread.cache.delimits.used = 0;
 
-    status = f_memory_array_increase_by(main->thread.cache.object_actions.used, sizeof(controller_entry_action_t), (void **) &actions->array, &actions->used, &actions->size);
+    state.status = f_memory_array_increase_by(main->thread.cache.object_actions.used, sizeof(controller_entry_action_t), (void **) &actions->array, &actions->used, &actions->size);
 
-    if (F_status_is_error(status)) {
-      controller_print_error_entry(&main->program.error, entry->flag & controller_entry_flag_is_e, F_status_set_fine(status), macro_controller_f(f_memory_array_increase_by), F_true);
+    if (F_status_is_error(state.status)) {
+      controller_print_error_entry(&main->program.error, entry->flag & controller_entry_flag_is_e, F_status_set_fine(state.status), macro_controller_f(f_memory_array_increase_by), F_true);
 
-      return status;
+      return state.status;
     }
 
     controller_entry_action_t *action = 0;
@@ -85,19 +85,17 @@ extern "C" {
       f_fss_count_lines(main->thread.cache.buffer_file, main->thread.cache.object_actions.array[i].start, &main->thread.cache.action.line_action, &state);
 
       if (F_status_is_error(state.status)) {
-        status = state.status;
-
-        controller_print_error_entry(&main->program.error, entry->flag & controller_entry_flag_is_e, F_status_set_fine(status), macro_controller_f(f_fss_count_lines), F_true);
+        controller_print_error_entry(&main->program.error, entry->flag & controller_entry_flag_is_e, F_status_set_fine(state.status), macro_controller_f(f_fss_count_lines), F_true);
 
         break;
       }
 
       action->line = ++main->thread.cache.action.line_action;
 
-      status = f_rip_dynamic_partial_nulless(main->thread.cache.buffer_file, main->thread.cache.object_actions.array[i], &main->thread.cache.action.name_action);
+      state.status = f_rip_dynamic_partial_nulless(main->thread.cache.buffer_file, main->thread.cache.object_actions.array[i], &main->thread.cache.action.name_action);
 
-      if (F_status_is_error(status)) {
-        controller_print_error_entry(&main->program.error, entry->flag & controller_entry_flag_is_e, F_status_set_fine(status), macro_controller_f(f_rip_dynamic_partial_nulless), F_true);
+      if (F_status_is_error(state.status)) {
+        controller_print_error_entry(&main->program.error, entry->flag & controller_entry_flag_is_e, F_status_set_fine(state.status), macro_controller_f(f_rip_dynamic_partial_nulless), F_true);
 
         break;
       }
@@ -229,15 +227,15 @@ extern "C" {
       }
 
       if (allocate) {
-        status = f_memory_array_increase_by(allocate, sizeof(f_string_dynamic_t), (void **) &action->parameters.array, &action->parameters.used, &action->parameters.size);
+        state.status = f_memory_array_increase_by(allocate, sizeof(f_string_dynamic_t), (void **) &action->parameters.array, &action->parameters.used, &action->parameters.size);
 
-        if (F_status_is_error(status)) {
-          controller_print_error_entry(&main->program.error, entry->flag & controller_entry_flag_is_e, F_status_set_fine(status), macro_controller_f(f_memory_array_increase_by), F_true);
+        if (F_status_is_error(state.status)) {
+          controller_print_error_entry(&main->program.error, entry->flag & controller_entry_flag_is_e, F_status_set_fine(state.status), macro_controller_f(f_memory_array_increase_by), F_true);
 
-          action->status = status;
+          action->status = state.status;
 
           if (F_status_is_error_not(status_action)) {
-            status_action = status;
+            status_action = state.status;
           }
 
           break;
@@ -249,18 +247,18 @@ extern "C" {
 
           if (main->thread.cache.content_actions.array[i].array[j].start > main->thread.cache.content_actions.array[i].array[j].stop) continue;
 
-          status = f_memory_array_increase_by((main->thread.cache.content_actions.array[i].array[j].stop - main->thread.cache.content_actions.array[i].array[j].start) + 1, sizeof(f_char_t), (void **) &action->parameters.array[j].string, &action->parameters.array[j].used, &action->parameters.array[j].size);
+          state.status = f_memory_array_increase_by((main->thread.cache.content_actions.array[i].array[j].stop - main->thread.cache.content_actions.array[i].array[j].start) + 1, sizeof(f_char_t), (void **) &action->parameters.array[j].string, &action->parameters.array[j].used, &action->parameters.array[j].size);
 
-          if (F_status_is_error(status)) {
-            controller_print_error_entry(&main->program.error, entry->flag & controller_entry_flag_is_e, F_status_set_fine(status), macro_controller_f(f_memory_array_increase_by), F_true);
+          if (F_status_is_error(state.status)) {
+            controller_print_error_entry(&main->program.error, entry->flag & controller_entry_flag_is_e, F_status_set_fine(state.status), macro_controller_f(f_memory_array_increase_by), F_true);
 
             break;
           }
 
-          status = f_string_dynamic_partial_append_nulless(main->thread.cache.buffer_file, main->thread.cache.content_actions.array[i].array[j], &action->parameters.array[j]);
+          state.status = f_string_dynamic_partial_append_nulless(main->thread.cache.buffer_file, main->thread.cache.content_actions.array[i].array[j], &action->parameters.array[j]);
 
-          if (F_status_is_error(status)) {
-            controller_print_error_entry(&main->program.error, entry->flag & controller_entry_flag_is_e, F_status_set_fine(status), macro_controller_f(f_string_dynamic_partial_append_nulless), F_true);
+          if (F_status_is_error(state.status)) {
+            controller_print_error_entry(&main->program.error, entry->flag & controller_entry_flag_is_e, F_status_set_fine(state.status), macro_controller_f(f_string_dynamic_partial_append_nulless), F_true);
 
             break;
           }
@@ -273,21 +271,21 @@ extern "C" {
             if (action->parameters.array[0].used) {
 
               // Force the path to be canonical (removing all '../' parts).
-              status = controller_path_canonical_relative(main, main->process.path_current, action->parameters.array[0], &main->thread.cache.buffer_path);
+              state.status = controller_path_canonical_relative(main, main->process.path_current, action->parameters.array[0], &main->thread.cache.buffer_path);
 
-              if (F_status_is_error(status)) {
-                controller_print_error_entry_file(&main->program.error, entry->flag & controller_entry_flag_is_e, F_status_set_fine(status), macro_controller_f(controller_path_canonical_relative), F_true, main->thread.cache.action.generic, f_file_operation_analyze_s, fll_error_file_type_path_e);
+              if (F_status_is_error(state.status)) {
+                controller_print_error_entry_file(&main->program.error, entry->flag & controller_entry_flag_is_e, F_status_set_fine(state.status), macro_controller_f(controller_path_canonical_relative), F_true, main->thread.cache.action.generic, f_file_operation_analyze_s, fll_error_file_type_path_e);
 
-                action->status = status;
+                action->status = state.status;
 
-                if (F_status_set_fine(status) == F_memory_not) {
-                  status_action = status;
+                if (F_status_set_fine(state.status) == F_memory_not) {
+                  status_action = state.status;
 
                   break;
                 }
 
                 if (F_status_is_error_not(status_action)) {
-                  status_action = status;
+                  status_action = state.status;
                 }
               }
             }
@@ -306,21 +304,21 @@ extern "C" {
             if (action->parameters.array[1].used) {
               main->thread.cache.buffer_path.used = 0;
 
-              status = f_file_name_base(action->parameters.array[1], &main->thread.cache.buffer_path);
+              state.status = f_file_name_base(action->parameters.array[1], &main->thread.cache.buffer_path);
 
-              if (F_status_is_error(status)) {
-                controller_print_error_entry(&main->program.error, entry->flag & controller_entry_flag_is_e, F_status_set_fine(status), macro_controller_f(f_file_name_base), F_true);
+              if (F_status_is_error(state.status)) {
+                controller_print_error_entry(&main->program.error, entry->flag & controller_entry_flag_is_e, F_status_set_fine(state.status), macro_controller_f(f_file_name_base), F_true);
 
-                if (F_status_set_fine(status) == F_memory_not) {
-                  status_action = controller_status_simplify_error(status);
+                if (F_status_set_fine(state.status) == F_memory_not) {
+                  status_action = controller_status_simplify_error(state.status);
 
                   break;
                 }
 
-                action->status = controller_status_simplify_error(status);
+                action->status = controller_status_simplify_error(state.status);
 
                 if (F_status_is_error_not(status_action)) {
-                  status_action = status;
+                  status_action = state.status;
                 }
               }
               else {
@@ -453,22 +451,22 @@ extern "C" {
               if (action->parameters.used == 2) {
                 action->flag &= ~controller_entry_action_flag_undefined_e;
 
-                status = fl_conversion_dynamic_to_unsigned_detect(fl_conversion_data_base_10_c, action->parameters.array[1], &action->number);
+                state.status = fl_conversion_dynamic_to_unsigned_detect(fl_conversion_data_base_10_c, action->parameters.array[1], &action->number);
 
-                if (F_status_is_error(status) || status == F_data_not) {
+                if (F_status_is_error(state.status) || state.status == F_data_not) {
                   action->number = 0;
 
-                  if (status == F_data_not) {
+                  if (state.status == F_data_not) {
                     action->status = controller_status_simplify_error(F_number);
                   }
                   else {
-                    action->status = controller_status_simplify_error(F_status_set_fine(status));
+                    action->status = controller_status_simplify_error(F_status_set_fine(state.status));
                   }
 
-                  if (F_status_set_fine(status) == F_memory_not) {
-                    controller_print_error_entry(&main->program.error, entry->flag & controller_entry_flag_is_e, F_status_set_fine(status), macro_controller_f(fl_conversion_dynamic_to_unsigned_detect), F_true);
+                  if (F_status_set_fine(state.status) == F_memory_not) {
+                    controller_print_error_entry(&main->program.error, entry->flag & controller_entry_flag_is_e, F_status_set_fine(state.status), macro_controller_f(fl_conversion_dynamic_to_unsigned_detect), F_true);
 
-                    status_action = status;
+                    status_action = state.status;
 
                     break;
                   }
@@ -517,7 +515,7 @@ extern "C" {
       ++actions->used;
     } // for
 
-    return F_status_is_error(status_action) ? status_action : status;
+    return F_status_is_error(status_action) ? status_action : state.status;
   }
 #endif // _di_controller_entry_action_read_
 

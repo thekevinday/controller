@@ -9,8 +9,6 @@ extern "C" {
 
     if (!main || !cache || !entry || !rule) return F_status_set_error(F_parameter);
 
-    f_status_t status = F_okay;
-
     bool for_item = F_true;
 
     rule->timeout_kill = entry->timeout_kill ? entry->timeout_kill : 0;
@@ -166,45 +164,45 @@ extern "C" {
       } // for
     }
 
-    status = f_string_dynamic_append_nulless(alias, &rule->alias);
+    controller_interrupt_t custom = macro_controller_interrupt_t_initialize_1(is_normal, main);
+    f_state_t state = macro_f_state_t_initialize_1(controller_allocation_large_d, controller_allocation_small_d, F_okay, 0, 0, 0, &controller_thread_signal_state_fss, 0, (void *) &custom, 0);
+    state.status = f_string_dynamic_append_nulless(alias, &rule->alias);
 
-    if (F_status_is_error(status)) {
-      controller_print_error_status(&main->program.error, macro_controller_f(f_string_dynamic_append_nulless), F_status_set_fine(status));
+    if (F_status_is_error(state.status)) {
+      controller_print_error_status(&main->program.error, macro_controller_f(f_string_dynamic_append_nulless), F_status_set_fine(state.status));
     }
     else {
-      status = controller_file_load(main, cache, F_true, controller_rules_s, rule->alias, controller_rule_s);
+      state.status = controller_file_load(main, cache, F_true, controller_rules_s, rule->alias, controller_rule_s);
     }
 
-    if (F_status_is_error_not(status)) {
+    if (F_status_is_error_not(state.status)) {
       rule->timestamp = cache->timestamp;
 
       if (cache->buffer_file.used) {
-        controller_interrupt_t custom = macro_controller_interrupt_t_initialize_1(is_normal, main);
-        f_state_t state = macro_f_state_t_initialize_1(controller_allocation_large_d, controller_allocation_small_d, F_okay, 0, 0, 0, &controller_thread_signal_state_fss, 0, (void *) &custom, 0);
         f_range_t range = macro_f_range_t_initialize_2(cache->buffer_file.used);
 
         fll_fss_basic_list_read(cache->buffer_file, &range, &cache->object_items, &cache->content_items, &cache->delimits, 0, &cache->comments, &state);
 
-        if (F_status_is_error(status)) {
-          controller_print_error_status(&main->program.error, macro_controller_f(fll_fss_basic_list_read), F_status_set_fine(status));
+        if (F_status_is_error(state.status)) {
+          controller_print_error_status(&main->program.error, macro_controller_f(fll_fss_basic_list_read), F_status_set_fine(state.status));
         }
         else {
           f_fss_apply_delimit(cache->delimits, &cache->buffer_file, &state);
 
-          if (F_status_is_error(status)) {
-            controller_print_error_status(&main->program.error, macro_controller_f(f_fss_apply_delimit), F_status_set_fine(status));
+          if (F_status_is_error(state.status)) {
+            controller_print_error_status(&main->program.error, macro_controller_f(f_fss_apply_delimit), F_status_set_fine(state.status));
           }
         }
       }
     }
 
-    if (F_status_is_error_not(status) && cache->object_items.used) {
+    if (F_status_is_error_not(state.status) && cache->object_items.used) {
       if (rule->items.size < cache->object_items.size) {
-        status = f_memory_arrays_resize(cache->object_items.size, sizeof(controller_rule_item_t), (void **) &rule->items.array, &rule->items.used, &rule->items.size, &controller_rule_items_delete_callback);
+        state.status = f_memory_arrays_resize(cache->object_items.size, sizeof(controller_rule_item_t), (void **) &rule->items.array, &rule->items.used, &rule->items.size, &controller_rule_items_delete_callback);
       }
 
-      if (F_status_is_error(status)) {
-        controller_print_error_status(&main->program.error, macro_controller_f(f_memory_arrays_resize), F_status_set_fine(status));
+      if (F_status_is_error(state.status)) {
+        controller_print_error_status(&main->program.error, macro_controller_f(f_memory_arrays_resize), F_status_set_fine(state.status));
       }
       else {
         f_number_unsigned_t i = 0;
@@ -239,20 +237,20 @@ extern "C" {
 
           for_item = F_true;
 
-          f_fss_count_lines(cache->buffer_file, cache->object_items.array[i].start, &cache->action.line_item, &main->setting.state);
+          f_fss_count_lines(cache->buffer_file, cache->object_items.array[i].start, &cache->action.line_item, &state);
 
-          if (F_status_is_error(status)) {
-            controller_print_error_status(&main->program.error, macro_controller_f(f_fss_count_lines), F_status_set_fine(status));
+          if (F_status_is_error(state.status)) {
+            controller_print_error_status(&main->program.error, macro_controller_f(f_fss_count_lines), F_status_set_fine(state.status));
 
             break;
           }
 
           rule->items.array[rule->items.used].line = ++cache->action.line_item;
 
-          status = f_rip_dynamic_partial_nulless(cache->buffer_file, cache->object_items.array[i], &cache->action.name_item);
+          state.status = f_rip_dynamic_partial_nulless(cache->buffer_file, cache->object_items.array[i], &cache->action.name_item);
 
-          if (F_status_is_error(status)) {
-            controller_print_error_status(&main->program.error, macro_controller_f(f_rip_dynamic_partial_nulless), F_status_set_fine(status));
+          if (F_status_is_error(state.status)) {
+            controller_print_error_status(&main->program.error, macro_controller_f(f_rip_dynamic_partial_nulless), F_status_set_fine(state.status));
 
             break;
           }
@@ -288,10 +286,10 @@ extern "C" {
             continue;
           }
 
-          status = f_string_dynamic_partial_append(cache->buffer_file, cache->content_items.array[i].array[0], &cache->buffer_item);
+          state.status = f_string_dynamic_partial_append(cache->buffer_file, cache->content_items.array[i].array[0], &cache->buffer_item);
 
-          if (F_status_is_error(status)) {
-            controller_print_error_status(&main->program.error, macro_controller_f(f_rip_dynamic_partial_nulless), F_status_set_fine(status));
+          if (F_status_is_error(state.status)) {
+            controller_print_error_status(&main->program.error, macro_controller_f(f_rip_dynamic_partial_nulless), F_status_set_fine(state.status));
 
             break;
           }
@@ -308,28 +306,28 @@ extern "C" {
               rule->items.array[rule->items.used].with |= controller_with_session_same_d;
             }
 
-            status = controller_rule_item_read(main, is_normal, cache, &rule->items.array[rule->items.used]);
-            if (F_status_is_error(status)) break;
+            state.status = controller_rule_item_read(main, is_normal, cache, &rule->items.array[rule->items.used]);
+            if (F_status_is_error(state.status)) break;
 
             ++rule->items.used;
           }
           else {
             for_item = F_false;
 
-            status = controller_rule_setting_read(main, is_normal, cache, rule);
+            state.status = controller_rule_setting_read(main, is_normal, cache, rule);
 
-            if (F_status_is_error(status)) {
-              if (F_status_set_fine(status) == F_memory_not) break;
+            if (F_status_is_error(state.status)) {
+              if (F_status_set_fine(state.status) == F_memory_not) break;
             }
           }
         } // for
       }
     }
 
-    if (F_status_is_error(status)) {
-      controller_print_error_rule_item(&main->program.error, cache->action, for_item, F_status_set_fine(status));
+    if (F_status_is_error(state.status)) {
+      controller_print_error_rule_item(&main->program.error, cache->action, for_item, F_status_set_fine(state.status));
 
-      rule->status[0] = controller_error_simplify(F_status_set_fine(status));
+      rule->status[0] = controller_error_simplify(F_status_set_fine(state.status));
 
       return rule->status[0];
     }

@@ -211,7 +211,27 @@ extern "C" {
 #endif // _di_controller_default_s_
 
 /**
- * Special strings used for printing.
+ * Special strings used for printing for Entrys.
+ */
+#ifndef _di_controller_print_entry_s_
+  #define CONTROLLER_print_entry_considering_s     "Considering"
+  #define CONTROLLER_print_entry_failsafe_s        "failsafe"
+  #define CONTROLLER_print_entry_processing_s      "Processing"
+  #define CONTROLLER_print_entry_suffix_megatime_s " MegaTime (milliseconds)"
+
+  #define CONTROLLER_print_entry_considering_s_length     11
+  #define CONTROLLER_print_entry_failsafe_s_length        8
+  #define CONTROLLER_print_entry_processing_s_length      10
+  #define CONTROLLER_print_entry_suffix_megatime_s_length 24
+
+  extern const f_string_static_t controller_print_entry_considering_s;
+  extern const f_string_static_t controller_print_entry_failsafe_s;
+  extern const f_string_static_t controller_print_entry_processing_s;
+  extern const f_string_static_t controller_print_entry_suffix_megatime_s;
+#endif // _di_controller_print_entry_s_
+
+/**
+ * Special strings used for printing for Rules.
  */
 #ifndef _di_controller_print_rule_s_
   #define CONTROLLER_print_rule_control_groups_prepare_s "prepare control groups for"

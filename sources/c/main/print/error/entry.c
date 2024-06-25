@@ -34,30 +34,30 @@ extern "C" {
     if (!print || !cache) return F_status_set_error(F_output_not);
     if (print->verbosity < f_console_verbosity_error_e) return F_output_not;
 
-    fl_print_format("%r%[%QWhile processing ", print->to.stream, f_string_eol_s, print->context, print->prefix);
+    fl_print_format("%r%[%QWhile processing ", print->to, f_string_eol_s, print->context, print->prefix);
 
     if (cache->name_action.used) {
-      fl_print_format("action '%]", print->to.stream, print->context);
-      fl_print_format(f_string_format_Q_single_s.string, print->to.stream, print->notable, cache->name_action, print->notable);
-      fl_print_format("%[' on line%] ", print->to.stream, print->context, print->context);
-      fl_print_format(f_string_format_un_single_s.string, print->to.stream, print->notable, cache->line_action, print->notable);
-      fl_print_format("%[ for ", print->to.stream, print->context);
+      fl_print_format("action '%]", print->to, print->context);
+      fl_print_format(f_string_format_Q_single_s.string, print->to, print->notable, cache->name_action, print->notable);
+      fl_print_format("%[' on line%] ", print->to, print->context, print->context);
+      fl_print_format(f_string_format_un_single_s.string, print->to, print->notable, cache->line_action, print->notable);
+      fl_print_format("%[ for ", print->to, print->context);
     }
 
     if (cache->name_item.used) {
-      fl_print_format("%r item '%]", print->to.stream, is_entry ? controller_entry_s : controller_exit_s, print->context);
-      fl_print_format(f_string_format_Q_single_s.string, print->to.stream, print->notable, cache->name_item, print->notable);
-      fl_print_format("%[' on line%] ", print->to.stream, print->context, print->context);
-      fl_print_format(f_string_format_un_single_s.string, print->to.stream, print->notable, cache->line_item, print->notable);
-      fl_print_format("%[ for ", print->to.stream, print->context);
+      fl_print_format("%r item '%]", print->to, is_entry ? controller_entry_s : controller_exit_s, print->context);
+      fl_print_format(f_string_format_Q_single_s.string, print->to, print->notable, cache->name_item, print->notable);
+      fl_print_format("%[' on line%] ", print->to, print->context, print->context);
+      fl_print_format(f_string_format_un_single_s.string, print->to, print->notable, cache->line_item, print->notable);
+      fl_print_format("%[ for ", print->to, print->context);
     }
 
     if (cache->name_file.used) {
-      fl_print_format("%r file '%]", print->to.stream, is_entry ? controller_entry_s : controller_exit_s, print->context);
-      fl_print_format("%[%Q%]%['", print->to.stream, print->notable, cache->name_file, print->notable, print->context);
+      fl_print_format("%r file '%]", print->to, is_entry ? controller_entry_s : controller_exit_s, print->context);
+      fl_print_format("%[%Q%]%['", print->to, print->notable, cache->name_file, print->notable, print->context);
     }
 
-    fl_print_format(".%]%r", print->to.stream, print->context, f_string_eol_s);
+    fl_print_format(".%]%r", print->to, print->context, f_string_eol_s);
 
     return F_okay;
   }

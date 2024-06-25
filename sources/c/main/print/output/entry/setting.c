@@ -17,20 +17,20 @@ extern "C" {
 
     controller_lock_print(print->to, &main->thread);
 
-    fl_print_format("%rProcessing %r item action '", print->to.stream, f_string_eol_s, is_entry ? controller_entry_s : controller_exit_s);
+    fl_print_format("%rProcessing %r item action '", print->to, f_string_eol_s, is_entry ? controller_entry_s : controller_exit_s);
 
-    fl_print_format("%[%Q%]' setting ", print->to.stream, print->set.title, name, print->set.title);
+    fl_print_format("%[%Q%]' setting ", print->to, print->set->title, name, print->set->title);
 
     if (name_sub.used) {
-      fl_print_format("'%[%Q%]'", print->to.stream, print->set.notable, name_sub, print->set.notable);
+      fl_print_format("'%[%Q%]'", print->to, print->set->notable, name_sub, print->set->notable);
     }
     else {
-      fl_print_format("value", print->to.stream);
+      fl_print_format("value", print->to);
     }
 
-    fl_print_format(" to '%[%Q%]", print->to.stream, print->set.important, value, print->set.important);
+    fl_print_format(" to '%[%Q%]", print->to, print->set->important, value, print->set->important);
 
-    fl_print_format("'%Q.%r", print->to.stream, suffix, f_string_eol_s);
+    fl_print_format("'%Q.%r", print->to, suffix, f_string_eol_s);
 
     controller_unlock_print_flush(print->to, &main->thread);
 
@@ -56,7 +56,7 @@ extern "C" {
     f_number_unsigned_t i = 0;
     f_number_unsigned_t j = 0;
 
-    fl_print_format("%r%Q %[%Q%] {%r", print->to, f_string_eol_s, is_entry ? controller_Entry_s : controller_Exit_s, print->set.title, controller_settings_s, print->set.title, f_string_eol_s);
+    fl_print_format("%r%Q %[%Q%] {%r", print->to, f_string_eol_s, is_entry ? controller_Entry_s : controller_Exit_s, print->set->title, controller_settings_s, print->set->title, f_string_eol_s);
 
 
     // Mode.
@@ -73,7 +73,7 @@ extern "C" {
       string = &f_string_empty_s;
     }
 
-    fl_print_format("  %[%r%]", print->to, print->set.important, controller_mode_s, print->set.important, f_string_eol_s);
+    fl_print_format("  %[%r%]", print->to, print->set->important, controller_mode_s, print->set->important, f_string_eol_s);
 
     if (string->used) {
       fl_print_format(" %r", print->to, *string);
@@ -93,7 +93,7 @@ extern "C" {
       string = &f_string_empty_s;
     }
 
-    fl_print_format("  %[%r%]", print->to, print->set.important, controller_session_s, print->set.important, f_string_eol_s);
+    fl_print_format("  %[%r%]", print->to, print->set->important, controller_session_s, print->set->important, f_string_eol_s);
 
     if (string->used) {
       fl_print_format(" %r", print->to, *string, f_string_eol_s);
@@ -113,7 +113,7 @@ extern "C" {
       string = &f_string_empty_s;
     }
 
-    fl_print_format("  %[%r%]", print->to, print->set.important, controller_show_s, print->set.important, f_string_eol_s);
+    fl_print_format("  %[%r%]", print->to, print->set->important, controller_show_s, print->set->important, f_string_eol_s);
 
     if (string->used) {
       fl_print_format(" %r", print->to, *string, f_string_eol_s);
@@ -136,7 +136,7 @@ extern "C" {
       string = &f_string_empty_s;
     }
 
-    fl_print_format("  %[%r%]", print->to, print->set.important, controller_pid_s, print->set.important);
+    fl_print_format("  %[%r%]", print->to, print->set->important, controller_pid_s, print->set->important);
 
     if (string->used) {
       fl_print_format(" %r", print->to, *string);
@@ -146,7 +146,7 @@ extern "C" {
 
 
     // Pid File.
-    fl_print_format("  %[%r%]", print->to, print->set.important, controller_pid_file_s, print->set.important);
+    fl_print_format("  %[%r%]", print->to, print->set->important, controller_pid_file_s, print->set->important);
 
     if (main->process.path_pid.used) {
       fl_print_format(" %r", print->to, main->process.path_pid);
@@ -156,7 +156,7 @@ extern "C" {
 
 
     // Control.
-    fl_print_format("  %[%r%]", print->to, print->set.important, controller_control_s, print->set.important);
+    fl_print_format("  %[%r%]", print->to, print->set->important, controller_control_s, print->set->important);
 
     if (main->process.path_control.used) {
       fl_print_format(" %Q", print->to, main->process.path_control);
@@ -166,7 +166,7 @@ extern "C" {
 
 
     // Control Has.
-    fl_print_format("  %[%r%]", print->to, print->set.important, controller_control_has_s, print->set.important);
+    fl_print_format("  %[%r%]", print->to, print->set->important, controller_control_has_s, print->set->important);
 
     if (main->process.control.flag & controller_control_flag_readonly_e) {
       fl_print_format(" %r", print->to, controller_readonly_s);
@@ -176,7 +176,7 @@ extern "C" {
 
 
     // Control User.
-    fl_print_format("  %[%r%]", print->to, print->set.important, controller_control_user_s, print->set.important);
+    fl_print_format("  %[%r%]", print->to, print->set->important, controller_control_user_s, print->set->important);
 
     if (main->process.control.flag & controller_control_flag_has_user_e) {
       fl_print_format(" %u", print->to, (unsigned int) main->process.control.user);
@@ -186,7 +186,7 @@ extern "C" {
 
 
     // Control Group.
-    fl_print_format("  %[%r%]", print->to, print->set.important, controller_control_group_s, print->set.important);
+    fl_print_format("  %[%r%]", print->to, print->set->important, controller_control_group_s, print->set->important);
 
     if (main->process.control.flag & controller_control_flag_has_group_e) {
       fl_print_format(" %u", print->to, (unsigned int) main->process.control.group);
@@ -196,7 +196,7 @@ extern "C" {
 
 
     // Control Mode.
-    fl_print_format("  %[%r%]", print->to, print->set.important, controller_control_mode_s, print->set.important);
+    fl_print_format("  %[%r%]", print->to, print->set->important, controller_control_mode_s, print->set->important);
 
     if (F_status_is_error_not(status)) {
       if (main->process.control.flag & controller_control_flag_has_group_e) {
@@ -208,7 +208,7 @@ extern "C" {
 
 
     // Timeout: Exit.
-    fl_print_format("  %[%r%] %r", print->to, print->set.important, controller_timeout_s, print->set.important, controller_exit_s);
+    fl_print_format("  %[%r%] %r", print->to, print->set->important, controller_timeout_s, print->set->important, controller_exit_s);
 
     if (!(entry->flag & controller_entry_flag_timeout_exit_no_e)) {
       fl_print_format(" %ul", print->to, entry->timeout_exit, f_string_eol_s);
@@ -218,7 +218,7 @@ extern "C" {
 
 
     // Timeout: Kill.
-    fl_print_format("  %[%r%] %r", print->to, print->set.important, controller_timeout_s, print->set.important, controller_kill_s);
+    fl_print_format("  %[%r%] %r", print->to, print->set->important, controller_timeout_s, print->set->important, controller_kill_s);
 
     if (!(entry->flag & controller_entry_flag_timeout_kill_no_e)) {
       fl_print_format(" %ul", print->to, entry->timeout_kill, f_string_eol_s);
@@ -228,7 +228,7 @@ extern "C" {
 
 
     // Timeout: Start.
-    fl_print_format("  %[%r%] %r", print->to, print->set.important, controller_timeout_s, print->set.important, controller_start_s);
+    fl_print_format("  %[%r%] %r", print->to, print->set->important, controller_timeout_s, print->set->important, controller_start_s);
 
     if (!(entry->flag & controller_entry_flag_timeout_start_no_e)) {
       fl_print_format(" %ul", print->to, entry->timeout_start, f_string_eol_s);
@@ -238,7 +238,7 @@ extern "C" {
 
 
     // Timeout: Stop.
-    fl_print_format("  %[%r%] %r", print->to, print->set.important, controller_timeout_s, print->set.important, controller_stop_s);
+    fl_print_format("  %[%r%] %r", print->to, print->set->important, controller_timeout_s, print->set->important, controller_stop_s);
 
     if (!(entry->flag & controller_entry_flag_timeout_stop_no_e)) {
       fl_print_format(" %ul", print->to, entry->timeout_stop, f_string_eol_s);
@@ -248,7 +248,7 @@ extern "C" {
 
 
     // Define.
-    fl_print_format("  %[%r%] {%r", print->to, print->set.important, controller_define_s, print->set.important, f_string_eol_s);
+    fl_print_format("  %[%r%] {%r", print->to, print->set->important, controller_define_s, print->set->important, f_string_eol_s);
 
     for (i = 0; i < entry->define.used; ++i) {
       fl_print_format("    %Q %Q%r", print->to, entry->define.array[i].key, entry->define.array[i].value, f_string_eol_s);
@@ -258,7 +258,7 @@ extern "C" {
 
 
     // Parameter.
-    fl_print_format("  %[%r%] {%r", print->to, print->set.important, controller_parameter_s, print->set.important, f_string_eol_s);
+    fl_print_format("  %[%r%] {%r", print->to, print->set->important, controller_parameter_s, print->set->important, f_string_eol_s);
 
     for (i = 0; i < entry->parameter.used; ++i) {
       fl_print_format("    %Q %Q%r", print->to, entry->parameter.array[i].key, entry->parameter.array[i].value, f_string_eol_s);
@@ -277,13 +277,13 @@ extern "C" {
 
       for (i = 0; i < entry->items.used; ++i) {
 
-        fl_print_format("%r%Q %Q %[%Q%] {%r", print->to, f_string_eol_s, is_entry ? controller_Entry_s : controller_Exit_s, controller_Item_s, print->set.title, entry->items.array[i].name, print->set.title, f_string_eol_s);
+        fl_print_format("%r%Q %Q %[%Q%] {%r", print->to, f_string_eol_s, is_entry ? controller_Entry_s : controller_Exit_s, controller_Item_s, print->set->title, entry->items.array[i].name, print->set->title, f_string_eol_s);
 
         for (j = 0; j < entry->items.array[i].actions.used; ++j) {
 
           action = &entry->items.array[i].actions.array[j];
 
-          fl_print_format("  %[%r%] {%r", print->to, print->set.important, controller_action_s, print->set.important, f_string_eol_s);
+          fl_print_format("  %[%r%] {%r", print->to, print->set->important, controller_action_s, print->set->important, f_string_eol_s);
 
 
           // Item Type.
@@ -363,11 +363,11 @@ extern "C" {
             string = &f_string_empty_s;
           }
 
-          fl_print_format("    %[%r%] %r%r", print->to, print->set.important, controller_type_s, print->set.important, *string, f_string_eol_s);
+          fl_print_format("    %[%r%] %r%r", print->to, print->set->important, controller_type_s, print->set->important, *string, f_string_eol_s);
 
 
           // Item Code (How).
-          fl_print_format("    %[%r%]", print->to, print->set.important, controller_how_s, print->set.important);
+          fl_print_format("    %[%r%]", print->to, print->set->important, controller_how_s, print->set->important);
 
           if (action->code) {
             if (action->code == controller_entry_rule_code_asynchronous_d) {
@@ -388,7 +388,7 @@ extern "C" {
 
           // Parameters.
           if (action->type == controller_entry_action_type_item_e) {
-            fl_print_format("    %[%r%]", print->to, print->set.important, controller_item_s, print->set.important);
+            fl_print_format("    %[%r%]", print->to, print->set->important, controller_item_s, print->set->important);
 
             if (action->parameters.used && action->parameters.array[0].used) {
               fl_print_format(" %Q", print->to, action->parameters.array[0], f_string_eol_s);
@@ -398,13 +398,13 @@ extern "C" {
           }
           else if (raw) {
             for (k = 0; k < action->parameters.used; ++k) {
-              fl_print_format("    %[%r%] %Q%r", print->to, print->set.important, controller_parameter_s, print->set.important, action->parameters.array[k], f_string_eol_s);
+              fl_print_format("    %[%r%] %Q%r", print->to, print->set->important, controller_parameter_s, print->set->important, action->parameters.array[k], f_string_eol_s);
             } // for
           }
           else {
 
             // Parameter, Directory.
-            fl_print_format("    %[%r%]", print->to, print->set.important, controller_directory_s, print->set.important);
+            fl_print_format("    %[%r%]", print->to, print->set->important, controller_directory_s, print->set->important);
 
             if (action->parameters.used && action->parameters.array[0].used) {
               fl_print_format(" %Q", print->to, action->parameters.array[0], f_string_eol_s);
@@ -414,7 +414,7 @@ extern "C" {
 
 
             // Parameter, File.
-            fl_print_format("    %[%r%]", print->to, print->set.important, controller_file_s, print->set.important);
+            fl_print_format("    %[%r%]", print->to, print->set->important, controller_file_s, print->set->important);
 
             if (action->parameters.used && action->parameters.array[0].used > 1) {
               fl_print_format(" %Q", print->to, action->parameters.array[1], f_string_eol_s);

@@ -15,7 +15,7 @@ extern "C" {
     controller_lock_print(print->to, &main->thread);
 
     fl_print_format("%rDone processing %r item '", print->to, f_string_eol_s, is_entry ? controller_entry_s : controller_exit_s);
-    fl_print_format(f_string_format_Q_single_s.string, print->to, print->set.title, name, print->set.title);
+    fl_print_format(f_string_format_Q_single_s.string, print->to, print->set->title, name, print->set->title);
     fl_print_format("'.%r%r", print->to, f_string_eol_s, failsafe ? f_string_eol_s : f_string_empty_s);
 
     controller_unlock_print_flush(print->to, &main->thread);
@@ -36,11 +36,11 @@ extern "C" {
 
     fl_print_format("%r%Q is executing '", print->to, f_string_eol_s, is_entry ? controller_entry_s : controller_exit_s);
 
-    for (f_number_unsigned_t k = 0; k < parameters.used; ++k) {
+    for (f_number_unsigned_t k = 0; k < parameters->used; ++k) {
 
-      fl_print_format(f_string_format_Q_single_s.string, print->to, print->set.title, parameters.array[k], print->set.title);
+      fl_print_format(f_string_format_Q_single_s.string, print->to, print->set->title, parameters->array[k], print->set->title);
 
-      if (k + 1 < parameters.used) {
+      if (k + 1 < parameters->used) {
         f_print_dynamic_raw(f_string_space_s, print->to);
       }
     } // for
@@ -78,7 +78,7 @@ extern "C" {
 #endif // _di_controller_print_message_entry_item_process_
 
 #ifndef _di_controller_print_message_entry_item_required_
-  f_status_t controller_print_message_entry_item_required(fl_print_t * const print, const uint8_t is_entry, const f_string_static_t name, const f_string_t detail) {
+  f_status_t controller_print_message_entry_item_required(fl_print_t * const print, const uint8_t is_entry, const f_string_static_t name, const f_string_t reason) {
 
     if (!print || !print->custom) return F_status_set_error(F_output_not);
     if (print->verbosity < f_console_verbosity_error_e) return F_output_not;
@@ -88,7 +88,7 @@ extern "C" {
     controller_lock_print(print->to, &main->thread);
 
     fl_print_format("%r%[%QThe required %r item '%]", print->to, f_string_eol_s, print->context, print->prefix, is_entry ? controller_entry_s : controller_exit_s);
-    fl_print_format(f_string_format_Q_single_s.string, print->to, print->set.title, name, print->set.title);
+    fl_print_format(f_string_format_Q_single_s.string, print->to, print->set->title, name, print->set->title);
     fl_print_format("' %Q.", print->to, reason, f_string_eol_s);
 
     controller_print_error_entry_cache(print, &main->thread.cache.action, is_entry);
@@ -110,7 +110,7 @@ extern "C" {
     controller_lock_print(print->to, &main->thread);
 
     fl_print_format("%r%r %r item rule ", print->to, f_string_eol_s, entry_action->type == controller_entry_action_type_consider_e ? controller_print_entry_considering_s : controller_print_entry_processing_s, is_entry ? controller_entry_s : controller_exit_s);
-    fl_print_format("'%[%Q%]'", print->to, print->set.title, alias_rule, print->set.title);
+    fl_print_format("'%[%Q%]'", print->to, print->set->title, alias_rule, print->set->title);
 
     if (entry->show == controller_entry_show_init_e && !(main->setting.flag & controller_main_flag_simulate_e)) {
       fl_print_format(" [%[%r%]]", print->to, print->notable, entry_action->code == controller_entry_rule_code_asynchronous_d ? controller_asynchronous_s : controller_synchronous_s, print->notable);

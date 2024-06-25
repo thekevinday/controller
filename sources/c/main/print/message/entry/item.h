@@ -117,8 +117,8 @@ extern "C" {
  *   If FALSE, then this loads as an exit.
  * @param name
  *   The item name.
- * @param detail
- *   The details regarding the problem with the required entry item.
+ * @param reason
+ *   The reason regarding the problem with the required entry item.
  *
  * @return
  *   F_okay on success.
@@ -127,7 +127,7 @@ extern "C" {
  *   F_output_not (with error bit) if setting is NULL.
  */
 #ifndef _di_controller_print_message_entry_item_required_
-  extern f_status_t controller_print_message_entry_item_required(fl_print_t * const print, const uint8_t is_entry, const f_string_static_t name, const f_string_t detail);
+  extern f_status_t controller_print_message_entry_item_required(fl_print_t * const print, const uint8_t is_entry, const f_string_static_t name, const f_string_t reason);
 #endif // _di_controller_print_message_entry_item_required_
 
 /**

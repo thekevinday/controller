@@ -30,6 +30,13 @@ extern "C" {
   const f_string_static_t controller_long_validate_s = macro_f_string_static_t_initialize_1(CONTROLLER_long_validate_s, 0, CONTROLLER_long_validate_s_length);
 #endif // _di_controller_parameter_s_
 
+#ifndef _di_controller_print_entry_s_
+  const f_string_static_t controller_print_entry_considering_s = macro_f_string_static_t_initialize_1(CONTROLLER_print_entry_considering_s, 0, CONTROLLER_print_entry_considering_s_length);
+  const f_string_static_t controller_print_entry_failsafe_s = macro_f_string_static_t_initialize_1(CONTROLLER_print_entry_failsafe_s, 0, CONTROLLER_print_entry_failsafe_s_length);
+  const f_string_static_t controller_print_entry_processing_s = macro_f_string_static_t_initialize_1(CONTROLLER_print_entry_processing_s, 0, CONTROLLER_print_entry_processing_s_length);
+  const f_string_static_t controller_print_entry_suffix_megatime_s = macro_f_string_static_t_initialize_1(CONTROLLER_print_entry_suffix_megatime_s, 0, CONTROLLER_print_entry_suffix_megatime_s_length);
+#endif // _di_controller_print_entry_s_
+
 #ifndef _di_controller_print_rule_s_
   const f_string_static_t controller_print_rule_control_groups_prepare_s = macro_f_string_static_t_initialize_1(CONTROLLER_print_rule_control_groups_prepare_s, 0, CONTROLLER_print_rule_control_groups_prepare_s_length);
 #endif // _di_controller_print_rule_s_

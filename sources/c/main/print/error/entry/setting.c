@@ -14,9 +14,9 @@ extern "C" {
 
     controller_lock_print(print->to, &main->thread);
 
-    fl_print_format("%r%[%Q%r setting%S '%]", print->to.stream, f_string_eol_s, print->context, print->prefix, is_entry ? controller_Entry_s : controller_Exit_s, before, print->context);
-    fl_print_format("%[%/Q%]", print->to.stream, print->notable, cache->buffer_file, range, print->notable);
-    fl_print_format("%['%S.%]%r", print->to.stream, print->context, after, print->context, f_string_eol_s);
+    fl_print_format("%r%[%Q%r setting%S '%]", print->to, f_string_eol_s, print->context, print->prefix, is_entry ? controller_Entry_s : controller_Exit_s, before, print->context);
+    fl_print_format("%[%/Q%]", print->to, print->notable, cache->buffer_file, range, print->notable);
+    fl_print_format("%['%S.%]%r", print->to, print->context, after, print->context, f_string_eol_s);
 
     controller_print_error_entry_cache(print, &cache->action, is_entry);
 
@@ -36,9 +36,9 @@ extern "C" {
 
     controller_lock_print(print->to, &main->thread);
 
-    fl_print_format("%r%[%QThe %Q item setting '%]", print->to.stream, f_string_eol_s, print->context, print->prefix, is_entry ? controller_entry_s : controller_exit_s, print->context);
-    fl_print_format(f_string_format_Q_single_s.string, print->to.stream, print->notable, cache->action.name_action, print->notable);
-    fl_print_format("%[' is being ignored.%]%r", print->to.stream, print->context, print->context, f_string_eol_s);
+    fl_print_format("%r%[%QThe %Q item setting '%]", print->to, f_string_eol_s, print->context, print->prefix, is_entry ? controller_entry_s : controller_exit_s, print->context);
+    fl_print_format(f_string_format_Q_single_s.string, print->to, print->notable, cache->action.name_action, print->notable);
+    fl_print_format("%[' is being ignored.%]%r", print->to, print->context, print->context, f_string_eol_s);
 
     controller_print_error_entry_cache(print, &cache->action, is_entry);
 
@@ -58,13 +58,13 @@ extern "C" {
 
     controller_lock_print(print->to, &main->thread);
 
-    fl_print_format("%r%[%QThe %Q item setting '%]", print->to.stream, f_string_eol_s, print->context, print->prefix, is_entry ? controller_entry_s : controller_exit_s, print->context);
-    fl_print_format(f_string_format_Q_single_s.string, print->to.stream, print->notable, cache->action.name_action, print->notable);
-    fl_print_format("%[' requires at least %]", print->to.stream, print->context, print->context);
-    fl_print_format(f_string_format_un_single_s.string, print->to.stream, print->notable, minimum, print->notable);
-    fl_print_format("%[ and at most %]", print->to.stream, print->context, print->context);
-    fl_print_format(f_string_format_un_single_s.string, print->to.stream, print->notable, maximum, print->notable);
-    fl_print_format("%[ Content.%]%r", print->to.stream, print->context, print->context, f_string_eol_s);
+    fl_print_format("%r%[%QThe %Q item setting '%]", print->to, f_string_eol_s, print->context, print->prefix, is_entry ? controller_entry_s : controller_exit_s, print->context);
+    fl_print_format(f_string_format_Q_single_s.string, print->to, print->notable, cache->action.name_action, print->notable);
+    fl_print_format("%[' requires at least %]", print->to, print->context, print->context);
+    fl_print_format(f_string_format_un_single_s.string, print->to, print->notable, minimum, print->notable);
+    fl_print_format("%[ and at most %]", print->to, print->context, print->context);
+    fl_print_format(f_string_format_un_single_s.string, print->to, print->notable, maximum, print->notable);
+    fl_print_format("%[ Content.%]%r", print->to, print->context, print->context, f_string_eol_s);
 
     controller_print_error_entry_cache(print, &cache->action, is_entry);
 
@@ -84,11 +84,11 @@ extern "C" {
 
     controller_lock_print(print->to, &main->thread);
 
-    fl_print_format("%r%[%QThe %Q item setting '%]", print->to.stream, f_string_eol_s, print->context, print->prefix, is_entry ? controller_entry_s : controller_exit_s, print->context);
-    fl_print_format(f_string_format_Q_single_s.string, print->to.stream, print->notable, cache->action.name_action, print->notable);
-    fl_print_format("%[' requires exactly %]", print->to.stream, print->context, print->context);
-    fl_print_format(f_string_format_un_single_s.string, print->to.stream, print->notable, total, print->notable);
-    fl_print_format("%[ Content.%]%r", print->to.stream, print->context, print->context, f_string_eol_s);
+    fl_print_format("%r%[%QThe %Q item setting '%]", print->to, f_string_eol_s, print->context, print->prefix, is_entry ? controller_entry_s : controller_exit_s, print->context);
+    fl_print_format(f_string_format_Q_single_s.string, print->to, print->notable, cache->action.name_action, print->notable);
+    fl_print_format("%[' requires exactly %]", print->to, print->context, print->context);
+    fl_print_format(f_string_format_un_single_s.string, print->to, print->notable, total, print->notable);
+    fl_print_format("%[ Content.%]%r", print->to, print->context, print->context, f_string_eol_s);
 
     controller_print_error_entry_cache(print, &cache->action, is_entry);
 

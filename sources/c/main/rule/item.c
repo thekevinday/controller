@@ -9,7 +9,6 @@ extern "C" {
 
     if (!main || !cache || !item) return F_status_set_error(F_parameter);
 
-    f_status_t status = F_okay;
     controller_interrupt_t custom = macro_controller_interrupt_t_initialize_1(is_normal, main);
     f_state_t state = macro_f_state_t_initialize_1(controller_allocation_large_d, controller_allocation_small_d, F_okay, 0, 0, 0, &controller_thread_signal_state_fss, 0, (void *) &custom, 0);
     f_range_t range = macro_f_range_t_initialize_2(cache->buffer_item.used);
@@ -25,13 +24,13 @@ extern "C" {
 
       fl_fss_extended_list_object_read(cache->buffer_item, &range, &cache->range_action, &cache->delimits, &state);
 
-      if (F_status_is_error(status)) {
-        controller_print_error_status(&main->program.error, macro_controller_f(fl_fss_extended_list_object_read), F_status_set_fine(status));
+      if (F_status_is_error(state.status)) {
+        controller_print_error_status(&main->program.error, macro_controller_f(fl_fss_extended_list_object_read), F_status_set_fine(state.status));
 
         break;
       }
 
-      if (status == F_fss_found_object) {
+      if (state.status == F_fss_found_object) {
         multiple = F_true;
       }
       else {
@@ -42,28 +41,28 @@ extern "C" {
         // The current line is not an Extended List object, so the next possibility is a Basic List (and Extended List, both use the same Object structure).
         fl_fss_extended_object_read(cache->buffer_item, &range, &cache->range_action, 0, &cache->delimits, &state);
 
-        if (F_status_is_error(status)) {
-          controller_print_error_status(&main->program.error, macro_controller_f(fl_fss_extended_object_read), F_status_set_fine(status));
+        if (F_status_is_error(state.status)) {
+          controller_print_error_status(&main->program.error, macro_controller_f(fl_fss_extended_object_read), F_status_set_fine(state.status));
 
           break;
         }
 
         // Nothing of importance here, so continue onto the next line.
-        if (status != F_fss_found_object) continue;
+        if (state.status != F_fss_found_object) continue;
       }
 
       f_fss_apply_delimit(cache->delimits, &cache->buffer_item, &state);
 
-      if (F_status_is_error(status)) {
-        controller_print_error_status(&main->program.error, macro_controller_f(f_fss_apply_delimit), F_status_set_fine(status));
+      if (F_status_is_error(state.status)) {
+        controller_print_error_status(&main->program.error, macro_controller_f(f_fss_apply_delimit), F_status_set_fine(state.status));
 
         break;
       }
 
       f_fss_count_lines(cache->buffer_item, cache->range_action.start, &cache->action.line_action, &state);
 
-      if (F_status_is_error(status)) {
-        controller_print_error_status(&main->program.error, macro_controller_f(f_fss_count_lines), F_status_set_fine(status));
+      if (F_status_is_error(state.status)) {
+        controller_print_error_status(&main->program.error, macro_controller_f(f_fss_count_lines), F_status_set_fine(state.status));
 
         break;
       }
@@ -71,10 +70,10 @@ extern "C" {
       cache->action.line_action += ++item->line;
       cache->action.name_action.used = 0;
 
-      status = f_rip_dynamic_partial_nulless(cache->buffer_item, cache->range_action, &cache->action.name_action);
+      state.status = f_rip_dynamic_partial_nulless(cache->buffer_item, cache->range_action, &cache->action.name_action);
 
-      if (F_status_is_error(status)) {
-        controller_print_error_status(&main->program.error, macro_controller_f(f_rip_dynamic_partial_nulless), F_status_set_fine(status));
+      if (F_status_is_error(state.status)) {
+        controller_print_error_status(&main->program.error, macro_controller_f(f_rip_dynamic_partial_nulless), F_status_set_fine(state.status));
 
         break;
       }
@@ -150,7 +149,7 @@ extern "C" {
             controller_unlock_print_flush(main->program.error.to, &main->thread);
           }
 
-          status = F_status_set_error(F_support_not);
+          state.status = F_status_set_error(F_support_not);
 
           break;
         }
@@ -161,19 +160,19 @@ extern "C" {
         method = controller_rule_action_method_extended_e;
       }
 
-      status = f_memory_array_increase(controller_allocation_small_d, sizeof(controller_rule_action_t), (void **) &item->actions.array, &item->actions.used, &item->actions.size);
+      state.status = f_memory_array_increase(controller_allocation_small_d, sizeof(controller_rule_action_t), (void **) &item->actions.array, &item->actions.used, &item->actions.size);
 
-      if (F_status_is_error(status)) {
-        controller_print_error_status(&main->program.error, macro_controller_f(f_memory_array_increase_by), F_status_set_fine(status));
+      if (F_status_is_error(state.status)) {
+        controller_print_error_status(&main->program.error, macro_controller_f(f_memory_array_increase_by), F_status_set_fine(state.status));
 
         break;
       }
 
-      status = controller_rule_action_read(main, is_normal, type, method, cache, item, &item->actions, &range);
-      if (F_status_is_error(status)) break;
+      state.status = controller_rule_action_read(main, is_normal, type, method, cache, item, &item->actions, &range);
+      if (F_status_is_error(state.status)) break;
     } // for
 
-    return status;
+    return state.status;
   }
 #endif // _di_controller_rule_item_read_
 
