@@ -29,8 +29,8 @@ extern "C" {
  *   This does not alter print.custom.setting.state.status.
  *
  *   Must not be NULL.
- * @param cache
- *   The cache.
+ * @param action
+ *   The action cache.
  *
  *   Must not be NULL.
  * @param status
@@ -52,7 +52,7 @@ extern "C" {
  *   F_output_not (with error bit) if setting is NULL.
  */
 #ifndef _di_controller_print_error_rule_
-  extern f_status_t controller_print_error_rule(fl_print_t * const print, controller_cache_action_t * const cache, const f_status_t status, const f_string_t function, const uint8_t fallback, const uint8_t item);
+  extern f_status_t controller_print_error_rule(fl_print_t * const print, controller_cache_action_t * const action, const f_status_t status, const f_string_t function, const uint8_t fallback, const uint8_t item);
 #endif // _di_controller_print_error_rule_
 
 /**
@@ -70,8 +70,8 @@ extern "C" {
  *   This does not alter print.custom.setting.state.status.
  *
  *   Must not be NULL.
- * @param cache
- *   The cache.
+ * @param action
+ *   The action cache.
  *
  *   Must not be NULL.
  * @param item
@@ -85,7 +85,7 @@ extern "C" {
  *   F_output_not (with error bit) if setting is NULL.
  */
 #ifndef _di_controller_print_error_rule_cache_
-  extern f_status_t controller_print_error_rule_cache(fl_print_t * const print, controller_cache_action_t * const cache, const uint8_t item);
+  extern f_status_t controller_print_error_rule_cache(fl_print_t * const print, controller_cache_action_t * const action, const uint8_t item);
 #endif // _di_controller_print_error_rule_cache_
 
 #ifdef __cplusplus

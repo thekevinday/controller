@@ -5,7 +5,7 @@ extern "C" {
 #endif
 
 #ifndef _di_controller_instance_prepare_
-  f_status_t controller_instance_prepare(controller_t * const main, const bool is_normal, const uint8_t action, const f_string_static_t alias, f_number_unsigned_t *id) {
+  f_status_t controller_instance_prepare(controller_t * const main, const uint8_t is_normal, const uint8_t action, const f_string_static_t alias, f_number_unsigned_t *id) {
 
     if (!main) return F_status_set_error(F_parameter);
 

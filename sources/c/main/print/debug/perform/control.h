@@ -25,6 +25,8 @@ extern "C" {
  *   This requires print.custom to be controller_t.
  *
  *   This does not alter print.custom.setting.state.status.
+ *
+ *   Must not be NULL.
  * @param status
  *   The status code relating to the failure.
  * @param message
@@ -50,6 +52,8 @@ extern "C" {
  *
  *   This does not alter print.custom.setting.state.status.
  *
+ *   Must not be NULL.
+ *
  * @return
  *   F_okay on success.
  *   F_output_not on success, but no printing is performed.
@@ -69,6 +73,8 @@ extern "C" {
  *   This requires print.custom to be controller_t.
  *
  *   This does not alter print.custom.setting.state.status.
+ *
+ *   Must not be NULL.
  *
  * @return
  *   F_okay on success.

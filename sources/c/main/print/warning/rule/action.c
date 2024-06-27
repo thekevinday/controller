@@ -16,7 +16,7 @@ extern "C" {
 
     fl_print_format("%r%[%QAction type is unknown, ignoring.%]%r", print->to, f_string_eol_s, print->context, print->prefix, print->context, f_string_eol_s);
 
-    controller_print_error_rule_cache(print, cache->action, F_true);
+    controller_print_error_rule_cache(print, &cache->action, F_true);
 
     controller_unlock_print_flush(print->to, &main->thread);
 

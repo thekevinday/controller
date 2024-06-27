@@ -8,7 +8,7 @@ extern "C" {
   f_status_t controller_print_error_lock_critical(fl_print_t * const print, const f_status_t status, const uint8_t is_read) {
 
     // A signal is not an error.
-    if (!print || !cache) return F_status_set_error(F_output_not);
+    if (!print || !print->custom) return F_status_set_error(F_output_not);
     if (print->verbosity < f_console_verbosity_error_e || status == F_interrupt) return F_output_not;
 
     controller_t * const main = (controller_t *) print->custom;

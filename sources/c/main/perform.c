@@ -89,7 +89,7 @@ extern "C" {
       status = f_file_remove(main->process.path_control);
 
       if (F_status_set_fine(status) == F_memory_not) {
-        controller_print_error(global->thread, &main->program.error, F_status_set_fine(status), macro_controller_f(f_file_remove), F_true);
+        controller_print_error_status(&main->program.error, macro_controller_f(f_file_remove), F_status_set_fine(status));
 
         return status;
       }
@@ -107,7 +107,7 @@ extern "C" {
       }
 
       if (F_status_set_fine(status) == F_memory_not) {
-        controller_print_error(global->thread, &main->program.error, F_status_set_fine(status), macro_controller_f(f_socket_bind), F_true);
+        controller_print_error_status(&main->program.error, macro_controller_f(f_socket_bind), F_status_set_fine(status));
       }
       else {
         controller_print_debug_perform_control_socket_failure(&main->program.debug, F_status_set_fine(status), "could not be bound");
@@ -127,7 +127,7 @@ extern "C" {
         }
 
         if (F_status_set_fine(status) == F_memory_not) {
-          controller_print_error(global->thread, &main->program.error, F_status_set_fine(status), macro_controller_f(f_file_role_change), F_true);
+          controller_print_error_status(&main->program.error, macro_controller_f(f_file_role_change), F_status_set_fine(status));
         }
         else {
           controller_print_debug_perform_control_socket_failure(&main->program.debug, F_status_set_fine(status), "failed to set file roles");
@@ -148,7 +148,7 @@ extern "C" {
         }
 
         if (F_status_set_fine(status) == F_memory_not) {
-          controller_print_error(global->thread, &main->program.error, F_status_set_fine(status), macro_controller_f(f_file_role_change), F_true);
+          controller_print_error_status(&main->program.error, macro_controller_f(f_file_role_change), F_status_set_fine(status));
         }
         else {
           controller_print_debug_perform_control_socket_failure(&main->program.debug, F_status_set_fine(status), "failed to set file mode");
@@ -158,10 +158,10 @@ extern "C" {
       }
     }
 
-    controller_print_perform_debug_control_socket_success(&main->program.debug);
+    controller_print_debug_perform_control_socket_success(&main->program.debug);
 
     // Disabled, not yet implemented.
-    //status = f_thread_create(0, &global->thread->id_control, &controller_thread_control, (void *) global);
+    //status = f_thread_create(0, &main->thread.id_control, &controller_thread_control, (void *) main);
 
     if (status == F_child) return status;
 
@@ -172,11 +172,11 @@ extern "C" {
         f_file_remove(main->process.path_control);
       }
 
-      if (global->thread->id_control) {
-        f_thread_cancel(global->thread->id_control);
-        f_thread_join(global->thread->id_control, 0);
+      if (main->thread.id_control) {
+        f_thread_cancel(main->thread.id_control);
+        f_thread_join(main->thread.id_control, 0);
 
-        global->thread->id_control = 0;
+        main->thread.id_control = 0;
       }
 
       controller_print_error_status(&main->program.error, macro_controller_f(f_thread_create), F_status_set_fine(status));

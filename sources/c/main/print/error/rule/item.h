@@ -22,9 +22,13 @@ extern "C" {
  * This is explicitly intended to be used in addition to the error message.
  *
  * @param print
- *   The error or warning print structure.
+ *   The output structure to print to.
+ *
+ *   Must not be NULL.
  * @param cache
  *   A structure for containing and caching relevant data.
+ *
+ *   Must not be NULL.
  * @param item
  *   If TRUE, then this error is associated with an item.
  *   If FALSE, then this error is associated with a rule setting.
@@ -38,7 +42,7 @@ extern "C" {
  *   F_output_not (with error bit) if setting is NULL.
  */
 #ifndef _di_controller_print_error_rule_item_
-  extern f_status_t controller_print_error_rule_item(fl_print_t * const print, const controller_cache_action_t cache, const bool item, const f_status_t status);
+  extern f_status_t controller_print_error_rule_item(fl_print_t * const print, controller_cache_action_t * const cache, const uint8_t item, const f_status_t status);
 #endif // _di_controller_print_error_rule_item_
 
 /**
@@ -78,6 +82,8 @@ extern "C" {
  *   The Object name.
  * @param index
  *   The index position in cache.content_action representing the Content range for the cache.buffer_item buffer..
+ * @param status
+ *   The status code of the error.
  *
  * @return
  *   F_okay on success.
@@ -86,7 +92,7 @@ extern "C" {
  *   F_output_not (with error bit) if setting is NULL.
  */
 #ifndef _di_controller_print_error_rule_item_action_positive_number_not_
-  extern f_status_t controller_print_error_rule_item_action_positive_number_not(fl_print_t * const print, controller_cache_t * const cache, const f_string_static_t name, const f_number_unsigned_t index);
+  extern f_status_t controller_print_error_rule_item_action_positive_number_not(fl_print_t * const print, controller_cache_t * const cache, const f_string_static_t name, const f_number_unsigned_t index, const f_status_t status);
 #endif // _di_controller_print_error_rule_item_action_positive_number_not_
 
 /**
@@ -124,8 +130,10 @@ extern "C" {
  *   Must not be NULL.
  * @param name
  *   The parameter name whose value is unknown.
- * @param unknown
- *   The unknown value.
+ * @param buffer
+ *   The buffer containing the setting name.
+ * @param range
+ *   The range within the buffer representing the unknown action name.
  *
  * @return
  *   F_okay on success.
@@ -134,7 +142,7 @@ extern "C" {
  *   F_output_not (with error bit) if setting is NULL.
  */
 #ifndef _di_controller_print_error_rule_item_action_unknown_
-  extern f_status_t controller_print_error_rule_item_action_unknown(fl_print_t * const print, controller_cache_t * const cache, const f_string_static_t name, const f_string_static_t unknown);
+  extern f_status_t controller_print_error_rule_item_action_unknown(fl_print_t * const print, controller_cache_t * const cache, const f_string_static_t name, const f_string_static_t buffer, const f_range_t range);
 #endif // _di_controller_print_error_rule_item_action_unknown_
 
 /**
@@ -165,7 +173,7 @@ extern "C" {
  *   F_output_not (with error bit) if setting is NULL.
  */
 #ifndef _di_controller_print_error_rule_item_execute_
-  extern f_status_t controller_print_error_rule_item_execute(fl_print_t * const print, controller_instance_t * const instance, const bool script_is, const f_string_static_t name, const f_status_t status);
+  extern f_status_t controller_print_error_rule_item_execute(fl_print_t * const print, controller_instance_t * const instance, const uint8_t script_is, const f_string_static_t name, const f_status_t status);
 #endif // _di_controller_print_error_rule_item_execute_
 
 /**

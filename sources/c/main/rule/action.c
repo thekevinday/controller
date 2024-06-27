@@ -32,7 +32,7 @@ extern "C" {
 #endif // _di_controller_rule_action_type_to_action_execute_type_
 
 #ifndef _di_controller_rule_action_read_
-  f_status_t controller_rule_action_read(controller_t * const main, controller_cache_t * const cache, const bool is_normal, const uint8_t type, const uint8_t method, controller_rule_item_t * const item, controller_rule_actions_t * const actions, f_range_t * const range) {
+  f_status_t controller_rule_action_read(controller_t * const main, controller_cache_t * const cache, const uint8_t is_normal, const uint8_t type, const uint8_t method, controller_rule_item_t * const item, controller_rule_actions_t * const actions, f_range_t * const range) {
 
     if (!main || !item || !actions || !range) return F_status_set_error(F_parameter);
 
@@ -276,16 +276,16 @@ extern "C" {
           for (i = 2; i < cache->content_action.used; ++i) {
 
             if (f_compare_dynamic_partial_string(controller_delay_s.string, cache->buffer_item, controller_delay_s.used, cache->content_action.array[i]) == F_equal_to) {
-              state.status = controller_rule_action_read_rerun_number(main, cache, controller_delay_s.string, &i, &rerun_item->delay);
+              state.status = controller_rule_action_read_rerun_number(main, cache, controller_delay_s, &i, &rerun_item->delay);
             }
             else if (f_compare_dynamic_partial_string(controller_max_s.string, cache->buffer_item, controller_max_s.used, cache->content_action.array[i]) == F_equal_to) {
-              state.status = controller_rule_action_read_rerun_number(main, cache, controller_max_s.string, &i, &rerun_item->max);
+              state.status = controller_rule_action_read_rerun_number(main, cache, controller_max_s, &i, &rerun_item->max);
             }
             else if (f_compare_dynamic_partial_string(controller_reset_s.string, cache->buffer_item, controller_reset_s.used, cache->content_action.array[i]) == F_equal_to) {
               item->reruns[type_rerun].is |= rerun_item == &item->reruns[type_rerun].failure ? controller_rule_rerun_is_failure_reset_d : controller_rule_rerun_is_success_reset_d;
             }
             else {
-              controller_print_error_rule_item_action_unknown(&main->program.error, cache, controller_rerun_s, cache->content_action.array[i]);
+              controller_print_error_rule_item_action_unknown(&main->program.error, cache, controller_rerun_s, cache->buffer_item, cache->content_action.array[i]);
 
               return F_status_set_error(F_valid_not);
             }
@@ -310,7 +310,7 @@ extern "C" {
               item->with &= ~controller_with_session_new_d;
             }
             else {
-              controller_print_error_rule_item_action_unknown(&main->program.error, cache, controller_with_s, cache->content_action.array[i]);
+              controller_print_error_rule_item_action_unknown(&main->program.error, cache, controller_with_s, cache->buffer_item, cache->content_action.array[i]);
 
               state.status = F_status_set_error(F_valid_not);
 
@@ -413,7 +413,7 @@ extern "C" {
 #endif // _di_controller_rule_action_read_
 
 #ifndef _di_controller_rule_action_read_rerun_number_
-  f_status_t controller_rule_action_read_rerun_number(controller_t * const main, controller_cache_t * const cache, const f_string_t name, f_number_unsigned_t * const index, f_number_unsigned_t * const number) {
+  f_status_t controller_rule_action_read_rerun_number(controller_t * const main, controller_cache_t * const cache, const f_string_static_t name, f_number_unsigned_t * const index, f_number_unsigned_t * const number) {
 
     f_status_t status = F_okay;
     f_number_signed_t parsed = 0;
@@ -441,7 +441,7 @@ extern "C" {
           controller_print_error(&main->program.error, macro_controller_f(fl_conversion_dynamic_partial_to_signed_detect));
         }
         else {
-          controller_print_error_rule_item_action_positive_number_not(&main->program.error, cache, name, *index);
+          controller_print_error_rule_item_action_positive_number_not(&main->program.error, cache, name, *index, status);
         }
       }
 

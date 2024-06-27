@@ -40,7 +40,7 @@ extern "C" {
 #endif // _di_controller_lock_create_
 
 #ifndef _di_controller_lock_read_
-  f_status_t controller_lock_read(const bool is_normal, controller_thread_t * const thread, f_thread_lock_t * const lock) {
+  f_status_t controller_lock_read(const uint8_t is_normal, controller_thread_t * const thread, f_thread_lock_t * const lock) {
 
     if (!thread || !lock) return F_status_set_error(F_parameter);
 
@@ -83,7 +83,7 @@ extern "C" {
 #endif // _di_controller_lock_read_instance_type_
 
 #ifndef _di_controller_lock_write_
-  f_status_t controller_lock_write(const bool is_normal, controller_thread_t * const thread, f_thread_lock_t * const lock) {
+  f_status_t controller_lock_write(const uint8_t is_normal, controller_thread_t * const thread, f_thread_lock_t * const lock) {
 
     if (!thread || !lock) return F_status_set_error(F_parameter);
 

@@ -59,7 +59,7 @@ extern "C" {
     controller_rules_t rules;
   };
 
-  #define controller_process_tinitialize { \
+  #define controller_process_t_initialize { \
     0, \
     0, \
     0, \

@@ -262,7 +262,7 @@ extern "C" {
       };
 
       // F_false = only with option, F_true with option and value.
-      const bool values[] = {
+      const uint8_t values[] = {
         F_false, // light.
         F_false, // dark.
         F_false, // no_color.

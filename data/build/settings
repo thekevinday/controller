@@ -40,53 +40,53 @@ build_libraries-individual_thread -lf_thread
 build_libraries-level -lfll_2 -lfll_1 -lfll_0
 build_libraries-monolithic -lfll
 
-build_sources_library main/common.c main/common/define.c main/common/enumeration.c main/common/print.c main/common/string.c main/common/type.c
-build_sources_library main/common/type/cache.c main/common/type/control.c main/common/type/entry.c main/common/type/execute.c main/common/type/instance.c main/common/type/interrupt.c main/common/type/lock.c main/common/type/process.c main/common/type/rule.c main/common/type/thread.c
-build_sources_library main/common/string/general.c main/common/string/rule.c
-build_sources_library main/convert.c main/instance.c main/instance/prepare.c main/instance/wait.c
-build_sources_library main/entry.c main/entry/action.c main/entry/preprocess.c main/entry/process.c main/entry/setting.c
-build_sources_library main/file.c main/lock.c main/path.c main/process.c
-build_sources_library main/rule.c main/rule/action.c main/rule/execute.c main/rule/expand.c main/rule/instance.c main/rule/is.c main/rule/item.c main/rule/parameter.c main/rule/read.c main/rule/setting.c main/rule/validate.c main/rule/wait.c
-build_sources_library main/perform.c
-build_sources_library main/print/data.c
-build_sources_library main/print/debug.c main/print/debug/rule/action.c main/print/debug/rule/execute.c main/print/debug/perform/control.c main/print/debug/perform/pid.c
-build_sources_library main/print/error.c
-build_sources_library main/print/error/entry.c main/print/error/entry/action.c main/print/error/entry/item.c main/print/error/entry/setting.c
-build_sources_library main/print/error/perform/pid.c
-build_sources_library main/print/error/rule.c main/print/error/rule/action.c main/print/error/rule/item.c main/print/error/rule/setting.c
-build_sources_library main/print/lock.c main/print/error/lock.c
-build_sources_library main/print/output/entry/setting.c main/print/output/rule/execute.c
-build_sources_library main/print/message.c main/print/message/entry.c main/print/message/entry/action.c main/print/message/entry/item.c
-build_sources_library main/print/verbose.c
-build_sources_library main/print/warning.c main/print/warning/entry/action.c main/print/warning/entry/item.c main/print/warning/entry/setting.c
-build_sources_library main/signal.c main/status.c main/time.c
-build_sources_library main/thread.c main/thread/cleanup.c main/thread/control.c main/thread/entry.c main/thread/instance.c main/thread/is.c main/thread/rule.c main/thread/signal.c
-build_sources_library main/validate.c
+build_sources_library common.c common/define.c common/enumeration.c common/print.c common/string.c common/type.c
+build_sources_library common/type/cache.c common/type/control.c common/type/entry.c common/type/execute.c common/type/instance.c common/type/interrupt.c common/type/lock.c common/type/process.c common/type/rule.c common/type/thread.c
+build_sources_library common/string/general.c common/string/rule.c
+build_sources_library convert.c instance.c instance/prepare.c instance/wait.c
+build_sources_library entry.c entry/action.c entry/preprocess.c entry/process.c entry/setting.c
+build_sources_library file.c lock.c path.c process.c
+build_sources_library rule.c rule/action.c rule/execute.c rule/expand.c rule/instance.c rule/is.c rule/item.c rule/parameter.c rule/read.c rule/setting.c rule/validate.c rule/wait.c
+build_sources_library perform.c
+build_sources_library print/data.c
+build_sources_library print/debug.c print/debug/rule/action.c print/debug/rule/execute.c print/debug/perform/control.c print/debug/perform/pid.c
+build_sources_library print/error.c
+build_sources_library print/error/entry.c print/error/entry/action.c print/error/entry/item.c print/error/entry/setting.c
+build_sources_library print/error/perform/pid.c
+build_sources_library print/error/rule.c print/error/rule/action.c print/error/rule/item.c print/error/rule/setting.c
+build_sources_library print/lock.c print/error/lock.c
+build_sources_library print/output/entry/setting.c print/output/rule/execute.c
+build_sources_library print/message.c print/message/entry.c print/message/entry/action.c print/message/entry/item.c
+build_sources_library print/verbose.c
+build_sources_library print/warning.c print/warning/entry/action.c print/warning/entry/item.c print/warning/entry/setting.c print/warning/rule/action.c
+build_sources_library signal.c status.c time.c
+build_sources_library thread.c thread/cleanup.c thread/control.c thread/entry.c thread/instance.c thread/is.c thread/rule.c thread/signal.c
+build_sources_library validate.c
 
-build_sources_headers main/common.h main/controller.h main/common/define.h main/common/enumeration.h main/common/print.h main/common/string.h main/common/thread.h main/common/type.h
-build_sources_headers main/common/define/control.h main/common/define/entry.h main/common/define/rule.h main/common/define/thread.h
-build_sources_headers main/common/enumeration/control.h main/common/enumeration/entry.h main/common/enumeration/instance.h main/common/enumeration/process.h main/common/enumeration/rule.h main/common/enumeration/thread.h
-build_sources_headers main/common/string/general.h main/common/string/rule.h
-build_sources_headers main/common/type/cache.h main/common/type/control.h main/common/type/defs.h main/common/type/entry.h main/common/type/execute.h main/common/type/instance.h main/common/type/interrupt.h main/common/type/lock.h main/common/type/process.h main/common/type/rule.h main/common/type/thread.h
-build_sources_headers main/convert.h main/instance.h main/instance/prepare.h main/instance/wait.h
-build_sources_headers main/entry.h main/entry/action.h main/entry/preprocess.h main/entry/process.h main/entry/setting.h
-build_sources_headers main/file.h main/lock.h main/path.h main/process.h
-build_sources_headers main/rule.h main/rule/action.h main/rule/execute.h main/rule/expand.h main/rule/instance.h main/rule/is.h main/rule/item.h main/rule/parameter.h main/rule/read.h main/rule/setting.h main/rule/validate.h main/rule/wait.h
-build_sources_headers main/perform.h
-build_sources_headers main/print/data.h
-build_sources_headers main/print/debug.h main/print/debug/rule/action.h main/print/debug/rule/execute.h main/print/debug/perform/control.h main/print/debug/perform/pid.h
-build_sources_headers main/print/error.h
-build_sources_headers main/print/error/entry.h main/print/error/entry/action.h main/print/error/entry/item.h main/print/error/entry/setting.h
-build_sources_headers main/print/error/perform/pid.h
-build_sources_headers main/print/error/rule.h main/print/error/rule/action.h main/print/error/rule/item.h main/print/error/rule/setting.h
-build_sources_headers main/print/lock.h main/print/error/lock.h
-build_sources_headers main/print/output/entry/setting.h main/print/output/rule/execute.h
-build_sources_headers main/print/message.h main/print/message/entry.h main/print/message/entry/action.h main/print/message/entry/item.h
-build_sources_headers main/print/verbose.h
-build_sources_headers main/print/warning.h main/print/warning/entry/action.h main/print/warning/entry/item.h main/print/warning/entry/setting.h
-build_sources_headers main/signal.h main/status.h main/time.h
-build_sources_headers main/thread.h main/thread/cleanup.h main/thread/control.h main/thread/entry.h main/thread/instance.h main/thread/is.h main/thread/rule.h main/thread/signal.h
-build_sources_headers main/validate.h
+build_sources_headers common.h controller.h common/define.h common/enumeration.h common/print.h common/string.h common/thread.h common/type.h
+build_sources_headers common/define/control.h common/define/entry.h common/define/rule.h common/define/thread.h
+build_sources_headers common/enumeration/control.h common/enumeration/entry.h common/enumeration/instance.h common/enumeration/process.h common/enumeration/rule.h common/enumeration/thread.h
+build_sources_headers common/string/general.h common/string/rule.h
+build_sources_headers common/type/cache.h common/type/control.h common/type/defs.h common/type/entry.h common/type/execute.h common/type/instance.h common/type/interrupt.h common/type/lock.h common/type/process.h common/type/rule.h common/type/thread.h
+build_sources_headers convert.h instance.h instance/prepare.h instance/wait.h
+build_sources_headers entry.h entry/action.h entry/preprocess.h entry/process.h entry/setting.h
+build_sources_headers file.h lock.h path.h process.h
+build_sources_headers rule.h rule/action.h rule/execute.h rule/expand.h rule/instance.h rule/is.h rule/item.h rule/parameter.h rule/read.h rule/setting.h rule/validate.h rule/wait.h
+build_sources_headers perform.h
+build_sources_headers print/data.h
+build_sources_headers print/debug.h print/debug/rule/action.h print/debug/rule/execute.h print/debug/perform/control.h print/debug/perform/pid.h
+build_sources_headers print/error.h
+build_sources_headers print/error/entry.h print/error/entry/action.h print/error/entry/item.h print/error/entry/setting.h
+build_sources_headers print/error/perform/pid.h
+build_sources_headers print/error/rule.h print/error/rule/action.h print/error/rule/item.h print/error/rule/setting.h
+build_sources_headers print/lock.h print/error/lock.h
+build_sources_headers print/output/entry/setting.h print/output/rule/execute.h
+build_sources_headers print/message.h print/message/entry.h print/message/entry/action.h print/message/entry/item.h
+build_sources_headers print/verbose.h
+build_sources_headers print/warning.h print/warning/entry/action.h print/warning/entry/item.h print/warning/entry/setting.h print/warning/rule/action.h
+build_sources_headers signal.h status.h time.h
+build_sources_headers thread.h thread/cleanup.h thread/control.h thread/entry.h thread/instance.h thread/is.h thread/rule.h thread/signal.h
+build_sources_headers validate.h
 
 build_sources_documentation man
 
@@ -96,7 +96,7 @@ build_script yes
 build_shared yes
 build_static no
 
-path_headers program/controller
+path_headers program/controller/main
 path_library_script script
 path_library_shared shared
 path_library_static static
@@ -106,8 +106,9 @@ path_object_static static
 path_program_script script
 path_program_shared shared
 path_program_static static
+path_sources sources/c/main
 
-has_path_standard yes
+has_path_standard no
 preserve_path_headers yes
 
 search_exclusive yes

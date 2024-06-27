@@ -1,4 +1,4 @@
-#include "../../controller.h"
+#include "../../../controller.h"
 
 #ifdef __cplusplus
 extern "C" {
@@ -25,7 +25,7 @@ extern "C" {
 #endif // _di_controller_print_debug_perform_control_socket_failure_
 
 #ifndef _di_controller_print_debug_perform_control_socket_success_
-  f_status_t controller_print_debug_perform_control_socket_success(fl_print_t * const print, const f_status_t status, const f_string_t message) {
+  f_status_t controller_print_debug_perform_control_socket_success(fl_print_t * const print) {
 
     if (!print || !print->custom) return F_status_set_error(F_output_not);
     if (print->verbosity < f_console_verbosity_debug_e) return F_output_not;

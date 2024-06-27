@@ -172,7 +172,7 @@ extern "C" {
       controller_print_error_status(&main->program.error, macro_controller_f(f_string_dynamic_append_nulless), F_status_set_fine(state.status));
     }
     else {
-      state.status = controller_file_load(main, cache, F_true, controller_rules_s, rule->alias, controller_rule_s);
+      state.status = controller_file_load(main, F_true, controller_rules_s, rule->alias, controller_rule_s);
     }
 
     if (F_status_is_error_not(state.status)) {
@@ -306,7 +306,7 @@ extern "C" {
               rule->items.array[rule->items.used].with |= controller_with_session_same_d;
             }
 
-            state.status = controller_rule_item_read(main, is_normal, cache, &rule->items.array[rule->items.used]);
+            state.status = controller_rule_item_read(main, cache, is_normal, &rule->items.array[rule->items.used]);
             if (F_status_is_error(state.status)) break;
 
             ++rule->items.used;
@@ -314,7 +314,7 @@ extern "C" {
           else {
             for_item = F_false;
 
-            state.status = controller_rule_setting_read(main, is_normal, cache, rule);
+            state.status = controller_rule_setting_read(main, cache, is_normal, rule);
 
             if (F_status_is_error(state.status)) {
               if (F_status_set_fine(state.status) == F_memory_not) break;
@@ -325,7 +325,7 @@ extern "C" {
     }
 
     if (F_status_is_error(state.status)) {
-      controller_print_error_rule_item(&main->program.error, cache->action, for_item, F_status_set_fine(state.status));
+      controller_print_error_rule_item(&main->program.error, &cache->action, for_item, F_status_set_fine(state.status));
 
       rule->status[0] = controller_error_simplify(F_status_set_fine(state.status));
 

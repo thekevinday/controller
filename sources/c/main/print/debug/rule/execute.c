@@ -5,9 +5,9 @@ extern "C" {
 #endif
 
 #ifndef _di_controller_main_print_debug_rule_execute_rerun_
-  f_status_t controller_main_print_debug_rule_execute_rerun(fl_print_t * const print, controller_rule_rerun_item_t * const rerun, const uint8_t action) {
+  f_status_t controller_main_print_debug_rule_execute_rerun(fl_print_t * const print, controller_instance_t * const instance, controller_rule_rerun_item_t * const rerun, const uint8_t action) {
 
-    if (!print || !print->custom || !rerun) return F_status_set_error(F_output_not);
+    if (!print || !print->custom || !instance || !rerun) return F_status_set_error(F_output_not);
     if (print->verbosity < f_console_verbosity_debug_e) return F_output_not;
 
     controller_t * const main = (controller_t *) print->custom;

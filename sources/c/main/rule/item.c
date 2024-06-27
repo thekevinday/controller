@@ -5,7 +5,7 @@ extern "C" {
 #endif
 
 #ifndef _di_controller_rule_item_read_
-  f_status_t controller_rule_item_read(controller_t * const main, controller_cache_t * const cache, const bool is_normal, controller_rule_item_t * const item) {
+  f_status_t controller_rule_item_read(controller_t * const main, controller_cache_t * const cache, const uint8_t is_normal, controller_rule_item_t * const item) {
 
     if (!main || !cache || !item) return F_status_set_error(F_parameter);
 
@@ -168,7 +168,7 @@ extern "C" {
         break;
       }
 
-      state.status = controller_rule_action_read(main, is_normal, type, method, cache, item, &item->actions, &range);
+      state.status = controller_rule_action_read(main, cache, is_normal, type, method, item, &item->actions, &range);
       if (F_status_is_error(state.status)) break;
     } // for
 

@@ -24,7 +24,7 @@
  *   If FALSE, then process as if this operates during a an exit operation.
  */
 #ifndef _di_controller_thread_signal_
-  extern void controller_thread_signal(controller_t * const main, const bool is_normal);
+  extern void controller_thread_signal(controller_t * const main, const uint8_t is_normal);
 #endif // _di_controller_thread_signal_
 
 /**

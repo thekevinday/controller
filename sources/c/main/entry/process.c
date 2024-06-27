@@ -5,7 +5,7 @@ extern "C" {
 #endif
 
 #ifndef _di_controller_entry_process_
-  f_status_t controller_entry_process(controller_t * const main, const bool failsafe, const uint8_t is_entry) {
+  f_status_t controller_entry_process(controller_t * const main, const uint8_t failsafe, const uint8_t is_entry) {
 
     f_status_t status = F_okay;
     f_status_t status_lock = F_okay;

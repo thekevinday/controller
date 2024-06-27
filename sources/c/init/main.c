@@ -26,11 +26,10 @@ int main(const int argc, const f_string_t *argv, const f_string_t *envp) {
   }
 
   data.callback.process_entry_setup = &controller_init_process_entry_setup;
+  data.process.entry.pid = controller_entry_pid_disable_e;
+  data.process.entry.show = controller_entry_show_init_e;
+  data.process.mode = controller_process_mode_service_e;
   data.setting.flag &= ~controller_main_flag_interruptible_e;
-
-  process.entry.pid = controller_entry_pid_disable_e;
-  process.entry.show = controller_entry_show_init_e;
-  process.mode = controller_process_mode_service_e;
 
   fll_program_standard_set_up(&data.program);
 

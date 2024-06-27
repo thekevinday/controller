@@ -5,7 +5,7 @@ extern "C" {
 #endif
 
 #ifndef _di_controller_rule_wait_all_
-  f_status_t controller_rule_wait_all(controller_t * const main, const bool is_normal, const bool required) {
+  f_status_t controller_rule_wait_all(controller_t * const main, const uint8_t is_normal, const uint8_t required) {
 
     if (!main) return F_status_set_error(F_parameter);
 
@@ -208,7 +208,7 @@ extern "C" {
 #endif // _di_controller_rule_wait_all_
 
 #ifndef _di_controller_rule_wait_all_instance_type_
-  f_status_t controller_rule_wait_all_instance_type(controller_t * const main, const uint8_t type, const bool required) {
+  f_status_t controller_rule_wait_all_instance_type(controller_t * const main, const uint8_t type, const uint8_t required) {
 
     if (!main) return F_status_set_error(F_parameter);
 

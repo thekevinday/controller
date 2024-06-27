@@ -15,7 +15,7 @@ extern "C" {
     controller_lock_print(print->to, &main->thread);
 
     fl_print_format("%r%[%QThe %r item named '%]", print->to, f_string_eol_s, print->context, is_entry ? controller_entry_s : controller_exit_s, print->prefix, print->context);
-    fl_print_format(f_string_format_Q_single_s.string, print->to, print->notable, parameter, print->notable);
+    fl_print_format(f_string_format_Q_single_s.string, print->to, print->notable, name, print->notable);
     fl_print_format("%[' %S.%]%r", print->to, print->context, message, print->context, f_string_eol_s);
 
     controller_print_error_entry_cache(print, &cache->action, is_entry);

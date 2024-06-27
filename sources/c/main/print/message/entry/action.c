@@ -10,15 +10,15 @@ extern "C" {
     if (!print || !action) return F_status_set_error(F_output_not);
     if (print->verbosity < f_console_verbosity_error_e) return F_output_not;
 
-    for (f_array_length_t index = 0; ;) {
+    for (f_number_unsigned_t i = 0; ;) {
 
-      f_print_dynamic_safely(action.parameters.array[index], stream);
+      f_print_dynamic_safely(action->parameters.array[i], print->to);
 
-      ++index;
+      ++i;
 
-      if (index == action.parameters.used) break;
+      if (i == action->parameters.used) break;
 
-      f_print_dynamic_raw(f_string_space_s, stream);
+      f_print_dynamic_raw(f_string_space_s, print->to);
     } // for
 
     return F_okay;

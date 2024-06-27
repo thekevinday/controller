@@ -59,7 +59,7 @@ extern "C" {
  * @see controller_lock_write()
  */
 #ifndef _di_controller_instance_prepare_
-  extern f_status_t controller_instance_prepare(controller_t * const main, const bool is_normal, const uint8_t action, const f_string_static_t alias, f_number_unsigned_t *id);
+  extern f_status_t controller_instance_prepare(controller_t * const main, const uint8_t is_normal, const uint8_t action, const f_string_static_t alias, f_number_unsigned_t *id);
 #endif // _di_controller_instance_prepare_
 
 /**

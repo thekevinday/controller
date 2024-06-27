@@ -69,7 +69,7 @@ extern "C" {
  * @see f_thread_lock_read_timed()
  */
 #ifndef _di_controller_lock_read_
-  extern f_status_t controller_lock_read(const bool is_normal, controller_thread_t * const thread, f_thread_lock_t * const lock);
+  extern f_status_t controller_lock_read(const uint8_t is_normal, controller_thread_t * const thread, f_thread_lock_t * const lock);
 #endif // _di_controller_lock_read_
 
 /**
@@ -158,7 +158,7 @@ extern "C" {
  * @see f_thread_lock_write_timed()
  */
 #ifndef _di_controller_lock_write_
-  extern f_status_t controller_lock_write(const bool is_normal, controller_thread_t * const thread, f_thread_lock_t * const lock);
+  extern f_status_t controller_lock_write(const uint8_t is_normal, controller_thread_t * const thread, f_thread_lock_t * const lock);
 #endif // _di_controller_lock_write_
 
 /**

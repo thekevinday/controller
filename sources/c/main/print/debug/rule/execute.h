@@ -23,6 +23,10 @@ extern "C" {
  *   The output structure to print to.
  *
  *   Must not be NULL.
+ * @param instance
+ *   The Controller Instance.
+ *
+ *   Must not be NULL.
  * @param rerun
  *   The rerun data.
  *
@@ -37,7 +41,7 @@ extern "C" {
  *   F_output_not (with error bit) if setting is NULL.
  */
 #ifndef _di_controller_main_print_debug_rule_execute_rerun_
-  extern f_status_t controller_main_print_debug_rule_execute_rerun(fl_print_t * const print, controller_rule_rerun_item_t * const rerun, const uint8_t action);
+  extern f_status_t controller_main_print_debug_rule_execute_rerun(fl_print_t * const print, controller_instance_t * const instance, controller_rule_rerun_item_t * const rerun, const uint8_t action);
 #endif // _di_controller_main_print_debug_rule_execute_rerun_
 
 #ifdef __cplusplus

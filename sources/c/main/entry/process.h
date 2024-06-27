@@ -49,7 +49,7 @@ extern "C" {
  * @see controller_perform_ready()
  */
 #ifndef _di_controller_entry_process_
-  extern f_status_t controller_entry_process(controller_t * const main, const bool failsafe, const uint8_t is_entry);
+  extern f_status_t controller_entry_process(controller_t * const main, const uint8_t failsafe, const uint8_t is_entry);
 #endif // _di_controller_entry_process_
 
 #ifdef __cplusplus

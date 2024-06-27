@@ -56,6 +56,10 @@ extern "C" {
  *   Must not be NULL.
  *
  *   This does not alter main.setting.state.status.
+ * @param cache
+ *   A structure for containing and caching relevant data.
+ *
+ *   Must not be NULL.
  * @param is_normal
  *   If TRUE, then process as if this operates during a normal operation (entry and control).
  *   If FALSE, then process as if this operates during a an exit operation.
@@ -63,10 +67,6 @@ extern "C" {
  *   The action type for this action or set of actions.
  * @param method
  *   The action method for this action or set of actions.
- * @param cache
- *   A structure for containing and caching relevant data.
- *
- *   Must not be NULL.
  * @param item
  *   The processed item.
  *
@@ -93,7 +93,7 @@ extern "C" {
  * @see f_memory_array_increase_by()
  */
 #ifndef _di_controller_rule_action_read_
-  extern f_status_t controller_rule_action_read(controller_t * const main, controller_cache_t * const cache, const bool is_normal, const uint8_t type, const uint8_t method, controller_rule_item_t * const item, controller_rule_actions_t * const actions, f_range_t * const range);
+  extern f_status_t controller_rule_action_read(controller_t * const main, controller_cache_t * const cache, const uint8_t is_normal, const uint8_t type, const uint8_t method, controller_rule_item_t * const item, controller_rule_actions_t * const actions, f_range_t * const range);
 #endif // _di_controller_rule_action_read_
 
 /**
@@ -109,10 +109,12 @@ extern "C" {
  *   Must not be NULL.
  *
  *   This does not alter main.setting.state.status.
- * @param name
- *   The name representing the value whose number is being processed.
  * @param cache
  *   A structure for containing and caching relevant data.
+ *
+ *   Must not be NULL.
+ * @param name
+ *   The name representing the value whose number is being processed.
  * @param index
  *   The position within the content action array for some rule to process.
  * @param number
@@ -129,7 +131,7 @@ extern "C" {
  * @see fl_conversion_dynamic_partial_to_signed_detect()
  */
 #ifndef _di_controller_rule_action_read_rerun_number_
-  extern f_status_t controller_rule_action_read_rerun_number(controller_t * const main, controller_cache_t * const cache, const f_string_t name, f_number_unsigned_t * const index, f_number_unsigned_t * const number);
+  extern f_status_t controller_rule_action_read_rerun_number(controller_t * const main, controller_cache_t * const cache, const f_string_static_t name, f_number_unsigned_t * const index, f_number_unsigned_t * const number);
 #endif // _di_controller_rule_action_read_rerun_number_
 
 

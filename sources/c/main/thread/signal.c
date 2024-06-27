@@ -5,7 +5,7 @@ extern "C" {
 #endif
 
 #ifndef _di_controller_thread_signal_
-  void controller_thread_signal(controller_t * const main, const bool is_normal) {
+  void controller_thread_signal(controller_t * const main, const uint8_t is_normal) {
 
     if (!main) return;
     if (!controller_thread_is_enabled(is_normal, &main->thread)) return;

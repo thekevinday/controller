@@ -42,7 +42,7 @@ extern "C" {
  *   F_require (with error bit set) if a required process is in failed status when required is TRUE.
  */
 #ifndef _di_controller_rule_wait_all_
-  extern f_status_t controller_rule_wait_all(controller_t * const main, const bool is_normal, const bool required);
+  extern f_status_t controller_rule_wait_all(controller_t * const main, const uint8_t is_normal, const uint8_t required);
 #endif // _di_controller_rule_wait_all_
 
 /**
@@ -68,7 +68,7 @@ extern "C" {
  * @see controller_rule_wait_all()
  */
 #ifndef _di_controller_rule_wait_all_instance_type_
-  extern f_status_t controller_rule_wait_all_instance_type(controller_t * const main, const uint8_t type, const bool required);
+  extern f_status_t controller_rule_wait_all_instance_type(controller_t * const main, const uint8_t type, const uint8_t required);
 #endif // _di_controller_rule_wait_all_instance_type_
 
 #ifdef __cplusplus

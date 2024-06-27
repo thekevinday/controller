@@ -252,7 +252,7 @@ extern "C" {
           status = controller_rule_expand(main, instance->rule.items.array[i].actions.array[j], instance);
 
           if (F_status_is_error(status)) {
-            controller_print_error_rule(&main->program.error, instance->cache.action, F_status_set_fine(status), "controller_rule_expand", F_true, F_false);
+            controller_print_error_rule(&main->program.error, &instance->cache.action, F_status_set_fine(status), macro_controller_f(controller_rule_expand), F_true, F_false);
 
             break;
           }
@@ -282,7 +282,7 @@ extern "C" {
           status = controller_rule_expand(main, instance->rule.items.array[i].actions.array[j], instance);
 
           if (F_status_is_error(status)) {
-            controller_print_error_rule(&main->program.error, instance->cache.action, F_status_set_fine(status), "controller_rule_expand", F_true, F_false);
+            controller_print_error_rule(&main->program.error, &instance->cache.action, F_status_set_fine(status), macro_controller_f(controller_rule_expand), F_true, F_false);
 
             break;
           }
@@ -324,7 +324,7 @@ extern "C" {
           status = controller_rule_expand(main, instance->rule.items.array[i].actions.array[j], instance);
 
           if (F_status_is_error(status)) {
-            controller_print_error_rule(&main->program.error, instance->cache.action, F_status_set_fine(status), "controller_rule_expand", F_true, F_false);
+            controller_print_error_rule(&main->program.error, &instance->cache.action, F_status_set_fine(status), macro_controller_f(controller_rule_expand), F_true, F_false);
 
             break;
           }
@@ -362,7 +362,7 @@ extern "C" {
             status = controller_rule_expand(main, instance->rule.items.array[i].actions.array[j], instance);
 
             if (F_status_is_error(status)) {
-              controller_print_error_rule(&main->program.error, instance->cache.action, F_status_set_fine(status), "controller_rule_expand", F_true, F_false);
+              controller_print_error_rule(&main->program.error, &instance->cache.action, F_status_set_fine(status), macro_controller_f(controller_rule_expand), F_true, F_false);
 
               break;
             }
@@ -421,7 +421,7 @@ extern "C" {
 
     // Lock failed, attempt to re-establish lock before returning.
     if (F_status_set_fine(status) == F_lock) {
-      status = controller_lock_read(instance, &main->thread, &instance->lock);
+      status = controller_lock_read(instance->type != controller_instance_type_exit_e, &main->thread, &instance->lock);
       if (F_status_is_error(status)) return F_status_set_error(F_lock);
 
       success = F_false;
@@ -844,7 +844,7 @@ extern "C" {
       if (!controller_thread_is_enabled_instance(instance)) return -2;
 
       if (!rerun_item->max || rerun_item->count < rerun_item->max) {
-        controller_main_print_debug_rule_execute_rerun(&main->program.output, return_item, action);
+        controller_main_print_debug_rule_execute_rerun(&main->program.output, instance, rerun_item, action);
 
         if (rerun_item->delay) {
           f_time_spec_t delay = f_time_spec_t_initialize;

@@ -9,7 +9,6 @@ extern "C" {
 
     if (!main || !entry || !actions) return F_status_set_error(F_parameter);
 
-    f_status_t status = F_okay;
     f_status_t status_action = F_okay;
 
     actions->used = 0;

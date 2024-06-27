@@ -100,7 +100,7 @@ extern "C" {
     fll_fss_extended_read(cache->buffer_item, &range, &cache->object_actions, &cache->content_actions, 0, 0, &cache->delimits, 0, &state);
 
     if (F_status_is_error(state.status)) {
-      controller_print_error_rule(&main->program.error, cache->action, F_status_set_fine(state.status), "fll_fss_extended_read", F_true, F_false);
+      controller_print_error_rule(&main->program.error, &cache->action, F_status_set_fine(state.status), "fll_fss_extended_read", F_true, F_false);
 
       return state.status;
     }
@@ -135,7 +135,7 @@ extern "C" {
       state.status = f_string_dynamic_partial_append_nulless(cache->buffer_item, cache->object_actions.array[i], &cache->action.name_item);
 
       if (F_status_is_error(state.status)) {
-        controller_print_error_rule(&main->program.error, cache->action, F_status_set_fine(state.status), "f_string_dynamic_partial_append_nulless", F_true, F_false);
+        controller_print_error_rule(&main->program.error, &cache->action, F_status_set_fine(state.status), "f_string_dynamic_partial_append_nulless", F_true, F_false);
 
         if (F_status_set_fine(state.status) == F_memory_not) {
           status_return = state.status;
@@ -153,7 +153,7 @@ extern "C" {
 
         cache->action.line_action = ++cache->action.line_item;
 
-        controller_print_error_rule_item(&main->program.error, cache->action, F_false, F_status_set_fine(state.status));
+        controller_print_error_rule_item(&main->program.error, &cache->action, F_false, F_status_set_fine(state.status));
 
         continue;
       }
@@ -224,7 +224,7 @@ extern "C" {
           fl_print_format(f_string_format_Q_single_s.string, main->program.warning.to, main->program.warning.notable, cache->action.name_item, main->program.warning.notable);
           fl_print_format(f_string_format_sentence_end_quote_s.string, main->program.warning.to, main->program.warning.context, main->program.warning.context, f_string_eol_s);
 
-          controller_print_error_rule_cache(&main->program.warning, cache->action, F_false);
+          controller_print_error_rule_cache(&main->program.warning, &cache->action, F_false);
 
           controller_unlock_print_flush(main->program.warning.to, &main->thread);
         }
@@ -239,7 +239,7 @@ extern "C" {
         state.status = f_string_dynamic_partial_append_nulless(cache->buffer_item, range2, &cache->action.name_action);
 
         if (F_status_is_error(state.status)) {
-          controller_print_error_rule(&main->program.error, cache->action, F_status_set_fine(state.status), "f_string_dynamic_partial_append_nulless", F_true, F_false);
+          controller_print_error_rule(&main->program.error, &cache->action, F_status_set_fine(state.status), "f_string_dynamic_partial_append_nulless", F_true, F_false);
 
           // Get the current line number within the settings item.
           cache->action.line_item = line_item;
@@ -247,7 +247,7 @@ extern "C" {
 
           cache->action.line_action = ++cache->action.line_item;
 
-          controller_print_error_rule_item(&main->program.error, cache->action, F_false, F_status_set_fine(state.status));
+          controller_print_error_rule_item(&main->program.error, &cache->action, F_false, F_status_set_fine(state.status));
 
           if (F_status_set_fine(state.status) == F_memory_not) {
             status_return = state.status;
@@ -276,7 +276,7 @@ extern "C" {
 
             fl_print_format("%r%[%QEmpty rule setting.%]%r", main->program.warning.to, f_string_eol_s, main->program.warning.context, main->program.warning.prefix, main->program.warning.context, f_string_eol_s);
 
-            controller_print_error_rule_cache(&main->program.warning, cache->action, F_false);
+            controller_print_error_rule_cache(&main->program.warning, &cache->action, F_false);
 
             controller_unlock_print_flush(main->program.warning.to, &main->thread);
           }
@@ -287,7 +287,7 @@ extern "C" {
 
       if (type == controller_rule_setting_type_affinity_e) {
         if (!cache->content_actions.array[i].used) {
-          controller_print_error_rule_setting(&main->program.error, "requires one or more Content", i, line_item, &main->thread, cache);
+          controller_print_error_rule_setting(&main->program.error, cache, "requires one or more Content", i, line_item);
 
           if (F_status_is_error_not(status_return)) {
             status_return = F_status_set_error(F_valid_not);
@@ -305,7 +305,7 @@ extern "C" {
           state.status = f_memory_array_increase(controller_allocation_small_d, sizeof(int32_t), (void **) &rule->affinity.array, &rule->affinity.used, &rule->affinity.size);
 
           if (F_status_is_error(state.status)) {
-            controller_print_error_rule(&main->program.error, cache->action, F_status_set_fine(state.status), "f_memory_array_increase", F_true, F_false);
+            controller_print_error_rule(&main->program.error, &cache->action, F_status_set_fine(state.status), "f_memory_array_increase", F_true, F_false);
 
             break;
           }
@@ -326,13 +326,13 @@ extern "C" {
 
             if (state.status == F_data_not || state.status == F_number || state.status == F_number_overflow || state.status == F_number_underflow || state.status == F_number_negative || state.status == F_number_decimal) {
               if (state.status == F_number_underflow) {
-                controller_print_error_rule_setting_with_range(&main->program.error, " has an unsupported number", cache->content_actions.array[i].array[j], ", the number is too small for this system", i, line_item, &main->thread, cache);
+                controller_print_error_rule_setting_with_range(&main->program.error, cache, " has an unsupported number", cache->content_actions.array[i].array[j], ", the number is too small for this system", i, line_item);
               }
               else if (state.status == F_number_overflow || state.status == F_number_positive) {
-                controller_print_error_rule_setting_with_range(&main->program.error, " has an unsupported number", cache->content_actions.array[i].array[j], ", the number is too large for this system", i, line_item, &main->thread, cache);
+                controller_print_error_rule_setting_with_range(&main->program.error, cache, " has an unsupported number", cache->content_actions.array[i].array[j], ", the number is too large for this system", i, line_item);
               }
               else {
-                controller_print_error_rule_setting_with_range(&main->program.error, " has an invalid number", cache->content_actions.array[i].array[j], ", only whole numbers are allowed for an affinity value", i, line_item, &main->thread, cache);
+                controller_print_error_rule_setting_with_range(&main->program.error, cache, " has an invalid number", cache->content_actions.array[i].array[j], ", only whole numbers are allowed for an affinity value", i, line_item);
               }
 
               state.status = F_status_set_error(F_valid_not);
@@ -342,7 +342,7 @@ extern "C" {
               }
             }
             else {
-              controller_print_error_rule(&main->program.error, cache->action, F_status_set_fine(state.status), "fl_conversion_dynamic_partial_to_signed_detect", F_true, F_false);
+              controller_print_error_rule(&main->program.error, &cache->action, F_status_set_fine(state.status), "fl_conversion_dynamic_partial_to_signed_detect", F_true, F_false);
 
               state.status = F_status_set_error(state.status);
 
@@ -357,14 +357,14 @@ extern "C" {
           rule->affinity.array[rule->affinity.used++] = number;
         } // for
 
-        controller_print_error_rule_setting_values(main, controller_affinity_s, i, cache);
+        controller_print_error_rule_setting_values(&main->program.error, cache, controller_affinity_s, i);
 
         continue;
       }
 
       if (type == controller_rule_setting_type_define_e || type == controller_rule_setting_type_parameter_e) {
         if (cache->content_actions.array[i].used != 2) {
-          controller_print_error_rule_setting(&main->program.error, "requires exactly two Content", i, line_item, &main->thread, cache);
+          controller_print_error_rule_setting(&main->program.error, cache, "requires exactly two Content", i, line_item);
 
           if (F_status_is_error_not(status_return)) {
             status_return = F_status_set_error(F_valid_not);
@@ -383,7 +383,7 @@ extern "C" {
         state.status = f_memory_array_increase(controller_allocation_small_d, sizeof(f_string_map_t), (void **) &setting_maps->array, &setting_maps->used, &setting_maps->size);
 
         if (F_status_is_error(state.status)) {
-          controller_print_error_rule(&main->program.error, cache->action, F_status_set_fine(state.status), "f_memory_array_increase", F_true, F_false);
+          controller_print_error_rule(&main->program.error, &cache->action, F_status_set_fine(state.status), "f_memory_array_increase", F_true, F_false);
 
           if (F_status_set_fine(state.status) == F_memory_not) {
             status_return = state.status;
@@ -401,7 +401,7 @@ extern "C" {
 
           cache->action.line_action = ++cache->action.line_item;
 
-          controller_print_error_rule_item(&main->program.error, cache->action, F_false, F_status_set_fine(state.status));
+          controller_print_error_rule_item(&main->program.error, &cache->action, F_false, F_status_set_fine(state.status));
 
           continue;
         }
@@ -412,7 +412,7 @@ extern "C" {
         state.status = f_string_dynamic_partial_append_nulless(cache->buffer_item, cache->content_actions.array[i].array[0], &setting_maps->array[setting_maps->used].key);
 
         if (F_status_is_error(state.status)) {
-          controller_print_error_rule(&main->program.error, cache->action, F_status_set_fine(state.status), "f_string_dynamic_partial_append_nulless", F_true, F_false);
+          controller_print_error_rule(&main->program.error, &cache->action, F_status_set_fine(state.status), "f_string_dynamic_partial_append_nulless", F_true, F_false);
 
           if (F_status_set_fine(state.status) == F_memory_not) {
             status_return = state.status;
@@ -430,7 +430,7 @@ extern "C" {
 
           cache->action.line_action = ++cache->action.line_item;
 
-          controller_print_error_rule_item(&main->program.error, cache->action, F_false, F_status_set_fine(state.status));
+          controller_print_error_rule_item(&main->program.error, &cache->action, F_false, F_status_set_fine(state.status));
 
           continue;
         }
@@ -438,7 +438,7 @@ extern "C" {
         state.status = f_string_dynamic_partial_append_nulless(cache->buffer_item, cache->content_actions.array[i].array[1], &setting_maps->array[setting_maps->used].value);
 
         if (F_status_is_error(state.status)) {
-          controller_print_error_rule(&main->program.error, cache->action, F_status_set_fine(state.status), "f_string_dynamic_partial_append_nulless", F_true, F_false);
+          controller_print_error_rule(&main->program.error, &cache->action, F_status_set_fine(state.status), "f_string_dynamic_partial_append_nulless", F_true, F_false);
 
           if (F_status_set_fine(state.status) == F_memory_not) {
             status_return = state.status;
@@ -456,12 +456,12 @@ extern "C" {
 
           cache->action.line_action = ++cache->action.line_item;
 
-          controller_print_error_rule_item(&main->program.error, cache->action, F_false, F_status_set_fine(state.status));
+          controller_print_error_rule_item(&main->program.error, &cache->action, F_false, F_status_set_fine(state.status));
 
           continue;
         }
 
-        controller_print_error_rule_setting_mapping(main, type == controller_rule_setting_type_define_e ? controller_define_s : controller_parameter_s, setting_maps->array[setting_maps->used]);
+        controller_print_error_rule_setting_mapping(&main->program.error, type == controller_rule_setting_type_define_e ? controller_define_s : controller_parameter_s, setting_maps->array[setting_maps->used]);
 
         ++setting_maps->used;
 
@@ -470,7 +470,7 @@ extern "C" {
 
       if (type == controller_rule_setting_type_cgroup_e) {
         if (cache->content_actions.array[i].used < 2 || rule->has & controller_rule_has_cgroup_d) {
-          controller_print_error_rule_setting(&main->program.error, "requires two or more Content", i, line_item, &main->thread, cache);
+          controller_print_error_rule_setting(&main->program.error, cache, "requires two or more Content", i, line_item);
 
           if (F_status_is_error_not(status_return)) {
             status_return = F_status_set_error(F_valid_not);
@@ -486,7 +486,7 @@ extern "C" {
           rule->cgroup.as_new = F_true;
         }
         else {
-          controller_print_error_rule_setting_with_range(&main->program.error, " has an unknown option", cache->content_actions.array[i].array[0], "", i, line_item, &main->thread, cache);
+          controller_print_error_rule_setting_with_range(&main->program.error, cache, " has an unknown option", cache->content_actions.array[i].array[0], "", i, line_item);
 
           if (F_status_is_error_not(status_return)) {
             status_return = F_status_set_error(F_valid_not);
@@ -500,7 +500,7 @@ extern "C" {
         state.status = f_string_dynamic_append(main->process.path_cgroup, &rule->cgroup.path);
 
         if (F_status_is_error(state.status)) {
-          controller_print_error_rule(&main->program.error, cache->action, F_status_set_fine(state.status), "f_string_dynamic_append", F_true, F_false);
+          controller_print_error_rule(&main->program.error, &cache->action, F_status_set_fine(state.status), "f_string_dynamic_append", F_true, F_false);
         }
         else {
           rule->cgroup.groups.used = 0;
@@ -510,7 +510,7 @@ extern "C" {
             state.status = f_memory_array_increase(controller_allocation_small_d, sizeof(f_string_dynamic_t), (void **) &rule->cgroup.groups.array, &rule->cgroup.groups.used, &rule->cgroup.groups.size);
 
             if (F_status_is_error(state.status)) {
-              controller_print_error_rule(&main->program.error, cache->action, F_status_set_fine(state.status), "f_memory_array_increase", F_true, F_false);
+              controller_print_error_rule(&main->program.error, &cache->action, F_status_set_fine(state.status), "f_memory_array_increase", F_true, F_false);
 
               break;
             }
@@ -520,7 +520,7 @@ extern "C" {
             state.status = f_string_dynamic_partial_append_nulless(cache->buffer_item, cache->content_actions.array[i].array[j], &rule->cgroup.groups.array[rule->cgroup.groups.used]);
 
             if (F_status_is_error(state.status)) {
-              controller_print_error_rule(&main->program.error, cache->action, F_status_set_fine(state.status), "f_string_dynamic_partial_append_nulless", F_true, F_false);
+              controller_print_error_rule(&main->program.error, &cache->action, F_status_set_fine(state.status), "f_string_dynamic_partial_append_nulless", F_true, F_false);
 
               break;
             }
@@ -548,21 +548,21 @@ extern "C" {
 
           cache->action.line_action = ++cache->action.line_item;
 
-          controller_print_error_rule_item(&main->program.error, cache->action, F_false, F_status_set_fine(state.status));
+          controller_print_error_rule_item(&main->program.error, &cache->action, F_false, F_status_set_fine(state.status));
 
           continue;
         }
 
         rule->has |= controller_rule_has_cgroup_d;
 
-        controller_print_error_rule_setting_values(main, controller_cgroup_s, i, cache);
+        controller_print_error_rule_setting_values(&main->program.error, cache, controller_cgroup_s, i);
 
         continue;
       }
 
       if (type == controller_rule_setting_type_limit_e) {
         if (cache->content_actions.array[i].used != 3) {
-          controller_print_error_rule_setting(&main->program.error, "requires three Content", i, line_item, &main->thread, cache);
+          controller_print_error_rule_setting(&main->program.error, cache, "requires three Content", i, line_item);
 
           if (F_status_is_error_not(status_return)) {
             status_return = F_status_set_error(F_valid_not);
@@ -634,7 +634,7 @@ extern "C" {
             fl_print_format(f_string_format_Q_single_s.string, main->program.error.to, main->program.error.notable, cache->action.name_action, main->program.error.notable);
             fl_print_format(f_string_format_sentence_end_quote_s.string, main->program.error.to, main->program.error.context, main->program.error.context, f_string_eol_s);
 
-            controller_print_error_rule_cache(&main->program.error, cache->action, F_true);
+            controller_print_error_rule_cache(&main->program.error, &cache->action, F_true);
 
             controller_unlock_print_flush(main->program.error.to, &main->thread);
           }
@@ -661,7 +661,7 @@ extern "C" {
 
               fl_print_format("%r%[%QThe resource limit type is already specified%]%r", main->program.error.to, f_string_eol_s, main->program.error.context, main->program.error.prefix, main->program.error.context, f_string_eol_s);
 
-              controller_print_error_rule_cache(&main->program.error, cache->action, F_false);
+              controller_print_error_rule_cache(&main->program.error, &cache->action, F_false);
 
               controller_unlock_print_flush(main->program.error.to, &main->thread);
             }
@@ -679,7 +679,7 @@ extern "C" {
         state.status = f_memory_array_increase(controller_allocation_small_d, sizeof(f_limit_set_t), (void **) &rule->limits.array, &rule->limits.used, &rule->limits.size);
 
         if (F_status_is_error(state.status)) {
-          controller_print_error_rule(&main->program.error, cache->action, F_status_set_fine(state.status), "f_memory_array_increase", F_true, F_false);
+          controller_print_error_rule(&main->program.error, &cache->action, F_status_set_fine(state.status), "f_memory_array_increase", F_true, F_false);
 
           if (F_status_set_fine(state.status) == F_memory_not) {
             status_return = state.status;
@@ -697,7 +697,7 @@ extern "C" {
 
           cache->action.line_action = ++cache->action.line_item;
 
-          controller_print_error_rule_item(&main->program.error, cache->action, F_false, F_status_set_fine(state.status));
+          controller_print_error_rule_item(&main->program.error, &cache->action, F_false, F_status_set_fine(state.status));
 
           continue;
         }
@@ -722,13 +722,13 @@ extern "C" {
 
             if (state.status == F_data_not || state.status == F_number || state.status == F_number_overflow || state.status == F_number_underflow || state.status == F_number_negative || state.status == F_number_positive || state.status == F_number_decimal) {
               if (state.status == F_number_underflow) {
-                controller_print_error_rule_setting_with_range(&main->program.error, " has an unsupported number", cache->content_actions.array[i].array[j], ", the number is too small for this system", i, line_item, &main->thread, cache);
+                controller_print_error_rule_setting_with_range(&main->program.error, cache, " has an unsupported number", cache->content_actions.array[i].array[j], ", the number is too small for this system", i, line_item);
               }
               else if (state.status == F_number_overflow) {
-                controller_print_error_rule_setting_with_range(&main->program.error, " has an unsupported number", cache->content_actions.array[i].array[j], ", the number is too large for this system", i, line_item, &main->thread, cache);
+                controller_print_error_rule_setting_with_range(&main->program.error, cache, " has an unsupported number", cache->content_actions.array[i].array[j], ", the number is too large for this system", i, line_item);
               }
               else {
-                controller_print_error_rule_setting_with_range(&main->program.error, " has an unsupported number", cache->content_actions.array[i].array[j], ", only whole numbers are allowed for a resource limit value", i, line_item, &main->thread, cache);
+                controller_print_error_rule_setting_with_range(&main->program.error, cache, " has an unsupported number", cache->content_actions.array[i].array[j], ", only whole numbers are allowed for a resource limit value", i, line_item);
               }
 
               state.status = F_status_set_error(F_valid_not);
@@ -738,7 +738,7 @@ extern "C" {
               }
             }
             else {
-              controller_print_error_rule(&main->program.error, cache->action, F_status_set_fine(state.status), "fl_conversion_dynamic_partial_to_signed_detect", F_true, F_false);
+              controller_print_error_rule(&main->program.error, &cache->action, F_status_set_fine(state.status), "fl_conversion_dynamic_partial_to_signed_detect", F_true, F_false);
 
               state.status = F_status_set_error(state.status);
 
@@ -762,7 +762,7 @@ extern "C" {
 
         rule->limits.array[rule->limits.used++].type = type;
 
-        controller_print_error_rule_setting_values(main, controller_limit_s, i, cache);
+        controller_print_error_rule_setting_values(&main->program.error, cache, controller_limit_s, i);
 
         continue;
       }
@@ -780,7 +780,7 @@ extern "C" {
         }
 
         if (setting_value->used || !cache->content_actions.array[i].used) {
-          controller_print_error_rule_setting(&main->program.error, "requires one or more Content", i, line_item, &main->thread, cache);
+          controller_print_error_rule_setting(&main->program.error, cache, "requires one or more Content", i, line_item);
 
           if (F_status_is_error_not(status_return)) {
             status_return = F_status_set_error(F_valid_not);
@@ -830,7 +830,7 @@ extern "C" {
 
             cache->action.line_action = ++cache->action.line_item;
 
-            controller_print_error_rule_item(&main->program.error, cache->action, F_false, F_status_set_fine(state.status));
+            controller_print_error_rule_item(&main->program.error, &cache->action, F_false, F_status_set_fine(state.status));
 
             continue;
           }
@@ -855,7 +855,7 @@ extern "C" {
                 fl_print_format(f_string_format_Q_single_s.string, main->program.error.to, main->program.error.notable, *setting_value, main->program.error.notable);
                 fl_print_format("%[', there must be at least 1 graph character.%]%r", main->program.error.to, main->program.error.context, main->program.error.context, f_string_eol_s);
 
-                controller_print_error_rule_cache(&main->program.error, cache->action, F_false);
+                controller_print_error_rule_cache(&main->program.error, &cache->action, F_false);
 
                 controller_unlock_print_flush(main->program.error.to, &main->thread);
               }
@@ -867,13 +867,13 @@ extern "C" {
             else {
 
               // This function should only return F_complete_not_utf on error.
-              controller_print_error_rule(&main->program.error, cache->action, F_complete_not_utf, "controller_validate_has_graph", F_true, F_false);
+              controller_print_error_rule(&main->program.error, &cache->action, F_complete_not_utf, "controller_validate_has_graph", F_true, F_false);
 
               if (F_status_is_error_not(status_return)) {
                 status_return = state.status;
               }
 
-              controller_print_error_rule_item(&main->program.error, cache->action, F_false, F_status_set_fine(state.status));
+              controller_print_error_rule_item(&main->program.error, &cache->action, F_false, F_status_set_fine(state.status));
             }
 
             setting_value->used = 0;
@@ -881,13 +881,13 @@ extern "C" {
             continue;
           }
 
-          controller_print_error_rule_setting_value(main, type == controller_rule_setting_type_name_e ? controller_name_s : controller_engine_s, f_string_empty_s, *setting_value, 0);
+          controller_print_error_rule_setting_value(&main->program.error, type == controller_rule_setting_type_name_e ? controller_name_s : controller_engine_s, f_string_empty_s, *setting_value, 0);
         }
         else if (type == controller_rule_setting_type_path_e) {
           state.status = f_string_dynamic_partial_append_nulless(cache->buffer_item, cache->content_actions.array[i].array[0], setting_value);
 
           if (F_status_is_error(state.status)) {
-            controller_print_error_rule(&main->program.error, cache->action, F_status_set_fine(state.status), "f_string_dynamic_partial_append_nulless", F_true, F_false);
+            controller_print_error_rule(&main->program.error, &cache->action, F_status_set_fine(state.status), "f_string_dynamic_partial_append_nulless", F_true, F_false);
 
             if (F_status_set_fine(state.status) == F_memory_not) {
               status_return = state.status;
@@ -907,12 +907,12 @@ extern "C" {
 
             cache->action.line_action = ++cache->action.line_item;
 
-            controller_print_error_rule_item(&main->program.error, cache->action, F_false, F_status_set_fine(state.status));
+            controller_print_error_rule_item(&main->program.error, &cache->action, F_false, F_status_set_fine(state.status));
 
             continue;
           }
 
-          controller_print_error_rule_setting_value(main, controller_path_s, f_string_empty_s, *setting_value, 0);
+          controller_print_error_rule_setting_value(&main->program.error, controller_path_s, f_string_empty_s, *setting_value, 0);
         }
 
         continue;
@@ -920,7 +920,7 @@ extern "C" {
 
       if (type == controller_rule_setting_type_scheduler_e) {
         if (cache->content_actions.array[i].used < 1 || cache->content_actions.array[i].used > 2 || rule->has & controller_rule_has_scheduler_d) {
-          controller_print_error_rule_setting(&main->program.error, "requires either one or two Content", i, line_item, &main->thread, cache);
+          controller_print_error_rule_setting(&main->program.error, cache, "requires either one or two Content", i, line_item);
 
           if (F_status_is_error_not(status_return)) {
             status_return = F_status_set_error(F_valid_not);
@@ -954,7 +954,7 @@ extern "C" {
           rule->scheduler.priority = 49;
         }
         else {
-          controller_print_error_rule_setting_with_range(&main->program.error, " has an unknown scheduler", cache->content_actions.array[i].array[0], "", i, line_item, &main->thread, cache);
+          controller_print_error_rule_setting_with_range(&main->program.error, cache, " has an unknown scheduler", cache->content_actions.array[i].array[0], "", i, line_item);
 
           if (F_status_is_error_not(status_return)) {
             status_return = F_status_set_error(F_valid_not);
@@ -964,7 +964,7 @@ extern "C" {
         }
 
         if (cache->content_actions.array[i].used > 1) {
-          const bool zero_only = rule->scheduler.policy == SCHED_BATCH || rule->scheduler.policy == SCHED_IDLE || rule->scheduler.policy == SCHED_OTHER;
+          const uint8_t zero_only = rule->scheduler.policy == SCHED_BATCH || rule->scheduler.policy == SCHED_IDLE || rule->scheduler.policy == SCHED_OTHER;
 
           f_number_signed_t number = 0;
 
@@ -1008,7 +1008,7 @@ extern "C" {
 
                 fl_print_format(" allowed for the designated scheduler.%]%r", main->program.error.to, main->program.error.context, main->program.error.context, f_string_eol_s);
 
-                controller_print_error_rule_cache(&main->program.error, cache->action, F_false);
+                controller_print_error_rule_cache(&main->program.error, &cache->action, F_false);
 
                 controller_unlock_print_flush(main->program.error.to, &main->thread);
               }
@@ -1018,7 +1018,7 @@ extern "C" {
               }
             }
             else {
-              controller_print_error_rule(&main->program.error, cache->action, state.status, "fl_conversion_dynamic_partial_to_signed_detect", F_true, F_false);
+              controller_print_error_rule(&main->program.error, &cache->action, state.status, "fl_conversion_dynamic_partial_to_signed_detect", F_true, F_false);
               state.status = F_status_set_error(state.status);
 
               if (F_status_is_error_not(status_return)) {
@@ -1034,14 +1034,14 @@ extern "C" {
 
         rule->has |= controller_rule_has_scheduler_d;
 
-        controller_print_error_rule_setting_values(main, controller_scheduler_s, i, cache);
+        controller_print_error_rule_setting_values(&main->program.error, cache, controller_scheduler_s, i);
 
         continue;
       }
 
       if (type == controller_rule_setting_type_timeout_e) {
         if (cache->content_actions.array[i].used != 2) {
-          controller_print_error_rule_setting(&main->program.error, "requires exactly two Content", i, line_item, &main->thread, cache);
+          controller_print_error_rule_setting(&main->program.error, cache, "requires exactly two Content", i, line_item);
 
           if (F_status_is_error_not(status_return)) {
             status_return = F_status_set_error(F_valid_not);
@@ -1076,7 +1076,7 @@ extern "C" {
             fl_print_format(f_string_format_Q_range_single_s.string, main->program.error.to, main->program.error.notable, cache->buffer_item, cache->content_actions.array[i].array[0], main->program.error.notable);
             fl_print_format("%[' but only supports %r, %r, and %r.%]%r", main->program.error.to, main->program.error.context, controller_kill_s, controller_start_s, controller_stop_s, main->program.error.context, f_string_eol_s);
 
-            controller_print_error_rule_cache(&main->program.error, cache->action, F_false);
+            controller_print_error_rule_cache(&main->program.error, &cache->action, F_false);
 
             controller_unlock_print_flush(main->program.error.to, &main->thread);
           }
@@ -1105,10 +1105,10 @@ extern "C" {
           state.status = F_status_set_fine(state.status);
 
           if (state.status == F_number_overflow) {
-            controller_print_error_rule_setting_with_range(&main->program.error, " has an unsupported number", cache->content_actions.array[i].array[1], ", the number is too large for this system", i, line_item, &main->thread, cache);
+            controller_print_error_rule_setting_with_range(&main->program.error, cache, " has an unsupported number", cache->content_actions.array[i].array[1], ", the number is too large for this system", i, line_item);
           }
           else if (state.status == F_data_not || state.status == F_number || state.status == F_number_underflow || state.status == F_number_negative || state.status == F_number_positive || state.status == F_number_decimal) {
-            controller_print_error_rule_setting_with_range(&main->program.error, " has an invalid number", cache->content_actions.array[i].array[1], ", only positive whole numbers are allowed", i, line_item, &main->thread, cache);
+            controller_print_error_rule_setting_with_range(&main->program.error, cache, " has an invalid number", cache->content_actions.array[i].array[1], ", only positive whole numbers are allowed", i, line_item);
           }
           else {
 
@@ -1118,7 +1118,7 @@ extern "C" {
 
             cache->action.line_action = ++cache->action.line_item;
 
-            controller_print_error_rule(&main->program.error, cache->action, state.status, "fl_conversion_dynamic_partial_to_signed_detect", F_true, F_false);
+            controller_print_error_rule(&main->program.error, &cache->action, state.status, "fl_conversion_dynamic_partial_to_signed_detect", F_true, F_false);
           }
 
           if (F_status_is_error_not(status_return)) {
@@ -1156,7 +1156,7 @@ extern "C" {
               break;
             }
 
-            controller_print_error_rule_setting_value(main, controller_timeout_s, name_sub, cache->action.generic, 0);
+            controller_print_error_rule_setting_value(&main->program.error, controller_timeout_s, name_sub, cache->action.generic, 0);
           }
         }
 
@@ -1165,7 +1165,7 @@ extern "C" {
 
       if (type == controller_rule_setting_type_capability_e || type == controller_rule_setting_type_nice_e || type == controller_rule_setting_type_user_e) {
         if (cache->content_actions.array[i].used != 1 || type == controller_rule_setting_type_capability_e && rule->capability || type == controller_rule_setting_type_group_e && (rule->has & controller_rule_has_group_d) || type == controller_rule_setting_type_nice_e && (rule->has & controller_rule_has_nice_d) || type == controller_rule_setting_type_user_e && (rule->has & controller_rule_has_user_d)) {
-          controller_print_error_rule_setting(&main->program.error, "requires exactly one Content", i, line_item, &main->thread, cache);
+          controller_print_error_rule_setting(&main->program.error, cache, "requires exactly one Content", i, line_item);
 
           if (F_status_is_error_not(status_return)) {
             status_return = F_status_set_error(F_valid_not);
@@ -1189,9 +1189,9 @@ extern "C" {
 
             controller_lock_print(main->program.error.to, &main->thread);
 
-            controller_print_error_rule(&main->program.error, cache->action, F_status_set_fine(state.status), "f_string_dynamic_partial_append_nulless", F_true, F_false);
+            controller_print_error_rule(&main->program.error, &cache->action, F_status_set_fine(state.status), "f_string_dynamic_partial_append_nulless", F_true, F_false);
 
-            controller_print_error_rule_cache(&main->program.error, cache->action, F_false);
+            controller_print_error_rule_cache(&main->program.error, &cache->action, F_false);
 
             controller_unlock_print_flush(main->program.error.to, &main->thread);
 
@@ -1219,9 +1219,9 @@ extern "C" {
 
               controller_lock_print(main->program.error.to, &main->thread);
 
-              controller_print_error_rule(&main->program.error, cache->action, F_status_set_fine(state.status), "f_capability_from_text", F_true, F_false);
+              controller_print_error_rule(&main->program.error, &cache->action, F_status_set_fine(state.status), "f_capability_from_text", F_true, F_false);
 
-              controller_print_error_rule_cache(&main->program.error, cache->action, F_false);
+              controller_print_error_rule_cache(&main->program.error, &cache->action, F_false);
 
               controller_unlock_print_flush(main->program.error.to, &main->thread);
 
@@ -1230,7 +1230,7 @@ extern "C" {
               break;
             }
 
-            controller_print_error_rule_setting(&main->program.error, "failed to process the capabilities", i, line_item, &main->thread, cache);
+            controller_print_error_rule_setting(&main->program.error, cache, "failed to process the capabilities", i, line_item);
 
             if (F_status_is_error_not(status_return)) {
               status_return = F_status_set_error(F_valid_not);
@@ -1239,7 +1239,7 @@ extern "C" {
             continue;
           }
 
-          controller_print_error_rule_setting_value(main, controller_capability_s, f_string_empty_s, cache->action.generic, 0);
+          controller_print_error_rule_setting_value(&main->program.error, controller_capability_s, f_string_empty_s, cache->action.generic, 0);
         }
         else if (type == controller_rule_setting_type_nice_e) {
           f_number_signed_t number = 0;
@@ -1277,7 +1277,7 @@ extern "C" {
                 fl_print_format("%[19%]", main->program.error.to, main->program.error.notable, main->program.error.notable);
                 fl_print_format(" %[are allowed.%]%r", main->program.error.to, main->program.error.context, main->program.error.context, f_string_eol_s);
 
-                controller_print_error_rule_cache(&main->program.error, cache->action, F_false);
+                controller_print_error_rule_cache(&main->program.error, &cache->action, F_false);
 
                 controller_unlock_print_flush(main->program.error.to, &main->thread);
               }
@@ -1287,7 +1287,7 @@ extern "C" {
               }
             }
             else {
-              controller_print_error_rule(&main->program.error, cache->action, state.status, "fl_conversion_dynamic_partial_to_signed_detect", F_true, F_false);
+              controller_print_error_rule(&main->program.error, &cache->action, state.status, "fl_conversion_dynamic_partial_to_signed_detect", F_true, F_false);
               state.status = F_status_set_error(state.status);
 
               if (F_status_is_error_not(status_return)) {
@@ -1314,9 +1314,9 @@ extern "C" {
 
                 controller_lock_print(main->program.error.to, &main->thread);
 
-                controller_print_error_rule(&main->program.error, cache->action, F_status_set_fine(state.status), "f_string_dynamic_partial_append_nulless", F_true, F_false);
+                controller_print_error_rule(&main->program.error, &cache->action, F_status_set_fine(state.status), "f_string_dynamic_partial_append_nulless", F_true, F_false);
 
-                controller_print_error_rule_cache(&main->program.error, cache->action, F_false);
+                controller_print_error_rule_cache(&main->program.error, &cache->action, F_false);
 
                 controller_unlock_print_flush(main->program.error.to, &main->thread);
 
@@ -1332,7 +1332,7 @@ extern "C" {
               }
 
               if (F_status_is_error_not(state.status)) {
-                controller_print_error_rule_setting_value(main, controller_nice_s, f_string_empty_s, cache->action.generic, 0);
+                controller_print_error_rule_setting_value(&main->program.error, controller_nice_s, f_string_empty_s, cache->action.generic, 0);
               }
             }
           }
@@ -1346,13 +1346,13 @@ extern "C" {
             state.status = F_status_set_fine(state.status);
 
             if (state.status == F_exist_not) {
-              controller_print_error_rule_setting_with_range(&main->program.error, " has an invalid user", cache->content_actions.array[i].array[0], ", because no user was found by that name", i, line_item, &main->thread, cache);
+              controller_print_error_rule_setting_with_range(&main->program.error, cache, " has an invalid user", cache->content_actions.array[i].array[0], ", because no user was found by that name", i, line_item);
             }
             else if (state.status == F_number_too_large) {
-              controller_print_error_rule_setting_with_range(&main->program.error, " has an invalid user", cache->content_actions.array[i].array[0], ", because the given ID is too large", i, line_item, &main->thread, cache);
+              controller_print_error_rule_setting_with_range(&main->program.error, cache, " has an invalid user", cache->content_actions.array[i].array[0], ", because the given ID is too large", i, line_item);
             }
             else if (state.status == F_number) {
-              controller_print_error_rule_setting_with_range(&main->program.error, " has an invalid user", cache->content_actions.array[i].array[0], ", because the given ID is not a valid supported number", i, line_item, &main->thread, cache);
+              controller_print_error_rule_setting_with_range(&main->program.error, cache, " has an invalid user", cache->content_actions.array[i].array[0], ", because the given ID is not a valid supported number", i, line_item);
             }
             else {
 
@@ -1362,9 +1362,9 @@ extern "C" {
 
               cache->action.line_action = ++cache->action.line_item;
 
-              controller_print_error_rule(&main->program.error, cache->action, state.status, "controller_convert_user_id", F_true, F_false);
+              controller_print_error_rule(&main->program.error, &cache->action, state.status, "controller_convert_user_id", F_true, F_false);
 
-              controller_print_error_rule_item(&main->program.error, cache->action, F_false, F_status_set_fine(state.status));
+              controller_print_error_rule_item(&main->program.error, &cache->action, F_false, F_status_set_fine(state.status));
             }
 
             if (F_status_is_error_not(status_return)) {
@@ -1380,7 +1380,7 @@ extern "C" {
 
               state.status = f_string_dynamic_partial_append_nulless(cache->buffer_item, cache->content_actions.array[i].array[0], &cache->action.generic);
 
-              controller_print_error_rule_setting_value(main, controller_user_s, f_string_empty_s, cache->action.generic, 0);
+              controller_print_error_rule_setting_value(&main->program.error, controller_user_s, f_string_empty_s, cache->action.generic, 0);
             }
           }
         }
@@ -1390,7 +1390,7 @@ extern "C" {
 
       if (type == controller_rule_setting_type_group_e) {
         if (!cache->content_actions.array[i].used) {
-          controller_print_error_rule_setting(&main->program.error, "requires one or more Content", i, line_item, &main->thread, cache);
+          controller_print_error_rule_setting(&main->program.error, cache, "requires one or more Content", i, line_item);
 
           if (F_status_is_error_not(status_return)) {
             status_return = F_status_set_error(F_valid_not);
@@ -1408,7 +1408,7 @@ extern "C" {
           state.status = f_memory_array_increase(controller_allocation_small_d, sizeof(f_int32s_t), (void **) &rule->groups.array, &rule->groups.used, &rule->groups.size);
 
           if (F_status_is_error(state.status)) {
-            controller_print_error_rule(&main->program.error, cache->action, F_status_set_fine(state.status), "f_memory_array_increase", F_true, F_false);
+            controller_print_error_rule(&main->program.error, &cache->action, F_status_set_fine(state.status), "f_memory_array_increase", F_true, F_false);
 
             if (F_status_set_fine(state.status) == F_memory_not) {
               status_return = state.status;
@@ -1426,7 +1426,7 @@ extern "C" {
 
             cache->action.line_action = ++cache->action.line_item;
 
-            controller_print_error_rule_item(&main->program.error, cache->action, F_false, F_status_set_fine(state.status));
+            controller_print_error_rule_item(&main->program.error, &cache->action, F_false, F_status_set_fine(state.status));
 
             continue;
           }
@@ -1437,13 +1437,13 @@ extern "C" {
             state.status = F_status_set_fine(state.status);
 
             if (state.status == F_exist_not) {
-              controller_print_error_rule_setting_with_range(&main->program.error, " has an invalid group", cache->content_actions.array[i].array[j], ", because no group was found by that name", i, line_item, &main->thread, cache);
+              controller_print_error_rule_setting_with_range(&main->program.error, cache, " has an invalid group", cache->content_actions.array[i].array[j], ", because no group was found by that name", i, line_item);
             }
             else if (state.status == F_number_too_large) {
-              controller_print_error_rule_setting_with_range(&main->program.error, " has an invalid group", cache->content_actions.array[i].array[j], ", because the given ID is too large", i, line_item, &main->thread, cache);
+              controller_print_error_rule_setting_with_range(&main->program.error, cache, " has an invalid group", cache->content_actions.array[i].array[j], ", because the given ID is too large", i, line_item);
             }
             else if (state.status == F_number) {
-              controller_print_error_rule_setting_with_range(&main->program.error, " has an invalid group", cache->content_actions.array[i].array[j], ", because the given ID is not a valid supported number", i, line_item, &main->thread, cache);
+              controller_print_error_rule_setting_with_range(&main->program.error, cache, " has an invalid group", cache->content_actions.array[i].array[j], ", because the given ID is not a valid supported number", i, line_item);
             }
             else {
 
@@ -1453,9 +1453,9 @@ extern "C" {
 
               cache->action.line_action = ++cache->action.line_item;
 
-              controller_print_error_rule(&main->program.error, cache->action, state.status, "f_account_group_id_by_name", F_true, F_false);
+              controller_print_error_rule(&main->program.error, &cache->action, state.status, "f_account_group_id_by_name", F_true, F_false);
 
-              controller_print_error_rule_item(&main->program.error, cache->action, F_false, F_status_set_fine(state.status));
+              controller_print_error_rule_item(&main->program.error, &cache->action, F_false, F_status_set_fine(state.status));
             }
 
             if (F_status_is_error_not(status_return)) {
@@ -1473,7 +1473,7 @@ extern "C" {
           }
         } // for
 
-        controller_print_error_rule_setting_values(main, controller_group_s, i, cache);
+        controller_print_error_rule_setting_values(&main->program.error, cache, controller_group_s, i);
 
         continue;
       }
@@ -1486,7 +1486,7 @@ extern "C" {
           state.status = f_memory_array_increase(controller_allocation_small_d, sizeof(f_string_dynamic_t), (void **) &setting_values->array, &setting_values->used, &setting_values->size);
 
           if (F_status_is_error(state.status)) {
-            controller_print_error_rule(&main->program.error, cache->action, F_status_set_fine(state.status), "f_memory_array_increase", F_true, F_false);
+            controller_print_error_rule(&main->program.error, &cache->action, F_status_set_fine(state.status), "f_memory_array_increase", F_true, F_false);
 
             if (F_status_set_fine(state.status) == F_memory_not) {
               status_return = state.status;
@@ -1504,7 +1504,7 @@ extern "C" {
 
             cache->action.line_action = ++cache->action.line_item;
 
-            controller_print_error_rule_item(&main->program.error, cache->action, F_false, F_status_set_fine(state.status));
+            controller_print_error_rule_item(&main->program.error, &cache->action, F_false, F_status_set_fine(state.status));
 
             continue;
           }
@@ -1514,7 +1514,7 @@ extern "C" {
           state.status = f_string_dynamic_partial_append_nulless(cache->buffer_item, cache->content_actions.array[i].array[j], &setting_values->array[setting_values->used]);
 
           if (F_status_is_error(state.status)) {
-            controller_print_error_rule(&main->program.error, cache->action, F_status_set_fine(state.status), "f_string_dynamic_partial_append_nulless", F_true, F_false);
+            controller_print_error_rule(&main->program.error, &cache->action, F_status_set_fine(state.status), "f_string_dynamic_partial_append_nulless", F_true, F_false);
 
             setting_values->array[setting_values->used].used = 0;
 
@@ -1534,7 +1534,7 @@ extern "C" {
 
             cache->action.line_action = ++cache->action.line_item;
 
-            controller_print_error_rule_item(&main->program.error, cache->action, F_false, F_status_set_fine(state.status));
+            controller_print_error_rule_item(&main->program.error, &cache->action, F_false, F_status_set_fine(state.status));
 
             continue;
           }
@@ -1557,7 +1557,7 @@ extern "C" {
                 fl_print_format(f_string_format_Q_single_s.string, main->program.error.to, main->program.error.notable, setting_values->array[setting_values->used], main->program.error.notable);
                 fl_print_format(f_string_format_sentence_end_quote_s.string, main->program.error.to, main->program.error.context, main->program.error.context, f_string_eol_s);
 
-                controller_print_error_rule_cache(&main->program.error, cache->action, F_false);
+                controller_print_error_rule_cache(&main->program.error, &cache->action, F_false);
 
                 controller_unlock_print_flush(main->program.error.to, &main->thread);
               }
@@ -1569,7 +1569,7 @@ extern "C" {
             else {
 
               // This function should only return F_complete_not_utf on error.
-              controller_print_error_rule(&main->program.error, cache->action, F_complete_not_utf, "controller_validate_environment_name", F_true, F_false);
+              controller_print_error_rule(&main->program.error, &cache->action, F_complete_not_utf, "controller_validate_environment_name", F_true, F_false);
 
               if (F_status_is_error_not(status_return)) {
                 status_return = state.status;
@@ -1578,7 +1578,7 @@ extern "C" {
 
             setting_values->array[setting_values->used].used = 0;
 
-            controller_print_error_rule_item(&main->program.error, cache->action, F_false, F_status_set_fine(state.status));
+            controller_print_error_rule_item(&main->program.error, &cache->action, F_false, F_status_set_fine(state.status));
 
             continue;
           }
@@ -1589,7 +1589,7 @@ extern "C" {
         rule->has |= controller_rule_has_environment_d;
 
         if (cache->content_actions.array[i].used) {
-          controller_print_error_rule_setting_values(main, controller_environment_s, i, cache);
+          controller_print_error_rule_setting_values(&main->program.error, cache, controller_environment_s, i);
         }
         else {
           if (main->program.error.verbosity == f_console_verbosity_debug_e || (main->program.error.verbosity == f_console_verbosity_verbose_e && (main->setting.flag & controller_main_flag_simulate_e))) {
@@ -1606,7 +1606,7 @@ extern "C" {
 
       // The "on" Rule Setting.
       if (cache->content_actions.array[i].used != 4) {
-        controller_print_error_rule_setting(&main->program.error, "requires exactly four Content", i, line_item, &main->thread, cache);
+        controller_print_error_rule_setting(&main->program.error, cache, "requires exactly four Content", i, line_item);
 
         if (F_status_is_error_not(status_return)) {
           status_return = F_status_set_error(F_valid_not);
@@ -1660,7 +1660,7 @@ extern "C" {
           fl_print_format("%[' but only supports %r, %r, %r, %r, %r", main->program.error.to, main->program.error.context, controller_freeze_s, controller_kill_s, controller_pause_s, controller_reload_s, controller_restart_s);
           fl_print_format("%r, %r, %r, and %r.%]%r", main->program.error.to, controller_resume_s, controller_start_s, controller_stop_s, controller_thaw_s, main->program.error.context, f_string_eol_s);
 
-          controller_print_error_rule_cache(&main->program.error, cache->action, F_false);
+          controller_print_error_rule_cache(&main->program.error, &cache->action, F_false);
 
           controller_unlock_print_flush(main->program.error.to, &main->thread);
         }
@@ -1681,7 +1681,7 @@ extern "C" {
       }
 
       if (F_status_is_error(state.status)) {
-        controller_print_error_rule(&main->program.error, cache->action, F_status_set_fine(state.status), macro_controller_f(f_memory_array_increase), F_true, F_false);
+        controller_print_error_rule(&main->program.error, &cache->action, F_status_set_fine(state.status), macro_controller_f(f_memory_array_increase), F_true, F_false);
       }
       else {
         if (f_compare_dynamic_partial_string(controller_need_s.string, cache->buffer_item, controller_need_s.used, cache->content_actions.array[i].array[1]) == F_equal_to) {
@@ -1708,7 +1708,7 @@ extern "C" {
             fl_print_format(f_string_format_Q_range_single_s.string, main->program.error.to, main->program.error.notable, cache->buffer_item, cache->content_actions.array[i].array[1], main->program.error.notable);
             fl_print_format("%[' but only supports %r, %r, and %r.%]%r", main->program.error.to, main->program.error.context, controller_need_s, controller_want_s, controller_wish_s, main->program.error.context, f_string_eol_s);
 
-            controller_print_error_rule_cache(&main->program.error, cache->action, F_false);
+            controller_print_error_rule_cache(&main->program.error, &cache->action, F_false);
 
             controller_unlock_print_flush(main->program.error.to, &main->thread);
           }
@@ -1723,7 +1723,7 @@ extern "C" {
         state.status = f_memory_array_increase(controller_allocation_small_d, sizeof(f_string_dynamic_t), (void **) &setting_values->array, &setting_values->used, &setting_values->size);
 
         if (F_status_is_error(state.status)) {
-          controller_print_error_rule(&main->program.error, cache->action, F_status_set_fine(state.status), macro_controller_f(f_memory_array_increase), F_true, F_false);
+          controller_print_error_rule(&main->program.error, &cache->action, F_status_set_fine(state.status), macro_controller_f(f_memory_array_increase), F_true, F_false);
         }
       }
 
@@ -1744,7 +1744,7 @@ extern "C" {
 
         cache->action.line_action = ++cache->action.line_item;
 
-        controller_print_error_rule_item(&main->program.error, cache->action, F_false, F_status_set_fine(state.status));
+        controller_print_error_rule_item(&main->program.error, &cache->action, F_false, F_status_set_fine(state.status));
 
         continue;
       }
@@ -1770,7 +1770,7 @@ extern "C" {
 
         cache->action.line_action = ++cache->action.line_item;
 
-        controller_print_error_rule_item(&main->program.error, cache->action, F_false, F_status_set_fine(state.status));
+        controller_print_error_rule_item(&main->program.error, &cache->action, F_false, F_status_set_fine(state.status));
 
         continue;
       }
@@ -1782,7 +1782,7 @@ extern "C" {
       if (F_status_is_error(state.status)) {
         setting_values->array[setting_values->used].used = 0;
 
-        controller_print_error_rule(&main->program.error, cache->action, F_status_set_fine(state.status), "f_file_name_base", F_true, F_false);
+        controller_print_error_rule(&main->program.error, &cache->action, F_status_set_fine(state.status), "f_file_name_base", F_true, F_false);
 
         if (F_status_set_fine(state.status) == F_memory_not) {
           status_return = state.status;

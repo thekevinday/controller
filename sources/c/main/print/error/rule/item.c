@@ -5,9 +5,9 @@ extern "C" {
 #endif
 
 #ifndef _di_controller_print_error_rule_item_
-  f_status_t controller_print_error_rule_item(fl_print_t * const print, const controller_cache_action_t cache, const bool item, const f_status_t status) {
+  f_status_t controller_print_error_rule_item(fl_print_t * const print, controller_cache_action_t * const action, const uint8_t item, const f_status_t status) {
 
-    if (!print || !print->custom) return F_status_set_error(F_output_not);
+    if (!print || !print->custom || !action) return F_status_set_error(F_output_not);
     if (print->verbosity < f_console_verbosity_error_e) return F_output_not;
     if (status == F_interrupt) return F_status_set_error(F_output_not);
 
@@ -16,7 +16,7 @@ extern "C" {
     // fll_error_print() automatically locks, so manually handle only the mutex locking and flushing rather than calling controller_lock_print().
     f_thread_mutex_lock(&main->thread.lock.print);
 
-    controller_print_error_rule_cache(print, cache, item);
+    controller_print_error_rule_cache(print, action, item);
 
     f_file_stream_lock(print->to);
 
@@ -61,7 +61,7 @@ extern "C" {
 #endif // _di_controller_print_error_rule_item_action_first_
 
 #ifndef _di_controller_print_error_rule_item_action_positive_number_not_
-  f_status_t controller_print_error_rule_item_action_positive_number_not(fl_print_t * const print, controller_cache_t * const cache, const f_string_static_t name, const f_number_unsigned_t index) {
+  f_status_t controller_print_error_rule_item_action_positive_number_not(fl_print_t * const print, controller_cache_t * const cache, const f_string_static_t name, const f_number_unsigned_t index, const f_status_t status) {
 
     if (!print || !print->custom || !cache) return F_status_set_error(F_output_not);
     if (print->verbosity < f_console_verbosity_error_e) return F_output_not;
@@ -127,7 +127,7 @@ extern "C" {
 #endif // _di_controller_print_error_rule_item_action_second_
 
 #ifndef _di_controller_print_error_rule_item_action_unknown_
-  f_status_t controller_print_error_rule_item_action_unknown(fl_print_t * const print, controller_cache_t * const cache, const f_string_static_t name, const f_string_static_t unknown) {
+  f_status_t controller_print_error_rule_item_action_unknown(fl_print_t * const print, controller_cache_t * const cache, const f_string_static_t name, const f_string_static_t buffer, const f_range_t range) {
 
     if (!print || !print->custom || !cache) return F_status_set_error(F_output_not);
     if (print->verbosity < f_console_verbosity_error_e) return F_output_not;
@@ -139,7 +139,7 @@ extern "C" {
     fl_print_format("%r%[%QRule item action '%]", print->to, f_string_eol_s, print->context, print->prefix, print->context);
     fl_print_format(f_string_format_Q_single_s.string, print->to, print->notable, name, print->notable);
     fl_print_format("%[' has an unknown value '%]", print->to, print->context, print->context);
-    fl_print_format(f_string_format_Q_range_single_s.string, print->to, print->notable, cache->buffer_item, unknown, print->notable);
+    fl_print_format(f_string_format_Q_range_single_s.string, print->to, print->notable, buffer, range, print->notable);
     fl_print_format(f_string_format_sentence_end_quote_s.string, print->to, print->context, print->context, f_string_eol_s);
 
     controller_print_error_rule_cache(print, &cache->action, F_true);
@@ -151,7 +151,7 @@ extern "C" {
 #endif // _di_controller_print_error_rule_item_action_unknown_
 
 #ifndef _di_controller_print_error_rule_item_execute_
-  f_status_t controller_print_error_rule_item_execute(fl_print_t * const print, controller_instance_t * const instance, const bool script_is, const f_string_static_t name, const f_status_t status) {
+  f_status_t controller_print_error_rule_item_execute(fl_print_t * const print, controller_instance_t * const instance, const uint8_t script_is, const f_string_static_t name, const f_status_t status) {
 
     if (!print || !instance || !instance->main) return F_status_set_error(F_output_not);
     if (print->verbosity < f_console_verbosity_error_e) return F_output_not;

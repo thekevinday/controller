@@ -48,7 +48,7 @@ extern "C" {
  *   F_output_not (with error bit) if setting is NULL.
  */
 #ifndef _di_controller_print_error_entry_
-  extern f_status_t controller_print_error_entry(fl_print_t * const print, const uint8_t is_entry, const f_status_t status, const char * const function, const bool fallback);
+  extern f_status_t controller_print_error_entry(fl_print_t * const print, const uint8_t is_entry, const f_status_t status, const f_string_t function, const uint8_t fallback);
 #endif // _di_controller_print_error_entry_
 
 /**
@@ -121,7 +121,7 @@ extern "C" {
  *   F_output_not (with error bit) if setting is NULL.
  */
 #ifndef _di_controller_print_error_entry_file_
-  extern f_status_t controller_print_error_entry_file(fl_print_t * const print, const uint8_t is_entry, const f_status_t status, const char * const function, const uint8_t fallback, const f_string_static_t name, const f_string_static_t operation, const uint8_t type);
+  extern f_status_t controller_print_error_entry_file(fl_print_t * const print, const uint8_t is_entry, const f_status_t status, const f_string_t function, const uint8_t fallback, const f_string_static_t name, const f_string_static_t operation, const uint8_t type);
 #endif // _di_controller_print_error_entry_file_
 
 #ifdef __cplusplus

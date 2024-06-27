@@ -69,7 +69,7 @@ extern "C" {
       fl_print_format("%r ", print->to, prepend);
     }
 
-    fl_print_format("%r item '%[%Q%]'.%r", print->to, is_entry ? controller_entry_s : controller_exit_s, print->title, name, print->title, f_string_eol_s);
+    fl_print_format("%r item '%[%Q%]'.%r", print->to, is_entry ? controller_entry_s : controller_exit_s, print->set->title, name, print->set->title, f_string_eol_s);
 
     controller_unlock_print_flush(print->to, &main->thread);
 
@@ -109,17 +109,17 @@ extern "C" {
 
     controller_lock_print(print->to, &main->thread);
 
-    fl_print_format("%r%r %r item rule ", print->to, f_string_eol_s, entry_action->type == controller_entry_action_type_consider_e ? controller_print_entry_considering_s : controller_print_entry_processing_s, is_entry ? controller_entry_s : controller_exit_s);
+    fl_print_format("%r%r %r item rule ", print->to, f_string_eol_s, action->type == controller_entry_action_type_consider_e ? controller_print_entry_considering_s : controller_print_entry_processing_s, is_entry ? controller_entry_s : controller_exit_s);
     fl_print_format("'%[%Q%]'", print->to, print->set->title, alias_rule, print->set->title);
 
     if (entry->show == controller_entry_show_init_e && !(main->setting.flag & controller_main_flag_simulate_e)) {
-      fl_print_format(" [%[%r%]]", print->to, print->notable, entry_action->code == controller_entry_rule_code_asynchronous_d ? controller_asynchronous_s : controller_synchronous_s, print->notable);
+      fl_print_format(" [%[%r%]]", print->to, print->notable, action->code == controller_entry_rule_code_asynchronous_d ? controller_asynchronous_s : controller_synchronous_s, print->notable);
 
-      if (entry_action->code == controller_entry_rule_code_wait_d) {
+      if (action->code == controller_entry_rule_code_wait_d) {
         fl_print_format(" [%[%r%]]", print->to, print->notable, controller_wait_s, print->notable);
       }
 
-      if (entry_action->code == controller_entry_rule_code_require_d) {
+      if (action->code == controller_entry_rule_code_require_d) {
         fl_print_format(" [%[%r%]]", print->to, print->notable, controller_required_s, print->notable);
       }
     }
