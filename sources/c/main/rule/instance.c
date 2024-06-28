@@ -24,17 +24,7 @@ extern "C" {
         break;
 
       default:
-        if (main->program.error.verbosity > f_console_verbosity_quiet_e) {
-          controller_lock_print(main->program.error.to, &main->thread);
-
-          fl_print_format("%r%[%QUnsupported action type '%]", main->program.error.to, f_string_eol_s, main->program.error.context, main->program.error.prefix, main->program.error.context);
-          fl_print_format(f_string_format_Q_single_s.string, main->program.error.to, main->program.error.notable, controller_convert_rule_action_type_string(instance->action), main->program.error.notable);
-          fl_print_format("%[' while attempting to execute rule.%]%r", main->program.error.to, main->program.error.context, main->program.error.context, f_string_eol_s);
-
-          controller_print_error_rule_cache(&main->program.error, &instance->cache.action, F_true);
-
-          controller_unlock_print_flush(main->program.error.to, &main->thread);
-        }
+        controller_print_error_rule_action_type_supported_not(&main->program.error, &instance->cache.action, controller_convert_rule_action_type_string(instance->action));
 
         return F_status_set_error(F_parameter);
     }
@@ -444,47 +434,15 @@ extern "C" {
         } // for
 
         if (missing) {
-          if (main->program.error.verbosity > f_console_verbosity_quiet_e) {
-            controller_lock_print(main->program.error.to, &main->thread);
-
-            if (instance->rule.items.used) {
-              fl_print_format("%r%[%QThe rule '%]", main->program.error.to, f_string_eol_s, main->program.error.context, main->program.error.prefix, main->program.error.context);
-              fl_print_format(f_string_format_Q_single_s.string, main->program.error.to, main->program.error.notable, instance->rule.name, main->program.error.notable);
-              fl_print_format("%[' has no '%]", main->program.error.to, main->program.error.context, main->program.error.context);
-              fl_print_format(f_string_format_Q_single_s.string, main->program.error.to, main->program.error.notable, controller_convert_rule_action_type_string(instance->action), main->program.error.notable);
-              fl_print_format("%[' action to execute.%]%r", main->program.error.to, main->program.error.context, main->program.error.context, f_string_eol_s);
-            }
-            else {
-              fl_print_format("%r%[%QThe rule '%]", main->program.error.to, f_string_eol_s, main->program.error.context, main->program.error.prefix, main->program.error.context);
-              fl_print_format(f_string_format_Q_single_s.string, main->program.error.to, main->program.error.notable, instance->rule.name, main->program.error.notable);
-              fl_print_format("%[ has no known '%]", main->program.error.to, main->program.error.context, main->program.error.context);
-              fl_print_format("%[%r %r%]", main->program.error.to, main->program.error.notable, controller_rule_s, controller_type_s, main->program.error.notable);
-              fl_print_format("%[' (such as '%]", main->program.error.to, main->program.error.context, main->program.error.context);
-              fl_print_format(f_string_format_r_single_s.string, main->program.error.to, main->program.error.notable, controller_command_s, main->program.error.notable);
-              fl_print_format("%[', '%]", main->program.error.to, main->program.error.context, main->program.error.context);
-              fl_print_format(f_string_format_r_single_s.string, main->program.error.to, main->program.error.notable, controller_service_s, main->program.error.notable);
-              fl_print_format("%[', '%]", main->program.error.to, main->program.error.context, main->program.error.context);
-              fl_print_format(f_string_format_r_single_s.string, main->program.error.to, main->program.error.notable, controller_script_s, main->program.error.notable);
-              fl_print_format("%[', or '%]", main->program.error.to, main->program.error.context, main->program.error.context);
-              fl_print_format(f_string_format_r_single_s.string, main->program.error.to, main->program.error.notable, controller_utility_s, main->program.error.notable);
-              fl_print_format("%[') to execute.%]%r", main->program.error.to, main->program.error.context, main->program.error.context, f_string_eol_s);
-            }
-
-            controller_print_error_rule_cache(&main->program.error, &instance->cache.action, F_true);
-
-            controller_unlock_print_flush(main->program.error.to, &main->thread);
-          }
-
           status = F_status_set_error(F_parameter);
+
+          controller_print_error_rule_action_unknown_execute(&main->program.error, &instance->cache.action, instance->rule.name, controller_convert_rule_action_type_string(instance->action), instance->rule.items.used);
         }
       }
 
       if (F_status_is_error_not(status)) {
         status = controller_rule_execute(main, instance->action, instance->options, instance);
-
-        if (status == F_child || F_status_set_fine(status) == F_interrupt || F_status_set_fine(status) == F_lock) {
-          return status;
-        }
+        if (status == F_child || F_status_set_fine(status) == F_interrupt || F_status_set_fine(status) == F_lock) return status;
 
         if (F_status_is_error(status)) {
           controller_print_error_rule_item(&main->program.error, &instance->cache.action, F_true, F_status_set_fine(status));
@@ -531,7 +489,7 @@ extern "C" {
 
     // Update the rule status, which is stored separately from the rule status for this instance.
     if (controller_rule_find(instance->rule.alias, main->process.rules, &id_rule) == F_true) {
-      controller_rule_t *rule = &main->process.rules.array[id_rule];
+      controller_rule_t * const rule = &main->process.rules.array[id_rule];
 
       rule->status[instance->action] = instance->rule.status[instance->action];
 
@@ -901,20 +859,11 @@ extern "C" {
         for (f_number_unsigned_t i = 0; i < instance->stack.used && controller_thread_is_enabled_instance(instance); ++i) {
 
           if (instance->stack.array[i] == id_rule) {
-            if (instance->main->program.error.verbosity > f_console_verbosity_quiet_e) {
-              controller_lock_print(instance->main->program.error.to, &instance->main->thread);
-
-              fl_print_format("%r%[%QThe rule '%]", instance->main->program.error.to, f_string_eol_s, instance->main->program.error.context, instance->main->program.error.prefix, instance->main->program.error.context);
-              fl_print_format(f_string_format_Q_single_s.string, instance->main->program.error.to, instance->main->program.error.notable, instance->rule.alias, instance->main->program.error.notable);
-              fl_print_format("%[' is already on the execution dependency stack, this recursion is prohibited.%]%r", instance->main->program.error.to, instance->main->program.error.context, instance->main->program.error.context, f_string_eol_s);
-
-              controller_print_error_rule_cache(&instance->main->program.error, &instance->cache.action, F_true);
-
-              controller_unlock_print_flush(instance->main->program.error.to, &instance->main->thread);
-            }
 
             // Never continue on circular recursion errors even in simulate mode.
             status = F_status_set_error(F_recurse);
+
+            controller_print_error_rule_stack_already(&instance->main->program.error, &instance->cache.action, instance->rule.alias, F_true);
 
             break;
           }

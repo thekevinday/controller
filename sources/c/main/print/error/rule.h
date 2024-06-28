@@ -88,6 +88,37 @@ extern "C" {
   extern f_status_t controller_print_error_rule_cache(fl_print_t * const print, controller_cache_action_t * const action, const uint8_t item);
 #endif // _di_controller_print_error_rule_cache_
 
+/**
+ * Print error regarding the rule already being on the execution stack.
+ *
+ * @param print
+ *   The output structure to print to.
+ *
+ *   This requires print.custom to be controller_t.
+ *
+ *   This does not alter print.custom.setting.state.status.
+ *
+ *   Must not be NULL.
+ * @param action
+ *   The action cache.
+ *
+ *   Must not be NULL.
+ * @param name
+ *   The rule name.
+ * @param item
+ *   If TRUE, then this error is associated with an item.
+ *   If FALSE, then this error is associated with a rule setting.
+ *
+ * @return
+ *   F_okay on success.
+ *   F_output_not on success, but no printing is performed.
+ *
+ *   F_output_not (with error bit) if setting is NULL.
+ */
+#ifndef _di_controller_print_error_rule_stack_already_
+  extern f_status_t controller_print_error_rule_stack_already(fl_print_t * const print, controller_cache_action_t * const action, const f_string_static_t name, const uint8_t item);
+#endif // _di_controller_print_error_rule_stack_already_
+
 #ifdef __cplusplus
 } // extern "C"
 #endif

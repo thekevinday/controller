@@ -7,9 +7,8 @@ extern "C" {
 #ifndef _di_controller_print_error_rule_item_
   f_status_t controller_print_error_rule_item(fl_print_t * const print, controller_cache_action_t * const action, const uint8_t item, const f_status_t status) {
 
-    if (!print || !print->custom || !action) return F_status_set_error(F_output_not);
+    if (!print || !print->custom || !action || status == F_interrupt) return F_status_set_error(F_output_not);
     if (print->verbosity < f_console_verbosity_error_e) return F_output_not;
-    if (status == F_interrupt) return F_status_set_error(F_output_not);
 
     controller_t * const main = (controller_t *) print->custom;
 
@@ -96,6 +95,8 @@ extern "C" {
     controller_print_error_rule_cache(print, &cache->action, F_true);
 
     controller_unlock_print_flush(print->to, &main->thread);
+
+    return F_okay;
   }
 #endif // _di_controller_print_error_rule_item_action_positive_number_not_
 
@@ -405,6 +406,11 @@ extern "C" {
 #ifndef _di_controller_print_error_rule_item_need_want_wish_
   f_status_t controller_print_error_rule_item_need_want_wish(fl_print_t * const print, const f_string_static_t need_want_wish, const f_string_static_t value, const f_string_t why) {
 
+    if (!print || !print->custom) return F_status_set_error(F_output_not);
+    if (print->verbosity < f_console_verbosity_error_e) return F_output_not;
+
+    controller_t * const main = (controller_t *) print->custom;
+
     if (print->verbosity == f_console_verbosity_quiet_e) return F_output_not;
 
     fl_print_format("%r%[%QThe %r rule '%]", print->to, f_string_eol_s, print->context, print->prefix, need_want_wish, print->context);
@@ -417,6 +423,11 @@ extern "C" {
 
 #ifndef _di_controller_print_error_rule_item_rule_not_loaded_
   f_status_t controller_print_error_rule_item_rule_not_loaded(fl_print_t * const print, const f_string_static_t alias) {
+
+    if (!print || !print->custom) return F_status_set_error(F_output_not);
+    if (print->verbosity < f_console_verbosity_error_e) return F_output_not;
+
+    controller_t * const main = (controller_t *) print->custom;
 
     if (print->verbosity == f_console_verbosity_quiet_e) return F_output_not;
 

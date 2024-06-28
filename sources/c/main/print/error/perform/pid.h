@@ -25,6 +25,8 @@ extern "C" {
  *   This requires print.custom to be controller_t.
  *
  *   This does not alter print.custom.setting.state.status.
+ *
+ *   Must not be NULL.
  * @param status
  *   The status code to process.
  *   Make sure this has F_status_set_fine() called if the status code has any error or warning bits.
