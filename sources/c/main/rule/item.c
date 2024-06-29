@@ -121,35 +121,16 @@ extern "C" {
         type = controller_rule_action_type_with_e;
       }
       else {
-        if (main->program.warning.verbosity == f_console_verbosity_debug_e) {
-          controller_lock_print(main->program.warning.to, &main->thread);
-
-          fl_print_format("%r%[%QUnknown rule item action '%]", main->program.warning.to, f_string_eol_s, main->program.warning.context, main->program.warning.prefix, main->program.warning.context);
-          fl_print_format(f_string_format_Q_single_s.string, main->program.warning.to, main->program.warning.notable, cache->action.name_action, main->program.warning.notable);
-          fl_print_format(f_string_format_sentence_end_quote_s.string, main->program.warning.to, main->program.warning.context, main->program.warning.context, f_string_eol_s);
-
-          controller_print_error_rule_cache(&main->program.warning, &cache->action, F_true);
-
-          controller_unlock_print_flush(main->program.warning.to, &main->thread);
-        }
+        controller_print_warning_rule_action_unknown(&main->program.warning, &cache->action, cache->action.name_action);
 
         continue;
       }
 
       if (multiple) {
         if (type == controller_rule_action_type_group_e || type == controller_rule_action_type_pid_file_e || type == controller_rule_action_type_user_e) {
-
-          if (main->program.error.verbosity > f_console_verbosity_quiet_e) {
-            controller_lock_print(main->program.error.to, &main->thread);
-
-            fl_print_format("%r%[%QFSS Extended List is not allowed for the rule item action '%]", main->program.error.to, f_string_eol_s, main->program.error.context, main->program.error.prefix, main->program.error.context);
-            fl_print_format(f_string_format_Q_single_s.string, main->program.error.to, main->program.error.notable, cache->action.name_action, main->program.error.notable);
-            fl_print_format(f_string_format_sentence_end_quote_s.string, main->program.error.to, main->program.error.context, main->program.error.context, f_string_eol_s);
-
-            controller_unlock_print_flush(main->program.error.to, &main->thread);
-          }
-
           state.status = F_status_set_error(F_support_not);
+
+          controller_print_error_rule_action_fss_0003_unsupported(&main->program.error, &cache->action, cache->action.name_action);
 
           break;
         }

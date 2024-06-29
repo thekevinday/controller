@@ -19,7 +19,7 @@ extern "C" {
 /**
  * Print message about the specified entry being in the given state.
  *
- * This generally only applies to the "ready" entry item action.
+ * This generally only applies to the "ready" Entry Item Action.
  *
  * @param print
  *   The output structure to print to.

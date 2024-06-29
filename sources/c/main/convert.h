@@ -105,10 +105,10 @@ extern "C" {
 #endif // _di_controller_convert_rule_action_type_string_
 
 /**
- * Convert the rule item type code to the string representation.
+ * Convert the Rule Item type code to the string representation.
  *
  * @param type
- *   The rule item type code.
+ *   The Rule Item type code.
  *
  * @return
  *   The string with used > 0 on success.

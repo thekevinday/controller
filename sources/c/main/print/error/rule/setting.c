@@ -77,7 +77,7 @@ extern "C" {
 
     controller_lock_print(print->to, &main->thread);
 
-    fl_print_format("%rProcessing rule item action '%[%Q%]'", print->to, f_string_eol_s, print->set->title, name, print->set->title);
+    fl_print_format("%rProcessing Rule Item Action '%[%Q%]'", print->to, f_string_eol_s, print->set->title, name, print->set->title);
     fl_print_format(" mapping '%[%Q%]'", print->to, print->set->important, map.key, print->set->important);
     fl_print_format(" to value '%[%Q%]'.%r", print->to, print->set->important, map.value, print->set->important, f_string_eol_s);
 
@@ -102,7 +102,7 @@ extern "C" {
 
     controller_lock_print(print->to, &main->thread);
 
-    fl_print_format("%rProcessing rule item action '%[%Q%]' setting ", print->to, f_string_eol_s, print->set->title, name, print->set->title);
+    fl_print_format("%rProcessing Rule Item Action '%[%Q%]' setting ", print->to, f_string_eol_s, print->set->title, name, print->set->title);
 
     if (name_sub.used) {
       fl_print_format("'%[%Q%]'", print->to, print->set->notable, name_sub, print->set->notable);
@@ -135,7 +135,7 @@ extern "C" {
 
     controller_lock_print(print->to, &main->thread);
 
-    fl_print_format("%rProcessing rule item action '%[%Q%]' setting value to", print->to, f_string_eol_s, print->set->title, name, print->set->title);
+    fl_print_format("%rProcessing Rule Item Action '%[%Q%]' setting value to", print->to, f_string_eol_s, print->set->title, name, print->set->title);
 
     for (f_number_unsigned_t j = 0; j < cache->content_actions.array[index].used; ++j) {
 

@@ -5,7 +5,7 @@
  * API Version: 0.7
  * Licenses: lgpl-2.1-or-later
  *
- * Provides the print entry message item functionality.
+ * Provides the print entry item message functionality.
  *
  * This is auto-included and should not need to be explicitly included.
  */
@@ -153,7 +153,7 @@ extern "C" {
  *   If TRUE, then this loads as an entry.
  *   If FALSE, then this loads as an exit.
  * @param alias_rule
- *   The rule alias name.
+ *   The Rule alias name.
  *
  * @return
  *   F_okay on success.

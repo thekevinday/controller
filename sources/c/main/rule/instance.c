@@ -24,7 +24,7 @@ extern "C" {
         break;
 
       default:
-        controller_print_error_rule_action_type_supported_not(&main->program.error, &instance->cache.action, controller_convert_rule_action_type_string(instance->action));
+        controller_print_error_rule_action_type_unsupported(&main->program.error, &instance->cache.action, controller_convert_rule_action_type_string(instance->action));
 
         return F_status_set_error(F_parameter);
     }
@@ -497,7 +497,7 @@ extern "C" {
 
       controller_rule_item_t *rule_item = 0;
 
-      // Copy all rule item action statuses from the rule instance to the rule.
+      // Copy all Rule Item Action statuses from the rule instance to the rule.
       for (i = 0; i < rule->items.used; ++i) {
 
         rule_item = &rule->items.array[i];

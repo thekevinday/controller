@@ -145,7 +145,7 @@ extern "C" {
         actions->array[actions->used].type = controller_entry_action_type_timeout_e;
       }
       else {
-        controller_print_warning_entry_action_unknown(&main->program.warning, &main->thread.cache, entry->flag & controller_entry_flag_is_e, main->thread.cache.action.name_action);
+        controller_print_warning_entry_action_unknown(&main->program.warning, &main->thread.cache.action, entry->flag & controller_entry_flag_is_e, main->thread.cache.action.name_action);
 
         continue;
       }
@@ -184,7 +184,7 @@ extern "C" {
 
           f_file_stream_lock(main->program.error.to);
 
-          fl_print_format("%r%[%QThe %r item action '%]", main->program.error.to, f_string_eol_s, main->program.error.context, main->program.error.prefix, entry->flag & controller_entry_flag_is_e ? controller_entry_s : controller_exit_s, main->program.error.context);
+          fl_print_format("%r%[%QThe %r Item Action '%]", main->program.error.to, f_string_eol_s, main->program.error.context, main->program.error.prefix, entry->flag & controller_entry_flag_is_e ? controller_entry_s : controller_exit_s, main->program.error.context);
           fl_print_format(f_string_format_Q_single_s.string, main->program.error.to, main->program.error.notable, main->thread.cache.action.name_action, main->program.error.notable);
           fl_print_format("%[' requires ", main->program.error.to, main->program.error.context);
 
@@ -296,7 +296,7 @@ extern "C" {
               }
 
               if (main->program.error.verbosity > f_console_verbosity_quiet_e) {
-                fll_print_format("%r%[%QThe %r item action must not have an empty string for a path (the first parameter).%]%r", main->program.error.to, f_string_eol_s, main->program.error.context, main->program.error.prefix, entry->flag & controller_entry_flag_is_e ? controller_entry_s : controller_exit_s, main->program.error.context, f_string_eol_s);
+                fll_print_format("%r%[%QThe %r Item Action must not have an empty string for a path (the first parameter).%]%r", main->program.error.to, f_string_eol_s, main->program.error.context, main->program.error.prefix, entry->flag & controller_entry_flag_is_e ? controller_entry_s : controller_exit_s, main->program.error.context, f_string_eol_s);
               }
             }
 
@@ -325,7 +325,7 @@ extern "C" {
                   if (main->program.error.verbosity > f_console_verbosity_quiet_e) {
                     f_file_stream_lock(main->program.error.to);
 
-                    fl_print_format("%r%[%QThe %r item action second parameter '%]", main->program.error.to, f_string_eol_s, main->program.error.context, main->program.error.prefix, entry->flag & controller_entry_flag_is_e ? controller_entry_s : controller_exit_s, main->program.error.context);
+                    fl_print_format("%r%[%QThe %r Item Action second parameter '%]", main->program.error.to, f_string_eol_s, main->program.error.context, main->program.error.prefix, entry->flag & controller_entry_flag_is_e ? controller_entry_s : controller_exit_s, main->program.error.context);
                     fl_print_format(f_string_format_Q_single_s.string, main->program.error.to, main->program.error.notable, action->parameters.array[1], main->program.error.notable);
                     fl_print_format("%[' must be a base path name, such as '%]", main->program.error.to, main->program.error.context, main->program.error.context);
                     fl_print_format(f_string_format_Q_single_s.string, main->program.error.to, main->program.error.notable, main->thread.cache.buffer_path, main->program.error.notable);
@@ -350,7 +350,7 @@ extern "C" {
               }
 
               if (main->program.error.verbosity > f_console_verbosity_quiet_e) {
-                fll_print_format("%r%[%QThe %r item action must not have an empty string for a rule name (the second parameter).%]", main->program.error.to, f_string_eol_s, main->program.error.context, main->program.error.prefix, entry->flag & controller_entry_flag_is_e ? controller_entry_s : controller_exit_s, main->program.error.context, f_string_eol_s);
+                fll_print_format("%r%[%QThe %r Item Action must not have an empty string for a rule name (the second parameter).%]", main->program.error.to, f_string_eol_s, main->program.error.context, main->program.error.prefix, entry->flag & controller_entry_flag_is_e ? controller_entry_s : controller_exit_s, main->program.error.context, f_string_eol_s);
               }
             }
 
@@ -377,7 +377,7 @@ extern "C" {
                 if (main->program.error.verbosity > f_console_verbosity_quiet_e) {
                   f_file_stream_lock(main->program.error.to);
 
-                  fl_print_format("%r%[%QThe %r item action third parameter (and beyond) must be one of '%]", main->program.error.to, f_string_eol_s, main->program.error.context, main->program.error.prefix, entry->flag & controller_entry_flag_is_e ? controller_entry_s : controller_exit_s, main->program.error.context);
+                  fl_print_format("%r%[%QThe %r Item Action third parameter (and beyond) must be one of '%]", main->program.error.to, f_string_eol_s, main->program.error.context, main->program.error.prefix, entry->flag & controller_entry_flag_is_e ? controller_entry_s : controller_exit_s, main->program.error.context);
                   fl_print_format(f_string_format_r_single_s.string, main->program.error.to, main->program.error.notable, controller_asynchronous_s, main->program.error.notable);
                   fl_print_format("%[', '%]", main->program.error.to, main->program.error.context, main->program.error.context);
                   fl_print_format(f_string_format_r_single_s.string, main->program.error.to, main->program.error.notable, controller_require_s, main->program.error.notable);
@@ -403,7 +403,7 @@ extern "C" {
               if (main->program.error.verbosity > f_console_verbosity_quiet_e) {
                 f_file_stream_lock(main->program.error.to);
 
-                fl_print_format("%r%[%QThe %r item action may not specify the reserved item '%]", main->program.error.to, f_string_eol_s, main->program.error.context, main->program.error.prefix, entry->flag & controller_entry_flag_is_e ? controller_entry_s : controller_exit_s, main->program.error.context);
+                fl_print_format("%r%[%QThe %r Item Action may not specify the reserved item '%]", main->program.error.to, f_string_eol_s, main->program.error.context, main->program.error.prefix, entry->flag & controller_entry_flag_is_e ? controller_entry_s : controller_exit_s, main->program.error.context);
                 fl_print_format(f_string_format_r_single_s.string, main->program.error.to, main->program.error.notable, controller_main_s, main->program.error.notable);
                 fl_print_format("%['.%]", main->program.error.to, main->program.error.context, main->program.error.context, f_string_eol_s);
 
@@ -432,7 +432,7 @@ extern "C" {
               if (main->program.error.verbosity > f_console_verbosity_quiet_e) {
                 f_file_stream_lock(main->program.error.to);
 
-                fl_print_format("%r%[%QThe %r item action must have one of '%]", main->program.error.to, f_string_eol_s, main->program.error.context, main->program.error.prefix, entry->flag & controller_entry_flag_is_e ? controller_entry_s : controller_exit_s, main->program.error.context);
+                fl_print_format("%r%[%QThe %r Item Action must have one of '%]", main->program.error.to, f_string_eol_s, main->program.error.context, main->program.error.prefix, entry->flag & controller_entry_flag_is_e ? controller_entry_s : controller_exit_s, main->program.error.context);
                 fl_print_format(f_string_format_r_single_s.string, main->program.error.to, main->program.error.notable, controller_kill_s, main->program.error.notable);
                 fl_print_format("%[', '%]", main->program.error.to, main->program.error.context, main->program.error.context);
                 fl_print_format(f_string_format_r_single_s.string, main->program.error.to, main->program.error.notable, controller_start_s, main->program.error.notable);
@@ -473,7 +473,7 @@ extern "C" {
                   if (main->program.error.verbosity > f_console_verbosity_quiet_e) {
                     f_file_stream_lock(main->program.error.to);
 
-                    fl_print_format("%r%[%QThe %r item action parameter '%]", main->program.error.to, f_string_eol_s, main->program.error.context, main->program.error.prefix, entry->flag & controller_entry_flag_is_e ? controller_entry_s : controller_exit_s, main->program.error.context);
+                    fl_print_format("%r%[%QThe %r Item Action parameter '%]", main->program.error.to, f_string_eol_s, main->program.error.context, main->program.error.prefix, entry->flag & controller_entry_flag_is_e ? controller_entry_s : controller_exit_s, main->program.error.context);
                     fl_print_format(f_string_format_Q_single_s.string, main->program.error.to, main->program.error.notable, action->parameters.array[1], main->program.error.notable);
                     fl_print_format("%[' is not a valid supported number.%]", main->program.error.to, main->program.error.context, main->program.error.context, f_string_eol_s);
 
@@ -497,7 +497,7 @@ extern "C" {
                 if (main->program.error.verbosity > f_console_verbosity_quiet_e) {
                   f_file_stream_lock(main->program.error.to);
 
-                  fl_print_format("%r%[%QThe %r item action may only have '%]", main->program.error.to, f_string_eol_s, main->program.error.context, main->program.error.prefix, entry->flag & controller_entry_flag_is_e ? controller_entry_s : controller_exit_s, main->program.error.context);
+                  fl_print_format("%r%[%QThe %r Item Action may only have '%]", main->program.error.to, f_string_eol_s, main->program.error.context, main->program.error.prefix, entry->flag & controller_entry_flag_is_e ? controller_entry_s : controller_exit_s, main->program.error.context);
                   fl_print_format(f_string_format_r_single_s.string, main->program.error.to, main->program.error.notable, controller_wait_s, main->program.error.notable);
                   fl_print_format("%[' but instead has '%]", main->program.error.to, main->program.error.context, main->program.error.context);
                   fl_print_format(f_string_format_Q_single_s.string, main->program.error.to, main->program.error.notable, action->parameters.array[0], main->program.error.notable);

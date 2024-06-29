@@ -250,7 +250,7 @@ extern "C" {
           }
 
           if (!type_rerun) {
-            controller_print_error_rule_item_action_first(&main->program.error, cache);
+            controller_print_error_rule_action_first(&main->program.error, &cache->action, cache->buffer_item, cache->content_action.array[0]);
 
             return F_status_set_error(F_valid_not);
           }
@@ -268,7 +268,7 @@ extern "C" {
             }
           }
           else {
-            controller_print_error_rule_item_action_second(&main->program.error, cache);
+            controller_print_error_rule_action_second(&main->program.error, &cache->action, cache->buffer_item, cache->content_action.array[1]);
 
             return F_status_set_error(F_valid_not);
           }
@@ -285,7 +285,7 @@ extern "C" {
               item->reruns[type_rerun].is |= rerun_item == &item->reruns[type_rerun].failure ? controller_rule_rerun_is_failure_reset_d : controller_rule_rerun_is_success_reset_d;
             }
             else {
-              controller_print_error_rule_item_action_unknown(&main->program.error, cache, controller_rerun_s, cache->buffer_item, cache->content_action.array[i]);
+              controller_print_error_rule_action_unknown(&main->program.error, &cache->action, controller_rerun_s, cache->buffer_item, cache->content_action.array[i]);
 
               return F_status_set_error(F_valid_not);
             }
@@ -310,7 +310,7 @@ extern "C" {
               item->with &= ~controller_with_session_new_d;
             }
             else {
-              controller_print_error_rule_item_action_unknown(&main->program.error, cache, controller_with_s, cache->buffer_item, cache->content_action.array[i]);
+              controller_print_error_rule_action_unknown(&main->program.error, &cache->action, controller_with_s, cache->buffer_item, cache->content_action.array[i]);
 
               state.status = F_status_set_error(F_valid_not);
 
@@ -441,7 +441,7 @@ extern "C" {
           controller_print_error(&main->program.error, macro_controller_f(fl_conversion_dynamic_partial_to_signed_detect));
         }
         else {
-          controller_print_error_rule_item_action_positive_number_not(&main->program.error, cache, name, *index, status);
+          controller_print_error_rule_action_positive_number_not(&main->program.error, &cache->action, name, cache->buffer_item, cache->content_action, *index, status);
         }
       }
 

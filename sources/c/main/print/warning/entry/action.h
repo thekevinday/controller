@@ -17,7 +17,7 @@ extern "C" {
 #endif
 
 /**
- * Print warning the "failsafe" entry item action being specified while already in failsafe mode.
+ * Print warning the "failsafe" Entry Item Action being specified while already in failsafe mode.
  *
  * @param print
  *   The output structure to print to.
@@ -77,14 +77,18 @@ extern "C" {
 #endif // _di_controller_print_warning_entry_action_multiple_
 
 /**
- * Print warnng message about a entry item action being unknown.
+ * Print warnng message about a Entry Item Action being unknown.
  *
  * @param print
  *   The output structure to print to.
  *
+ *   This requires print.custom to be controller_t.
+ *
+ *   This does not alter print.custom.setting.state.status.
+ *
  *   Must not be NULL.
- * @param cache
- *   A structure for containing and caching relevant data.
+ * @param action
+ *   The Action cache.
  *
  *   Must not be NULL.
  * @param name
@@ -99,7 +103,7 @@ extern "C" {
  *   F_output_not (with error bit) if setting is NULL.
  */
 #ifndef _di_controller_print_warning_entry_action_unknown_
-  extern f_status_t controller_print_warning_entry_action_unknown(fl_print_t * const print, controller_cache_t * const cache, const uint8_t is_entry, const f_string_static_t name);
+  extern f_status_t controller_print_warning_entry_action_unknown(fl_print_t * const print, controller_cache_action_t * const action, const uint8_t is_entry, const f_string_static_t name);
 #endif // _di_controller_print_warning_entry_action_unknown_
 
 #ifdef __cplusplus

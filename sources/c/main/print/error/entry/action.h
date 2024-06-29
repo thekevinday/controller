@@ -5,7 +5,7 @@
  * API Version: 0.7
  * Licenses: lgpl-2.1-or-later
  *
- * Provides the print entry error action functionality.
+ * Provides the print entry action error functionality.
  *
  * This is auto-included and should not need to be explicitly included.
  */
@@ -17,7 +17,7 @@ extern "C" {
 #endif
 
 /**
- * Print an error about a entry item action program or script execution failure.
+ * Print an error about a Entry Item Action program or script execution failure.
  *
  * @param print
  *   The output structure to print to.
@@ -48,7 +48,7 @@ extern "C" {
 #endif // _di_controller_print_error_entry_action_execution_failure_
 
 /**
- * Print an error about a entry item action program or script not being found.
+ * Print an error about a Entry Item Action program or script not being found.
  *
  * @param print
  *   The output structure to print to.

@@ -271,17 +271,7 @@ extern "C" {
             rule->items.array[rule->items.used].type = controller_rule_item_type_utility_e;
           }
           else {
-            if (main->program.warning.verbosity == f_console_verbosity_debug_e) {
-              controller_lock_print(main->program.warning.to, &main->thread);
-
-              fl_print_format("%r%[%QUnknown rule item '%]", main->program.warning.to, f_string_eol_s, main->program.warning.context, main->program.warning.prefix, main->program.warning.context);
-              fl_print_format(f_string_format_Q_single_s.string, main->program.warning.to, main->program.warning.notable, cache->action.name_item, main->program.warning.notable);
-              fl_print_format(f_string_format_sentence_end_quote_s.string, main->program.warning.to, main->program.warning.context, main->program.warning.context, f_string_eol_s);
-
-              controller_print_error_rule_cache(&main->program.warning, &cache->action, F_true);
-
-              controller_unlock_print_flush(main->program.warning.to, &main->thread);
-            }
+            controller_print_warning_rule_item_unknown(&main->program.warning, &cache->action, cache->action.name_item);
 
             continue;
           }

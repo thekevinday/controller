@@ -22,9 +22,11 @@ extern "C" {
  * @param print
  *   The output structure to print to.
  *
- *   Must not be NULL.
+ *   This requires print.custom to be controller_t.
  *
  *   This does not alter print.custom.setting.state.status.
+ *
+ *   Must not be NULL.
  * @param function
  *   The name of the function associated with the error.
  *
@@ -44,9 +46,11 @@ extern "C" {
  * @param print
  *   The output structure to print to.
  *
- *   Must not be NULL.
+ *   This requires print.custom to be controller_t.
  *
  *   This does not alter print.custom.setting.state.status.
+ *
+ *   Must not be NULL.
  * @param thread
  *   The name of the function associated with the error.
  *
@@ -70,11 +74,11 @@ extern "C" {
  * @param print
  *   The output structure to print to.
  *
- *   Must not be NULL.
- *
- *   The print.custom is expected to be of type fss_read_main_t.
+ *   This requires print.custom to be controller_t.
  *
  *   This does not alter print.custom.setting.state.status.
+ *
+ *   Must not be NULL.
  * @param function
  *   The name of the function where the error happened.
  *   Set to 0 to disable.
@@ -101,11 +105,11 @@ extern "C" {
  * @param print
  *   The output structure to print to.
  *
- *   Must not be NULL.
- *
- *   The print.custom is expected to be of type fss_read_main_t.
+ *   This requires print.custom to be controller_t.
  *
  *   This does not alter print.custom.setting.state.status.
+ *
+ *   Must not be NULL.
  * @param function
  *   The name of the function where the error happened.
  *   Set to 0 to disable.
@@ -134,9 +138,11 @@ extern "C" {
  * @param print
  *   The output structure to print to.
  *
- *   Must not be NULL.
+ *   This requires print.custom to be controller_t.
  *
  *   This does not alter print.custom.setting.state.status.
+ *
+ *   Must not be NULL.
  * @param function
  *   The name of the function associated with the error.
  * @param status
@@ -158,9 +164,11 @@ extern "C" {
  * @param print
  *   The output structure to print to.
  *
- *   Must not be NULL.
+ *   This requires print.custom to be controller_t.
  *
  *   This does not alter print.custom.setting.state.status.
+ *
+ *   Must not be NULL.
  * @param thread
  *   The name of the function associated with the error.
  *

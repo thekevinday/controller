@@ -5,7 +5,7 @@
  * API Version: 0.7
  * Licenses: lgpl-2.1-or-later
  *
- * Provides the print debug entry action functionality.
+ * Provides the print entry action debug functionality.
  *
  * This is auto-included and should not need to be explicitly included.
  */
@@ -17,10 +17,14 @@ extern "C" {
 #endif
 
 /**
- * Print debug message about the rule item action being empty.
+ * Print debug message about the Rule Item Action being empty.
  *
  * @param print
  *   The output structure to print to.
+ *
+ *   This requires print.custom to be controller_t.
+ *
+ *   This does not alter print.custom.setting.state.status.
  *
  *   Must not be NULL.
  * @param cache

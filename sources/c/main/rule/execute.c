@@ -402,8 +402,7 @@ extern "C" {
           }
         }
         else {
-          controller_print_warning_rule_action_unknown(&main->program.warning, &instance->cache);
-
+          // A warning about the Action being unknown would have been printed on load and so no warning should be needed here.
           if (success == F_false) {
             success = F_ignore;
           }

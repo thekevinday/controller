@@ -17,7 +17,7 @@ extern "C" {
 
     controller_lock_print(print->to, &main->thread);
 
-    fl_print_format("%rProcessing %r item action '", print->to, f_string_eol_s, is_entry ? controller_entry_s : controller_exit_s);
+    fl_print_format("%rProcessing %r Item Action '", print->to, f_string_eol_s, is_entry ? controller_entry_s : controller_exit_s);
 
     fl_print_format("%[%Q%]' setting ", print->to, print->set->title, name, print->set->title);
 

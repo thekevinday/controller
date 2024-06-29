@@ -58,7 +58,7 @@ build_sources_library print/lock.c print/error/lock.c
 build_sources_library print/output/entry/setting.c print/output/rule/execute.c
 build_sources_library print/message.c print/message/entry.c print/message/entry/action.c print/message/entry/item.c
 build_sources_library print/verbose.c
-build_sources_library print/warning.c print/warning/entry/action.c print/warning/entry/item.c print/warning/entry/setting.c print/warning/rule/action.c
+build_sources_library print/warning.c print/warning/entry/action.c print/warning/entry/item.c print/warning/entry/setting.c print/warning/rule/action.c print/warning/rule/item.c print/warning/rule/setting.c
 build_sources_library signal.c status.c time.c
 build_sources_library thread.c thread/cleanup.c thread/control.c thread/entry.c thread/instance.c thread/is.c thread/rule.c thread/signal.c
 build_sources_library validate.c
@@ -83,7 +83,7 @@ build_sources_headers print/lock.h print/error/lock.h
 build_sources_headers print/output/entry/setting.h print/output/rule/execute.h
 build_sources_headers print/message.h print/message/entry.h print/message/entry/action.h print/message/entry/item.h
 build_sources_headers print/verbose.h
-build_sources_headers print/warning.h print/warning/entry/action.h print/warning/entry/item.h print/warning/entry/setting.h print/warning/rule/action.h
+build_sources_headers print/warning.h print/warning/entry/action.h print/warning/entry/item.h print/warning/entry/setting.h print/warning/rule/action.h print/warning/rule/item.h print/warning/rule/setting.h
 build_sources_headers signal.h status.h time.h
 build_sources_headers thread.h thread/cleanup.h thread/control.h thread/entry.h thread/instance.h thread/is.h thread/rule.h thread/signal.h
 build_sources_headers validate.h

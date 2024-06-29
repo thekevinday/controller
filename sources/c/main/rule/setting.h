@@ -17,13 +17,13 @@ extern "C" {
 #endif
 
 /**
- * Identify the rule item code the given name represents.
+ * Identify the Rule Item code the given name represents.
  *
  * @param item
  *   The string representing an rule action.
  *
  * @return
- *   The rule item type code on success.
+ *   The Rule Item type code on success.
  *   0 if name is unknown.
  */
 #ifndef _di_controller_rule_setting_limit_type_identify_

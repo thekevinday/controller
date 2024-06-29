@@ -5,7 +5,7 @@
  * API Version: 0.7
  * Licenses: lgpl-2.1-or-later
  *
- * Provides the print error lock functionality.
+ * Provides the print lock error functionality.
  *
  * This is auto-included and should not need to be explicitly included.
  */
@@ -24,9 +24,11 @@ extern "C" {
  * @param print
  *   The output structure to print to.
  *
- *   Must not be NULL.
+ *   This requires print.custom to be controller_t.
  *
  *   This does not alter print.custom.setting.state.status.
+ *
+ *   Must not be NULL.
  * @param status
  *   The status code to process.
  *   Make sure this has F_status_set_fine() called if the status code has any error or warning bits.

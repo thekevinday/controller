@@ -100,7 +100,7 @@ extern "C" {
     fll_fss_extended_read(cache->buffer_item, &range, &cache->object_actions, &cache->content_actions, 0, 0, &cache->delimits, 0, &state);
 
     if (F_status_is_error(state.status)) {
-      controller_print_error_rule(&main->program.error, &cache->action, F_status_set_fine(state.status), "fll_fss_extended_read", F_true, F_false);
+      controller_print_error_rule(&main->program.error, &cache->action, F_status_set_fine(state.status), macro_controller_f(fll_fss_extended_read), F_true, F_false);
 
       return state.status;
     }
@@ -135,7 +135,7 @@ extern "C" {
       state.status = f_string_dynamic_partial_append_nulless(cache->buffer_item, cache->object_actions.array[i], &cache->action.name_item);
 
       if (F_status_is_error(state.status)) {
-        controller_print_error_rule(&main->program.error, &cache->action, F_status_set_fine(state.status), "f_string_dynamic_partial_append_nulless", F_true, F_false);
+        controller_print_error_rule(&main->program.error, &cache->action, F_status_set_fine(state.status), macro_controller_f(f_string_dynamic_partial_append_nulless), F_true, F_false);
 
         if (F_status_set_fine(state.status) == F_memory_not) {
           status_return = state.status;
@@ -218,15 +218,7 @@ extern "C" {
 
           cache->action.line_action = ++cache->action.line_item;
 
-          controller_lock_print(main->program.warning.to, &main->thread);
-
-          fl_print_format("%r%[%QUnknown rule setting '%]", main->program.warning.to, f_string_eol_s, main->program.warning.context, main->program.warning.prefix, main->program.warning.context);
-          fl_print_format(f_string_format_Q_single_s.string, main->program.warning.to, main->program.warning.notable, cache->action.name_item, main->program.warning.notable);
-          fl_print_format(f_string_format_sentence_end_quote_s.string, main->program.warning.to, main->program.warning.context, main->program.warning.context, f_string_eol_s);
-
-          controller_print_error_rule_cache(&main->program.warning, &cache->action, F_false);
-
-          controller_unlock_print_flush(main->program.warning.to, &main->thread);
+          controller_print_warning_rule_setting_unknown(&main->program.warning, &cache->action, cache->action.name_item);
         }
 
         continue;
@@ -239,7 +231,7 @@ extern "C" {
         state.status = f_string_dynamic_partial_append_nulless(cache->buffer_item, range2, &cache->action.name_action);
 
         if (F_status_is_error(state.status)) {
-          controller_print_error_rule(&main->program.error, &cache->action, F_status_set_fine(state.status), "f_string_dynamic_partial_append_nulless", F_true, F_false);
+          controller_print_error_rule(&main->program.error, &cache->action, F_status_set_fine(state.status), macro_controller_f(f_string_dynamic_partial_append_nulless), F_true, F_false);
 
           // Get the current line number within the settings item.
           cache->action.line_item = line_item;
@@ -305,7 +297,7 @@ extern "C" {
           state.status = f_memory_array_increase(controller_allocation_small_d, sizeof(int32_t), (void **) &rule->affinity.array, &rule->affinity.used, &rule->affinity.size);
 
           if (F_status_is_error(state.status)) {
-            controller_print_error_rule(&main->program.error, &cache->action, F_status_set_fine(state.status), "f_memory_array_increase", F_true, F_false);
+            controller_print_error_rule(&main->program.error, &cache->action, F_status_set_fine(state.status), macro_controller_f(f_memory_array_increase), F_true, F_false);
 
             break;
           }
@@ -342,7 +334,7 @@ extern "C" {
               }
             }
             else {
-              controller_print_error_rule(&main->program.error, &cache->action, F_status_set_fine(state.status), "fl_conversion_dynamic_partial_to_signed_detect", F_true, F_false);
+              controller_print_error_rule(&main->program.error, &cache->action, F_status_set_fine(state.status), macro_controller_f(fl_conversion_dynamic_partial_to_signed_detect), F_true, F_false);
 
               state.status = F_status_set_error(state.status);
 
@@ -383,7 +375,7 @@ extern "C" {
         state.status = f_memory_array_increase(controller_allocation_small_d, sizeof(f_string_map_t), (void **) &setting_maps->array, &setting_maps->used, &setting_maps->size);
 
         if (F_status_is_error(state.status)) {
-          controller_print_error_rule(&main->program.error, &cache->action, F_status_set_fine(state.status), "f_memory_array_increase", F_true, F_false);
+          controller_print_error_rule(&main->program.error, &cache->action, F_status_set_fine(state.status), macro_controller_f(f_memory_array_increase), F_true, F_false);
 
           if (F_status_set_fine(state.status) == F_memory_not) {
             status_return = state.status;
@@ -412,7 +404,7 @@ extern "C" {
         state.status = f_string_dynamic_partial_append_nulless(cache->buffer_item, cache->content_actions.array[i].array[0], &setting_maps->array[setting_maps->used].key);
 
         if (F_status_is_error(state.status)) {
-          controller_print_error_rule(&main->program.error, &cache->action, F_status_set_fine(state.status), "f_string_dynamic_partial_append_nulless", F_true, F_false);
+          controller_print_error_rule(&main->program.error, &cache->action, F_status_set_fine(state.status), macro_controller_f(f_string_dynamic_partial_append_nulless), F_true, F_false);
 
           if (F_status_set_fine(state.status) == F_memory_not) {
             status_return = state.status;
@@ -438,7 +430,7 @@ extern "C" {
         state.status = f_string_dynamic_partial_append_nulless(cache->buffer_item, cache->content_actions.array[i].array[1], &setting_maps->array[setting_maps->used].value);
 
         if (F_status_is_error(state.status)) {
-          controller_print_error_rule(&main->program.error, &cache->action, F_status_set_fine(state.status), "f_string_dynamic_partial_append_nulless", F_true, F_false);
+          controller_print_error_rule(&main->program.error, &cache->action, F_status_set_fine(state.status), macro_controller_f(f_string_dynamic_partial_append_nulless), F_true, F_false);
 
           if (F_status_set_fine(state.status) == F_memory_not) {
             status_return = state.status;
@@ -500,7 +492,7 @@ extern "C" {
         state.status = f_string_dynamic_append(main->process.path_cgroup, &rule->cgroup.path);
 
         if (F_status_is_error(state.status)) {
-          controller_print_error_rule(&main->program.error, &cache->action, F_status_set_fine(state.status), "f_string_dynamic_append", F_true, F_false);
+          controller_print_error_rule(&main->program.error, &cache->action, F_status_set_fine(state.status), macro_controller_f(f_string_dynamic_append), F_true, F_false);
         }
         else {
           rule->cgroup.groups.used = 0;
@@ -510,7 +502,7 @@ extern "C" {
             state.status = f_memory_array_increase(controller_allocation_small_d, sizeof(f_string_dynamic_t), (void **) &rule->cgroup.groups.array, &rule->cgroup.groups.used, &rule->cgroup.groups.size);
 
             if (F_status_is_error(state.status)) {
-              controller_print_error_rule(&main->program.error, &cache->action, F_status_set_fine(state.status), "f_memory_array_increase", F_true, F_false);
+              controller_print_error_rule(&main->program.error, &cache->action, F_status_set_fine(state.status), macro_controller_f(f_memory_array_increase), F_true, F_false);
 
               break;
             }
@@ -520,7 +512,7 @@ extern "C" {
             state.status = f_string_dynamic_partial_append_nulless(cache->buffer_item, cache->content_actions.array[i].array[j], &rule->cgroup.groups.array[rule->cgroup.groups.used]);
 
             if (F_status_is_error(state.status)) {
-              controller_print_error_rule(&main->program.error, &cache->action, F_status_set_fine(state.status), "f_string_dynamic_partial_append_nulless", F_true, F_false);
+              controller_print_error_rule(&main->program.error, &cache->action, F_status_set_fine(state.status), macro_controller_f(f_string_dynamic_partial_append_nulless), F_true, F_false);
 
               break;
             }
@@ -679,7 +671,7 @@ extern "C" {
         state.status = f_memory_array_increase(controller_allocation_small_d, sizeof(f_limit_set_t), (void **) &rule->limits.array, &rule->limits.used, &rule->limits.size);
 
         if (F_status_is_error(state.status)) {
-          controller_print_error_rule(&main->program.error, &cache->action, F_status_set_fine(state.status), "f_memory_array_increase", F_true, F_false);
+          controller_print_error_rule(&main->program.error, &cache->action, F_status_set_fine(state.status), macro_controller_f(f_memory_array_increase), F_true, F_false);
 
           if (F_status_set_fine(state.status) == F_memory_not) {
             status_return = state.status;
@@ -738,7 +730,7 @@ extern "C" {
               }
             }
             else {
-              controller_print_error_rule(&main->program.error, &cache->action, F_status_set_fine(state.status), "fl_conversion_dynamic_partial_to_signed_detect", F_true, F_false);
+              controller_print_error_rule(&main->program.error, &cache->action, F_status_set_fine(state.status), macro_controller_f(fl_conversion_dynamic_partial_to_signed_detect), F_true, F_false);
 
               state.status = F_status_set_error(state.status);
 
@@ -867,7 +859,7 @@ extern "C" {
             else {
 
               // This function should only return F_complete_not_utf on error.
-              controller_print_error_rule(&main->program.error, &cache->action, F_complete_not_utf, "controller_validate_has_graph", F_true, F_false);
+              controller_print_error_rule(&main->program.error, &cache->action, F_complete_not_utf, macro_controller_f(controller_validate_has_graph), F_true, F_false);
 
               if (F_status_is_error_not(status_return)) {
                 status_return = state.status;
@@ -887,7 +879,7 @@ extern "C" {
           state.status = f_string_dynamic_partial_append_nulless(cache->buffer_item, cache->content_actions.array[i].array[0], setting_value);
 
           if (F_status_is_error(state.status)) {
-            controller_print_error_rule(&main->program.error, &cache->action, F_status_set_fine(state.status), "f_string_dynamic_partial_append_nulless", F_true, F_false);
+            controller_print_error_rule(&main->program.error, &cache->action, F_status_set_fine(state.status), macro_controller_f(f_string_dynamic_partial_append_nulless), F_true, F_false);
 
             if (F_status_set_fine(state.status) == F_memory_not) {
               status_return = state.status;
@@ -1018,7 +1010,7 @@ extern "C" {
               }
             }
             else {
-              controller_print_error_rule(&main->program.error, &cache->action, state.status, "fl_conversion_dynamic_partial_to_signed_detect", F_true, F_false);
+              controller_print_error_rule(&main->program.error, &cache->action, state.status, macro_controller_f(fl_conversion_dynamic_partial_to_signed_detect), F_true, F_false);
               state.status = F_status_set_error(state.status);
 
               if (F_status_is_error_not(status_return)) {
@@ -1118,7 +1110,7 @@ extern "C" {
 
             cache->action.line_action = ++cache->action.line_item;
 
-            controller_print_error_rule(&main->program.error, &cache->action, state.status, "fl_conversion_dynamic_partial_to_signed_detect", F_true, F_false);
+            controller_print_error_rule(&main->program.error, &cache->action, state.status, macro_controller_f(fl_conversion_dynamic_partial_to_signed_detect), F_true, F_false);
           }
 
           if (F_status_is_error_not(status_return)) {
@@ -1189,7 +1181,7 @@ extern "C" {
 
             controller_lock_print(main->program.error.to, &main->thread);
 
-            controller_print_error_rule(&main->program.error, &cache->action, F_status_set_fine(state.status), "f_string_dynamic_partial_append_nulless", F_true, F_false);
+            controller_print_error_rule(&main->program.error, &cache->action, F_status_set_fine(state.status), macro_controller_f(f_string_dynamic_partial_append_nulless), F_true, F_false);
 
             controller_print_error_rule_cache(&main->program.error, &cache->action, F_false);
 
@@ -1219,7 +1211,7 @@ extern "C" {
 
               controller_lock_print(main->program.error.to, &main->thread);
 
-              controller_print_error_rule(&main->program.error, &cache->action, F_status_set_fine(state.status), "f_capability_from_text", F_true, F_false);
+              controller_print_error_rule(&main->program.error, &cache->action, F_status_set_fine(state.status), macro_controller_f(f_capability_from_text), F_true, F_false);
 
               controller_print_error_rule_cache(&main->program.error, &cache->action, F_false);
 
@@ -1287,7 +1279,7 @@ extern "C" {
               }
             }
             else {
-              controller_print_error_rule(&main->program.error, &cache->action, state.status, "fl_conversion_dynamic_partial_to_signed_detect", F_true, F_false);
+              controller_print_error_rule(&main->program.error, &cache->action, state.status, macro_controller_f(fl_conversion_dynamic_partial_to_signed_detect), F_true, F_false);
               state.status = F_status_set_error(state.status);
 
               if (F_status_is_error_not(status_return)) {
@@ -1314,7 +1306,7 @@ extern "C" {
 
                 controller_lock_print(main->program.error.to, &main->thread);
 
-                controller_print_error_rule(&main->program.error, &cache->action, F_status_set_fine(state.status), "f_string_dynamic_partial_append_nulless", F_true, F_false);
+                controller_print_error_rule(&main->program.error, &cache->action, F_status_set_fine(state.status), macro_controller_f(f_string_dynamic_partial_append_nulless), F_true, F_false);
 
                 controller_print_error_rule_cache(&main->program.error, &cache->action, F_false);
 
@@ -1362,7 +1354,7 @@ extern "C" {
 
               cache->action.line_action = ++cache->action.line_item;
 
-              controller_print_error_rule(&main->program.error, &cache->action, state.status, "controller_convert_user_id", F_true, F_false);
+              controller_print_error_rule(&main->program.error, &cache->action, state.status, macro_controller_f(controller_convert_user_id), F_true, F_false);
 
               controller_print_error_rule_item(&main->program.error, &cache->action, F_false, F_status_set_fine(state.status));
             }
@@ -1408,7 +1400,7 @@ extern "C" {
           state.status = f_memory_array_increase(controller_allocation_small_d, sizeof(f_int32s_t), (void **) &rule->groups.array, &rule->groups.used, &rule->groups.size);
 
           if (F_status_is_error(state.status)) {
-            controller_print_error_rule(&main->program.error, &cache->action, F_status_set_fine(state.status), "f_memory_array_increase", F_true, F_false);
+            controller_print_error_rule(&main->program.error, &cache->action, F_status_set_fine(state.status), macro_controller_f(f_memory_array_increase), F_true, F_false);
 
             if (F_status_set_fine(state.status) == F_memory_not) {
               status_return = state.status;
@@ -1453,7 +1445,7 @@ extern "C" {
 
               cache->action.line_action = ++cache->action.line_item;
 
-              controller_print_error_rule(&main->program.error, &cache->action, state.status, "f_account_group_id_by_name", F_true, F_false);
+              controller_print_error_rule(&main->program.error, &cache->action, state.status, macro_controller_f(f_account_group_id_by_name), F_true, F_false);
 
               controller_print_error_rule_item(&main->program.error, &cache->action, F_false, F_status_set_fine(state.status));
             }
@@ -1486,7 +1478,7 @@ extern "C" {
           state.status = f_memory_array_increase(controller_allocation_small_d, sizeof(f_string_dynamic_t), (void **) &setting_values->array, &setting_values->used, &setting_values->size);
 
           if (F_status_is_error(state.status)) {
-            controller_print_error_rule(&main->program.error, &cache->action, F_status_set_fine(state.status), "f_memory_array_increase", F_true, F_false);
+            controller_print_error_rule(&main->program.error, &cache->action, F_status_set_fine(state.status), macro_controller_f(f_memory_array_increase), F_true, F_false);
 
             if (F_status_set_fine(state.status) == F_memory_not) {
               status_return = state.status;
@@ -1514,7 +1506,7 @@ extern "C" {
           state.status = f_string_dynamic_partial_append_nulless(cache->buffer_item, cache->content_actions.array[i].array[j], &setting_values->array[setting_values->used]);
 
           if (F_status_is_error(state.status)) {
-            controller_print_error_rule(&main->program.error, &cache->action, F_status_set_fine(state.status), "f_string_dynamic_partial_append_nulless", F_true, F_false);
+            controller_print_error_rule(&main->program.error, &cache->action, F_status_set_fine(state.status), macro_controller_f(f_string_dynamic_partial_append_nulless), F_true, F_false);
 
             setting_values->array[setting_values->used].used = 0;
 
@@ -1569,7 +1561,7 @@ extern "C" {
             else {
 
               // This function should only return F_complete_not_utf on error.
-              controller_print_error_rule(&main->program.error, &cache->action, F_complete_not_utf, "controller_validate_environment_name", F_true, F_false);
+              controller_print_error_rule(&main->program.error, &cache->action, F_complete_not_utf, macro_controller_f(controller_validate_environment_name), F_true, F_false);
 
               if (F_status_is_error_not(status_return)) {
                 status_return = state.status;
@@ -1595,7 +1587,7 @@ extern "C" {
           if (main->program.error.verbosity == f_console_verbosity_debug_e || (main->program.error.verbosity == f_console_verbosity_verbose_e && (main->setting.flag & controller_main_flag_simulate_e))) {
             controller_lock_print(main->program.output.to, &main->thread);
 
-            fl_print_format("%rProcessing rule item action '%[%r%]' setting value to an empty set.%r", main->program.output.to, f_string_eol_s, main->program.context.set.title, controller_environment_s, main->program.context.set.title, f_string_eol_s);
+            fl_print_format("%rProcessing Rule Item Action '%[%r%]' setting value to an empty set.%r", main->program.output.to, f_string_eol_s, main->program.context.set.title, controller_environment_s, main->program.context.set.title, f_string_eol_s);
 
             controller_unlock_print_flush(main->program.output.to, &main->thread);
           }
@@ -1782,7 +1774,7 @@ extern "C" {
       if (F_status_is_error(state.status)) {
         setting_values->array[setting_values->used].used = 0;
 
-        controller_print_error_rule(&main->program.error, &cache->action, F_status_set_fine(state.status), "f_file_name_base", F_true, F_false);
+        controller_print_error_rule(&main->program.error, &cache->action, F_status_set_fine(state.status), macro_controller_f(f_file_name_base), F_true, F_false);
 
         if (F_status_set_fine(state.status) == F_memory_not) {
           status_return = state.status;
@@ -1808,7 +1800,7 @@ extern "C" {
       if (main->program.error.verbosity == f_console_verbosity_debug_e || (main->program.error.verbosity == f_console_verbosity_verbose_e && (main->setting.flag & controller_main_flag_simulate_e))) {
         controller_lock_print(main->program.output.to, &main->thread);
 
-        fl_print_format("%rProcessing rule item action '%[%r%]', adding ", main->program.output.to, f_string_eol_s, main->program.context.set.title, controller_on_s, main->program.context.set.title);
+        fl_print_format("%rProcessing Rule Item Action '%[%r%]', adding ", main->program.output.to, f_string_eol_s, main->program.context.set.title, controller_on_s, main->program.context.set.title);
         fl_print_format("'%[%/Q%]' of ", main->program.output.to, main->program.context.set.notable, cache->buffer_item, cache->content_actions.array[i].array[1], main->program.context.set.notable);
         fl_print_format("'%[%/Q%]/", main->program.output.to, main->program.context.set.important, cache->buffer_item, cache->content_actions.array[i].array[2], main->program.context.set.important);
         fl_print_format("%[%/Q%]'.%r", main->program.output.to, main->program.context.set.important, cache->buffer_item, cache->content_actions.array[i].array[3], main->program.context.set.important, f_string_eol_s);

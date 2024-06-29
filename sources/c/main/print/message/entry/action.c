@@ -35,7 +35,7 @@ extern "C" {
 
     controller_lock_print(print->to, &main->thread);
 
-    fl_print_format("%rIgnoring %r item action '", print->to, f_string_eol_s, is_entry ? controller_entry_s : controller_exit_s);
+    fl_print_format("%rIgnoring %r Item Action '", print->to, f_string_eol_s, is_entry ? controller_entry_s : controller_exit_s);
     fl_print_format(f_string_format_Q_single_s.string, print->to, print->set->title, name, print->set->title);
     fl_print_format("', state already is ready.%r", print->to, f_string_eol_s);
 
@@ -55,7 +55,7 @@ extern "C" {
 
     controller_lock_print(print->to, &main->thread);
 
-    fl_print_format("%r%[%QThe %r item action '%]", print->to, f_string_eol_s, print->context, print->prefix, is_entry ? controller_entry_s : controller_exit_s, print->context);
+    fl_print_format("%r%[%QThe %r Item Action '%]", print->to, f_string_eol_s, print->context, print->prefix, is_entry ? controller_entry_s : controller_exit_s, print->context);
     fl_print_format(f_string_format_Q_single_s.string, print->to, print->notable, cache->action.name_action, print->notable);
 
     if (action->parameters.used) {
@@ -100,7 +100,7 @@ extern "C" {
 
     controller_lock_print(print->to, &main->thread);
 
-    fl_print_format("%rThe %r item action '", print->to, f_string_eol_s, is_entry ? controller_entry_s : controller_exit_s);
+    fl_print_format("%rThe %r Item Action '", print->to, f_string_eol_s, is_entry ? controller_entry_s : controller_exit_s);
     fl_print_format(f_string_format_Q_single_s.string, print->to, print->set->title, cache->action.name_action, print->set->title);
 
     if (action->parameters.used) {
@@ -131,7 +131,7 @@ extern "C" {
 
     controller_lock_print(print->to, &main->thread);
 
-    fl_print_format("%rWaiting before processing %r item action '", print->to, f_string_eol_s, is_entry ? controller_entry_s : controller_exit_s);
+    fl_print_format("%rWaiting before processing %r Item Action '", print->to, f_string_eol_s, is_entry ? controller_entry_s : controller_exit_s);
     fl_print_format(f_string_format_Q_single_s.string, print->to, print->set->title, name, print->set->title);
     fl_print_format("'.%r", print->to, f_string_eol_s);
 

@@ -22,9 +22,11 @@ extern "C" {
  * @param print
  *   The output structure to print to.
  *
- *   Must not be NULL.
+ *   This requires print.custom to be controller_t.
  *
  *   This does not alter print.custom.setting.state.status.
+ *
+ *   Must not be NULL.
  * @param symbol
  *   The symbol string prepended to the parameter.
  *   This locks, uses, and unlocks the file stream.

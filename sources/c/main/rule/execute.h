@@ -145,7 +145,7 @@ extern "C" {
  *
  *   Must not be NULL.
  * @param item
- *   The rule item being executed.
+ *   The Rule Item being executed.
  *
  *   Must not be NULL.
  * @param action

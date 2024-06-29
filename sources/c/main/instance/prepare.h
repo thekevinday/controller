@@ -19,7 +19,7 @@ extern "C" {
 /**
  * Prepare the instance.
  *
- * The instance is initialized with the instance id, the rule alias, and the rule action type.
+ * The instance is initialized with the instance id, the Rule alias, and the rule action type.
  * These are the necessary parts for uniquely identifying the instance.
  *
  * If a instance by the given Rule alias and Rule Action already exists, then nothing is done.
@@ -65,7 +65,7 @@ extern "C" {
 /**
  * Prepare the instance for some instance type.
  *
- * The instance is initialized with the instance id, the rule alias, and the rule action type.
+ * The instance is initialized with the instance id, the Rule alias, and the rule action type.
  * These are the necessary parts for uniquely identifying the instance.
  *
  * If a instance by the given Rule alias and Rule Action already exists, then nothing is done.

@@ -5,19 +5,19 @@
  * API Version: 0.7
  * Licenses: lgpl-2.1-or-later
  *
- * Provides the print rule action warning functionality.
+ * Provides the print Rule Setting warning functionality.
  *
  * This is auto-included and should not need to be explicitly included.
  */
-#ifndef _controller_main_print_warning_rule_action_h
-#define _controller_main_print_warning_rule_action_h
+#ifndef _controller_main_print_warning_rule_setting_h
+#define _controller_main_print_warning_rule_setting_h
 
 #ifdef __cplusplus
 extern "C" {
 #endif
 
 /**
- * Print warning message about the Rule Action being unknown.
+ * Print warning message about the Rule Item being unknown.
  *
  * @param print
  *   The output structure to print to.
@@ -32,7 +32,7 @@ extern "C" {
  *
  *   Must not be NULL.
  * @param name
- *   The Action name that is unknown.
+ *   The Item name that is unknown.
  *
  * @return
  *   F_okay on success.
@@ -40,12 +40,12 @@ extern "C" {
  *
  *   F_output_not (with error bit) if setting is NULL.
  */
-#ifndef _di_controller_print_warning_rule_action_unknown_
-  extern f_status_t controller_print_warning_rule_action_unknown(fl_print_t * const print, controller_cache_action_t * const action, const f_string_static_t name);
-#endif // _di_controller_print_warning_rule_action_unknown_
+#ifndef _di_controller_print_warning_rule_setting_unknown_
+  extern f_status_t controller_print_warning_rule_setting_unknown(fl_print_t * const print, controller_cache_action_t * const action, const f_string_static_t name);
+#endif // _di_controller_print_warning_rule_setting_unknown_
 
 #ifdef __cplusplus
 } // extern "C"
 #endif
 
-#endif // _controller_main_print_warning_rule_action_h
+#endif // _controller_main_print_warning_rule_setting_h

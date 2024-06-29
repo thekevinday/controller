@@ -5,7 +5,7 @@
  * API Version: 0.7
  * Licenses: lgpl-2.1-or-later
  *
- * Provides the print entry message action functionality.
+ * Provides the print entry action message functionality.
  *
  * This is auto-included and should not need to be explicitly included.
  */
@@ -43,9 +43,9 @@ extern "C" {
 #endif // _di_controller_print_message_entry_action_parameters_
 
 /**
- * Print message about the specified entry item action being in the ready state.
+ * Print message about the specified Entry Item Action being in the ready state.
  *
- * This generally only applies to the "ready" entry item action.
+ * This generally only applies to the "ready" Entry Item Action.
  *
  * @param print
  *   The output structure to print to.
@@ -135,9 +135,9 @@ extern "C" {
 #endif // _di_controller_print_message_entry_action_state_failed_
 
 /**
- * Print message about waiting for the specified entry item action.
+ * Print message about waiting for the specified Entry Item Action.
  *
- * This generally only applies to the "ready" entry item action.
+ * This generally only applies to the "ready" Entry Item Action.
  *
  * @param print
  *   The output structure to print to.
