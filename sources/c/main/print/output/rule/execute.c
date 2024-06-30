@@ -42,6 +42,7 @@ extern "C" {
     return F_okay;
   }
 #endif // _di_controller_print_entry_output_execute_simulate_
+
 #ifdef __cplusplus
 } // extern "C"
 #endif

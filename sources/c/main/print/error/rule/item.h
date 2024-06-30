@@ -30,7 +30,7 @@ extern "C" {
  *
  *   Must not be NULL.
  * @param cache
- *   A structure for containing and caching relevant data.
+ *   The Action cache.
  *
  *   Must not be NULL.
  * @param item

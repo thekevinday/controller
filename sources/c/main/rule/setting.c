@@ -318,13 +318,13 @@ extern "C" {
 
             if (state.status == F_data_not || state.status == F_number || state.status == F_number_overflow || state.status == F_number_underflow || state.status == F_number_negative || state.status == F_number_decimal) {
               if (state.status == F_number_underflow) {
-                controller_print_error_rule_setting_with_range(&main->program.error, cache, " has an unsupported number", cache->content_actions.array[i].array[j], ", the number is too small for this system", i, line_item);
+                controller_print_error_rule_setting_with_range(&main->program.error, &cache->action, " has an unsupported number", cache->buffer_item, cache->object_actions.array[i], cache->content_actions.array[i].array[j], ", the number is too small for this system", line_item);
               }
               else if (state.status == F_number_overflow || state.status == F_number_positive) {
-                controller_print_error_rule_setting_with_range(&main->program.error, cache, " has an unsupported number", cache->content_actions.array[i].array[j], ", the number is too large for this system", i, line_item);
+                controller_print_error_rule_setting_with_range(&main->program.error, &cache->action, " has an unsupported number", cache->buffer_item, cache->object_actions.array[i], cache->content_actions.array[i].array[j], ", the number is too large for this system", line_item);
               }
               else {
-                controller_print_error_rule_setting_with_range(&main->program.error, cache, " has an invalid number", cache->content_actions.array[i].array[j], ", only whole numbers are allowed for an affinity value", i, line_item);
+                controller_print_error_rule_setting_with_range(&main->program.error, &cache->action, " has an invalid number", cache->buffer_item, cache->object_actions.array[i], cache->content_actions.array[i].array[j], ", only whole numbers are allowed for an affinity value", line_item);
               }
 
               state.status = F_status_set_error(F_valid_not);
@@ -478,7 +478,7 @@ extern "C" {
           rule->cgroup.as_new = F_true;
         }
         else {
-          controller_print_error_rule_setting_with_range(&main->program.error, cache, " has an unknown option", cache->content_actions.array[i].array[0], "", i, line_item);
+          controller_print_error_rule_setting_with_range(&main->program.error, &cache->action, " has an unknown option", cache->buffer_item, cache->object_actions.array[i], cache->content_actions.array[i].array[0], "", line_item);
 
           if (F_status_is_error_not(status_return)) {
             status_return = F_status_set_error(F_valid_not);
@@ -714,13 +714,13 @@ extern "C" {
 
             if (state.status == F_data_not || state.status == F_number || state.status == F_number_overflow || state.status == F_number_underflow || state.status == F_number_negative || state.status == F_number_positive || state.status == F_number_decimal) {
               if (state.status == F_number_underflow) {
-                controller_print_error_rule_setting_with_range(&main->program.error, cache, " has an unsupported number", cache->content_actions.array[i].array[j], ", the number is too small for this system", i, line_item);
+                controller_print_error_rule_setting_with_range(&main->program.error, &cache->action, " has an unsupported number", cache->buffer_item, cache->object_actions.array[i], cache->content_actions.array[i].array[j], ", the number is too small for this system", line_item);
               }
               else if (state.status == F_number_overflow) {
-                controller_print_error_rule_setting_with_range(&main->program.error, cache, " has an unsupported number", cache->content_actions.array[i].array[j], ", the number is too large for this system", i, line_item);
+                controller_print_error_rule_setting_with_range(&main->program.error, &cache->action, " has an unsupported number", cache->buffer_item, cache->object_actions.array[i], cache->content_actions.array[i].array[j], ", the number is too large for this system", line_item);
               }
               else {
-                controller_print_error_rule_setting_with_range(&main->program.error, cache, " has an unsupported number", cache->content_actions.array[i].array[j], ", only whole numbers are allowed for a resource limit value", i, line_item);
+                controller_print_error_rule_setting_with_range(&main->program.error, &cache->action, " has an unsupported number", cache->buffer_item, cache->object_actions.array[i], cache->content_actions.array[i].array[j], ", only whole numbers are allowed for a resource limit value", line_item);
               }
 
               state.status = F_status_set_error(F_valid_not);
@@ -946,7 +946,7 @@ extern "C" {
           rule->scheduler.priority = 49;
         }
         else {
-          controller_print_error_rule_setting_with_range(&main->program.error, cache, " has an unknown scheduler", cache->content_actions.array[i].array[0], "", i, line_item);
+          controller_print_error_rule_setting_with_range(&main->program.error, &cache->action, " has an unknown scheduler", cache->buffer_item, cache->object_actions.array[i], cache->content_actions.array[i].array[0], "", line_item);
 
           if (F_status_is_error_not(status_return)) {
             status_return = F_status_set_error(F_valid_not);
@@ -1097,10 +1097,10 @@ extern "C" {
           state.status = F_status_set_fine(state.status);
 
           if (state.status == F_number_overflow) {
-            controller_print_error_rule_setting_with_range(&main->program.error, cache, " has an unsupported number", cache->content_actions.array[i].array[1], ", the number is too large for this system", i, line_item);
+            controller_print_error_rule_setting_with_range(&main->program.error, &cache->action, " has an unsupported number", cache->buffer_item, cache->object_actions.array[i], cache->content_actions.array[i].array[1], ", the number is too large for this system", line_item);
           }
           else if (state.status == F_data_not || state.status == F_number || state.status == F_number_underflow || state.status == F_number_negative || state.status == F_number_positive || state.status == F_number_decimal) {
-            controller_print_error_rule_setting_with_range(&main->program.error, cache, " has an invalid number", cache->content_actions.array[i].array[1], ", only positive whole numbers are allowed", i, line_item);
+            controller_print_error_rule_setting_with_range(&main->program.error, &cache->action, " has an invalid number", cache->buffer_item, cache->object_actions.array[i], cache->content_actions.array[i].array[1], ", only positive whole numbers are allowed", line_item);
           }
           else {
 
@@ -1338,13 +1338,13 @@ extern "C" {
             state.status = F_status_set_fine(state.status);
 
             if (state.status == F_exist_not) {
-              controller_print_error_rule_setting_with_range(&main->program.error, cache, " has an invalid user", cache->content_actions.array[i].array[0], ", because no user was found by that name", i, line_item);
+              controller_print_error_rule_setting_with_range(&main->program.error, &cache->action, " has an invalid user", cache->buffer_item, cache->object_actions.array[i], cache->content_actions.array[i].array[0], ", because no user was found by that name", line_item);
             }
             else if (state.status == F_number_too_large) {
-              controller_print_error_rule_setting_with_range(&main->program.error, cache, " has an invalid user", cache->content_actions.array[i].array[0], ", because the given ID is too large", i, line_item);
+              controller_print_error_rule_setting_with_range(&main->program.error, &cache->action, " has an invalid user", cache->buffer_item, cache->object_actions.array[i], cache->content_actions.array[i].array[0], ", because the given ID is too large", line_item);
             }
             else if (state.status == F_number) {
-              controller_print_error_rule_setting_with_range(&main->program.error, cache, " has an invalid user", cache->content_actions.array[i].array[0], ", because the given ID is not a valid supported number", i, line_item);
+              controller_print_error_rule_setting_with_range(&main->program.error, &cache->action, " has an invalid user", cache->buffer_item, cache->object_actions.array[i], cache->content_actions.array[i].array[0], ", because the given ID is not a valid supported number", line_item);
             }
             else {
 
@@ -1429,13 +1429,13 @@ extern "C" {
             state.status = F_status_set_fine(state.status);
 
             if (state.status == F_exist_not) {
-              controller_print_error_rule_setting_with_range(&main->program.error, cache, " has an invalid group", cache->content_actions.array[i].array[j], ", because no group was found by that name", i, line_item);
+              controller_print_error_rule_setting_with_range(&main->program.error, &cache->action, " has an invalid group", cache->buffer_item, cache->object_actions.array[i], cache->content_actions.array[i].array[j], ", because no group was found by that name", line_item);
             }
             else if (state.status == F_number_too_large) {
-              controller_print_error_rule_setting_with_range(&main->program.error, cache, " has an invalid group", cache->content_actions.array[i].array[j], ", because the given ID is too large", i, line_item);
+              controller_print_error_rule_setting_with_range(&main->program.error, &cache->action, " has an invalid group", cache->buffer_item, cache->object_actions.array[i], cache->content_actions.array[i].array[j], ", because the given ID is too large", line_item);
             }
             else if (state.status == F_number) {
-              controller_print_error_rule_setting_with_range(&main->program.error, cache, " has an invalid group", cache->content_actions.array[i].array[j], ", because the given ID is not a valid supported number", i, line_item);
+              controller_print_error_rule_setting_with_range(&main->program.error, &cache->action, " has an invalid group", cache->buffer_item, cache->object_actions.array[i], cache->content_actions.array[i].array[j], ", because the given ID is not a valid supported number", line_item);
             }
             else {
 
@@ -1797,16 +1797,7 @@ extern "C" {
         ++rule->ons.used;
       }
 
-      if (main->program.error.verbosity == f_console_verbosity_debug_e || (main->program.error.verbosity == f_console_verbosity_verbose_e && (main->setting.flag & controller_main_flag_simulate_e))) {
-        controller_lock_print(main->program.output.to, &main->thread);
-
-        fl_print_format("%rProcessing Rule Item Action '%[%r%]', adding ", main->program.output.to, f_string_eol_s, main->program.context.set.title, controller_on_s, main->program.context.set.title);
-        fl_print_format("'%[%/Q%]' of ", main->program.output.to, main->program.context.set.notable, cache->buffer_item, cache->content_actions.array[i].array[1], main->program.context.set.notable);
-        fl_print_format("'%[%/Q%]/", main->program.output.to, main->program.context.set.important, cache->buffer_item, cache->content_actions.array[i].array[2], main->program.context.set.important);
-        fl_print_format("%[%/Q%]'.%r", main->program.output.to, main->program.context.set.important, cache->buffer_item, cache->content_actions.array[i].array[3], main->program.context.set.important, f_string_eol_s);
-
-        controller_unlock_print_flush(main->program.output.to, &main->thread);
-      }
+      controller_print_output_rule_execute_setting_simulate_adding_range_3(&main->program.output, controller_on_s, cache->buffer_item, cache->content_actions.array[i].array[1], cache->content_actions.array[i].array[2], cache->content_actions.array[i].array[3]);
     } // for
 
     // Restore the current name item and line number, which there should already be enough allocated space for.

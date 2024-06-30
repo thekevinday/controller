@@ -73,6 +73,13 @@ extern "C" {
  * @param action
  *   The action cache.
  *
+ *   This uses:
+ *     - action.line_action
+ *     - action.line_item
+ *     - action.name_action
+ *     - action.name_file
+ *     - action.name_item
+ *
  *   Must not be NULL.
  * @param item
  *   If TRUE, then this error is associated with an item.

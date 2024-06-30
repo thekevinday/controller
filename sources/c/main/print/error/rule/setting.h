@@ -56,25 +56,31 @@ extern "C" {
  * This is intended only to be used for simple messages.
  *
  * @param print
- *   The error or warning output structure.
+ *   The output structure to print to.
+ *
+ *   This requires print.custom to be controller_t.
+ *
+ *   This does not alter print.custom.setting.state.status.
  *
  *   Must not be NULL.
- * @param cache
- *   A structure for containing and caching relevant data.
+ * @param action
+ *   The Action cache.
+ *
+ *   This alters action.line_item to get the current line.
  *
  *   Must not be NULL.
  * @param before
  *   The string to add to the message being printed (before the value).
- * @param range
- *   The range within the cache item buffer representing the value.
+ * @param buffer
+ *   The buffer representing the Rule settings.
+ * @param range_object
+ *   The range within the buffer representing the setting Object.
+ * @param range_content
+ *   The range within the buffer representing the setting Content.
  * @param after
  *   The string to add to the message being printed (after the value).
- * @param index
- *   The position in the object actions cache representing the object.
  * @param line_item
  *   The current line number.
- * @param thread
- *   The thread data.
  *
  * @return
  *   F_okay on success.
@@ -83,7 +89,7 @@ extern "C" {
  *   F_output_not (with error bit) if setting is NULL.
  */
 #ifndef _di_controller_print_error_rule_setting_with_range_
-  extern f_status_t controller_print_error_rule_setting_with_range(fl_print_t * const print, controller_cache_t * const cache, const f_string_t before, const f_range_t range, const f_string_t after, const f_number_unsigned_t index, const f_number_unsigned_t line_item);
+  extern f_status_t controller_print_error_rule_setting_with_range(fl_print_t * const print, controller_cache_action_t * const action, const f_string_t before, const f_string_static_t buffer, const f_range_t range_object, const f_range_t range_content, const f_string_t after, const f_number_unsigned_t line_item);
 #endif // _di_controller_print_error_rule_setting_with_range_
 
 /**
