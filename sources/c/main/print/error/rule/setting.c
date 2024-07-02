@@ -5,26 +5,20 @@ extern "C" {
 #endif
 
 #ifndef _di_controller_print_error_rule_setting_
-  f_status_t controller_print_error_rule_setting(fl_print_t * const print, controller_cache_t * const cache, const f_string_t message, const f_number_unsigned_t index, const f_number_unsigned_t line_item) {
+  f_status_t controller_print_error_rule_setting(fl_print_t * const print, controller_cache_action_t * const action, const f_string_t message, const f_string_static_t buffer, const f_number_unsigned_t line_start, const f_number_unsigned_t line_item, f_state_t * const state) {
 
-    if (!print || !print->custom || !cache) return F_status_set_error(F_output_not);
+    if (!print || !print->custom || !action || !state) return F_status_set_error(F_output_not);
     if (print->verbosity == f_console_verbosity_quiet_e) return F_output_not;
 
     controller_t * const main = (controller_t *) print->custom;
 
-    f_state_t state = f_state_t_initialize;
-
-    // Get the current line number within the settings item.
-    cache->action.line_item = line_item;
-    f_fss_count_lines(cache->buffer_item, cache->object_actions.array[index].start, &cache->action.line_item, &main->setting.state);
-
-    cache->action.line_action = ++cache->action.line_item;
+    controller_rule_setting_line_action(main, action, buffer, line_start, line_item, state);
 
     controller_lock_print(print->to, &main->thread);
 
     fl_print_format("%r%[%QRule setting %S.%]%r", print->to, f_string_eol_s, print->context, print->prefix, message, print->context, f_string_eol_s);
 
-    controller_print_error_rule_cache(print, &cache->action, F_false);
+    controller_print_error_rule_cache(print, action, F_false);
 
     controller_unlock_print_flush(print->to, &main->thread);
 
@@ -38,18 +32,14 @@ extern "C" {
 #endif // _di_controller_print_error_rule_setting_value_unsupported_
 
 #ifndef _di_controller_print_error_rule_setting_with_range_
-  f_status_t controller_print_error_rule_setting_with_range(fl_print_t * const print, controller_cache_action_t * const action, const f_string_t before, const f_string_static_t buffer, const f_range_t range_object, const f_range_t range_content, const f_string_t after, const f_number_unsigned_t line_item) {
+  f_status_t controller_print_error_rule_setting_with_range(fl_print_t * const print, controller_cache_action_t * const action, const f_string_t before, const f_string_static_t buffer, const f_range_t range_content, const f_string_t after, const f_number_unsigned_t line_start, const f_number_unsigned_t line_item, f_state_t * const state) {
 
     if (!print || !print->custom || !action) return F_status_set_error(F_output_not);
     if (print->verbosity == f_console_verbosity_quiet_e) return F_output_not;
 
     controller_t * const main = (controller_t *) print->custom;
 
-    // Get the current line number within the settings item.
-    action->line_item = line_item;
-    f_fss_count_lines(buffer, range_object.start, &action->line_item, &main->setting.state);
-
-    action->line_action = ++action->line_item;
+    controller_rule_setting_line_action(main, action, buffer, line_start, line_item, state);
 
     controller_lock_print(print->to, &main->thread);
 

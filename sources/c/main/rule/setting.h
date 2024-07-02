@@ -45,6 +45,40 @@ extern "C" {
 #endif // di_controller_rule_setting_limit_type_name_
 
 /**
+ * Get the current line number relative to the start position within the buffer.
+ *
+ * @param main
+ *   The main program data.
+ *
+ *   Must not be NULL.
+ * @param action
+ *   The Action cache.
+ *
+ *   This alters the action.line_item to perform the calculation.
+ *   This alters the action.line_action to save the line number.
+ *   Both action.line_item and action.line_action should be the same after this function succeeds.
+ *
+ *   Must not be NULL.
+ * @param buffer
+ *   The string containing the lines to count.
+ * @param start
+ *   The start position in the buffer where counting begins.
+ * @param line
+ *   The current line number to start counting from.
+ * @param state
+ *   The state data.
+ *
+ *   The state.status is modified.
+ *
+ *   Must not be NULL.
+ *
+ * @see f_fss_count_lines()
+ */
+#ifndef _di_controller_rule_setting_line_action_
+  extern f_status_t controller_rule_setting_line_action(controller_t * const main, controller_cache_action_t * const action, const f_string_static_t buffer, const f_number_unsigned_t start, const f_number_unsigned_t line, f_state_t * const state);
+#endif // _di_controller_rule_setting_line_action_
+
+/**
  * Read the content within the buffer, extracting all valid settings.
  *
  * This will perform additional FSS read functions as appropriate.

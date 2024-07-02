@@ -85,6 +85,34 @@ extern "C" {
   }
 #endif // _di_controller_rule_setting_limit_type_name_
 
+#ifndef _di_controller_rule_setting_line_action_
+  f_status_t controller_rule_setting_line_action(controller_t * const main, controller_cache_action_t * const action, const f_string_static_t buffer, const f_number_unsigned_t start, const f_number_unsigned_t line, f_state_t * const state) {
+
+    if (!main || !action || !state) return F_status_set_error(F_parameter);
+
+    action->line_item = line;
+
+    {
+      // Save the original status, to reset it before returning.
+      const f_status_t original = state->status;
+
+      f_fss_count_lines(buffer, start, &action->line_item, state);
+
+      if (F_status_is_error(state->status)) {
+        state->status = original;
+
+        return state->status;
+      }
+
+      state->status = original;
+    }
+
+    action->line_action = ++action->line_item;
+
+    return F_okay;
+  }
+#endif // _di_controller_rule_setting_line_action_
+
 #ifndef _di_controller_rule_setting_read_
   f_status_t controller_rule_setting_read(controller_t * const main, controller_cache_t * const cache, const uint8_t is_normal, controller_rule_t * const rule) {
 
@@ -147,13 +175,11 @@ extern "C" {
           status_return = state.status;
         }
 
-        // Get the current line number within the settings item.
-        cache->action.line_item = line_item;
-        f_fss_count_lines(cache->buffer_item, cache->object_actions.array[i].start, &cache->action.line_item, &state);
+        const f_status_t original = state.status;
 
-        cache->action.line_action = ++cache->action.line_item;
+        controller_rule_setting_line_action(main, &cache->action, cache->buffer_item, cache->object_actions.array[i].start, cache->action.line_item, &state);
 
-        controller_print_error_rule_item(&main->program.error, &cache->action, F_false, F_status_set_fine(state.status));
+        controller_print_error_rule_item(&main->program.error, &cache->action, F_false, F_status_set_fine(original));
 
         continue;
       }
@@ -211,12 +237,7 @@ extern "C" {
       }
       else {
         if (main->program.warning.verbosity == f_console_verbosity_debug_e) {
-
-          // Get the current line number within the settings item.
-          cache->action.line_item = line_item;
-          f_fss_count_lines(cache->buffer_item, cache->object_actions.array[i].start, &cache->action.line_item, &state);
-
-          cache->action.line_action = ++cache->action.line_item;
+          controller_rule_setting_line_action(main, &cache->action, cache->buffer_item, cache->object_actions.array[i].start, cache->action.line_item, &state);
 
           controller_print_warning_rule_setting_unknown(&main->program.warning, &cache->action, cache->action.name_item);
         }
@@ -231,13 +252,15 @@ extern "C" {
         state.status = f_string_dynamic_partial_append_nulless(cache->buffer_item, range2, &cache->action.name_action);
 
         if (F_status_is_error(state.status)) {
+          {
+            const f_status_t original = state.status;
+
+            controller_rule_setting_line_action(main, &cache->action, cache->buffer_item, cache->object_actions.array[i].start, cache->action.line_item, &state);
+
+            state.status = original;
+          }
+
           controller_print_error_rule(&main->program.error, &cache->action, F_status_set_fine(state.status), macro_controller_f(f_string_dynamic_partial_append_nulless), F_true, F_false);
-
-          // Get the current line number within the settings item.
-          cache->action.line_item = line_item;
-          f_fss_count_lines(cache->buffer_item, cache->object_actions.array[i].start, &cache->action.line_item, &state);
-
-          cache->action.line_action = ++cache->action.line_item;
 
           controller_print_error_rule_item(&main->program.error, &cache->action, F_false, F_status_set_fine(state.status));
 
@@ -257,12 +280,7 @@ extern "C" {
       else {
         if (empty_disallow) {
           if (main->program.warning.verbosity == f_console_verbosity_debug_e) {
-
-            // Get the current line number within the settings item.
-            cache->action.line_item = line_item;
-            f_fss_count_lines(cache->buffer_item, cache->object_actions.array[i].start, &cache->action.line_item, &state);
-
-            cache->action.line_action = ++cache->action.line_item;
+            controller_rule_setting_line_action(main, &cache->action, cache->buffer_item, cache->object_actions.array[i].start, cache->action.line_item, &state);
 
             controller_lock_print(main->program.warning.to, &main->thread);
 
@@ -279,7 +297,7 @@ extern "C" {
 
       if (type == controller_rule_setting_type_affinity_e) {
         if (!cache->content_actions.array[i].used) {
-          controller_print_error_rule_setting(&main->program.error, cache, "requires one or more Content", i, line_item);
+          controller_print_error_rule_setting(&main->program.error, &cache->action, "requires one or more Content", cache->buffer_item, cache->object_actions.array[i].start, line_item, &state);
 
           if (F_status_is_error_not(status_return)) {
             status_return = F_status_set_error(F_valid_not);
@@ -318,13 +336,13 @@ extern "C" {
 
             if (state.status == F_data_not || state.status == F_number || state.status == F_number_overflow || state.status == F_number_underflow || state.status == F_number_negative || state.status == F_number_decimal) {
               if (state.status == F_number_underflow) {
-                controller_print_error_rule_setting_with_range(&main->program.error, &cache->action, " has an unsupported number", cache->buffer_item, cache->object_actions.array[i], cache->content_actions.array[i].array[j], ", the number is too small for this system", line_item);
+                controller_print_error_rule_setting_with_range(&main->program.error, &cache->action, " has an unsupported number", cache->buffer_item, cache->content_actions.array[i].array[j], ", the number is too small for this system", cache->object_actions.array[i].start, line_item, &state);
               }
               else if (state.status == F_number_overflow || state.status == F_number_positive) {
-                controller_print_error_rule_setting_with_range(&main->program.error, &cache->action, " has an unsupported number", cache->buffer_item, cache->object_actions.array[i], cache->content_actions.array[i].array[j], ", the number is too large for this system", line_item);
+                controller_print_error_rule_setting_with_range(&main->program.error, &cache->action, " has an unsupported number", cache->buffer_item, cache->content_actions.array[i].array[j], ", the number is too large for this system", cache->object_actions.array[i].start, line_item, &state);
               }
               else {
-                controller_print_error_rule_setting_with_range(&main->program.error, &cache->action, " has an invalid number", cache->buffer_item, cache->object_actions.array[i], cache->content_actions.array[i].array[j], ", only whole numbers are allowed for an affinity value", line_item);
+                controller_print_error_rule_setting_with_range(&main->program.error, &cache->action, " has an invalid number", cache->buffer_item, cache->content_actions.array[i].array[j], ", only whole numbers are allowed for an affinity value", cache->object_actions.array[i].start, line_item, &state);
               }
 
               state.status = F_status_set_error(F_valid_not);
@@ -356,7 +374,7 @@ extern "C" {
 
       if (type == controller_rule_setting_type_define_e || type == controller_rule_setting_type_parameter_e) {
         if (cache->content_actions.array[i].used != 2) {
-          controller_print_error_rule_setting(&main->program.error, cache, "requires exactly two Content", i, line_item);
+          controller_print_error_rule_setting(&main->program.error, &cache->action, "requires exactly two Content", cache->buffer_item, cache->object_actions.array[i].start, line_item, &state);
 
           if (F_status_is_error_not(status_return)) {
             status_return = F_status_set_error(F_valid_not);
@@ -387,13 +405,11 @@ extern "C" {
             status_return = state.status;
           }
 
-          // Get the current line number within the settings item.
-          cache->action.line_item = line_item;
-          f_fss_count_lines(cache->buffer_item, cache->object_actions.array[i].start, &cache->action.line_item, &state);
+          const f_status_t original = state.status;
 
-          cache->action.line_action = ++cache->action.line_item;
+          controller_rule_setting_line_action(main, &cache->action, cache->buffer_item, cache->object_actions.array[i].start, cache->action.line_item, &state);
 
-          controller_print_error_rule_item(&main->program.error, &cache->action, F_false, F_status_set_fine(state.status));
+          controller_print_error_rule_item(&main->program.error, &cache->action, F_false, F_status_set_fine(original));
 
           continue;
         }
@@ -416,13 +432,11 @@ extern "C" {
             status_return = state.status;
           }
 
-          // Get the current line number within the settings item.
-          cache->action.line_item = line_item;
-          f_fss_count_lines(cache->buffer_item, cache->object_actions.array[i].start, &cache->action.line_item, &state);
+          const f_status_t original = state.status;
 
-          cache->action.line_action = ++cache->action.line_item;
+          controller_rule_setting_line_action(main, &cache->action, cache->buffer_item, cache->object_actions.array[i].start, cache->action.line_item, &state);
 
-          controller_print_error_rule_item(&main->program.error, &cache->action, F_false, F_status_set_fine(state.status));
+          controller_print_error_rule_item(&main->program.error, &cache->action, F_false, F_status_set_fine(original));
 
           continue;
         }
@@ -442,13 +456,11 @@ extern "C" {
             status_return = state.status;
           }
 
-          // Get the current line number within the settings item.
-          cache->action.line_item = line_item;
-          f_fss_count_lines(cache->buffer_item, cache->object_actions.array[i].start, &cache->action.line_item, &state);
+          const f_status_t original = state.status;
 
-          cache->action.line_action = ++cache->action.line_item;
+          controller_rule_setting_line_action(main, &cache->action, cache->buffer_item, cache->object_actions.array[i].start, cache->action.line_item, &state);
 
-          controller_print_error_rule_item(&main->program.error, &cache->action, F_false, F_status_set_fine(state.status));
+          controller_print_error_rule_item(&main->program.error, &cache->action, F_false, F_status_set_fine(original));
 
           continue;
         }
@@ -462,7 +474,7 @@ extern "C" {
 
       if (type == controller_rule_setting_type_cgroup_e) {
         if (cache->content_actions.array[i].used < 2 || rule->has & controller_rule_has_cgroup_d) {
-          controller_print_error_rule_setting(&main->program.error, cache, "requires two or more Content", i, line_item);
+          controller_print_error_rule_setting(&main->program.error, &cache->action, "requires two or more Content", cache->buffer_item, cache->object_actions.array[i].start, line_item, &state);
 
           if (F_status_is_error_not(status_return)) {
             status_return = F_status_set_error(F_valid_not);
@@ -478,7 +490,7 @@ extern "C" {
           rule->cgroup.as_new = F_true;
         }
         else {
-          controller_print_error_rule_setting_with_range(&main->program.error, &cache->action, " has an unknown option", cache->buffer_item, cache->object_actions.array[i], cache->content_actions.array[i].array[0], "", line_item);
+          controller_print_error_rule_setting_with_range(&main->program.error, &cache->action, " has an unknown option", cache->buffer_item, cache->content_actions.array[i].array[0], "", cache->object_actions.array[i].start, line_item, &state);
 
           if (F_status_is_error_not(status_return)) {
             status_return = F_status_set_error(F_valid_not);
@@ -534,13 +546,11 @@ extern "C" {
             status_return = state.status;
           }
 
-          // Get the current line number within the settings item.
-          cache->action.line_item = line_item;
-          f_fss_count_lines(cache->buffer_item, cache->object_actions.array[i].start, &cache->action.line_item, &state);
+          const f_status_t original = state.status;
 
-          cache->action.line_action = ++cache->action.line_item;
+          controller_rule_setting_line_action(main, &cache->action, cache->buffer_item, cache->object_actions.array[i].start, cache->action.line_item, &state);
 
-          controller_print_error_rule_item(&main->program.error, &cache->action, F_false, F_status_set_fine(state.status));
+          controller_print_error_rule_item(&main->program.error, &cache->action, F_false, F_status_set_fine(original));
 
           continue;
         }
@@ -554,7 +564,7 @@ extern "C" {
 
       if (type == controller_rule_setting_type_limit_e) {
         if (cache->content_actions.array[i].used != 3) {
-          controller_print_error_rule_setting(&main->program.error, cache, "requires three Content", i, line_item);
+          controller_print_error_rule_setting(&main->program.error, &cache->action, "requires three Content", cache->buffer_item, cache->object_actions.array[i].start, line_item, &state);
 
           if (F_status_is_error_not(status_return)) {
             status_return = F_status_set_error(F_valid_not);
@@ -613,12 +623,7 @@ extern "C" {
         }
         else {
           if (main->program.error.verbosity == f_console_verbosity_debug_e) {
-
-            // Get the current line number within the settings item.
-            cache->action.line_item = line_item;
-            f_fss_count_lines(cache->buffer_item, cache->object_actions.array[i].start, &cache->action.line_item, &state);
-
-            cache->action.line_action = ++cache->action.line_item;
+            controller_rule_setting_line_action(main, &cache->action, cache->buffer_item, cache->object_actions.array[i].start, cache->action.line_item, &state);
 
             controller_lock_print(main->program.error.to, &main->thread);
 
@@ -642,12 +647,7 @@ extern "C" {
 
           if (type == rule->limits.array[j].type) {
             if (main->program.error.verbosity > f_console_verbosity_quiet_e) {
-
-              // Get the current line number within the settings item.
-              cache->action.line_item = line_item;
-              f_fss_count_lines(cache->buffer_item, cache->object_actions.array[i].start, &cache->action.line_item, &state);
-
-              cache->action.line_action = ++cache->action.line_item;
+              controller_rule_setting_line_action(main, &cache->action, cache->buffer_item, cache->object_actions.array[i].start, cache->action.line_item, &state);
 
               controller_lock_print(main->program.error.to, &main->thread);
 
@@ -683,13 +683,11 @@ extern "C" {
             status_return = state.status;
           }
 
-          // Get the current line number within the settings item.
-          cache->action.line_item = line_item;
-          f_fss_count_lines(cache->buffer_item, cache->object_actions.array[i].start, &cache->action.line_item, &state);
+          const f_status_t original = state.status;
 
-          cache->action.line_action = ++cache->action.line_item;
+          controller_rule_setting_line_action(main, &cache->action, cache->buffer_item, cache->object_actions.array[i].start, cache->action.line_item, &state);
 
-          controller_print_error_rule_item(&main->program.error, &cache->action, F_false, F_status_set_fine(state.status));
+          controller_print_error_rule_item(&main->program.error, &cache->action, F_false, F_status_set_fine(original));
 
           continue;
         }
@@ -714,13 +712,13 @@ extern "C" {
 
             if (state.status == F_data_not || state.status == F_number || state.status == F_number_overflow || state.status == F_number_underflow || state.status == F_number_negative || state.status == F_number_positive || state.status == F_number_decimal) {
               if (state.status == F_number_underflow) {
-                controller_print_error_rule_setting_with_range(&main->program.error, &cache->action, " has an unsupported number", cache->buffer_item, cache->object_actions.array[i], cache->content_actions.array[i].array[j], ", the number is too small for this system", line_item);
+                controller_print_error_rule_setting_with_range(&main->program.error, &cache->action, " has an unsupported number", cache->buffer_item, cache->content_actions.array[i].array[j], ", the number is too small for this system", cache->object_actions.array[i].start, line_item, &state);
               }
               else if (state.status == F_number_overflow) {
-                controller_print_error_rule_setting_with_range(&main->program.error, &cache->action, " has an unsupported number", cache->buffer_item, cache->object_actions.array[i], cache->content_actions.array[i].array[j], ", the number is too large for this system", line_item);
+                controller_print_error_rule_setting_with_range(&main->program.error, &cache->action, " has an unsupported number", cache->buffer_item, cache->content_actions.array[i].array[j], ", the number is too large for this system", cache->object_actions.array[i].start, line_item, &state);
               }
               else {
-                controller_print_error_rule_setting_with_range(&main->program.error, &cache->action, " has an unsupported number", cache->buffer_item, cache->object_actions.array[i], cache->content_actions.array[i].array[j], ", only whole numbers are allowed for a resource limit value", line_item);
+                controller_print_error_rule_setting_with_range(&main->program.error, &cache->action, " has an unsupported number", cache->buffer_item, cache->content_actions.array[i].array[j], ", only whole numbers are allowed for a resource limit value", cache->object_actions.array[i].start, line_item, &state);
               }
 
               state.status = F_status_set_error(F_valid_not);
@@ -772,7 +770,7 @@ extern "C" {
         }
 
         if (setting_value->used || !cache->content_actions.array[i].used) {
-          controller_print_error_rule_setting(&main->program.error, cache, "requires one or more Content", i, line_item);
+          controller_print_error_rule_setting(&main->program.error, &cache->action, "requires one or more Content", cache->buffer_item, cache->object_actions.array[i].start, line_item, &state);
 
           if (F_status_is_error_not(status_return)) {
             status_return = F_status_set_error(F_valid_not);
@@ -816,13 +814,11 @@ extern "C" {
               status_return = state.status;
             }
 
-            // Get the current line number within the settings item.
-            cache->action.line_item = line_item;
-            f_fss_count_lines(cache->buffer_item, cache->object_actions.array[i].start, &cache->action.line_item, &state);
+            const f_status_t original = state.status;
 
-            cache->action.line_action = ++cache->action.line_item;
+            controller_rule_setting_line_action(main, &cache->action, cache->buffer_item, cache->object_actions.array[i].start, cache->action.line_item, &state);
 
-            controller_print_error_rule_item(&main->program.error, &cache->action, F_false, F_status_set_fine(state.status));
+            controller_print_error_rule_item(&main->program.error, &cache->action, F_false, F_status_set_fine(original));
 
             continue;
           }
@@ -831,12 +827,11 @@ extern "C" {
 
           if (state.status == F_false || F_status_set_fine(state.status) == F_complete_not_utf) {
             if (main->program.error.verbosity > f_console_verbosity_quiet_e) {
+              const f_status_t original = state.status;
 
-              // Get the current line number within the settings item.
-              cache->action.line_item = line_item;
-              f_fss_count_lines(cache->buffer_item, cache->object_actions.array[i].start, &cache->action.line_item, &state);
+              controller_rule_setting_line_action(main, &cache->action, cache->buffer_item, cache->object_actions.array[i].start, cache->action.line_item, &state);
 
-              cache->action.line_action = ++cache->action.line_item;
+              state.status = original;
             }
 
             if (state.status == F_false) {
@@ -893,13 +888,11 @@ extern "C" {
 
             setting_value->used = 0;
 
-            // Get the current line number within the settings item.
-            cache->action.line_item = line_item;
-            f_fss_count_lines(cache->buffer_item, cache->object_actions.array[i].start, &cache->action.line_item, &state);
+            const f_status_t original = state.status;
 
-            cache->action.line_action = ++cache->action.line_item;
+            controller_rule_setting_line_action(main, &cache->action, cache->buffer_item, cache->object_actions.array[i].start, cache->action.line_item, &state);
 
-            controller_print_error_rule_item(&main->program.error, &cache->action, F_false, F_status_set_fine(state.status));
+            controller_print_error_rule_item(&main->program.error, &cache->action, F_false, F_status_set_fine(original));
 
             continue;
           }
@@ -912,7 +905,7 @@ extern "C" {
 
       if (type == controller_rule_setting_type_scheduler_e) {
         if (cache->content_actions.array[i].used < 1 || cache->content_actions.array[i].used > 2 || rule->has & controller_rule_has_scheduler_d) {
-          controller_print_error_rule_setting(&main->program.error, cache, "requires either one or two Content", i, line_item);
+          controller_print_error_rule_setting(&main->program.error, &cache->action, "requires either one or two Content", cache->buffer_item, cache->object_actions.array[i].start, line_item, &state);
 
           if (F_status_is_error_not(status_return)) {
             status_return = F_status_set_error(F_valid_not);
@@ -946,7 +939,7 @@ extern "C" {
           rule->scheduler.priority = 49;
         }
         else {
-          controller_print_error_rule_setting_with_range(&main->program.error, &cache->action, " has an unknown scheduler", cache->buffer_item, cache->object_actions.array[i], cache->content_actions.array[i].array[0], "", line_item);
+          controller_print_error_rule_setting_with_range(&main->program.error, &cache->action, " has an unknown scheduler", cache->buffer_item, cache->content_actions.array[i].array[0], "", cache->object_actions.array[i].start, line_item, &state);
 
           if (F_status_is_error_not(status_return)) {
             status_return = F_status_set_error(F_valid_not);
@@ -976,12 +969,13 @@ extern "C" {
 
             if ((zero_only && number) || (!zero_only && (number < 1 || number > 99)) || state.status == F_data_not || state.status == F_number || state.status == F_number_overflow || state.status == F_number_negative || state.status == F_number_positive) {
               if (main->program.error.verbosity > f_console_verbosity_quiet_e) {
+                {
+                  const f_status_t original = state.status;
 
-                // Get the current line number within the settings item.
-                cache->action.line_item = line_item;
-                f_fss_count_lines(cache->buffer_item, cache->object_actions.array[i].start, &cache->action.line_item, &state);
+                  controller_rule_setting_line_action(main, &cache->action, cache->buffer_item, cache->object_actions.array[i].start, cache->action.line_item, &state);
 
-                cache->action.line_action = ++cache->action.line_item;
+                  state.status = original;
+                }
 
                 controller_lock_print(main->program.error.to, &main->thread);
 
@@ -1010,7 +1004,7 @@ extern "C" {
               }
             }
             else {
-              controller_print_error_rule(&main->program.error, &cache->action, state.status, macro_controller_f(fl_conversion_dynamic_partial_to_signed_detect), F_true, F_false);
+              controller_print_error_rule(&main->program.error, &cache->action, F_status_set_fine(state.status), macro_controller_f(fl_conversion_dynamic_partial_to_signed_detect), F_true, F_false);
               state.status = F_status_set_error(state.status);
 
               if (F_status_is_error_not(status_return)) {
@@ -1033,7 +1027,7 @@ extern "C" {
 
       if (type == controller_rule_setting_type_timeout_e) {
         if (cache->content_actions.array[i].used != 2) {
-          controller_print_error_rule_setting(&main->program.error, cache, "requires exactly two Content", i, line_item);
+          controller_print_error_rule_setting(&main->program.error, &cache->action, "requires exactly two Content", cache->buffer_item, cache->object_actions.array[i].start, line_item, &state);
 
           if (F_status_is_error_not(status_return)) {
             status_return = F_status_set_error(F_valid_not);
@@ -1055,12 +1049,13 @@ extern "C" {
         }
         else {
           if (main->program.error.verbosity > f_console_verbosity_quiet_e) {
+            {
+              const f_status_t original = state.status;
 
-            // Get the current line number within the settings item.
-            cache->action.line_item = line_item;
-            f_fss_count_lines(cache->buffer_item, cache->object_actions.array[i].start, &cache->action.line_item, &state);
+              controller_rule_setting_line_action(main, &cache->action, cache->buffer_item, cache->object_actions.array[i].start, cache->action.line_item, &state);
 
-            cache->action.line_action = ++cache->action.line_item;
+              state.status = original;
+            }
 
             controller_lock_print(main->program.error.to, &main->thread);
 
@@ -1097,20 +1092,21 @@ extern "C" {
           state.status = F_status_set_fine(state.status);
 
           if (state.status == F_number_overflow) {
-            controller_print_error_rule_setting_with_range(&main->program.error, &cache->action, " has an unsupported number", cache->buffer_item, cache->object_actions.array[i], cache->content_actions.array[i].array[1], ", the number is too large for this system", line_item);
+            controller_print_error_rule_setting_with_range(&main->program.error, &cache->action, " has an unsupported number", cache->buffer_item, cache->content_actions.array[i].array[1], ", the number is too large for this system", cache->object_actions.array[i].start, line_item, &state);
           }
           else if (state.status == F_data_not || state.status == F_number || state.status == F_number_underflow || state.status == F_number_negative || state.status == F_number_positive || state.status == F_number_decimal) {
-            controller_print_error_rule_setting_with_range(&main->program.error, &cache->action, " has an invalid number", cache->buffer_item, cache->object_actions.array[i], cache->content_actions.array[i].array[1], ", only positive whole numbers are allowed", line_item);
+            controller_print_error_rule_setting_with_range(&main->program.error, &cache->action, " has an invalid number", cache->buffer_item, cache->content_actions.array[i].array[1], ", only positive whole numbers are allowed", cache->object_actions.array[i].start, line_item, &state);
           }
           else {
+            {
+              const f_status_t original = state.status;
 
-            // Get the current line number within the settings item.
-            cache->action.line_item = line_item;
-            f_fss_count_lines(cache->buffer_item, cache->object_actions.array[i].start, &cache->action.line_item, &state);
+              controller_rule_setting_line_action(main, &cache->action, cache->buffer_item, cache->object_actions.array[i].start, cache->action.line_item, &state);
 
-            cache->action.line_action = ++cache->action.line_item;
+              state.status = original;
+            }
 
-            controller_print_error_rule(&main->program.error, &cache->action, state.status, macro_controller_f(fl_conversion_dynamic_partial_to_signed_detect), F_true, F_false);
+            controller_print_error_rule(&main->program.error, &cache->action, F_status_set_fine(state.status), macro_controller_f(fl_conversion_dynamic_partial_to_signed_detect), F_true, F_false);
           }
 
           if (F_status_is_error_not(status_return)) {
@@ -1157,7 +1153,7 @@ extern "C" {
 
       if (type == controller_rule_setting_type_capability_e || type == controller_rule_setting_type_nice_e || type == controller_rule_setting_type_user_e) {
         if (cache->content_actions.array[i].used != 1 || type == controller_rule_setting_type_capability_e && rule->capability || type == controller_rule_setting_type_group_e && (rule->has & controller_rule_has_group_d) || type == controller_rule_setting_type_nice_e && (rule->has & controller_rule_has_nice_d) || type == controller_rule_setting_type_user_e && (rule->has & controller_rule_has_user_d)) {
-          controller_print_error_rule_setting(&main->program.error, cache, "requires exactly one Content", i, line_item);
+          controller_print_error_rule_setting(&main->program.error, &cache->action, "requires exactly one Content", cache->buffer_item, cache->object_actions.array[i].start, line_item, &state);
 
           if (F_status_is_error_not(status_return)) {
             status_return = F_status_set_error(F_valid_not);
@@ -1172,12 +1168,13 @@ extern "C" {
           state.status = f_string_dynamic_partial_append_nulless(cache->buffer_item, cache->content_actions.array[i].array[0], &cache->action.generic);
 
           if (F_status_is_error(state.status)) {
+            {
+              const f_status_t original = state.status;
 
-            // Get the current line number within the settings item.
-            cache->action.line_item = line_item;
-            f_fss_count_lines(cache->buffer_item, cache->object_actions.array[i].start, &cache->action.line_item, &state);
+              controller_rule_setting_line_action(main, &cache->action, cache->buffer_item, cache->object_actions.array[i].start, cache->action.line_item, &state);
 
-            cache->action.line_action = ++cache->action.line_item;
+              state.status = original;
+            }
 
             controller_lock_print(main->program.error.to, &main->thread);
 
@@ -1202,12 +1199,13 @@ extern "C" {
 
           if (F_status_is_error(state.status) && F_status_set_fine(state.status) != F_support_not) {
             if (F_status_set_fine(state.status) == F_memory_not) {
+              {
+                const f_status_t original = state.status;
 
-              // Get the current line number within the settings item.
-              cache->action.line_item = line_item;
-              f_fss_count_lines(cache->buffer_item, cache->object_actions.array[i].start, &cache->action.line_item, &state);
+                controller_rule_setting_line_action(main, &cache->action, cache->buffer_item, cache->object_actions.array[i].start, cache->action.line_item, &state);
 
-              cache->action.line_action = ++cache->action.line_item;
+                state.status = original;
+              }
 
               controller_lock_print(main->program.error.to, &main->thread);
 
@@ -1222,7 +1220,7 @@ extern "C" {
               break;
             }
 
-            controller_print_error_rule_setting(&main->program.error, cache, "failed to process the capabilities", i, line_item);
+            controller_print_error_rule_setting(&main->program.error, &cache->action, "failed to process the capabilities", cache->buffer_item, cache->object_actions.array[i].start, line_item, &state);
 
             if (F_status_is_error_not(status_return)) {
               status_return = F_status_set_error(F_valid_not);
@@ -1252,12 +1250,13 @@ extern "C" {
 
             if (number < -20 || number > 19 || state.status == F_data_not || state.status == F_number || state.status == F_number_overflow || state.status == F_number_underflow || state.status == F_number_decimal) {
               if (main->program.error.verbosity > f_console_verbosity_quiet_e) {
+                {
+                  const f_status_t original = state.status;
 
-                // Get the current line number within the settings item.
-                cache->action.line_item = line_item;
-                f_fss_count_lines(cache->buffer_item, cache->object_actions.array[i].start, &cache->action.line_item, &state);
+                  controller_rule_setting_line_action(main, &cache->action, cache->buffer_item, cache->object_actions.array[i].start, cache->action.line_item, &state);
 
-                cache->action.line_action = ++cache->action.line_item;
+                  state.status = original;
+                }
 
                 controller_lock_print(main->program.error.to, &main->thread);
 
@@ -1279,7 +1278,7 @@ extern "C" {
               }
             }
             else {
-              controller_print_error_rule(&main->program.error, &cache->action, state.status, macro_controller_f(fl_conversion_dynamic_partial_to_signed_detect), F_true, F_false);
+              controller_print_error_rule(&main->program.error, &cache->action, F_status_set_fine(state.status), macro_controller_f(fl_conversion_dynamic_partial_to_signed_detect), F_true, F_false);
               state.status = F_status_set_error(state.status);
 
               if (F_status_is_error_not(status_return)) {
@@ -1297,12 +1296,13 @@ extern "C" {
               state.status = f_string_dynamic_partial_append_nulless(cache->buffer_item, cache->content_actions.array[i].array[0], &cache->action.generic);
 
               if (F_status_is_error(state.status)) {
+                {
+                  const f_status_t original = state.status;
 
-                // Get the current line number within the settings item.
-                cache->action.line_item = line_item;
-                f_fss_count_lines(cache->buffer_item, cache->object_actions.array[i].start, &cache->action.line_item, &state);
+                  controller_rule_setting_line_action(main, &cache->action, cache->buffer_item, cache->object_actions.array[i].start, cache->action.line_item, &state);
 
-                cache->action.line_action = ++cache->action.line_item;
+                  state.status = original;
+                }
 
                 controller_lock_print(main->program.error.to, &main->thread);
 
@@ -1338,23 +1338,24 @@ extern "C" {
             state.status = F_status_set_fine(state.status);
 
             if (state.status == F_exist_not) {
-              controller_print_error_rule_setting_with_range(&main->program.error, &cache->action, " has an invalid user", cache->buffer_item, cache->object_actions.array[i], cache->content_actions.array[i].array[0], ", because no user was found by that name", line_item);
+              controller_print_error_rule_setting_with_range(&main->program.error, &cache->action, " has an invalid user", cache->buffer_item, cache->content_actions.array[i].array[0], ", because no user was found by that name", cache->object_actions.array[i].start, line_item, &state);
             }
             else if (state.status == F_number_too_large) {
-              controller_print_error_rule_setting_with_range(&main->program.error, &cache->action, " has an invalid user", cache->buffer_item, cache->object_actions.array[i], cache->content_actions.array[i].array[0], ", because the given ID is too large", line_item);
+              controller_print_error_rule_setting_with_range(&main->program.error, &cache->action, " has an invalid user", cache->buffer_item, cache->content_actions.array[i].array[0], ", because the given ID is too large", cache->object_actions.array[i].start, line_item, &state);
             }
             else if (state.status == F_number) {
-              controller_print_error_rule_setting_with_range(&main->program.error, &cache->action, " has an invalid user", cache->buffer_item, cache->object_actions.array[i], cache->content_actions.array[i].array[0], ", because the given ID is not a valid supported number", line_item);
+              controller_print_error_rule_setting_with_range(&main->program.error, &cache->action, " has an invalid user", cache->buffer_item, cache->content_actions.array[i].array[0], ", because the given ID is not a valid supported number", cache->object_actions.array[i].start, line_item, &state);
             }
             else {
+              {
+                const f_status_t original = state.status;
 
-              // Get the current line number within the settings item.
-              cache->action.line_item = line_item;
-              f_fss_count_lines(cache->buffer_item, cache->object_actions.array[i].start, &cache->action.line_item, &state);
+                controller_rule_setting_line_action(main, &cache->action, cache->buffer_item, cache->object_actions.array[i].start, cache->action.line_item, &state);
 
-              cache->action.line_action = ++cache->action.line_item;
+                state.status = original;
+              }
 
-              controller_print_error_rule(&main->program.error, &cache->action, state.status, macro_controller_f(controller_convert_user_id), F_true, F_false);
+              controller_print_error_rule(&main->program.error, &cache->action, F_status_set_fine(state.status), macro_controller_f(controller_convert_user_id), F_true, F_false);
 
               controller_print_error_rule_item(&main->program.error, &cache->action, F_false, F_status_set_fine(state.status));
             }
@@ -1382,7 +1383,7 @@ extern "C" {
 
       if (type == controller_rule_setting_type_group_e) {
         if (!cache->content_actions.array[i].used) {
-          controller_print_error_rule_setting(&main->program.error, cache, "requires one or more Content", i, line_item);
+          controller_print_error_rule_setting(&main->program.error, &cache->action, "requires one or more Content", cache->buffer_item, cache->object_actions.array[i].start, line_item, &state);
 
           if (F_status_is_error_not(status_return)) {
             status_return = F_status_set_error(F_valid_not);
@@ -1412,13 +1413,11 @@ extern "C" {
               status_return = state.status;
             }
 
-            // Get the current line number within the settings item.
-            cache->action.line_item = line_item;
-            f_fss_count_lines(cache->buffer_item, cache->object_actions.array[i].start, &cache->action.line_item, &state);
+            const f_status_t original = state.status;
 
-            cache->action.line_action = ++cache->action.line_item;
+            controller_rule_setting_line_action(main, &cache->action, cache->buffer_item, cache->object_actions.array[i].start, cache->action.line_item, &state);
 
-            controller_print_error_rule_item(&main->program.error, &cache->action, F_false, F_status_set_fine(state.status));
+            controller_print_error_rule_item(&main->program.error, &cache->action, F_false, F_status_set_fine(original));
 
             continue;
           }
@@ -1429,23 +1428,24 @@ extern "C" {
             state.status = F_status_set_fine(state.status);
 
             if (state.status == F_exist_not) {
-              controller_print_error_rule_setting_with_range(&main->program.error, &cache->action, " has an invalid group", cache->buffer_item, cache->object_actions.array[i], cache->content_actions.array[i].array[j], ", because no group was found by that name", line_item);
+              controller_print_error_rule_setting_with_range(&main->program.error, &cache->action, " has an invalid group", cache->buffer_item, cache->content_actions.array[i].array[j], ", because no group was found by that name", cache->object_actions.array[i].start, line_item, &state);
             }
             else if (state.status == F_number_too_large) {
-              controller_print_error_rule_setting_with_range(&main->program.error, &cache->action, " has an invalid group", cache->buffer_item, cache->object_actions.array[i], cache->content_actions.array[i].array[j], ", because the given ID is too large", line_item);
+              controller_print_error_rule_setting_with_range(&main->program.error, &cache->action, " has an invalid group", cache->buffer_item, cache->content_actions.array[i].array[j], ", because the given ID is too large", cache->object_actions.array[i].start, line_item, &state);
             }
             else if (state.status == F_number) {
-              controller_print_error_rule_setting_with_range(&main->program.error, &cache->action, " has an invalid group", cache->buffer_item, cache->object_actions.array[i], cache->content_actions.array[i].array[j], ", because the given ID is not a valid supported number", line_item);
+              controller_print_error_rule_setting_with_range(&main->program.error, &cache->action, " has an invalid group", cache->buffer_item, cache->content_actions.array[i].array[j], ", because the given ID is not a valid supported number", cache->object_actions.array[i].start, line_item, &state);
             }
             else {
+              {
+                const f_status_t original = state.status;
 
-              // Get the current line number within the settings item.
-              cache->action.line_item = line_item;
-              f_fss_count_lines(cache->buffer_item, cache->object_actions.array[i].start, &cache->action.line_item, &state);
+                controller_rule_setting_line_action(main, &cache->action, cache->buffer_item, cache->object_actions.array[i].start, cache->action.line_item, &state);
 
-              cache->action.line_action = ++cache->action.line_item;
+                state.status = original;
+              }
 
-              controller_print_error_rule(&main->program.error, &cache->action, state.status, macro_controller_f(f_account_group_id_by_name), F_true, F_false);
+              controller_print_error_rule(&main->program.error, &cache->action, F_status_set_fine(state.status), macro_controller_f(f_account_group_id_by_name), F_true, F_false);
 
               controller_print_error_rule_item(&main->program.error, &cache->action, F_false, F_status_set_fine(state.status));
             }
@@ -1490,13 +1490,11 @@ extern "C" {
               status_return = state.status;
             }
 
-            // Get the current line number within the settings item.
-            cache->action.line_item = line_item;
-            f_fss_count_lines(cache->buffer_item, cache->object_actions.array[i].start, &cache->action.line_item, &state);
+            const f_status_t original = state.status;
 
-            cache->action.line_action = ++cache->action.line_item;
+            controller_rule_setting_line_action(main, &cache->action, cache->buffer_item, cache->object_actions.array[i].start, cache->action.line_item, &state);
 
-            controller_print_error_rule_item(&main->program.error, &cache->action, F_false, F_status_set_fine(state.status));
+            controller_print_error_rule_item(&main->program.error, &cache->action, F_false, F_status_set_fine(original));
 
             continue;
           }
@@ -1520,13 +1518,11 @@ extern "C" {
               status_return = state.status;
             }
 
-            // Get the current line number within the settings item.
-            cache->action.line_item = line_item;
-            f_fss_count_lines(cache->buffer_item, cache->object_actions.array[i].start, &cache->action.line_item, &state);
+            const f_status_t original = state.status;
 
-            cache->action.line_action = ++cache->action.line_item;
+            controller_rule_setting_line_action(main, &cache->action, cache->buffer_item, cache->object_actions.array[i].start, cache->action.line_item, &state);
 
-            controller_print_error_rule_item(&main->program.error, &cache->action, F_false, F_status_set_fine(state.status));
+            controller_print_error_rule_item(&main->program.error, &cache->action, F_false, F_status_set_fine(original));
 
             continue;
           }
@@ -1534,12 +1530,13 @@ extern "C" {
           state.status = controller_validate_environment_name(setting_values->array[setting_values->used]);
 
           if (state.status == F_false || F_status_set_fine(state.status) == F_complete_not_utf) {
+            {
+              const f_status_t original = state.status;
 
-            // Get the current line number within the settings item.
-            cache->action.line_item = line_item;
-            f_fss_count_lines(cache->buffer_item, cache->object_actions.array[i].start, &cache->action.line_item, &state);
+              controller_rule_setting_line_action(main, &cache->action, cache->buffer_item, cache->object_actions.array[i].start, cache->action.line_item, &state);
 
-            cache->action.line_action = ++cache->action.line_item;
+              state.status = original;
+            }
 
             if (state.status == F_false) {
               if (main->program.error.verbosity > f_console_verbosity_quiet_e) {
@@ -1598,7 +1595,7 @@ extern "C" {
 
       // The "on" Rule Setting.
       if (cache->content_actions.array[i].used != 4) {
-        controller_print_error_rule_setting(&main->program.error, cache, "requires exactly four Content", i, line_item);
+        controller_print_error_rule_setting(&main->program.error, &cache->action, "requires exactly four Content", cache->buffer_item, cache->object_actions.array[i].start, line_item, &state);
 
         if (F_status_is_error_not(status_return)) {
           status_return = F_status_set_error(F_valid_not);
@@ -1636,12 +1633,7 @@ extern "C" {
       }
       else {
         if (main->program.error.verbosity > f_console_verbosity_quiet_e) {
-
-          // Get the current line number within the settings item.
-          cache->action.line_item = line_item;
-          f_fss_count_lines(cache->buffer_item, cache->object_actions.array[i].start, &cache->action.line_item, &state);
-
-          cache->action.line_action = ++cache->action.line_item;
+          controller_rule_setting_line_action(main, &cache->action, cache->buffer_item, cache->object_actions.array[i].start, cache->action.line_item, &state);
 
           f_thread_mutex_lock(&main->thread.lock.print);
 
@@ -1687,12 +1679,7 @@ extern "C" {
         }
         else {
           if (main->program.error.verbosity > f_console_verbosity_quiet_e) {
-
-            // Get the current line number within the settings item.
-            cache->action.line_item = line_item;
-            f_fss_count_lines(cache->buffer_item, cache->object_actions.array[i].start, &cache->action.line_item, &state);
-
-            cache->action.line_action = ++cache->action.line_item;
+            controller_rule_setting_line_action(main, &cache->action, cache->buffer_item, cache->object_actions.array[i].start, cache->action.line_item, &state);
 
             controller_lock_print(main->program.error.to, &main->thread);
 
@@ -1730,13 +1717,11 @@ extern "C" {
           status_return = state.status;
         }
 
-        // Get the current line number within the settings item.
-        cache->action.line_item = line_item;
-        f_fss_count_lines(cache->buffer_item, cache->object_actions.array[i].start, &cache->action.line_item, &state);
+        const f_status_t original = state.status;
 
-        cache->action.line_action = ++cache->action.line_item;
+        controller_rule_setting_line_action(main, &cache->action, cache->buffer_item, cache->object_actions.array[i].start, cache->action.line_item, &state);
 
-        controller_print_error_rule_item(&main->program.error, &cache->action, F_false, F_status_set_fine(state.status));
+        controller_print_error_rule_item(&main->program.error, &cache->action, F_false, F_status_set_fine(original));
 
         continue;
       }
@@ -1756,13 +1741,11 @@ extern "C" {
           status_return = state.status;
         }
 
-        // Get the current line number within the settings item.
-        cache->action.line_item = line_item;
-        f_fss_count_lines(cache->buffer_item, cache->object_actions.array[i].start, &cache->action.line_item, &state);
+        const f_status_t original = state.status;
 
-        cache->action.line_action = ++cache->action.line_item;
+        controller_rule_setting_line_action(main, &cache->action, cache->buffer_item, cache->object_actions.array[i].start, cache->action.line_item, &state);
 
-        controller_print_error_rule_item(&main->program.error, &cache->action, F_false, F_status_set_fine(state.status));
+        controller_print_error_rule_item(&main->program.error, &cache->action, F_false, F_status_set_fine(original));
 
         continue;
       }

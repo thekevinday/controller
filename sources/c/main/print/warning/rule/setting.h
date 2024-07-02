@@ -40,6 +40,34 @@ extern "C" {
  *
  *   F_output_not (with error bit) if setting is NULL.
  */
+#ifndef _di_controller_print_warning_rule_setting_empty_
+  extern f_status_t controller_print_warning_rule_setting_empty(fl_print_t * const print, controller_cache_action_t * const action, const f_string_static_t name);
+#endif // _di_controller_print_warning_rule_setting_empty_
+
+/**
+ * Print warning message about the Rule Item being unknown.
+ *
+ * @param print
+ *   The output structure to print to.
+ *
+ *   This requires print.custom to be controller_t.
+ *
+ *   This does not alter print.custom.setting.state.status.
+ *
+ *   Must not be NULL.
+ * @param action
+ *   The action cache.
+ *
+ *   Must not be NULL.
+ * @param name
+ *   The Item name that is unknown.
+ *
+ * @return
+ *   F_okay on success.
+ *   F_output_not on success, but no printing is performed.
+ *
+ *   F_output_not (with error bit) if setting is NULL.
+ */
 #ifndef _di_controller_print_warning_rule_setting_unknown_
   extern f_status_t controller_print_warning_rule_setting_unknown(fl_print_t * const print, controller_cache_action_t * const action, const f_string_static_t name);
 #endif // _di_controller_print_warning_rule_setting_unknown_
