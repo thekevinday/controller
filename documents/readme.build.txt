@@ -1,6 +1,7 @@
 # fss-0002 iki-0000
 #
 # license: cc-by-sa-4.0
+# version 2024/07/02
 #
 # This file (assumed to be named readme.build.txt) can be more easily read using the following iki_read commands:
 #   iki_read readme.build.txt +Q -w -rr FLL FLL FSS FSS -WW character "'" "'" code '"' '"'
