@@ -236,11 +236,9 @@ extern "C" {
         type = controller_rule_setting_type_user_e;
       }
       else {
-        if (main->program.warning.verbosity == f_console_verbosity_debug_e) {
-          controller_rule_setting_line_action(main, &cache->action, cache->buffer_item, cache->object_actions.array[i].start, cache->action.line_item, &state);
+        controller_rule_setting_line_action(main, &cache->action, cache->buffer_item, cache->object_actions.array[i].start, cache->action.line_item, &state);
 
-          controller_print_warning_rule_setting_unknown(&main->program.warning, &cache->action, cache->action.name_item);
-        }
+        controller_print_warning_rule_setting_unknown(&main->program.warning, &cache->action, cache->action.name_item, "Unknown");
 
         continue;
       }
@@ -279,17 +277,9 @@ extern "C" {
       }
       else {
         if (empty_disallow) {
-          if (main->program.warning.verbosity == f_console_verbosity_debug_e) {
-            controller_rule_setting_line_action(main, &cache->action, cache->buffer_item, cache->object_actions.array[i].start, cache->action.line_item, &state);
+          controller_rule_setting_line_action(main, &cache->action, cache->buffer_item, cache->object_actions.array[i].start, cache->action.line_item, &state);
 
-            controller_lock_print(main->program.warning.to, &main->thread);
-
-            fl_print_format("%r%[%QEmpty rule setting.%]%r", main->program.warning.to, f_string_eol_s, main->program.warning.context, main->program.warning.prefix, main->program.warning.context, f_string_eol_s);
-
-            controller_print_error_rule_cache(&main->program.warning, &cache->action, F_false);
-
-            controller_unlock_print_flush(main->program.warning.to, &main->thread);
-          }
+          controller_print_warning_rule_setting_unknown(&main->program.warning, &cache->action, cache->action.name_item, "Empty");
 
           continue;
         }
@@ -297,7 +287,9 @@ extern "C" {
 
       if (type == controller_rule_setting_type_affinity_e) {
         if (!cache->content_actions.array[i].used) {
-          controller_print_error_rule_setting(&main->program.error, &cache->action, "requires one or more Content", cache->buffer_item, cache->object_actions.array[i].start, line_item, &state);
+          controller_rule_setting_line_action(main, &cache->action, cache->buffer_item, cache->object_actions.array[i].start, line_item, &state);
+
+          controller_print_error_rule_setting(&main->program.error, &cache->action, "requires one or more Content");
 
           if (F_status_is_error_not(status_return)) {
             status_return = F_status_set_error(F_valid_not);
@@ -374,7 +366,9 @@ extern "C" {
 
       if (type == controller_rule_setting_type_define_e || type == controller_rule_setting_type_parameter_e) {
         if (cache->content_actions.array[i].used != 2) {
-          controller_print_error_rule_setting(&main->program.error, &cache->action, "requires exactly two Content", cache->buffer_item, cache->object_actions.array[i].start, line_item, &state);
+          controller_rule_setting_line_action(main, &cache->action, cache->buffer_item, cache->object_actions.array[i].start, line_item, &state);
+
+          controller_print_error_rule_setting(&main->program.error, &cache->action, "requires exactly two Content");
 
           if (F_status_is_error_not(status_return)) {
             status_return = F_status_set_error(F_valid_not);
@@ -474,7 +468,9 @@ extern "C" {
 
       if (type == controller_rule_setting_type_cgroup_e) {
         if (cache->content_actions.array[i].used < 2 || rule->has & controller_rule_has_cgroup_d) {
-          controller_print_error_rule_setting(&main->program.error, &cache->action, "requires two or more Content", cache->buffer_item, cache->object_actions.array[i].start, line_item, &state);
+          controller_rule_setting_line_action(main, &cache->action, cache->buffer_item, cache->object_actions.array[i].start, line_item, &state);
+
+          controller_print_error_rule_setting(&main->program.error, &cache->action, "requires two or more Content");
 
           if (F_status_is_error_not(status_return)) {
             status_return = F_status_set_error(F_valid_not);
@@ -564,7 +560,9 @@ extern "C" {
 
       if (type == controller_rule_setting_type_limit_e) {
         if (cache->content_actions.array[i].used != 3) {
-          controller_print_error_rule_setting(&main->program.error, &cache->action, "requires three Content", cache->buffer_item, cache->object_actions.array[i].start, line_item, &state);
+          controller_rule_setting_line_action(main, &cache->action, cache->buffer_item, cache->object_actions.array[i].start, line_item, &state);
+
+          controller_print_error_rule_setting(&main->program.error, &cache->action, "requires three Content");
 
           if (F_status_is_error_not(status_return)) {
             status_return = F_status_set_error(F_valid_not);
@@ -622,19 +620,9 @@ extern "C" {
           type = controller_resource_limit_type_stack_e;
         }
         else {
-          if (main->program.error.verbosity == f_console_verbosity_debug_e) {
-            controller_rule_setting_line_action(main, &cache->action, cache->buffer_item, cache->object_actions.array[i].start, cache->action.line_item, &state);
+          controller_rule_setting_line_action(main, &cache->action, cache->buffer_item, cache->object_actions.array[i].start, cache->action.line_item, &state);
 
-            controller_lock_print(main->program.error.to, &main->thread);
-
-            fl_print_format("%r%[%QUnknown resource limit type '%]", main->program.error.to, f_string_eol_s, main->program.error.context, main->program.error.prefix, main->program.error.context);
-            fl_print_format(f_string_format_Q_single_s.string, main->program.error.to, main->program.error.notable, cache->action.name_action, main->program.error.notable);
-            fl_print_format(f_string_format_sentence_end_quote_s.string, main->program.error.to, main->program.error.context, main->program.error.context, f_string_eol_s);
-
-            controller_print_error_rule_cache(&main->program.error, &cache->action, F_true);
-
-            controller_unlock_print_flush(main->program.error.to, &main->thread);
-          }
+          controller_print_error_rule_setting_reason_name(&main->program.error, &cache->action, "Unknown resource limit type", cache->action.name_action);
 
           if (F_status_is_error_not(status_return)) {
             status_return = F_status_set_error(F_valid_not);
@@ -646,19 +634,11 @@ extern "C" {
         for (j = 0; j < rule->limits.used; ++j) {
 
           if (type == rule->limits.array[j].type) {
-            if (main->program.error.verbosity > f_console_verbosity_quiet_e) {
-              controller_rule_setting_line_action(main, &cache->action, cache->buffer_item, cache->object_actions.array[i].start, cache->action.line_item, &state);
-
-              controller_lock_print(main->program.error.to, &main->thread);
-
-              fl_print_format("%r%[%QThe resource limit type is already specified%]%r", main->program.error.to, f_string_eol_s, main->program.error.context, main->program.error.prefix, main->program.error.context, f_string_eol_s);
-
-              controller_print_error_rule_cache(&main->program.error, &cache->action, F_false);
-
-              controller_unlock_print_flush(main->program.error.to, &main->thread);
-            }
+            controller_rule_setting_line_action(main, &cache->action, cache->buffer_item, cache->object_actions.array[i].start, cache->action.line_item, &state);
 
             state.status = F_status_set_error(F_valid_not);
+
+            controller_print_error_rule_setting_reason_name(&main->program.error, &cache->action, "The resource limit type is already specified", cache->action.name_action);
 
             if (F_status_is_error_not(status_return)) {
               status_return = state.status;
@@ -770,7 +750,9 @@ extern "C" {
         }
 
         if (setting_value->used || !cache->content_actions.array[i].used) {
-          controller_print_error_rule_setting(&main->program.error, &cache->action, "requires one or more Content", cache->buffer_item, cache->object_actions.array[i].start, line_item, &state);
+          controller_rule_setting_line_action(main, &cache->action, cache->buffer_item, cache->object_actions.array[i].start, line_item, &state);
+
+          controller_print_error_rule_setting(&main->program.error, &cache->action, "requires one or more Content");
 
           if (F_status_is_error_not(status_return)) {
             status_return = F_status_set_error(F_valid_not);
@@ -826,7 +808,7 @@ extern "C" {
           state.status = controller_validate_has_graph(*setting_value);
 
           if (state.status == F_false || F_status_set_fine(state.status) == F_complete_not_utf) {
-            if (main->program.error.verbosity > f_console_verbosity_quiet_e) {
+            {
               const f_status_t original = state.status;
 
               controller_rule_setting_line_action(main, &cache->action, cache->buffer_item, cache->object_actions.array[i].start, cache->action.line_item, &state);
@@ -835,17 +817,7 @@ extern "C" {
             }
 
             if (state.status == F_false) {
-              if (main->program.error.verbosity > f_console_verbosity_quiet_e) {
-                controller_lock_print(main->program.error.to, &main->thread);
-
-                fl_print_format("%r%[%QRule setting has an invalid name '%]", main->program.error.to, f_string_eol_s, main->program.error.context, main->program.error.prefix, main->program.error.context);
-                fl_print_format(f_string_format_Q_single_s.string, main->program.error.to, main->program.error.notable, *setting_value, main->program.error.notable);
-                fl_print_format("%[', there must be at least 1 graph character.%]%r", main->program.error.to, main->program.error.context, main->program.error.context, f_string_eol_s);
-
-                controller_print_error_rule_cache(&main->program.error, &cache->action, F_false);
-
-                controller_unlock_print_flush(main->program.error.to, &main->thread);
-              }
+              controller_print_error_rule_setting_name_invalid(&main->program.error, &cache->action, *setting_value);
 
               if (F_status_is_error_not(status_return)) {
                 status_return = F_status_set_error(F_valid_not);
@@ -905,7 +877,9 @@ extern "C" {
 
       if (type == controller_rule_setting_type_scheduler_e) {
         if (cache->content_actions.array[i].used < 1 || cache->content_actions.array[i].used > 2 || rule->has & controller_rule_has_scheduler_d) {
-          controller_print_error_rule_setting(&main->program.error, &cache->action, "requires either one or two Content", cache->buffer_item, cache->object_actions.array[i].start, line_item, &state);
+          controller_rule_setting_line_action(main, &cache->action, cache->buffer_item, cache->object_actions.array[i].start, line_item, &state);
+
+          controller_print_error_rule_setting(&main->program.error, &cache->action, "requires either one or two Content");
 
           if (F_status_is_error_not(status_return)) {
             status_return = F_status_set_error(F_valid_not);
@@ -968,36 +942,15 @@ extern "C" {
             state.status = F_status_set_fine(state.status);
 
             if ((zero_only && number) || (!zero_only && (number < 1 || number > 99)) || state.status == F_data_not || state.status == F_number || state.status == F_number_overflow || state.status == F_number_negative || state.status == F_number_positive) {
-              if (main->program.error.verbosity > f_console_verbosity_quiet_e) {
-                {
-                  const f_status_t original = state.status;
+              {
+                const f_status_t original = state.status;
 
-                  controller_rule_setting_line_action(main, &cache->action, cache->buffer_item, cache->object_actions.array[i].start, cache->action.line_item, &state);
+                controller_rule_setting_line_action(main, &cache->action, cache->buffer_item, cache->object_actions.array[i].start, cache->action.line_item, &state);
 
-                  state.status = original;
-                }
-
-                controller_lock_print(main->program.error.to, &main->thread);
-
-                fl_print_format("%r%[%QRule setting has an invalid number '%]", main->program.error.to, f_string_eol_s, main->program.error.context, main->program.error.prefix, main->program.error.context);
-                fl_print_format(f_string_format_Q_range_single_s.string, main->program.error.to, main->program.error.notable, cache->buffer_item, cache->content_actions.array[i].array[1], main->program.error.notable);
-
-                if (zero_only) {
-                  fl_print_format("%[', only%] ", main->program.error.to, main->program.error.context, main->program.error.context);
-                  fl_print_format("%[0%]%[ is", main->program.error.to, main->program.error.notable, main->program.error.notable, main->program.error.context);
-                }
-                else {
-                  fl_print_format("%[', only the whole numbers inclusively between%] ", main->program.error.to, main->program.error.context, main->program.error.context);
-                  fl_print_format("%[1%] %[and%] ", main->program.error.to, main->program.error.notable, main->program.error.notable, main->program.error.context, main->program.error.context);
-                  fl_print_format("%[99%] %[are", main->program.error.to, main->program.error.notable, main->program.error.notable, main->program.error.context);
-                }
-
-                fl_print_format(" allowed for the designated scheduler.%]%r", main->program.error.to, main->program.error.context, main->program.error.context, f_string_eol_s);
-
-                controller_print_error_rule_cache(&main->program.error, &cache->action, F_false);
-
-                controller_unlock_print_flush(main->program.error.to, &main->thread);
+                state.status = original;
               }
+
+              controller_print_error_rule_setting_number_invalid_scheduler(&main->program.error, &cache->action, cache->buffer_item, cache->content_actions.array[i].array[1], zero_only);
 
               if (F_status_is_error_not(status_return)) {
                 status_return = F_status_set_error(F_valid_not);
@@ -1027,7 +980,9 @@ extern "C" {
 
       if (type == controller_rule_setting_type_timeout_e) {
         if (cache->content_actions.array[i].used != 2) {
-          controller_print_error_rule_setting(&main->program.error, &cache->action, "requires exactly two Content", cache->buffer_item, cache->object_actions.array[i].start, line_item, &state);
+          controller_rule_setting_line_action(main, &cache->action, cache->buffer_item, cache->object_actions.array[i].start, line_item, &state);
+
+          controller_print_error_rule_setting(&main->program.error, &cache->action, "requires exactly two Content");
 
           if (F_status_is_error_not(status_return)) {
             status_return = F_status_set_error(F_valid_not);
@@ -1048,25 +1003,15 @@ extern "C" {
           timeout_code = controller_rule_timeout_code_stop_d;
         }
         else {
-          if (main->program.error.verbosity > f_console_verbosity_quiet_e) {
-            {
-              const f_status_t original = state.status;
+          {
+            const f_status_t original = state.status;
 
-              controller_rule_setting_line_action(main, &cache->action, cache->buffer_item, cache->object_actions.array[i].start, cache->action.line_item, &state);
+            controller_rule_setting_line_action(main, &cache->action, cache->buffer_item, cache->object_actions.array[i].start, cache->action.line_item, &state);
 
-              state.status = original;
-            }
-
-            controller_lock_print(main->program.error.to, &main->thread);
-
-            fl_print_format("%r%[%QRule setting's first value has '%]", main->program.error.to, f_string_eol_s, main->program.error.context, main->program.error.prefix, main->program.error.context);
-            fl_print_format(f_string_format_Q_range_single_s.string, main->program.error.to, main->program.error.notable, cache->buffer_item, cache->content_actions.array[i].array[0], main->program.error.notable);
-            fl_print_format("%[' but only supports %r, %r, and %r.%]%r", main->program.error.to, main->program.error.context, controller_kill_s, controller_start_s, controller_stop_s, main->program.error.context, f_string_eol_s);
-
-            controller_print_error_rule_cache(&main->program.error, &cache->action, F_false);
-
-            controller_unlock_print_flush(main->program.error.to, &main->thread);
+            state.status = original;
           }
+
+          controller_print_error_rule_setting_number_invalid_timeout(&main->program.error, &cache->action, cache->buffer_item, cache->content_actions.array[i].array[0]);
 
           if (F_status_is_error_not(status_return)) {
             status_return = F_status_set_error(F_valid_not);
@@ -1153,7 +1098,9 @@ extern "C" {
 
       if (type == controller_rule_setting_type_capability_e || type == controller_rule_setting_type_nice_e || type == controller_rule_setting_type_user_e) {
         if (cache->content_actions.array[i].used != 1 || type == controller_rule_setting_type_capability_e && rule->capability || type == controller_rule_setting_type_group_e && (rule->has & controller_rule_has_group_d) || type == controller_rule_setting_type_nice_e && (rule->has & controller_rule_has_nice_d) || type == controller_rule_setting_type_user_e && (rule->has & controller_rule_has_user_d)) {
-          controller_print_error_rule_setting(&main->program.error, &cache->action, "requires exactly one Content", cache->buffer_item, cache->object_actions.array[i].start, line_item, &state);
+          controller_rule_setting_line_action(main, &cache->action, cache->buffer_item, cache->object_actions.array[i].start, line_item, &state);
+
+          controller_print_error_rule_setting(&main->program.error, &cache->action, "requires exactly one Content");
 
           if (F_status_is_error_not(status_return)) {
             status_return = F_status_set_error(F_valid_not);
@@ -1220,7 +1167,9 @@ extern "C" {
               break;
             }
 
-            controller_print_error_rule_setting(&main->program.error, &cache->action, "failed to process the capabilities", cache->buffer_item, cache->object_actions.array[i].start, line_item, &state);
+            controller_rule_setting_line_action(main, &cache->action, cache->buffer_item, cache->object_actions.array[i].start, line_item, &state);
+
+            controller_print_error_rule_setting(&main->program.error, &cache->action, "failed to process the capabilities");
 
             if (F_status_is_error_not(status_return)) {
               status_return = F_status_set_error(F_valid_not);
@@ -1249,29 +1198,15 @@ extern "C" {
             state.status = F_status_set_fine(state.status);
 
             if (number < -20 || number > 19 || state.status == F_data_not || state.status == F_number || state.status == F_number_overflow || state.status == F_number_underflow || state.status == F_number_decimal) {
-              if (main->program.error.verbosity > f_console_verbosity_quiet_e) {
-                {
-                  const f_status_t original = state.status;
+              {
+                const f_status_t original = state.status;
 
-                  controller_rule_setting_line_action(main, &cache->action, cache->buffer_item, cache->object_actions.array[i].start, cache->action.line_item, &state);
+                controller_rule_setting_line_action(main, &cache->action, cache->buffer_item, cache->object_actions.array[i].start, cache->action.line_item, &state);
 
-                  state.status = original;
-                }
-
-                controller_lock_print(main->program.error.to, &main->thread);
-
-                fl_print_format("%r%[%QRule setting has an invalid number '%]", main->program.error.to, f_string_eol_s, main->program.error.context, main->program.error.prefix, main->program.error.context);
-                fl_print_format(f_string_format_Q_range_single_s.string, main->program.error.to, main->program.error.notable, cache->buffer_item, cache->content_actions.array[i].array[0], main->program.error.notable);
-                fl_print_format("%[', only the whole numbers inclusively between%] ", main->program.error.to, main->program.error.context, main->program.error.context);
-                fl_print_format("%[-20%]", main->program.error.to, main->program.error.notable, main->program.error.notable);
-                fl_print_format(" %[and%] ", main->program.error.to, main->program.error.context, main->program.error.context);
-                fl_print_format("%[19%]", main->program.error.to, main->program.error.notable, main->program.error.notable);
-                fl_print_format(" %[are allowed.%]%r", main->program.error.to, main->program.error.context, main->program.error.context, f_string_eol_s);
-
-                controller_print_error_rule_cache(&main->program.error, &cache->action, F_false);
-
-                controller_unlock_print_flush(main->program.error.to, &main->thread);
+                state.status = original;
               }
+
+              controller_print_error_rule_setting_number_invalid_nice(&main->program.error, &cache->action, cache->buffer_item, cache->content_actions.array[i].array[0]);
 
               if (F_status_is_error_not(status_return)) {
                 status_return = F_status_set_error(F_valid_not);
@@ -1383,7 +1318,9 @@ extern "C" {
 
       if (type == controller_rule_setting_type_group_e) {
         if (!cache->content_actions.array[i].used) {
-          controller_print_error_rule_setting(&main->program.error, &cache->action, "requires one or more Content", cache->buffer_item, cache->object_actions.array[i].start, line_item, &state);
+          controller_rule_setting_line_action(main, &cache->action, cache->buffer_item, cache->object_actions.array[i].start, line_item, &state);
+
+          controller_print_error_rule_setting(&main->program.error, &cache->action, "requires one or more Content");
 
           if (F_status_is_error_not(status_return)) {
             status_return = F_status_set_error(F_valid_not);
@@ -1539,17 +1476,7 @@ extern "C" {
             }
 
             if (state.status == F_false) {
-              if (main->program.error.verbosity > f_console_verbosity_quiet_e) {
-                controller_lock_print(main->program.error.to, &main->thread);
-
-                fl_print_format("%r%[%QRule setting has an invalid environment variable name '%]", main->program.error.to, f_string_eol_s, main->program.error.context, main->program.error.prefix, main->program.error.context);
-                fl_print_format(f_string_format_Q_single_s.string, main->program.error.to, main->program.error.notable, setting_values->array[setting_values->used], main->program.error.notable);
-                fl_print_format(f_string_format_sentence_end_quote_s.string, main->program.error.to, main->program.error.context, main->program.error.context, f_string_eol_s);
-
-                controller_print_error_rule_cache(&main->program.error, &cache->action, F_false);
-
-                controller_unlock_print_flush(main->program.error.to, &main->thread);
-              }
+              controller_print_error_rule_setting_reason_name(&main->program.error, &cache->action, "Rule setting has an invalid environment variable name", setting_values->array[setting_values->used]);
 
               if (F_status_is_error_not(status_return)) {
                 status_return = F_status_set_error(F_valid_not);
@@ -1584,7 +1511,7 @@ extern "C" {
           if (main->program.error.verbosity == f_console_verbosity_debug_e || (main->program.error.verbosity == f_console_verbosity_verbose_e && (main->setting.flag & controller_main_flag_simulate_e))) {
             controller_lock_print(main->program.output.to, &main->thread);
 
-            fl_print_format("%rProcessing Rule Item Action '%[%r%]' setting value to an empty set.%r", main->program.output.to, f_string_eol_s, main->program.context.set.title, controller_environment_s, main->program.context.set.title, f_string_eol_s);
+            fl_print_format("%rProcessing Rule Item Action '%[%r%]' setting value to an empty set.%r", main->program.output.to, f_string_eol_s, main->program.context.set.title, controller_environment_s, main->program.context.set.title, f_string_eol_s); // TODO: don't forget to update these as well.
 
             controller_unlock_print_flush(main->program.output.to, &main->thread);
           }
@@ -1595,7 +1522,9 @@ extern "C" {
 
       // The "on" Rule Setting.
       if (cache->content_actions.array[i].used != 4) {
-        controller_print_error_rule_setting(&main->program.error, &cache->action, "requires exactly four Content", cache->buffer_item, cache->object_actions.array[i].start, line_item, &state);
+        controller_rule_setting_line_action(main, &cache->action, cache->buffer_item, cache->object_actions.array[i].start, line_item, &state);
+
+        controller_print_error_rule_setting(&main->program.error, &cache->action, "requires exactly four Content");
 
         if (F_status_is_error_not(status_return)) {
           status_return = F_status_set_error(F_valid_not);
@@ -1632,22 +1561,9 @@ extern "C" {
         action = controller_rule_action_type_thaw_e;
       }
       else {
-        if (main->program.error.verbosity > f_console_verbosity_quiet_e) {
-          controller_rule_setting_line_action(main, &cache->action, cache->buffer_item, cache->object_actions.array[i].start, cache->action.line_item, &state);
+        controller_rule_setting_line_action(main, &cache->action, cache->buffer_item, cache->object_actions.array[i].start, cache->action.line_item, &state);
 
-          f_thread_mutex_lock(&main->thread.lock.print);
-
-          controller_lock_print(main->program.error.to, &main->thread);
-
-          fl_print_format("%r%[%QRule setting's second value has '%]", main->program.error.to, f_string_eol_s, main->program.error.context, main->program.error.prefix, main->program.error.context);
-          fl_print_format(f_string_format_Q_range_single_s.string, main->program.error.to, main->program.error.notable, cache->buffer_item, cache->content_actions.array[i].array[1], main->program.error.notable);
-          fl_print_format("%[' but only supports %r, %r, %r, %r, %r", main->program.error.to, main->program.error.context, controller_freeze_s, controller_kill_s, controller_pause_s, controller_reload_s, controller_restart_s);
-          fl_print_format("%r, %r, %r, and %r.%]%r", main->program.error.to, controller_resume_s, controller_start_s, controller_stop_s, controller_thaw_s, main->program.error.context, f_string_eol_s);
-
-          controller_print_error_rule_cache(&main->program.error, &cache->action, F_false);
-
-          controller_unlock_print_flush(main->program.error.to, &main->thread);
-        }
+        controller_print_error_rule_setting_number_invalid_on_first(&main->program.error, &cache->action, cache->buffer_item, cache->content_actions.array[i].array[1]);
 
         if (F_status_is_error_not(status_return)) {
           status_return = F_status_set_error(F_valid_not);
@@ -1678,19 +1594,9 @@ extern "C" {
           setting_values = &rule->ons.array[j].wish;
         }
         else {
-          if (main->program.error.verbosity > f_console_verbosity_quiet_e) {
-            controller_rule_setting_line_action(main, &cache->action, cache->buffer_item, cache->object_actions.array[i].start, cache->action.line_item, &state);
+          controller_rule_setting_line_action(main, &cache->action, cache->buffer_item, cache->object_actions.array[i].start, cache->action.line_item, &state);
 
-            controller_lock_print(main->program.error.to, &main->thread);
-
-            fl_print_format("%r%[%QRule setting's second value has '%]", main->program.error.to, f_string_eol_s, main->program.error.context, main->program.error.prefix, main->program.error.context);
-            fl_print_format(f_string_format_Q_range_single_s.string, main->program.error.to, main->program.error.notable, cache->buffer_item, cache->content_actions.array[i].array[1], main->program.error.notable);
-            fl_print_format("%[' but only supports %r, %r, and %r.%]%r", main->program.error.to, main->program.error.context, controller_need_s, controller_want_s, controller_wish_s, main->program.error.context, f_string_eol_s);
-
-            controller_print_error_rule_cache(&main->program.error, &cache->action, F_false);
-
-            controller_unlock_print_flush(main->program.error.to, &main->thread);
-          }
+          controller_print_error_rule_setting_number_invalid_on_second(&main->program.error, &cache->action, cache->buffer_item, cache->content_actions.array[i].array[1]);
 
           if (F_status_is_error_not(status_return)) {
             status_return = F_status_set_error(F_valid_not);
