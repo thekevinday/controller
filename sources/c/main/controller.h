@@ -135,6 +135,7 @@
 #include <program/controller/main/print/output/entry/setting.h>
 #include <program/controller/main/print/output/rule/execute.h>
 #include <program/controller/main/print/output/rule/setting.h>
+#include <program/controller/main/print/output/rule/validate.h>
 #include <program/controller/main/print/verbose.h>
 #include <program/controller/main/print/warning.h>
 #include <program/controller/main/print/warning/entry/action.h>
@@ -168,7 +169,6 @@
 #include <program/controller/main/rule/parameter.h>
 #include <program/controller/main/rule/read.h>
 #include <program/controller/main/rule/setting.h>
-#include <program/controller/main/rule/validate.h>
 #include <program/controller/main/rule/wait.h>
 #include <program/controller/main/process.h>
 #include <program/controller/main/validate.h>

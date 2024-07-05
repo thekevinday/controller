@@ -73,7 +73,7 @@ extern "C" {
       string = &f_string_empty_s;
     }
 
-    fl_print_format("  %[%r%]", print->to, print->set->important, controller_mode_s, print->set->important, f_string_eol_s);
+    fl_print_format("  %[%r%]", print->to, print->set->important, controller_mode_s, print->set->important);
 
     if (string->used) {
       fl_print_format(" %r", print->to, *string);
@@ -93,7 +93,7 @@ extern "C" {
       string = &f_string_empty_s;
     }
 
-    fl_print_format("  %[%r%]", print->to, print->set->important, controller_session_s, print->set->important, f_string_eol_s);
+    fl_print_format("  %[%r%]", print->to, print->set->important, controller_session_s, print->set->important);
 
     if (string->used) {
       fl_print_format(" %r", print->to, *string, f_string_eol_s);
@@ -113,7 +113,7 @@ extern "C" {
       string = &f_string_empty_s;
     }
 
-    fl_print_format("  %[%r%]", print->to, print->set->important, controller_show_s, print->set->important, f_string_eol_s);
+    fl_print_format("  %[%r%]", print->to, print->set->important, controller_show_s, print->set->important);
 
     if (string->used) {
       fl_print_format(" %r", print->to, *string, f_string_eol_s);

@@ -46,7 +46,7 @@ build_sources_library common/string/general.c common/string/rule.c
 build_sources_library convert.c instance.c instance/prepare.c instance/wait.c
 build_sources_library entry.c entry/action.c entry/preprocess.c entry/process.c entry/setting.c
 build_sources_library file.c lock.c path.c process.c
-build_sources_library rule.c rule/action.c rule/execute.c rule/expand.c rule/instance.c rule/is.c rule/item.c rule/parameter.c rule/read.c rule/setting.c rule/validate.c rule/wait.c
+build_sources_library rule.c rule/action.c rule/execute.c rule/expand.c rule/instance.c rule/is.c rule/item.c rule/parameter.c rule/read.c rule/setting.c rule/wait.c
 build_sources_library perform.c
 build_sources_library print/data.c
 build_sources_library print/debug.c print/debug/rule/action.c print/debug/rule/execute.c print/debug/perform/control.c print/debug/perform/pid.c
@@ -55,7 +55,7 @@ build_sources_library print/error/entry.c print/error/entry/action.c print/error
 build_sources_library print/error/perform/pid.c
 build_sources_library print/error/rule.c print/error/rule/action.c print/error/rule/item.c print/error/rule/setting.c
 build_sources_library print/lock.c print/error/lock.c
-build_sources_library print/output/entry/setting.c print/output/rule/execute.c print/output/rule/setting.c
+build_sources_library print/output/entry/setting.c print/output/rule/execute.c print/output/rule/setting.c print/output/rule/validate.c
 build_sources_library print/message.c print/message/entry.c print/message/entry/action.c print/message/entry/item.c
 build_sources_library print/verbose.c
 build_sources_library print/warning.c print/warning/entry/action.c print/warning/entry/item.c print/warning/entry/setting.c print/warning/rule/action.c print/warning/rule/item.c print/warning/rule/setting.c
@@ -71,7 +71,7 @@ build_sources_headers common/type/cache.h common/type/control.h common/type/defs
 build_sources_headers convert.h instance.h instance/prepare.h instance/wait.h
 build_sources_headers entry.h entry/action.h entry/preprocess.h entry/process.h entry/setting.h
 build_sources_headers file.h lock.h path.h process.h
-build_sources_headers rule.h rule/action.h rule/execute.h rule/expand.h rule/instance.h rule/is.h rule/item.h rule/parameter.h rule/read.h rule/setting.h rule/validate.h rule/wait.h
+build_sources_headers rule.h rule/action.h rule/execute.h rule/expand.h rule/instance.h rule/is.h rule/item.h rule/parameter.h rule/read.h rule/setting.h rule/wait.h
 build_sources_headers perform.h
 build_sources_headers print/data.h
 build_sources_headers print/debug.h print/debug/rule/action.h print/debug/rule/execute.h print/debug/perform/control.h print/debug/perform/pid.h
@@ -80,7 +80,7 @@ build_sources_headers print/error/entry.h print/error/entry/action.h print/error
 build_sources_headers print/error/perform/pid.h
 build_sources_headers print/error/rule.h print/error/rule/action.h print/error/rule/item.h print/error/rule/setting.h
 build_sources_headers print/lock.h print/error/lock.h
-build_sources_headers print/output/entry/setting.h print/output/rule/execute.h print/output/rule/setting.h
+build_sources_headers print/output/entry/setting.h print/output/rule/execute.h print/output/rule/setting.h print/output/rule/validate.h
 build_sources_headers print/message.h print/message/entry.h print/message/entry/action.h print/message/entry/item.h
 build_sources_headers print/verbose.h
 build_sources_headers print/warning.h print/warning/entry/action.h print/warning/entry/item.h print/warning/entry/setting.h print/warning/rule/action.h print/warning/rule/item.h print/warning/rule/setting.h

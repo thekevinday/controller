@@ -185,6 +185,8 @@ extern "C" {
  *   Must not be NULL.
  * @param type
  *   The Action type name.
+ * @param message
+ *   A specific message on what is being attempted by the action.
  *
  * @return
  *   F_okay on success.
@@ -193,7 +195,7 @@ extern "C" {
  *   F_output_not (with error bit) if setting is NULL.
  */
 #ifndef _di_controller_print_error_rule_action_type_unsupported_
-  extern f_status_t controller_print_error_rule_action_type_unsupported(fl_print_t * const print, controller_cache_action_t * const action, const f_string_static_t type);
+  extern f_status_t controller_print_error_rule_action_type_unsupported(fl_print_t * const print, controller_cache_action_t * const action, const f_string_static_t type, const f_string_t message);
 #endif // _di_controller_print_error_rule_action_type_unsupported_
 
 /**

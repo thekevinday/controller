@@ -1508,13 +1508,7 @@ extern "C" {
           controller_print_error_rule_setting_values(&main->program.error, cache, controller_environment_s, i);
         }
         else {
-          if (main->program.error.verbosity == f_console_verbosity_debug_e || (main->program.error.verbosity == f_console_verbosity_verbose_e && (main->setting.flag & controller_main_flag_simulate_e))) {
-            controller_lock_print(main->program.output.to, &main->thread);
-
-            fl_print_format("%rProcessing Rule Item Action '%[%r%]' setting value to an empty set.%r", main->program.output.to, f_string_eol_s, main->program.context.set.title, controller_environment_s, main->program.context.set.title, f_string_eol_s); // TODO: don't forget to update these as well.
-
-            controller_unlock_print_flush(main->program.output.to, &main->thread);
-          }
+          controller_print_output_rule_execute_setting_empty_set(&main->program.output, controller_environment_s);
         }
 
         continue;

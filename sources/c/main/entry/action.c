@@ -329,7 +329,7 @@ extern "C" {
                     fl_print_format(f_string_format_Q_single_s.string, main->program.error.to, main->program.error.notable, action->parameters.array[1], main->program.error.notable);
                     fl_print_format("%[' must be a base path name, such as '%]", main->program.error.to, main->program.error.context, main->program.error.context);
                     fl_print_format(f_string_format_Q_single_s.string, main->program.error.to, main->program.error.notable, main->thread.cache.buffer_path, main->program.error.notable);
-                    fl_print_format("%['.%]", main->program.error.to, main->program.error.context, main->program.error.context, f_string_eol_s);
+                    fl_print_format(f_string_format_sentence_end_quote_s.string, main->program.error.to, main->program.error.context, main->program.error.context, f_string_eol_s);
 
                     f_file_stream_unlock(main->program.error.to);
                   }
@@ -385,7 +385,7 @@ extern "C" {
                   fl_print_format(f_string_format_r_single_s.string, main->program.error.to, main->program.error.notable, controller_wait_s, main->program.error.notable);
                   fl_print_format("%[' but instead has '%]", main->program.error.to, main->program.error.context, main->program.error.context);
                   fl_print_format(f_string_format_Q_single_s.string, main->program.error.to, main->program.error.notable, action->parameters.array[j], main->program.error.notable);
-                  fl_print_format("%['.%]", main->program.error.to, main->program.error.context, main->program.error.context, f_string_eol_s);
+                  fl_print_format(f_string_format_sentence_end_quote_s.string, main->program.error.to, main->program.error.context, main->program.error.context, f_string_eol_s);
 
                   f_file_stream_unlock(main->program.error.to);
                 }
@@ -405,7 +405,7 @@ extern "C" {
 
                 fl_print_format("%r%[%QThe %r Item Action may not specify the reserved item '%]", main->program.error.to, f_string_eol_s, main->program.error.context, main->program.error.prefix, entry->flag & controller_entry_flag_is_e ? controller_entry_s : controller_exit_s, main->program.error.context);
                 fl_print_format(f_string_format_r_single_s.string, main->program.error.to, main->program.error.notable, controller_main_s, main->program.error.notable);
-                fl_print_format("%['.%]", main->program.error.to, main->program.error.context, main->program.error.context, f_string_eol_s);
+                fl_print_format(f_string_format_sentence_end_quote_s.string, main->program.error.to, main->program.error.context, main->program.error.context, f_string_eol_s);
 
                 f_file_stream_unlock(main->program.error.to);
               }
@@ -440,7 +440,7 @@ extern "C" {
                 fl_print_format(f_string_format_r_single_s.string, main->program.error.to, main->program.error.notable, controller_stop_s, main->program.error.notable);
                 fl_print_format("%[' but instead has '%]", main->program.error.to, main->program.error.context, main->program.error.context);
                 fl_print_format(f_string_format_Q_single_s.string, main->program.error.to, main->program.error.notable, action->parameters.array[0], main->program.error.notable);
-                fl_print_format("%['.%]", main->program.error.to, main->program.error.context, main->program.error.context, f_string_eol_s);
+                fl_print_format(f_string_format_sentence_end_quote_s.string, main->program.error.to, main->program.error.context, main->program.error.context, f_string_eol_s);
 
                 f_file_stream_unlock(main->program.error.to);
               }
@@ -470,15 +470,7 @@ extern "C" {
                     break;
                   }
 
-                  if (main->program.error.verbosity > f_console_verbosity_quiet_e) {
-                    f_file_stream_lock(main->program.error.to);
-
-                    fl_print_format("%r%[%QThe %r Item Action parameter '%]", main->program.error.to, f_string_eol_s, main->program.error.context, main->program.error.prefix, entry->flag & controller_entry_flag_is_e ? controller_entry_s : controller_exit_s, main->program.error.context);
-                    fl_print_format(f_string_format_Q_single_s.string, main->program.error.to, main->program.error.notable, action->parameters.array[1], main->program.error.notable);
-                    fl_print_format("%[' is not a valid supported number.%]", main->program.error.to, main->program.error.context, main->program.error.context, f_string_eol_s);
-
-                    f_file_stream_unlock(main->program.error.to);
-                  }
+                  controller_print_error_entry_action_unsupported_number(&main->program.error, &main->thread.cache.action, entry->flag & controller_entry_flag_is_e, action->parameters.array[1]);
                 }
               }
               else {
@@ -494,17 +486,7 @@ extern "C" {
               else {
                 action->status = controller_status_simplify_error(F_support_not);
 
-                if (main->program.error.verbosity > f_console_verbosity_quiet_e) {
-                  f_file_stream_lock(main->program.error.to);
-
-                  fl_print_format("%r%[%QThe %r Item Action may only have '%]", main->program.error.to, f_string_eol_s, main->program.error.context, main->program.error.prefix, entry->flag & controller_entry_flag_is_e ? controller_entry_s : controller_exit_s, main->program.error.context);
-                  fl_print_format(f_string_format_r_single_s.string, main->program.error.to, main->program.error.notable, controller_wait_s, main->program.error.notable);
-                  fl_print_format("%[' but instead has '%]", main->program.error.to, main->program.error.context, main->program.error.context);
-                  fl_print_format(f_string_format_Q_single_s.string, main->program.error.to, main->program.error.notable, action->parameters.array[0], main->program.error.notable);
-                  fl_print_format("%['.%]", main->program.error.to, main->program.error.context, main->program.error.context, f_string_eol_s);
-
-                  f_file_stream_unlock(main->program.error.to);
-                }
+                controller_print_error_entry_action_invalid_allow_1(&main->program.error, &main->thread.cache.action, entry->flag & controller_entry_flag_is_e, action->parameters.array[0], controller_wait_s);
               }
             }
           }

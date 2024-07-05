@@ -24,7 +24,7 @@ extern "C" {
         break;
 
       default:
-        controller_print_error_rule_action_type_unsupported(&main->program.error, &instance->cache.action, controller_convert_rule_action_type_string(instance->action));
+        controller_print_error_rule_action_type_unsupported(&main->program.error, &instance->cache.action, controller_convert_rule_action_type_string(instance->action), "execute rule");
 
         return F_status_set_error(F_parameter);
     }
@@ -69,7 +69,25 @@ extern "C" {
     }
 
     if ((instance->options & controller_instance_option_simulate_validate_e) == controller_instance_option_simulate_validate_e) {
-      controller_rule_validate(main, &instance->cache, instance->rule, instance->action, instance->options);
+      switch (instance->action) {
+        case controller_rule_action_type_freeze_e:
+        case controller_rule_action_type_kill_e:
+        case controller_rule_action_type_pause_e:
+        case controller_rule_action_type_reload_e:
+        case controller_rule_action_type_restart_e:
+        case controller_rule_action_type_resume_e:
+        case controller_rule_action_type_start_e:
+        case controller_rule_action_type_stop_e:
+        case controller_rule_action_type_thaw_e:
+          controller_output_rule_validate(&main->program.output, &instance->cache, &instance->rule, instance->action, instance->options);
+
+          break;
+
+        default:
+          controller_print_error_rule_action_type_unsupported(&main->program.error, &instance->cache.action, controller_convert_rule_action_type_string(instance->action), "validate rule execution");
+
+          break;
+      }
     }
 
     f_number_unsigned_t i = 0;

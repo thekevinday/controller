@@ -373,7 +373,7 @@ extern "C" {
 
           if (F_status_is_error(status)) {
             if (F_status_set_fine(status) == F_file_found_not) {
-              controller_print_error_entry_action_execution_missing(&main->program.error, cache, is_entry, entry_action->parameters.array[0]);
+              controller_print_error_entry_action_execution_missing(&main->program.error, &cache->action, is_entry, entry_action->parameters.array[0]);
             }
             else {
               controller_print_error_entry(&main->program.error, is_entry, F_status_set_fine(status), macro_controller_f(fll_execute_into), F_true);
@@ -382,7 +382,7 @@ extern "C" {
             return F_status_set_error(F_execute);
           }
           else if (result != 0) {
-            controller_print_error_entry_action_execution_failure(&main->program.error, cache, is_entry, result);
+            controller_print_error_entry_action_execution_failure(&main->program.error, &cache->action, is_entry, result);
 
             return F_status_set_error(F_execute);
           }
