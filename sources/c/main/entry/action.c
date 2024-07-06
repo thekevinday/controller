@@ -179,39 +179,7 @@ extern "C" {
       if (main->thread.cache.content_actions.array[i].used < at_least || main->thread.cache.content_actions.array[i].used > at_most) {
         action->status = controller_status_simplify_error(F_parameter);
 
-        if (main->program.error.verbosity > f_console_verbosity_quiet_e) {
-          f_thread_mutex_lock(&main->thread.lock.print);
-
-          f_file_stream_lock(main->program.error.to);
-
-          fl_print_format("%r%[%QThe %r Item Action '%]", main->program.error.to, f_string_eol_s, main->program.error.context, main->program.error.prefix, entry->flag & controller_entry_flag_is_e ? controller_entry_s : controller_exit_s, main->program.error.context);
-          fl_print_format(f_string_format_Q_single_s.string, main->program.error.to, main->program.error.notable, main->thread.cache.action.name_action, main->program.error.notable);
-          fl_print_format("%[' requires ", main->program.error.to, main->program.error.context);
-
-          if (at_least == at_most) {
-            f_print_terminated("exactly ", main->program.error.to);
-          }
-
-          fl_print_format("%]%[%un%]", main->program.error.to, main->program.error.context, main->program.error.notable, at_least, main->program.error.notable);
-
-          if (action->type == controller_entry_action_type_consider_e || controller_entry_action_type_is_rule(action->type)) {
-            fl_print_format("%[ or more parameters.%]%r", main->program.error.to, main->program.error.context, main->program.error.context, f_string_eol_s);
-          }
-          else {
-            if (at_least == at_most) {
-              fl_print_format("%[ parameters.%]%r", main->program.error.to, main->program.error.context, main->program.error.context, f_string_eol_s);
-            }
-            else {
-              fl_print_format("%[ to %]", main->program.error.to, main->program.error.context, main->program.error.context);
-              fl_print_format("%[%un%]", main->program.error.to, main->program.error.notable, at_most, main->program.error.notable);
-              fl_print_format("%[ parameters.%]%r", main->program.error.to, main->program.error.context, main->program.error.context, f_string_eol_s);
-            }
-          }
-
-          f_file_stream_unlock(main->program.error.to);
-
-          f_thread_mutex_unlock(&main->thread.lock.print);
-        }
+        controller_print_error_entry_action_requires_range(&main->program.error, &main->thread.cache.action, entry->flag & controller_entry_flag_is_e, main->thread.cache.action.name_action, at_least, at_most, action->type);
       }
       else {
         action->status = F_okay;
@@ -295,9 +263,7 @@ extern "C" {
                 status_action = action->status;
               }
 
-              if (main->program.error.verbosity > f_console_verbosity_quiet_e) {
-                fll_print_format("%r%[%QThe %r Item Action must not have an empty string for a path (the first parameter).%]%r", main->program.error.to, f_string_eol_s, main->program.error.context, main->program.error.prefix, entry->flag & controller_entry_flag_is_e ? controller_entry_s : controller_exit_s, main->program.error.context, f_string_eol_s);
-              }
+              controller_print_error_entry_action_parameter_empty(&main->program.error, &main->thread.cache.action, entry->flag & controller_entry_flag_is_e, "first parameter");
             }
 
             if (action->parameters.array[1].used) {
@@ -322,17 +288,7 @@ extern "C" {
               }
               else {
                 if (f_compare_dynamic(action->parameters.array[1], main->thread.cache.buffer_path) == F_equal_to_not) {
-                  if (main->program.error.verbosity > f_console_verbosity_quiet_e) {
-                    f_file_stream_lock(main->program.error.to);
-
-                    fl_print_format("%r%[%QThe %r Item Action second parameter '%]", main->program.error.to, f_string_eol_s, main->program.error.context, main->program.error.prefix, entry->flag & controller_entry_flag_is_e ? controller_entry_s : controller_exit_s, main->program.error.context);
-                    fl_print_format(f_string_format_Q_single_s.string, main->program.error.to, main->program.error.notable, action->parameters.array[1], main->program.error.notable);
-                    fl_print_format("%[' must be a base path name, such as '%]", main->program.error.to, main->program.error.context, main->program.error.context);
-                    fl_print_format(f_string_format_Q_single_s.string, main->program.error.to, main->program.error.notable, main->thread.cache.buffer_path, main->program.error.notable);
-                    fl_print_format(f_string_format_sentence_end_quote_s.string, main->program.error.to, main->program.error.context, main->program.error.context, f_string_eol_s);
-
-                    f_file_stream_unlock(main->program.error.to);
-                  }
+                  controller_print_error_entry_action_parameter_second_base(&main->program.error, &main->thread.cache.action, entry->flag & controller_entry_flag_is_e, action->parameters.array[1], main->thread.cache.buffer_path);
 
                   action->status = controller_status_simplify_error(F_parameter);
 
@@ -349,9 +305,7 @@ extern "C" {
                 status_action = action->status;
               }
 
-              if (main->program.error.verbosity > f_console_verbosity_quiet_e) {
-                fll_print_format("%r%[%QThe %r Item Action must not have an empty string for a rule name (the second parameter).%]", main->program.error.to, f_string_eol_s, main->program.error.context, main->program.error.prefix, entry->flag & controller_entry_flag_is_e ? controller_entry_s : controller_exit_s, main->program.error.context, f_string_eol_s);
-              }
+              controller_print_error_entry_action_parameter_empty(&main->program.error, &main->thread.cache.action, entry->flag & controller_entry_flag_is_e, "second parameter");
             }
 
             for (j = 2; j < action->parameters.used; ++j) {
@@ -374,21 +328,7 @@ extern "C" {
                   }
                 }
 
-                if (main->program.error.verbosity > f_console_verbosity_quiet_e) {
-                  f_file_stream_lock(main->program.error.to);
-
-                  fl_print_format("%r%[%QThe %r Item Action third parameter (and beyond) must be one of '%]", main->program.error.to, f_string_eol_s, main->program.error.context, main->program.error.prefix, entry->flag & controller_entry_flag_is_e ? controller_entry_s : controller_exit_s, main->program.error.context);
-                  fl_print_format(f_string_format_r_single_s.string, main->program.error.to, main->program.error.notable, controller_asynchronous_s, main->program.error.notable);
-                  fl_print_format("%[', '%]", main->program.error.to, main->program.error.context, main->program.error.context);
-                  fl_print_format(f_string_format_r_single_s.string, main->program.error.to, main->program.error.notable, controller_require_s, main->program.error.notable);
-                  fl_print_format("%[', or '%]", main->program.error.to, main->program.error.context, main->program.error.context);
-                  fl_print_format(f_string_format_r_single_s.string, main->program.error.to, main->program.error.notable, controller_wait_s, main->program.error.notable);
-                  fl_print_format("%[' but instead has '%]", main->program.error.to, main->program.error.context, main->program.error.context);
-                  fl_print_format(f_string_format_Q_single_s.string, main->program.error.to, main->program.error.notable, action->parameters.array[j], main->program.error.notable);
-                  fl_print_format(f_string_format_sentence_end_quote_s.string, main->program.error.to, main->program.error.context, main->program.error.context, f_string_eol_s);
-
-                  f_file_stream_unlock(main->program.error.to);
-                }
+                controller_print_error_entry_action_invalid_allow_3(&main->program.error, &main->thread.cache.action, entry->flag & controller_entry_flag_is_e, "third parameter (and beyond)", action->parameters.array[j], controller_asynchronous_s, controller_require_s, controller_wait_s);
               }
             } // for
           }
@@ -400,15 +340,7 @@ extern "C" {
                 status_action = action->status;
               }
 
-              if (main->program.error.verbosity > f_console_verbosity_quiet_e) {
-                f_file_stream_lock(main->program.error.to);
-
-                fl_print_format("%r%[%QThe %r Item Action may not specify the reserved item '%]", main->program.error.to, f_string_eol_s, main->program.error.context, main->program.error.prefix, entry->flag & controller_entry_flag_is_e ? controller_entry_s : controller_exit_s, main->program.error.context);
-                fl_print_format(f_string_format_r_single_s.string, main->program.error.to, main->program.error.notable, controller_main_s, main->program.error.notable);
-                fl_print_format(f_string_format_sentence_end_quote_s.string, main->program.error.to, main->program.error.context, main->program.error.context, f_string_eol_s);
-
-                f_file_stream_unlock(main->program.error.to);
-              }
+              controller_print_error_entry_action_unsupported_reserve(&main->program.error, &main->thread.cache.action, entry->flag & controller_entry_flag_is_e, controller_main_s);
             }
           }
           else if (action->type == controller_entry_action_type_timeout_e) {
@@ -429,21 +361,7 @@ extern "C" {
                 status_action = action->status;
               }
 
-              if (main->program.error.verbosity > f_console_verbosity_quiet_e) {
-                f_file_stream_lock(main->program.error.to);
-
-                fl_print_format("%r%[%QThe %r Item Action must have one of '%]", main->program.error.to, f_string_eol_s, main->program.error.context, main->program.error.prefix, entry->flag & controller_entry_flag_is_e ? controller_entry_s : controller_exit_s, main->program.error.context);
-                fl_print_format(f_string_format_r_single_s.string, main->program.error.to, main->program.error.notable, controller_kill_s, main->program.error.notable);
-                fl_print_format("%[', '%]", main->program.error.to, main->program.error.context, main->program.error.context);
-                fl_print_format(f_string_format_r_single_s.string, main->program.error.to, main->program.error.notable, controller_start_s, main->program.error.notable);
-                fl_print_format("%[', or '%]", main->program.error.to, main->program.error.context, main->program.error.context);
-                fl_print_format(f_string_format_r_single_s.string, main->program.error.to, main->program.error.notable, controller_stop_s, main->program.error.notable);
-                fl_print_format("%[' but instead has '%]", main->program.error.to, main->program.error.context, main->program.error.context);
-                fl_print_format(f_string_format_Q_single_s.string, main->program.error.to, main->program.error.notable, action->parameters.array[0], main->program.error.notable);
-                fl_print_format(f_string_format_sentence_end_quote_s.string, main->program.error.to, main->program.error.context, main->program.error.context, f_string_eol_s);
-
-                f_file_stream_unlock(main->program.error.to);
-              }
+              controller_print_error_entry_action_invalid_allow_3(&main->program.error, &main->thread.cache.action, entry->flag & controller_entry_flag_is_e, 0, action->parameters.array[0], controller_kill_s, controller_start_s, controller_stop_s);
             }
 
             if (action->status == F_okay) {
@@ -486,7 +404,7 @@ extern "C" {
               else {
                 action->status = controller_status_simplify_error(F_support_not);
 
-                controller_print_error_entry_action_invalid_allow_1(&main->program.error, &main->thread.cache.action, entry->flag & controller_entry_flag_is_e, action->parameters.array[0], controller_wait_s);
+                controller_print_error_entry_action_invalid_allow_1(&main->program.error, &main->thread.cache.action, entry->flag & controller_entry_flag_is_e, 0, action->parameters.array[0], controller_wait_s);
               }
             }
           }
