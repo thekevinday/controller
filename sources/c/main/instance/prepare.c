@@ -5,7 +5,7 @@ extern "C" {
 #endif
 
 #ifndef _di_controller_instance_prepare_
-  f_status_t controller_instance_prepare(controller_t * const main, const uint8_t is_normal, const uint8_t action, const f_string_static_t alias, f_number_unsigned_t *id) {
+  f_status_t controller_instance_prepare(controller_t * const main, const uint8_t is_normal, const uint8_t action, const f_string_static_t alias, f_number_unsigned_t * const id) {
 
     if (!main) return F_status_set_error(F_parameter);
 
@@ -23,11 +23,26 @@ extern "C" {
         status = f_memory_array_increase(controller_allocation_small_d, sizeof(controller_instance_t), (void **) &main->thread.instances.array, &main->thread.instances.used, &main->thread.instances.size);
       }
 
-      if (F_status_is_error_not(status) && main->thread.instances.array[main->thread.instances.used]) {
+      printf("\nDEBUG: instances = (%lu, %lu), status=%d, %lu\n", main->thread.instances.used, main->thread.instances.size, F_status_set_fine(status), main->thread.instances.array[main->thread.instances.used]);
 
-        controller_instance_t * const instance = main->thread.instances.array[main->thread.instances.used];
+      // The Instances array has instance as a double-pointer.
+      if (F_status_is_error_not(status) && !main->thread.instances.array[main->thread.instances.used]) {
+        status = controller_instance_initialize(&main->thread.instances.array[main->thread.instances.used]);
+      }
 
-        status = controller_lock_write(is_normal, &main->thread, &instance->lock);
+      if (F_status_is_error_not(status)) {
+        printf("\nDEBUG: instances before initialization = (%lu, %lu)\n", main->thread.instances.used, main->thread.instances.size);
+
+        // The Instances array has instance as a double-pointer.
+        status = controller_instance_initialize(&main->thread.instances.array[main->thread.instances.used]);
+
+        printf("\nDEBUG: initialized instance at %lu, status = %d\n", main->thread.instances.used, F_status_set_fine(status));
+
+        controller_instance_t * const instance = F_status_is_error_not(status) ? main->thread.instances.array[main->thread.instances.used] : 0;
+
+        if (F_status_is_error_not(status)) {
+          status = controller_lock_write(is_normal, &main->thread, &instance->lock);
+        }
 
         if (F_status_is_error(status)) {
           controller_print_error_lock_critical(&main->program.error, F_status_set_fine(status), F_false);
@@ -55,9 +70,13 @@ extern "C" {
       f_thread_unlock(&main->thread.lock.instance);
 
       // The read lock must be restored on return.
-      status = F_status_is_error(controller_lock_read(is_normal, &main->thread, &main->thread.lock.instance))
+      const f_status_t status_restore = F_status_is_error(controller_lock_read(is_normal, &main->thread, &main->thread.lock.instance))
         ? F_status_set_error(F_lock)
         : F_okay;
+
+      if (F_status_is_fine(status)) {
+        status = status_restore;
+      }
     }
     else {
       status = F_found;

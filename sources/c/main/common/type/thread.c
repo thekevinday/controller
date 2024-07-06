@@ -12,7 +12,7 @@ extern "C" {
     controller_lock_delete(&thread->lock);
     controller_cache_delete(&thread->cache);
 
-    f_memory_arrays_resize(0, sizeof(controller_instance_t), (void **) &thread->instances.array, &thread->instances.used, &thread->instances.size, &f_instances_delete_callback);
+    f_memory_arrays_resize(0, sizeof(controller_instance_t), (void **) &thread->instances.array, &thread->instances.used, &thread->instances.size, &controller_instances_delete_callback);
   }
 #endif // _di_controller_thread_delete_
 

@@ -30,16 +30,16 @@ extern "C" {
 
     if (F_status_is_error(status)) {
       controller_print_error_status(&main->program.error, macro_controller_f(controller_lock_create), status);
-    } else {
+    }/* else { // TODO: Is this block needed here, given allocation will also happen later on as needed?
       status = f_memory_array_increase(controller_allocation_small_d, sizeof(controller_instance_t), (void **) &main->thread.instances.array, &main->thread.instances.used, &main->thread.instances.size);
 
       if (F_status_is_error(status)) {
         controller_print_error_status(&main->program.error, macro_controller_f(f_memory_array_increase), status);
       }
-    }
+    }*/
 
     if (F_status_is_error_not(status)) {
-      status = f_thread_create(0, &main->thread.id_signal, &controller_thread_signal_normal, (void *) &main);
+      status = f_thread_create(0, &main->thread.id_signal, &controller_thread_signal_normal, (void *) main);
     }
 
     if (F_status_is_error(status)) {
@@ -59,7 +59,7 @@ extern "C" {
         }
       }
       else if (main->process.name_entry.used) {
-        status = f_thread_create(0, &main->thread.id_entry, &controller_thread_entry, (void *) &main);
+        status = f_thread_create(0, &main->thread.id_entry, &controller_thread_entry, (void *) main);
 
         if (F_status_is_error(status)) {
           controller_print_error_status(&main->program.error, macro_controller_f(f_thread_create), status);
@@ -81,13 +81,13 @@ extern "C" {
         controller_thread_join(&main->thread.id_rule);
 
         if (main->thread.enabled && main->process.mode == controller_process_mode_service_e) {
-          status = f_thread_create(0, &main->thread.id_rule, &controller_thread_rule, (void *) &main);
+          status = f_thread_create(0, &main->thread.id_rule, &controller_thread_rule, (void *) main);
 
           if (F_status_is_error(status)) {
             main->thread.id_rule = 0;
           }
           else {
-            status = f_thread_create(0, &main->thread.id_cleanup, &controller_thread_cleanup, (void *) &main);
+            status = f_thread_create(0, &main->thread.id_cleanup, &controller_thread_cleanup, (void *) main);
           }
 
           if (F_status_is_error(status)) {

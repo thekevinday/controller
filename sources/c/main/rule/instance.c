@@ -550,12 +550,7 @@ extern "C" {
       return F_status_set_error(F_interrupt);
     }
 
-    f_status_t status = F_okay;
-    f_status_t status_lock = F_okay;
-
-    controller_instance_t *instance = 0;
-
-    status = controller_lock_read_instance_type(type, &main->thread, &main->thread.lock.instance);
+    f_status_t status = controller_lock_read_instance_type(type, &main->thread, &main->thread.lock.instance);
 
     if (F_status_is_error(status)) {
       controller_print_error_lock_critical(&main->program.error, F_status_set_fine(status), F_true);
@@ -563,72 +558,70 @@ extern "C" {
       return status;
     }
 
-    {
-      f_number_unsigned_t at = 0;
+    f_number_unsigned_t at = 0;
 
-      status = controller_instance_prepare(main, type != controller_instance_type_exit_e, action, alias_rule, &at);
+    status = controller_instance_prepare(main, type != controller_instance_type_exit_e, action, alias_rule, &at);
 
-      if (F_status_is_error(status)) {
-        f_thread_unlock(&main->thread.lock.instance);
-
-        if (main->program.error.verbosity > f_console_verbosity_quiet_e) {
-          controller_lock_print(main->program.error.to, &main->thread);
-
-          controller_print_error_rule_item_rule_not_loaded(&main->program.error, alias_rule);
-          controller_print_error_rule_cache(&main->program.error, &cache->action, F_false);
-
-          controller_unlock_print_flush(main->program.error.to, &main->thread);
-        }
-
-        return status;
-      }
-
-      instance = main->thread.instances.array[at];
-
-      status = controller_lock_read_instance_type(type, &main->thread, &instance->active);
-
-      if (F_status_is_error(status)) {
-        controller_print_error_lock_critical(&main->program.error, F_status_set_fine(status), F_true);
-        controller_print_error_rule_item(&main->program.error, &cache->action, F_false, F_status_set_fine(status));
-
-        f_thread_unlock(&main->thread.lock.instance);
-
-        return status;
-      }
-
-      status_lock = controller_lock_write_instance(instance, &instance->lock);
-
-      if (F_status_is_error(status_lock)) {
-        controller_print_error_lock_critical(&main->program.error, F_status_set_fine(status_lock), F_false);
-
-        f_thread_unlock(&instance->active);
-        f_thread_unlock(&main->thread.lock.instance);
-
-        return status_lock;
-      }
-
-      // Once a write lock on the instance is achieved, it is safe to unlock the instance read lock.
+    if (F_status_is_error(status)) {
       f_thread_unlock(&main->thread.lock.instance);
 
-      // If the instance is already running, then there is nothing to do.
-      if (instance->state == controller_instance_state_active_e || instance->state == controller_instance_state_busy_e) {
-        f_thread_unlock(&instance->lock);
-        f_thread_unlock(&instance->active);
+      if (main->program.error.verbosity > f_console_verbosity_quiet_e) {
+        controller_lock_print(main->program.error.to, &main->thread);
 
-        return F_busy;
+        controller_print_error_rule_item_rule_not_loaded(&main->program.error, alias_rule);
+        controller_print_error_rule_cache(&main->program.error, &cache->action, F_false);
+
+        controller_unlock_print_flush(main->program.error.to, &main->thread);
       }
 
-      // The thread is done, so close the thread.
-      if (instance->state == controller_instance_state_done_e) {
-        controller_thread_join(&instance->id_thread);
-
-        f_thread_mutex_lock(&instance->wait_lock);
-        f_thread_condition_signal_all(&instance->wait);
-        f_thread_mutex_unlock(&instance->wait_lock);
-      }
-
-      instance->id = at;
+      return status;
     }
+
+    controller_instance_t * const instance = main->thread.instances.array[at];
+
+    status = controller_lock_read_instance_type(type, &main->thread, &instance->active);
+
+    if (F_status_is_error(status)) {
+      controller_print_error_lock_critical(&main->program.error, F_status_set_fine(status), F_true);
+      controller_print_error_rule_item(&main->program.error, &cache->action, F_false, F_status_set_fine(status));
+
+      f_thread_unlock(&main->thread.lock.instance);
+
+      return status;
+    }
+
+    f_status_t status_lock = controller_lock_write_instance(instance, &instance->lock);
+
+    if (F_status_is_error(status_lock)) {
+      controller_print_error_lock_critical(&main->program.error, F_status_set_fine(status_lock), F_false);
+
+      f_thread_unlock(&instance->active);
+      f_thread_unlock(&main->thread.lock.instance);
+
+      return status_lock;
+    }
+
+    // Once a write lock on the instance is achieved, it is safe to unlock the instance read lock.
+    f_thread_unlock(&main->thread.lock.instance);
+
+    // If the instance is already running, then there is nothing to do.
+    if (instance->state == controller_instance_state_active_e || instance->state == controller_instance_state_busy_e) {
+      f_thread_unlock(&instance->lock);
+      f_thread_unlock(&instance->active);
+
+      return F_busy;
+    }
+
+    // The thread is done, so close the thread.
+    if (instance->state == controller_instance_state_done_e) {
+      controller_thread_join(&instance->id_thread);
+
+      f_thread_mutex_lock(&instance->wait_lock);
+      f_thread_condition_signal_all(&instance->wait);
+      f_thread_mutex_unlock(&instance->wait_lock);
+    }
+
+    instance->id = at;
 
     f_thread_unlock(&instance->lock);
 
@@ -762,11 +755,7 @@ extern "C" {
 
     f_thread_unlock(&instance->active);
 
-    if (F_status_is_error(status)) {
-      return status;
-    }
-
-    return F_okay;
+    return F_status_is_error(status) ? status : F_okay;
   }
 #endif // _di_controller_rule_instance_begin_
 

@@ -9,7 +9,7 @@ extern "C" {
 
     if (!argument) return 0;
 
-    f_thread_cancel_state_set(PTHREAD_CANCEL_DEFERRED, 0);
+    f_thread_cancel_state_set(PTHREAD_CANCEL_DEFERRED, 0); // TODO: need to setup thread states as deferred before starting the thread to avoid needing to do this call.
 
     controller_t * const main = (controller_t *) argument;
 

@@ -39,6 +39,10 @@ extern "C" {
 
           if (!main->thread.instances.array[i]) continue;
 
+          if (i >= main->thread.instances.used) {
+            status = controller_instance_initialize(&main->thread.instances.array[i]);
+          }
+
           instance = main->thread.instances.array[i];
 
           // If "active" has a read lock, then do not attempt to clean it.

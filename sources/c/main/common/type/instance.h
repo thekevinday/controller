@@ -100,8 +100,10 @@ extern "C" {
  *
  * The typedef for this is located in the defs.h header.
  *
+ * Instances in this array are pointers and must each be individually allocated.
+ *
  * Properties:
- *   - array: An array of Instances.
+ *   - array: An array of Instances pointers (note the double-pointer).
  *   - size:  Total amount of allocated space.
  *   - used:  Total number of allocated spaces used.
  */
@@ -157,9 +159,34 @@ extern "C" {
  *
  * @see controller_instance_delete()
  */
-#ifndef _di_f_instances_delete_callback_
-  extern f_status_t f_instances_delete_callback(const f_number_unsigned_t start, const f_number_unsigned_t stop, void * const array);
-#endif // _di_f_instances_delete_callback_
+#ifndef _di_controller_instances_delete_callback_
+  extern f_status_t controller_instances_delete_callback(const f_number_unsigned_t start, const f_number_unsigned_t stop, void * const array);
+#endif // _di_controller_instances_delete_callback_
+
+/**
+ * Perform initialization that must be performed exactly once for each Instance.
+ *
+ * This performs the initial lock allocation as well as other such defaults.
+ *
+ * @param instance
+ *   The Instance to initialize.
+ *
+ *   Must not be NULL.
+ *
+ * @return
+ *   F_okay on success.
+ *
+ *   Errors (with error bit) from: f_thread_condition_create().
+ *   Errors (with error bit) from: f_thread_lock_create().
+ *   Errors (with error bit) from: f_thread_mutex_create().
+ *
+ * @see f_thread_condition_create()
+ * @see f_thread_lock_create()
+ * @see f_thread_mutex_create()
+ */
+#ifndef _di_controller_instance_initialize_
+  extern f_status_t controller_instance_initialize(controller_instance_t ** restrict const instance);
+#endif // _di_controller_instance_initialize_
 
 #ifdef __cplusplus
 } // extern "C"

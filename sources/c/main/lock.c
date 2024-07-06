@@ -48,6 +48,8 @@ extern "C" {
 
     for (f_time_spec_t time; ; ) {
 
+      memset(&time, 0, sizeof(f_time_spec_t));
+
       controller_time_now(controller_thread_lock_read_timeout_seconds_d, controller_thread_lock_read_timeout_nanoseconds_d, &time);
 
       status = f_thread_lock_read_timed(&time, lock);

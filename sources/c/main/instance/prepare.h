@@ -95,7 +95,7 @@ extern "C" {
  * @see controller_instance_prepare()
  */
 #ifndef _di_controller_instance_prepare_instance_type_
-  extern f_status_t controller_instance_prepare_instance_type(controller_t * const main, const uint8_t type, const uint8_t action, const f_string_static_t alias, f_number_unsigned_t *id);
+  extern f_status_t controller_instance_prepare_instance_type(controller_t * const main, const uint8_t type, const uint8_t action, const f_string_static_t alias, f_number_unsigned_t * const id);
 #endif // _di_controller_instance_prepare_instance_type_
 
 #ifdef __cplusplus

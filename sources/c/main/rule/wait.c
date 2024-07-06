@@ -24,9 +24,8 @@ extern "C" {
     }
 
     f_status_t status = F_okay;
-
-    bool required_not_run = F_false;
-    bool skip = F_false;
+    uint8_t required_not_run = F_false;
+    uint8_t skip = F_false;
 
     f_number_unsigned_t i = 0;
     f_number_unsigned_t j = 0;
