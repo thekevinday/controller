@@ -13,14 +13,14 @@ extern "C" {
       f_time_of_day_get(&now);
 
       time->tv_sec = now.tv_sec + seconds;
-      time->tv_nsec = (now.tv_usec * 1000) + nanoseconds;
+      time->tv_nsec = (now.tv_usec * 1000);
     }
 
-    // If tv_nsec is 1 second or greater, then increment seconds.
-    if (time->tv_nsec >= 1000000000) {
+    // If result would be greater than 1 second, then increment seconds without overflowing.
+    if (time->tv_nsec > 500000000 && nanoseconds > 500000000) {
       ++(time->tv_sec);
 
-      time->tv_nsec -= 1000000000;
+      time->tv_nsec = (time->tv_nsec - 500000000) + (nanoseconds - 500000000);
     }
   }
 #endif // _di_controller_time_now_

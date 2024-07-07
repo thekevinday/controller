@@ -23,20 +23,15 @@ extern "C" {
         status = f_memory_array_increase(controller_allocation_small_d, sizeof(controller_instance_t), (void **) &main->thread.instances.array, &main->thread.instances.used, &main->thread.instances.size);
       }
 
-      printf("\nDEBUG: instances = (%lu, %lu), status=%d, %lu\n", main->thread.instances.used, main->thread.instances.size, F_status_set_fine(status), main->thread.instances.array[main->thread.instances.used]);
-
       // The Instances array has instance as a double-pointer.
       if (F_status_is_error_not(status) && !main->thread.instances.array[main->thread.instances.used]) {
         status = controller_instance_initialize(&main->thread.instances.array[main->thread.instances.used]);
       }
 
       if (F_status_is_error_not(status)) {
-        printf("\nDEBUG: instances before initialization = (%lu, %lu)\n", main->thread.instances.used, main->thread.instances.size);
 
         // The Instances array has instance as a double-pointer.
         status = controller_instance_initialize(&main->thread.instances.array[main->thread.instances.used]);
-
-        printf("\nDEBUG: initialized instance at %lu, status = %d\n", main->thread.instances.used, F_status_set_fine(status));
 
         controller_instance_t * const instance = F_status_is_error_not(status) ? main->thread.instances.array[main->thread.instances.used] : 0;
 

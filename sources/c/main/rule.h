@@ -26,6 +26,8 @@ extern "C" {
  * @param destination
  *   The destination rule to copy to.
  *
+ *   Must not be NULL.
+ *
  * @return
  *   F_okay on success.
  *
@@ -48,7 +50,7 @@ extern "C" {
  *  @see f_string_maps_append_all()
  */
 #ifndef _di_controller_rule_copy_
-  extern f_status_t controller_rule_copy(const controller_rule_t source, controller_rule_t *destination);
+  extern f_status_t controller_rule_copy(const controller_rule_t source, controller_rule_t * const destination);
 #endif // _di_controller_rule_copy_
 
 /**
@@ -59,8 +61,9 @@ extern "C" {
  * @param rules
  *   The rules to search through.
  * @param at
- *   The index the rule was found at.
- *   (optional) Set to NULL to disable.
+ *   (optional) The index the rule was found at.
+ *
+ *   Set to NULL to disable.
  *
  * @return
  *   F_okay on success, but the id.used is 0.
@@ -68,7 +71,7 @@ extern "C" {
  *   F_false on success and rule was not found.
  */
 #ifndef _di_controller_rule_find_
-  extern f_status_t controller_rule_find(const f_string_static_t alias, const controller_rules_t rules, f_number_unsigned_t *at);
+  extern f_status_t controller_rule_find(const f_string_static_t alias, const controller_rules_t rules, f_number_unsigned_t * const at);
 #endif // _di_controller_rule_find_
 
 /**

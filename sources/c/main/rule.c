@@ -5,7 +5,9 @@ extern "C" {
 #endif
 
 #ifndef _di_controller_rule_copy_
-  f_status_t controller_rule_copy(const controller_rule_t source, controller_rule_t *destination) {
+  f_status_t controller_rule_copy(const controller_rule_t source, controller_rule_t * const destination) {
+
+    if (!destination) return F_status_set_error(F_parameter);
 
     // Delete the third party structures.
     f_memory_array_resize(0, sizeof(f_char_t), (void **) &destination->cgroup.path.string, &destination->cgroup.path.used, &destination->cgroup.path.size);
@@ -123,7 +125,7 @@ extern "C" {
       destination->ons.used = source.ons.used;
     }
 
-    status = f_memory_array_append_all(source.affinity.array, source.affinity.used, sizeof(int32_t), (void **) &destination->affinity.array, &destination->affinity.used, &destination->affinity.size);
+    status = f_memory_array_append_all((void *) source.affinity.array, source.affinity.used, sizeof(int32_t), (void **) &destination->affinity.array, &destination->affinity.used, &destination->affinity.size);
     if (F_status_is_error(status)) return status;
 
     if (source.capability) {
@@ -214,8 +216,9 @@ extern "C" {
 #endif // _di_controller_rule_copy_
 
 #ifndef _di_controller_rule_find_
-  f_status_t controller_rule_find(const f_string_static_t alias, const controller_rules_t rules, f_number_unsigned_t *at) {
+  f_status_t controller_rule_find(const f_string_static_t alias, const controller_rules_t rules, f_number_unsigned_t * const at) {
 
+    if (!at) return F_status_set_error(F_parameter);
     if (!alias.used) return F_okay;
     if (!rules.used) return F_false;
 

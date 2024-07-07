@@ -16,10 +16,6 @@ extern "C" {
       instance->id_thread = 0;
     }
 
-    // TODO: Review how the project uses locks and how to safely delete them.
-    //       The POSIX standard might quite horribly provide undefined behavior on double de-allocaton without providing a way to tell if the data is already de-allocated or not.
-    //       There may need to be a boolean/flag on each instance to designate whether or not the locks were initialized or not.
-    //       Actually, the instances is a double-pointer so that double-point can act as a boolean/flag.
     f_thread_condition_delete(&instance->wait);
     f_thread_lock_delete(&instance->lock);
     f_thread_lock_delete(&instance->active);
@@ -58,6 +54,9 @@ extern "C" {
 #ifndef _di_controller_instance_initialize_
   f_status_t controller_instance_initialize(controller_instance_t ** restrict const instance) {
 
+    if (!instance) return F_status_set_error(F_parameter);
+    if (*instance) return F_okay;
+
     f_status_t status = f_memory_new(1, sizeof(controller_instance_t), (void **) instance);
 
     if (F_status_is_error_not(status)) {
@@ -79,9 +78,6 @@ extern "C" {
     for (f_number_unsigned_t i = 0; i < controller_rule_action_type__enum_size_e; ++i) {
       (*instance)->rule.status[i] = F_known_not;
     } // for
-
-    // TODO: There probably should be a boolean/flag to represent that the locks were initialized.
-    //       And on allocation failure on any lock before all locks are allocated should require that any allocated locks be de-allocated before returning on error.
 
     return F_status_is_error(status) ? status : F_okay;
   }

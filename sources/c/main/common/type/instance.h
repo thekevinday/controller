@@ -176,6 +176,8 @@ extern "C" {
  * @return
  *   F_okay on success.
  *
+ *   F_parameter (with error bit) on invalid parameter.
+ *
  *   Errors (with error bit) from: f_thread_condition_create().
  *   Errors (with error bit) from: f_thread_lock_create().
  *   Errors (with error bit) from: f_thread_mutex_create().

@@ -25,50 +25,57 @@ extern "C" {
       return;
     }
 
+    f_signal_set_fill(&main->program.signal.set);
+
+    f_status_t status = f_thread_signal_mask(SIG_BLOCK, &main->program.signal.set, 0);
+
+    if (F_status_is_error_not(status)) {
+      status = f_signal_open(&main->program.signal);
+    }
+
+    // If there is an error opening a signal descriptor, then do not handle signals.
+    if (F_status_is_error(status)) {
+      f_thread_signal_mask(SIG_UNBLOCK, &main->program.signal.set, 0);
+      f_signal_close(&main->program.signal);
+    }
+
     // The locks must be initialized, but only once, so initialize immediately upon allocation.
-    f_status_t status = controller_lock_create(&main->thread.lock);
+    status = controller_lock_create(&main->thread.lock);
 
     if (F_status_is_error(status)) {
       controller_print_error_status(&main->program.error, macro_controller_f(controller_lock_create), status);
-    }/* else { // TODO: Is this block needed here, given allocation will also happen later on as needed?
-      status = f_memory_array_increase(controller_allocation_small_d, sizeof(controller_instance_t), (void **) &main->thread.instances.array, &main->thread.instances.used, &main->thread.instances.size);
-
-      if (F_status_is_error(status)) {
-        controller_print_error_status(&main->program.error, macro_controller_f(f_memory_array_increase), status);
-      }
-    }*/
-
-    if (F_status_is_error_not(status)) {
-      status = f_thread_create(0, &main->thread.id_signal, &controller_thread_signal_normal, (void *) main);
-    }
-
-    if (F_status_is_error(status)) {
-      main->thread.id_signal = 0;
-
-      controller_print_error_status(&main->program.error, macro_controller_f(f_thread_create), status);
     }
     else {
-      if (main->setting.flag & controller_main_flag_daemon_e) {
-        main->process.ready = controller_process_ready_done_e;
+      status = f_thread_create(0, &main->thread.id_signal, &controller_thread_signal_normal, (void *) main);
 
-        if (f_file_exists(main->process.path_pid, F_true) == F_true) {
-          status = F_status_set_error(F_available_not);
-          main->process.ready = controller_process_ready_abort_e;
+      if (F_status_is_error(status)) {
+        main->thread.id_signal = 0;
 
-          controller_print_error_file_pid_exists(&main->program.error, &main->thread, main->process.path_pid);
-        }
+        controller_print_error_status(&main->program.error, macro_controller_f(f_thread_create), status);
       }
-      else if (main->process.name_entry.used) {
-        status = f_thread_create(0, &main->thread.id_entry, &controller_thread_entry, (void *) main);
+      else {
+        if (main->setting.flag & controller_main_flag_daemon_e) {
+          main->process.ready = controller_process_ready_done_e;
 
-        if (F_status_is_error(status)) {
-          controller_print_error_status(&main->program.error, macro_controller_f(f_thread_create), status);
+          if (f_file_exists(main->process.path_pid, F_true) == F_true) {
+            status = F_status_set_error(F_available_not);
+            main->process.ready = controller_process_ready_abort_e;
+
+            controller_print_error_file_pid_exists(&main->program.error, &main->thread, main->process.path_pid);
+          }
         }
-        else {
-          controller_thread_join(&main->thread.id_entry);
+        else if (main->process.name_entry.used) {
+          status = f_thread_create(0, &main->thread.id_entry, &controller_thread_entry, (void *) main);
 
-          status = main->thread.status;
-          main->thread.id_entry = 0;
+          if (F_status_is_error(status)) {
+            controller_print_error_status(&main->program.error, macro_controller_f(f_thread_create), status);
+          }
+          else {
+            controller_thread_join(&main->thread.id_entry);
+
+            status = main->thread.status;
+            main->thread.id_entry = 0;
+          }
         }
       }
     }

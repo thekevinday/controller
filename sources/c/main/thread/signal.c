@@ -11,18 +11,16 @@ extern "C" {
     if (!controller_thread_is_enabled(is_normal, &main->thread)) return;
     if (!(main->setting.flag & controller_main_flag_interruptible_e)) return;
 
-    f_status_t status = F_okay;
     siginfo_t information;
     f_time_spec_t time = f_time_spec_t_initialize;
 
     while (controller_thread_is_enabled(is_normal, &main->thread)) {
 
-      controller_time_now(controller_thread_exit_ready_timeout_seconds_d, controller_thread_exit_ready_timeout_nanoseconds_d, &time);
-
       memset((void *) &information, 0, sizeof(siginfo_t));
 
-      status = f_signal_wait_until(&main->program.signal.set, &time, &information);
-      if (status == F_time_out) continue;
+      controller_time_now(controller_thread_exit_ready_timeout_seconds_d, controller_thread_exit_ready_timeout_nanoseconds_d, &time);
+
+      if (f_signal_wait_until(&main->program.signal.set, &time, &information) == F_time_out) continue;
 
       if (information.si_signo == F_signal_interrupt || information.si_signo == F_signal_abort || information.si_signo == F_signal_quit || information.si_signo == F_signal_termination) {
         main->thread.signal = information.si_signo;
