@@ -9,7 +9,7 @@ extern "C" {
 
     if (!argument) return 0;
 
-    f_thread_cancel_state_set(PTHREAD_CANCEL_DEFERRED, 0); // TODO: need to setup thread states as deferred before starting the thread to avoid needing to do this call.
+    f_thread_cancel_state_set(PTHREAD_CANCEL_DEFERRED, 0);
 
     controller_t * const main = (controller_t *) argument;
 
@@ -35,7 +35,6 @@ extern "C" {
 
     if (F_status_is_error_not(*status) && *status != F_child) {
       if (!(main->setting.flag & controller_main_flag_validate_e) || (main->setting.flag & controller_main_flag_simulate_e)) {
-
         if (main->process.entry.pid == controller_entry_pid_require_e && f_file_exists(main->process.path_pid, F_true) == F_true) {
           *status = F_status_set_error(F_available_not);
           main->process.ready = controller_process_ready_fail_e;

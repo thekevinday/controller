@@ -42,6 +42,8 @@ extern "C" {
         if (instances[i]) {
           controller_instance_delete(instances[i]);
 
+          f_memory_delete(1, sizeof(controller_instance_t), (void **) &instances[i]);
+
           instances[i] = 0;
         }
       } // for

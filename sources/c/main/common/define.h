@@ -33,7 +33,7 @@ extern "C" {
   #define controller_allocation_iki_small_d 8
   #define controller_allocation_large_d     256
   #define controller_allocation_pipe_d      16384
-  #define controller_allocation_small_d     16
+  #define controller_allocation_small_d     8
 #endif // _di_controller_allocation_d_
 
 /**

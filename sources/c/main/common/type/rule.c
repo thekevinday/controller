@@ -9,6 +9,7 @@ extern "C" {
 
     if (!rule) return;
 
+    f_memory_array_resize(0, sizeof(f_char_t), (void **) &rule->alias.string, &rule->alias.used, &rule->alias.size);
     f_memory_array_resize(0, sizeof(f_char_t), (void **) &rule->engine.string, &rule->engine.used, &rule->engine.size);
     f_memory_array_resize(0, sizeof(f_char_t), (void **) &rule->name.string, &rule->name.used, &rule->name.size);
     f_memory_array_resize(0, sizeof(f_char_t), (void **) &rule->path.string, &rule->path.used, &rule->path.size);

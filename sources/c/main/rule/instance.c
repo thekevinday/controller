@@ -146,9 +146,7 @@ extern "C" {
 
             if (F_status_is_error(status)) {
               if (F_status_set_fine(status) == F_lock) {
-                if (!controller_thread_is_enabled_instance_type(instance->type, &main->thread)) {
-                  return F_status_set_error(F_interrupt);
-                }
+                if (!controller_thread_is_enabled_instance_type(instance->type, &main->thread)) return F_status_set_error(F_interrupt);
               }
 
               if (main->program.error.verbosity > f_console_verbosity_quiet_e) {
@@ -410,25 +408,16 @@ extern "C" {
         } // for
 
         if (status == F_child || F_status_set_fine(status) == F_interrupt) break;
-
         if (F_status_is_error(status) && !(instance->options & controller_instance_option_simulate_e)) break;
       } // for
     }
 
-    if (status == F_child || F_status_set_fine(status) == F_interrupt) {
-      return status;
-    }
-
-    if (!controller_thread_is_enabled_instance(instance)) {
-      return F_status_set_error(F_interrupt);
-    }
+    if (status == F_child || F_status_set_fine(status) == F_interrupt) return status;
+    if (!controller_thread_is_enabled_instance(instance)) return F_status_set_error(F_interrupt);
 
     if ((instance->options & controller_instance_option_wait_e) && F_status_is_error_not(status) && (instance->options & controller_instance_option_validate_e)) {
       status_lock = controller_rule_wait_all_instance_type(main, instance->type, F_false);
-
-      if (F_status_set_fine(status_lock) == F_interrupt) {
-        return status_lock;
-      }
+      if (F_status_set_fine(status_lock) == F_interrupt) return status_lock;
     }
 
     if (!(instance->options & controller_instance_option_validate_e) && F_status_is_error_not(status)) {
@@ -460,6 +449,7 @@ extern "C" {
 
       if (F_status_is_error_not(status)) {
         status = controller_rule_execute(main, instance->action, instance->options, instance);
+
         if (status == F_child || F_status_set_fine(status) == F_interrupt || F_status_set_fine(status) == F_lock) return status;
 
         if (F_status_is_error(status)) {

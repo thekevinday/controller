@@ -91,14 +91,11 @@ extern "C" {
           }
           else {
             if ((entry_action->code & controller_entry_rule_code_require_d) && main->program.error.verbosity > f_console_verbosity_quiet_e || !(entry_action->code & controller_entry_rule_code_require_d) && (main->program.warning.verbosity == f_console_verbosity_verbose_e || main->program.warning.verbosity == f_console_verbosity_debug_e)) {
-              fl_print_t *print = 0;
-
-              if (entry_action->code & controller_entry_rule_code_require_d) {
-                print = &main->program.error;
-              }
-              else if (main->program.error.verbosity != f_console_verbosity_error_e) {
-                print = &main->program.warning;
-              }
+              fl_print_t * const print = (entry_action->code & controller_entry_rule_code_require_d)
+                ? &main->program.error
+                : (main->program.error.verbosity != f_console_verbosity_error_e)
+                  ? &main->program.warning
+                  : 0;
 
               if (print) {
                 controller_print_message_entry_action_state(print, cache, entry_action, is_entry);
@@ -412,7 +409,6 @@ extern "C" {
           }
         }
         else if (entry_action->type == controller_entry_action_type_failsafe_e) {
-
           if (failsafe) {
             controller_print_warning_entry_action_failsafe_twice(&main->program.warning, cache, is_entry);
           }

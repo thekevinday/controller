@@ -16,11 +16,27 @@ extern "C" {
       time->tv_nsec = (now.tv_usec * 1000);
     }
 
-    // If result would be greater than 1 second, then increment seconds without overflowing.
-    if (time->tv_nsec > 500000000 && nanoseconds > 500000000) {
+    // Do not allow for nanoseconds to be too large.
+    if (nanoseconds > 999999999) {
+      long ns = nanoseconds;
+
+      do {
+        ns -= 1000000000;
+        ++(time->tv_sec);
+
+      } while (ns > 999999999);
+
+      time->tv_nsec += ns;
+    }
+    else {
+      time->tv_nsec += nanoseconds;
+    }
+
+    // If tv_nsec is 1 second or greater, then increment seconds.
+    if (time->tv_nsec > 999999999) {
       ++(time->tv_sec);
 
-      time->tv_nsec = (time->tv_nsec - 500000000) + (nanoseconds - 500000000);
+      time->tv_nsec -= 1000000000;
     }
   }
 #endif // _di_controller_time_now_

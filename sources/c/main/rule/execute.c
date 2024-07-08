@@ -97,11 +97,9 @@ extern "C" {
           for (j = 0; j < instance->rule.environment.used; ++j) {
 
             if (f_compare_dynamic(entry->define.array[i].key, instance->rule.environment.array[j]) == F_equal_to) {
-
               for (k = 0; k < environment.used; ++k) {
 
                 if (f_compare_dynamic(entry->define.array[i].key, environment.array[k].key) == F_equal_to) {
-
                   environment.array[k].value.used = 0;
 
                   status = f_string_dynamic_append(entry->define.array[i].value, &environment.array[k].value);
@@ -471,6 +469,7 @@ extern "C" {
       }
     }
 
+    // @fixme don't actually execute as even executing "bash" could be bad if the shell being run is something nefarious.
     if (options & controller_instance_option_simulate_e) {
       controller_print_entry_output_execute_simulate(&main->program.output, instance, program, arguments);
 
@@ -487,12 +486,6 @@ extern "C" {
           status = controller_time_sleep_nanoseconds(instance->main, delay);
         }
       }
-
-      if (F_status_set_fine(status) != F_interrupt) {
-        fl_execute_parameter_t simulated_parameter = macro_fl_execute_parameter_t_initialize_1(execute_set->parameter.option, execute_set->parameter.wait, instance->rule.has & controller_rule_has_environment_d ? execute_set->parameter.environment : 0, execute_set->parameter.signals, &f_string_empty_s);
-
-        status = fll_execute_program(controller_default_engine_s, instance->rule.engine_arguments, &simulated_parameter, &execute_set->as, (void *) &result);
-      }
     }
     else {
       status = fll_execute_program(program, arguments, &execute_set->parameter, &execute_set->as, (void *) &result);
@@ -504,13 +497,13 @@ extern "C" {
 
       f_thread_unlock(&instance->lock);
 
-      status_lock = controller_lock_write_instance(instance, &instance->active);
+      status_lock = controller_lock_write_instance(instance, &instance->lock);
 
       if (F_status_is_error(status_lock)) {
         controller_print_error_lock_critical(&main->program.error, F_status_set_fine(status_lock), F_false);
 
         if (F_status_set_fine(status_lock) != F_interrupt) {
-          status = controller_lock_read_instance(instance, &instance->active);
+          status = controller_lock_read_instance(instance, &instance->lock);
           if (status == F_okay) return status_lock;
         }
 
@@ -522,7 +515,7 @@ extern "C" {
 
       f_thread_unlock(&instance->lock);
 
-      status_lock = controller_lock_read_instance(instance, &instance->active);
+      status_lock = controller_lock_read_instance(instance, &instance->lock);
 
       if (F_status_is_error(status_lock)) {
         controller_print_error_lock_critical(&main->program.error, F_status_set_fine(status_lock), F_true);
@@ -542,13 +535,13 @@ extern "C" {
         f_thread_unlock(&instance->lock);
       }
 
-      status_lock = controller_lock_write_instance(instance, &instance->active);
+      status_lock = controller_lock_write_instance(instance, &instance->lock);
 
       if (F_status_is_error(status_lock)) {
         controller_print_error_lock_critical(&main->program.error, F_status_set_fine(status_lock), F_false);
 
         if (F_status_set_fine(status_lock) != F_interrupt) {
-          status = controller_lock_read_instance(instance, &instance->active);
+          status = controller_lock_read_instance(instance, &instance->lock);
           if (status == F_okay) return status_lock;
         }
 
@@ -562,7 +555,7 @@ extern "C" {
 
       f_thread_unlock(&instance->lock);
 
-      status_lock = controller_lock_read_instance(instance, &instance->active);
+      status_lock = controller_lock_read_instance(instance, &instance->lock);
 
       if (F_status_is_error(status_lock)) {
         controller_print_error_lock_critical(&main->program.error, F_status_set_fine(status_lock), F_true);
