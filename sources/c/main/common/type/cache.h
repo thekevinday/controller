@@ -154,7 +154,7 @@ extern "C" {
 /**
  * De-allocate the Controller action cache.
  *
- * @param cache
+ * @param action
  *   The action cache.
  *
  *   Must not be NULL.
@@ -162,7 +162,7 @@ extern "C" {
  * @see f_memory_array_resize()
  */
 #ifndef _di_controller_cache_action_delete_
-  extern void controller_cache_action_delete(controller_cache_action_t * const cache);
+  extern void controller_cache_action_delete(controller_cache_action_t * const action);
 #endif // _di_controller_cache_action_delete_
 
 #ifdef __cplusplus

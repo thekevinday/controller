@@ -352,7 +352,7 @@ extern "C" {
           else {
             success = F_status_set_error(F_failure);
 
-            controller_print_error_rule_action_missing_pid(&main->program.error, instance->rule.alias);
+            controller_print_error_rule_action_missing_pid(&main->program.error, &instance->cache.action, instance->rule.alias);
           }
         }
         else if (instance->rule.items.array[i].type == controller_rule_item_type_utility_e) {
@@ -396,7 +396,7 @@ extern "C" {
           else {
             success = F_status_set_error(F_failure);
 
-            controller_print_error_rule_action_missing_pid(&main->program.error, instance->rule.alias);
+            controller_print_error_rule_action_missing_pid(&main->program.error, &instance->cache.action, instance->rule.alias);
           }
         }
         else {
@@ -593,7 +593,7 @@ extern "C" {
       status = F_status_set_fine(status);
 
       if ((WIFEXITED(instance->result) && WEXITSTATUS(instance->result)) || status == F_control_group || status == F_failure || status == F_limit || status == F_processor || status == F_schedule) {
-        controller_print_error_rule_item_execute(&instance->main->program.error, instance, type == controller_rule_item_type_script_e, program.used ? program : arguments.array[0], status);
+        controller_print_error_rule_item_execute(&instance->main->program.error, type == controller_rule_item_type_script_e, program.used ? program : arguments.array[0], status, instance->result);
       }
       else {
         controller_print_error_status(&instance->main->program.error, macro_controller_f(fll_execute_program), F_status_set_fine(status));
@@ -737,15 +737,12 @@ extern "C" {
         controller_print_error_lock_critical(&main->program.error, F_status_set_fine(status_lock), F_true);
       }
 
+      // The child instance should perform the change into background, therefore it is safe to wait for the child to exit (another instance is spawned).
       if (F_status_set_fine(status_lock) != F_interrupt) {
-
-        // The child instance should perform the change into background, therefore it is safe to wait for the child to exit (another instance is spawned).
         waitpid(id_child, &result.status, 0);
       }
 
-      if (!controller_thread_is_enabled_instance(instance)) {
-        return status_lock == F_okay ? F_status_set_error(F_interrupt) : F_status_set_error(F_lock);
-      }
+      if (!controller_thread_is_enabled_instance(instance)) return status_lock == F_okay ? F_status_set_error(F_interrupt) : F_status_set_error(F_lock);
 
       if (status_lock == F_okay) {
         f_thread_unlock(&instance->lock);
@@ -809,7 +806,7 @@ extern "C" {
       status = F_status_set_fine(status);
 
       if ((WIFEXITED(instance->result) && WEXITSTATUS(instance->result)) || status == F_control_group || status == F_failure || status == F_limit || status == F_processor || status == F_schedule) {
-        controller_print_error_rule_item_execute(&instance->main->program.error, instance, type == controller_rule_item_type_utility_e, program.used ? program : arguments.array[0], status);
+        controller_print_error_rule_item_execute(&instance->main->program.error, type == controller_rule_item_type_utility_e, program.used ? program : arguments.array[0], status, instance->result);
       }
       else {
         controller_print_error_status(&instance->main->program.error, macro_controller_f(fll_execute_program), F_status_set_fine(status));

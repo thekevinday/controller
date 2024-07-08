@@ -89,6 +89,10 @@ extern "C" {
  *   This does not alter print.custom.setting.state.status.
  *
  *   Must not be NULL.
+ * @param action
+ *   The Action cache.
+ *
+ *   Must not be NULL.
  * @param alias
  *   The Rule alias of the Rule that is missing the pid file designation.
  *
@@ -99,7 +103,7 @@ extern "C" {
  *   F_output_not (with error bit) if setting is NULL.
  */
 #ifndef _di_controller_print_error_rule_action_missing_pid_
-  extern f_status_t controller_print_error_rule_action_missing_pid(fl_print_t * const print, const f_string_static_t alias);
+  extern f_status_t controller_print_error_rule_action_missing_pid(fl_print_t * const print, controller_cache_action_t * const action, const f_string_static_t alias);
 #endif // _di_controller_print_error_rule_action_missing_pid_
 
 /**

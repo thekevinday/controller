@@ -29,7 +29,7 @@ extern "C" {
  *   This does not alter print.custom.setting.state.status.
  *
  *   Must not be NULL.
- * @param cache
+ * @param action
  *   The Action cache.
  *
  *   Must not be NULL.
@@ -46,7 +46,7 @@ extern "C" {
  *   F_output_not (with error bit) if setting is NULL.
  */
 #ifndef _di_controller_print_error_rule_item_
-  extern f_status_t controller_print_error_rule_item(fl_print_t * const print, controller_cache_action_t * const cache, const uint8_t item, const f_status_t status);
+  extern f_status_t controller_print_error_rule_item(fl_print_t * const print, controller_cache_action_t * const action, const uint8_t item, const f_status_t status);
 #endif // _di_controller_print_error_rule_item_
 
 /**
@@ -60,10 +60,6 @@ extern "C" {
  *   This does not alter print.custom.setting.state.status.
  *
  *   Must not be NULL.
- * @param instance
- *   The process instance.
- *
- *   Must not be NULL.
  * @param script_is
  *   If TRUE, then this represents a script.
  *   If FALSE, then this represents a program.
@@ -73,6 +69,8 @@ extern "C" {
  *   The code returned by the executed program or script.
  * @param status
  *   The status code representing the failure (without the error bit set).
+ * @param result
+ *   The status code result.
  *
  * @return
  *   F_okay on success.
@@ -81,14 +79,20 @@ extern "C" {
  *   F_output_not (with error bit) if setting is NULL.
  */
 #ifndef _di_controller_print_error_rule_item_execute_
-  extern f_status_t controller_print_error_rule_item_execute(fl_print_t * const print, controller_instance_t * const instance, const uint8_t script_is, const f_string_static_t name, const f_status_t status);
+  extern f_status_t controller_print_error_rule_item_execute(fl_print_t * const print, const uint8_t script_is, const f_string_static_t name, const f_status_t status, const int result);
 #endif // _di_controller_print_error_rule_item_execute_
 
 /**
  * Print an error or warning message related to need/want/wish settings of some rule.
  *
  * @param print
- *   The error or warning output structure.
+ *   The output structure to print to.
+ *
+ *   This requires print.custom to be controller_t.
+ *
+ *   This does not alter print.custom.setting.state.status.
+ *
+ *   Must not be NULL.
  * @param need_want_wish
  *   The appropriate string, such as "needs", "wants", or "wishes for" to output when describing this error/warning.
  *   This string is expected to already be "safe" (no control characters, etc..).
@@ -111,7 +115,17 @@ extern "C" {
  * Print an error or warning message about some rule not being loaded.
  *
  * @param print
- *   The error or warning output structure.
+ *   The output structure to print to.
+ *
+ *   This requires print.custom to be controller_t.
+ *
+ *   This does not alter print.custom.setting.state.status.
+ *
+ *   Must not be NULL.
+ * @param action
+ *   The Action cache.
+ *
+ *   Must not be NULL.
  * @param alias
  *   The Rule alias of the Rule that is not loaded.
  *
@@ -122,7 +136,7 @@ extern "C" {
  *   F_output_not (with error bit) if setting is NULL.
  */
 #ifndef _di_controller_print_error_rule_item_rule_not_loaded_
-  extern f_status_t controller_print_error_rule_item_rule_not_loaded(fl_print_t * const print, const f_string_static_t alias);
+  extern f_status_t controller_print_error_rule_item_rule_not_loaded(fl_print_t * const print, controller_cache_action_t * const action, const f_string_static_t alias);
 #endif // _di_controller_print_error_rule_item_rule_not_loaded_
 
 #ifdef __cplusplus

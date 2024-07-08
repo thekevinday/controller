@@ -66,7 +66,7 @@ extern "C" {
  *   This does not alter print.custom.setting.state.status.
  *
  *   Must not be NULL.
- * @param cache
+ * @param action
  *   The action cache.
  *
  *   Must not be NULL.
@@ -81,7 +81,7 @@ extern "C" {
  *   F_output_not (with error bit) if setting is NULL.
  */
 #ifndef _di_controller_print_error_entry_cache_
-  extern f_status_t controller_print_error_entry_cache(fl_print_t * const print, controller_cache_action_t * const cache, const uint8_t is_entry);
+  extern f_status_t controller_print_error_entry_cache(fl_print_t * const print, controller_cache_action_t * const action, const uint8_t is_entry);
 #endif // _di_controller_print_error_entry_cache_
 
 /**

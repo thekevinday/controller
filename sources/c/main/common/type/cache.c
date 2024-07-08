@@ -33,14 +33,14 @@ extern "C" {
 #endif // _di_controller_cache_delete_
 
 #ifndef _di_controller_cache_action_delete_
-  void controller_cache_action_delete(controller_cache_action_t * const cache) {
+  void controller_cache_action_delete(controller_cache_action_t * const action) {
 
-    if (!cache) return;
+    if (!action) return;
 
-    f_memory_array_resize(0, sizeof(f_char_t), (void **) &cache->name_action.string, &cache->name_action.used, &cache->name_action.size);
-    f_memory_array_resize(0, sizeof(f_char_t), (void **) &cache->name_file.string, &cache->name_file.used, &cache->name_file.size);
-    f_memory_array_resize(0, sizeof(f_char_t), (void **) &cache->name_item.string, &cache->name_item.used, &cache->name_item.size);
-    f_memory_array_resize(0, sizeof(f_char_t), (void **) &cache->generic.string, &cache->generic.used, &cache->generic.size);
+    f_memory_array_resize(0, sizeof(f_char_t), (void **) &action->name_action.string, &action->name_action.used, &action->name_action.size);
+    f_memory_array_resize(0, sizeof(f_char_t), (void **) &action->name_file.string, &action->name_file.used, &action->name_file.size);
+    f_memory_array_resize(0, sizeof(f_char_t), (void **) &action->name_item.string, &action->name_item.used, &action->name_item.size);
+    f_memory_array_resize(0, sizeof(f_char_t), (void **) &action->generic.string, &action->generic.used, &action->generic.size);
   }
 #endif // _di_controller_cache_action_delete_
 
