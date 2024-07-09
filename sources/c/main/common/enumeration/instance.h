@@ -42,7 +42,7 @@ extern "C" {
  * Instance states.
  *
  * controller_instance_state_*_e:
- *   - idle:   No instance is running for this rule.
+ *   - idle:   No instance is running for this Rule.
  *   - busy:   A instance is actively using this, and is running synchronously.
  *   - active: A instance is actively using this, and is running asynchronously.
  *   - done:   A instance has finished running on this and there is a thread that needs to be cleaned up.
@@ -60,8 +60,8 @@ extern "C" {
  * Instance types.
  *
  * controller_instance_type_*_e:
- *   - entry:   The instance is started from an entry.
- *   - exit:    The instance is started from an exit.
+ *   - entry:   The instance is started from an Entry.
+ *   - exit:    The instance is started from an Exit.
  *   - control: The instance is started from a control operation.
  */
 #ifndef _di_controller_instance_type_e_

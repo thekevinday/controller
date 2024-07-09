@@ -125,7 +125,7 @@ extern "C" {
 
       instance = main->thread.instances.array[i];
 
-      // Do not cancel exit instances, when not performing "execute" during exit.
+      // Do not cancel Exit instances, when not performing "execute" during exit.
       if (instance->type == controller_instance_type_exit_e && main->thread.enabled != controller_thread_enabled_exit_execute_e) {
         continue;
       }
@@ -219,7 +219,7 @@ extern "C" {
 
       instance = main->thread.instances.array[i];
 
-      // Do not kill exit instances, when not performing "execute" during exit.
+      // Do not kill Exit instances, when not performing "execute" during exit.
       if (instance->type == controller_instance_type_exit_e && main->thread.enabled != controller_thread_enabled_exit_execute_e) continue;
 
       if (instance->id_thread) {
@@ -247,7 +247,7 @@ extern "C" {
       if (!(entry->flag & controller_entry_flag_timeout_exit_no_e)) {
         for (j = 0; j < instance->childs.size; ++j) {
 
-          // Do not kill exit processes, when not performing "execute" during exit.
+          // Do not kill Exit processes, when not performing "execute" during exit.
           if (instance->type == controller_instance_type_exit_e && main->thread.enabled != controller_thread_enabled_exit_execute_e) continue;
 
           if (instance->childs.array[j]) {
@@ -265,7 +265,7 @@ extern "C" {
       if (!(entry->flag & controller_entry_flag_timeout_exit_no_e)) {
         for (j = 0; j < instance->path_pids.used; ++j) {
 
-          // Do not kill exit processes, when not performing "execute" during exit.
+          // Do not kill Exit processes, when not performing "execute" during exit.
           if (instance->type == controller_instance_type_exit_e && main->thread.enabled != controller_thread_enabled_exit_execute_e) continue;
 
           if (f_file_exists(instance->path_pids.array[j], F_true) == F_true) {
@@ -284,7 +284,7 @@ extern "C" {
       // Shrink the child pids as much as possible.
       while (instance->childs.used) {
 
-        // Do not shrink below an exit instances, when not performing "execute" during exit.
+        // Do not shrink below an Exit instances, when not performing "execute" during exit.
         if (instance->type == controller_instance_type_exit_e && main->thread.enabled != controller_thread_enabled_exit_execute_e) break;
         if (instance->childs.array[j] > 0) break;
 
@@ -294,7 +294,7 @@ extern "C" {
       // Shrink the path pids as much as possible.
       while (instance->path_pids.used) {
 
-        // Do not shrink below an exit instances, when not performing "execute" during exit.
+        // Do not shrink below an Exit instances, when not performing "execute" during exit.
         if (instance->type == controller_instance_type_exit_e && main->thread.enabled != controller_thread_enabled_exit_execute_e) break;
         if (instance->path_pids.array[j].used) break;
 
@@ -313,7 +313,7 @@ extern "C" {
 
     if (main->process.ready == controller_process_ready_done_e) {
 
-      // The exit processing runs using the entry thread.
+      // The Exit processing runs using the Entry thread.
       if (main->thread.id_entry) {
         f_thread_cancel(main->thread.id_entry);
         f_thread_join(main->thread.id_entry, 0);
@@ -338,21 +338,13 @@ extern "C" {
 
           f_thread_mutex_unlock(&main->thread.lock.alert);
         }
-        else {
-          main->thread.enabled = controller_thread_enabled_not_e;
-        }
       }
       else {
         f_time_spec_t time = f_time_spec_t_initialize;
 
         do {
           status = f_thread_mutex_lock(&main->thread.lock.alert);
-
-          if (F_status_is_error(status)) {
-            main->thread.enabled = controller_thread_enabled_not_e;
-
-            break;
-          }
+          if (F_status_is_error(status)) break;
 
           controller_time_now(controller_thread_exit_ready_timeout_seconds_d, controller_thread_exit_ready_timeout_nanoseconds_d, &time);
 
@@ -367,9 +359,6 @@ extern "C" {
             main->thread.enabled = controller_thread_enabled_not_e;
 
             f_thread_mutex_unlock(&main->thread.lock.alert);
-          }
-          else {
-            main->thread.enabled = controller_thread_enabled_not_e;
           }
         }
       }
@@ -389,9 +378,6 @@ extern "C" {
         main->thread.enabled = controller_thread_enabled_not_e;
 
         f_thread_mutex_unlock(&main->thread.lock.alert);
-      }
-      else {
-        main->thread.enabled = controller_thread_enabled_not_e;
       }
     }
   }

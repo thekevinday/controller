@@ -5,7 +5,7 @@
  * API Version: 0.7
  * Licenses: lgpl-2.1-or-later
  *
- * Provides entry functionality.
+ * Provides Entry functionality.
  *
  * This is auto-included and should not need to be explicitly included.
  */
@@ -24,13 +24,13 @@ extern "C" {
  *
  *   Must not be NULL.
  * @param entry
- *   The entry data.
+ *   The Entry data.
  *
  *   Must not be NULL.
  *
  * @return
  *   F_okay on success.
- *   F_file_found_not on file not found for a an exit file (is_entry is FALSE).
+ *   F_file_found_not on file not found for an Exit file (is_entry is FALSE).
  *
  *   F_parameter (with error bit) if a parameter is invalid.
  *

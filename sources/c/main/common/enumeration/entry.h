@@ -5,7 +5,7 @@
  * API Version: 0.7
  * Licenses: lgpl-2.1-or-later
  *
- * Provides the common entry enumerations.
+ * Provides the common Entry enumerations.
  *
  * This is auto-included and should not need to be explicitly included.
  */
@@ -81,7 +81,7 @@ extern "C" {
  *
  * controller_entry_flag_*_e:
  *   - none:             No flags are set.
- *   - is:               Designate that this is an entry rather than an exit.
+ *   - is:               Designate that this is an Entry rather than an Exit.
  *   - timeout_exit_no:  The exit timeout is disabled.
  *   - timeout_kill_no:  The kill timeout is disabled for Rules by default.
  *   - timeout_start_no: The start timeout is disabled for Rules by default.
@@ -102,8 +102,8 @@ extern "C" {
  * Controller Entry PID enumeration.
  *
  * controller_entry_pid_*_e:
- *   - disable: Do not check for or create a PID file to represent the entry execution.
- *   - require: Check to see if the PID file exists for an entry at startup and then when "ready" create a pid file, display error on pid file already exists or on failure and then fail.
+ *   - disable: Do not check for or create a PID file to represent the Entry execution.
+ *   - require: Check to see if the PID file exists for an Entry at startup and then when "ready" create a pid file, display error on pid file already exists or on failure and then fail.
  *   - ready:   When "ready" create a pid file, display error on failure and then fail (does not check if PID file exists).
  */
 #ifndef _di_controller_entry_pid_e_
@@ -135,7 +135,7 @@ extern "C" {
  *
  * controller_entry_show_*_e:
  *   - normal: Do not print anything other than warnings and errors, but allow executed programs and scripts to output however they like.
- *   - init:   Print like an init program, printing status of entry and rules as they are being started, stopped, etc...
+ *   - init:   Print like an init program, printing status of Entry and Rules as they are being started, stopped, etc...
  */
 #ifndef _di_controller_entry_show_e_
   enum {

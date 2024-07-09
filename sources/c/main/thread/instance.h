@@ -20,8 +20,8 @@ extern "C" {
  * Asynchronously execute a Rule process.
  *
  * @param is_normal
- *   If F_true, then process as if this operates during a normal operation (entry and control).
- *   If F_false, then process as if this operates during a an exit operation.
+ *   If F_true, then process as if this operates during a normal operation (Entry and Control).
+ *   If F_false, then process as if this operates during an Exit operation.
  * @param instance
  *   The instance data.
  *
@@ -43,8 +43,8 @@ extern "C" {
  *
  *   This does not alter main.setting.state.status.
  * @param is_normal
- *   If F_true, then process as if this operates during a normal operation (entry and control).
- *   If F_false, then process as if this operates during a an exit operation.
+ *   If F_true, then process as if this operates during a normal operation (Entry and Control).
+ *   If F_false, then process as if this operates during an Exit operation.
  * @param by
  *   Designate the way in which the cancellation should operate.
  *

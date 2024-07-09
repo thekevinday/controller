@@ -16,7 +16,7 @@ extern "C" {
 #endif
 
 /**
- * Standard program entry point.
+ * Standard program Entry point.
  *
  * @param argc
  *   The number of arguments.

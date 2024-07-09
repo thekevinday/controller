@@ -5,7 +5,7 @@
  * API Version: 0.7
  * Licenses: lgpl-2.1-or-later
  *
- * Provides rule functionality.
+ * Provides Rule functionality.
  *
  * This is auto-included and should not need to be explicitly included.
  */
@@ -19,12 +19,12 @@ extern "C" {
 /**
  * Copy a rule, allocating new space as necessary.
  *
- * This does not do any locking or unlocking for the rule data, be sure to lock appropriately before and after calling this.
+ * This does not do any locking or unlocking for the Rule data, be sure to lock appropriately before and after calling this.
  *
  * @param source
- *   The source rule to copy from.
+ *   The source Rule to copy from.
  * @param destination
- *   The destination rule to copy to.
+ *   The destination Rule to copy to.
  *
  *   Must not be NULL.
  *
@@ -61,14 +61,14 @@ extern "C" {
  * @param rules
  *   The rules to search through.
  * @param at
- *   (optional) The index the rule was found at.
+ *   (optional) The index the Rule was found at.
  *
  *   Set to NULL to disable.
  *
  * @return
  *   F_okay on success, but the id.used is 0.
- *   F_true on success and rule was found, index is updated.
- *   F_false on success and rule was not found.
+ *   F_true on success and Rule was found, index is updated.
+ *   F_false on success and Rule was not found.
  */
 #ifndef _di_controller_rule_find_
   extern f_status_t controller_rule_find(const f_string_static_t alias, const controller_rules_t rules, f_number_unsigned_t * const at);
@@ -84,9 +84,9 @@ extern "C" {
  * @param source
  *   The source string that both the directory and basename are copied from.
  * @param directory
- *   A range within the source representing the directory part of a rule id.
+ *   A range within the source representing the directory part of a Rule id.
  * @param basename
- *   A range within the source representing the basename part of a rule id.
+ *   A range within the source representing the basename part of a Rule id.
  * @param alias
  *   The constructed alias.
  *

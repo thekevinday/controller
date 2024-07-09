@@ -5,7 +5,7 @@
  * API Version: 0.7
  * Licenses: lgpl-2.1-or-later
  *
- * Provides the print entry action debug functionality.
+ * Provides the print Entry Action debug functionality.
  *
  * This is auto-included and should not need to be explicitly included.
  */
@@ -17,7 +17,7 @@ extern "C" {
 #endif
 
 /**
- * Print debug message about re-running the execution of some action.
+ * Print debug message about re-running the execution of some Action.
  *
  * @param print
  *   The output structure to print to.
@@ -36,7 +36,7 @@ extern "C" {
  *
  *   Must not be NULL.
  * @param action
- *   The ID of the action being re-run.
+ *   The ID of the Action being re-run.
  *
  * @return
  *   F_okay on success.

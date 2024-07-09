@@ -36,9 +36,9 @@ extern "C" {
  * Controller process mode enumeration.
  *
  * controller_process_mode_*:
- *   - helper:  Run as a helper, exiting when finished prrocess entry (and any respective exit).
- *   - program: Run as a program, exiting when finished prrocess entry (and any respective exit).
- *   - service: Run as a service, listening for requests after processing entry.
+ *   - helper:  Run as a helper, exiting when finished prrocess Entry (and any respective Exit).
+ *   - program: Run as a program, exiting when finished prrocess Entry (and any respective Exit).
+ *   - service: Run as a service, listening for requests after processing Entry.
  */
 #ifndef _di_controller_process_mode_e_
   enum {

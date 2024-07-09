@@ -84,7 +84,7 @@ extern "C" {
           break;
 
         default:
-          controller_print_error_rule_action_type_unsupported(&main->program.error, &instance->cache.action, controller_convert_rule_action_type_string(instance->action), "validate rule execution");
+          controller_print_error_rule_action_type_unsupported(&main->program.error, &instance->cache.action, controller_convert_rule_action_type_string(instance->action), "validate Fule execution");
 
           break;
       }
@@ -240,7 +240,7 @@ extern "C" {
 
           if (found) {
 
-            // The dependency may have write locks, which needs to be avoided, so copy the alias from the rule.
+            // The dependency may have write locks, which needs to be avoided, so copy the alias from the Rule.
             f_string_static_t alias_other_buffer = f_string_static_t_initialize;
             alias_other_buffer.used = main->process.rules.array[id_rule].alias.used;
 
@@ -415,7 +415,7 @@ extern "C" {
 
     if (!(instance->options & controller_instance_option_validate_e) && F_status_is_error_not(status)) {
 
-      // Find at least one of the requested action when the rule is required.
+      // Find at least one of the requested Action when the Rule is required.
       if (instance->options & controller_instance_option_require_e) {
         bool missing = F_true;
 
@@ -488,7 +488,7 @@ extern "C" {
       return F_status_set_error(F_lock);
     }
 
-    // Update the rule status, which is stored separately from the rule status for this instance.
+    // Update the Rule status, which is stored separately from the Rule status for this instance.
     if (controller_rule_find(instance->rule.alias, main->process.rules, &id_rule) == F_true) {
       controller_rule_t * const rule = &main->process.rules.array[id_rule];
 
@@ -498,7 +498,7 @@ extern "C" {
 
       controller_rule_item_t *rule_item = 0;
 
-      // Copy all Rule Item Action statuses from the rule instance to the rule.
+      // Copy all Rule Item Action statuses from the Rule instance to the Rule.
       for (i = 0; i < rule->items.used; ++i) {
 
         rule_item = &rule->items.array[i];
@@ -829,7 +829,7 @@ extern "C" {
       }
       else if (!instance->action) {
 
-        // This is a "consider" Action, so do not actually execute the rule.
+        // This is a "consider" Action, so do not actually execute the Rule.
         f_thread_unlock(&instance->lock);
 
         if (options_force & controller_instance_option_asynchronous_e) {

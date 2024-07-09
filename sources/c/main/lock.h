@@ -45,8 +45,8 @@ extern "C" {
  * Given a r/w lock, periodically check to see if main thread is disabled while waiting.
  *
  * @param is_normal
- *   If TRUE, then perform as if this operates during a normal operation (entry and control).
- *   If FALSE, then perform as if this operates during a an exit operation.
+ *   If TRUE, then perform as if this operates during a normal operation (Entry and Control).
+ *   If FALSE, then perform as if this operates during a an Exit operation.
  * @param thread
  *   The thread data used to determine if the main thread is disabled or not.
  *
@@ -134,8 +134,8 @@ extern "C" {
  * Given a r/w lock, periodically check to see if main thread is disabled while waiting.
  *
  * @param is_normal
- *   If TRUE, then perform as if this operates during a normal operation (entry and control).
- *   If FALSE, then perform as if this operates during a an exit operation.
+ *   If TRUE, then perform as if this operates during a normal operation (Entry and Control).
+ *   If FALSE, then perform as if this operates during a an Exit operation.
  * @param thread
  *   The thread data used to determine if the main thread is disabled or not.
  *

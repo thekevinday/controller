@@ -5,7 +5,7 @@
  * API Version: 0.7
  * Licenses: lgpl-2.1-or-later
  *
- * Provides the print entry action debug functionality.
+ * Provides the print Entry Action debug functionality.
  *
  * This is auto-included and should not need to be explicitly included.
  */

@@ -5,7 +5,7 @@
  * API Version: 0.7
  * Licenses: lgpl-2.1-or-later
  *
- * Provides the rule "read" functionality.
+ * Provides the Rule "read" functionality.
  *
  * This is auto-included and should not need to be explicitly included.
  */
@@ -17,7 +17,7 @@ extern "C" {
 #endif
 
 /**
- * Read the rule file, extracting all valid items.
+ * Read the Rule file, extracting all valid items.
  *
  * @param main
  *   The main program data.
@@ -26,19 +26,19 @@ extern "C" {
  *
  *   This does not alter main.setting.state.status.
  * @param is_normal
- *   If TRUE, then process as if this operates during a normal operation (entry and control).
- *   If FALSE, then process as if this operates during a an exit operation.
+ *   If TRUE, then process as if this operates during a normal operation (Entry and Control).
+ *   If FALSE, then process as if this operates during a an Exit operation.
  * @param alias
- *   The string identifying the rule.
+ *   The string identifying the Rule.
  *   This is constructed from the path parts to the file without the file extension and without the settings directory prefix.
- *   "/etc/controller/rules/example/my.rule" would have a rule id of "example/my".
+ *   "/etc/controller/rules/example/my.rule" would have a Rule id of "example/my".
  * @param cache
  *   A structure for containing and caching relevant data.
  * @param entry
- *   The entry containing the rule being read.
+ *   The Entry containing the Rule being read.
  * @param rule
- *   The processed rule.
- *   The rule status will be updated by this function.
+ *   The processed Rule.
+ *   The Rule status will be updated by this function.
  *
  * @return
  *   F_okay on success.

@@ -5,7 +5,7 @@
  * API Version: 0.7
  * Licenses: lgpl-2.1-or-later
  *
- * Provides the common rule defines.
+ * Provides the common Rule defines.
  *
  * This is auto-included and should not need to be explicitly included.
  */
@@ -59,9 +59,9 @@ extern "C" {
  * Designate codes for timeout settings to be used during the loading of the Rule timeout settings.
  *
  * controller_rule_timeout_code_*_d:
- *   - kill:  Forcibly stop a rule.
- *   - start: Start a rule.
- *   - stop:  Stop a rule.
+ *   - kill:  Forcibly stop a Rule.
+ *   - start: Start a Rule.
+ *   - stop:  Stop a Rule.
  */
 #ifndef _di_controller_rule_timeout_code_d_
   #define controller_rule_timeout_code_kill_d  1

@@ -5,7 +5,7 @@
  * API Version: 0.7
  * Licenses: lgpl-2.1-or-later
  *
- * Provides the print rule action warning functionality.
+ * Provides the print Rule action warning functionality.
  *
  * This is auto-included and should not need to be explicitly included.
  */

@@ -5,7 +5,7 @@
  * API Version: 0.7
  * Licenses: lgpl-2.1-or-later
  *
- * Provides the print entry action error functionality.
+ * Provides the print Entry Action error functionality.
  *
  * This is auto-included and should not need to be explicitly included.
  */
@@ -38,7 +38,7 @@ extern "C" {
  * @param buffer
  *   The buffer containing the setting name.
  * @param range
- *   The range within the buffer representing the unknown action name.
+ *   The range within the buffer representing the unknown Action name.
  *
  * @return
  *   F_okay on success.
@@ -79,7 +79,7 @@ extern "C" {
 #endif // _di_controller_print_error_rule_action_fss_0003_unsupported_
 
 /**
- * Print an error or warning message about some rule not having the PID file information.
+ * Print an error or warning message about some Rule not having the PID file information.
  *
  * @param print
  *   The output structure to print to.
@@ -184,13 +184,13 @@ extern "C" {
  *
  *   Must not be NULL.
  * @param action
- *   The action cache.
+ *   The Action cache.
  *
  *   Must not be NULL.
  * @param type
  *   The Action type name.
  * @param message
- *   A specific message on what is being attempted by the action.
+ *   A specific message on what is being attempted by the Action.
  *
  * @return
  *   F_okay on success.
@@ -222,7 +222,7 @@ extern "C" {
  * @param buffer
  *   The buffer containing the setting name.
  * @param range
- *   The range within the buffer representing the unknown action name.
+ *   The range within the buffer representing the unknown Action name.
  *
  * @return
  *   F_okay on success.
@@ -246,7 +246,7 @@ extern "C" {
  *
  *   Must not be NULL.
  * @param action
- *   The action cache.
+ *   The Action cache.
  *
  *   Must not be NULL.
  * @param name

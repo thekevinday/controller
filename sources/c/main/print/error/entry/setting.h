@@ -5,7 +5,7 @@
  * API Version: 0.7
  * Licenses: lgpl-2.1-or-later
  *
- * Provides the print entry setting error functionality.
+ * Provides the print Entry setting error functionality.
  *
  * This is auto-included and should not need to be explicitly included.
  */
@@ -17,7 +17,7 @@ extern "C" {
 #endif
 
 /**
- * Print a message about an entry setting problem, with additional messages about the value.
+ * Print a message about an Entry setting problem, with additional messages about the value.
  *
  * This is intended to be explicitly called by controller_entry_settings_read().
  * This is intended only to be used for simple messages.
@@ -35,8 +35,8 @@ extern "C" {
  *
  *   Must not be NULL.
  * @param is_entry
- *   If TRUE, then this loads as an entry.
- *   If FALSE, then this loads as an exit.
+ *   If TRUE, then this loads as an Entry.
+ *   If FALSE, then this loads as an Exit.
  * @param before
  *   The string to add to the message being printed (before the value).
  * @param range
@@ -55,7 +55,7 @@ extern "C" {
 #endif // _di_controller_print_error_entry_setting_with_range_
 
 /**
- * Print a message for when an entry setting is being ignored.
+ * Print a message for when an Entry setting is being ignored.
  *
  * @param print
  *   The output structure to print to.
@@ -70,8 +70,8 @@ extern "C" {
  *
  *   Must not be NULL.
  * @param is_entry
- *   If TRUE, then this loads as an entry.
- *   If FALSE, then this loads as an exit.
+ *   If TRUE, then this loads as an Entry.
+ *   If FALSE, then this loads as an Exit.
  *
  * @return
  *   F_okay on success.
@@ -84,7 +84,7 @@ extern "C" {
 #endif // _di_controller_print_error_entry_setting_ignored_
 
 /**
- * Print a message for when an entry setting action has the incorrect number of parameters when the required amount is between a range.
+ * Print a message for when an Entry setting Action has the incorrect number of parameters when the required amount is between a range.
  *
  * @param print
  *   The output structure to print to.
@@ -99,8 +99,8 @@ extern "C" {
  *
  *   Must not be NULL.
  * @param is_entry
- *   If TRUE, then this loads as an entry.
- *   If FALSE, then this loads as an exit.
+ *   If TRUE, then this loads as an Entry.
+ *   If FALSE, then this loads as an Exit.
  * @param minimum
  *   The expected minimum number of arguments.
  * @param maximum
@@ -117,7 +117,7 @@ extern "C" {
 #endif // _di_controller_print_error_entry_setting_requires_between_
 
 /**
- * Print a message for when an entry setting action has the incorrect number of parameters when the required amount is fixed.
+ * Print a message for when an Entry setting Action has the incorrect number of parameters when the required amount is fixed.
  *
  * @param print
  *   The output structure to print to.
@@ -132,8 +132,8 @@ extern "C" {
  *
  *   Must not be NULL.
  * @param is_entry
- *   If TRUE, then this loads as an entry.
- *   If FALSE, then this loads as an exit.
+ *   If TRUE, then this loads as an Entry.
+ *   If FALSE, then this loads as an Exit.
  * @param total
  *   The expected number of arguments.
  *
@@ -148,7 +148,7 @@ extern "C" {
 #endif // _di_controller_print_error_entry_setting_requires_exactly_
 
 /**
- * Print an error message about an entry setting value not being a supported number.
+ * Print an error message about an Entry setting value not being a supported number.
  *
  * This utilizes the buffer and range because the number is not supported and therefore the string cannot be converted to a number.
  *
@@ -161,8 +161,8 @@ extern "C" {
  *
  *   Must not be NULL.
  * @param is_entry
- *   If TRUE, then this loads as an entry.
- *   If FALSE, then this loads as an exit.
+ *   If TRUE, then this loads as an Entry.
+ *   If FALSE, then this loads as an Exit.
  * @param buffer
  *   The buffer containing the settings.
  * @param range

@@ -5,7 +5,7 @@
  * API Version: 0.7
  * Licenses: lgpl-2.1-or-later
  *
- * Provides the print entry message functionality.
+ * Provides the print Entry message functionality.
  *
  * This is auto-included and should not need to be explicitly included.
  */
@@ -17,7 +17,7 @@ extern "C" {
 #endif
 
 /**
- * Print message about the specified entry being in the given state.
+ * Print message about the specified Entry being in the given state.
  *
  * This generally only applies to the "ready" Entry Item Action.
  *
@@ -30,8 +30,8 @@ extern "C" {
  *
  *   Must not be NULL.
  * @param is_entry
- *   If TRUE, then this loads as an entry.
- *   If FALSE, then this loads as an exit.
+ *   If TRUE, then this loads as an Entry.
+ *   If FALSE, then this loads as an Exit.
  * @param name
  *   The name of the state.
  *

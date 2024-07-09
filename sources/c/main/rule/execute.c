@@ -21,9 +21,9 @@ extern "C" {
     f_signal_set_empty(&signals.block);
     f_signal_set_fill(&signals.block_not);
 
-    f_string_maps_t environment = f_string_maps_t_initialize;
+    instance->environment.used = 0;
 
-    controller_execute_set_t execute_set = macro_controller_execute_set_t_initialize_1(0, 0, &environment, &signals, 0, fl_execute_as_t_initialize);
+    controller_execute_set_t execute_set = macro_controller_execute_set_t_initialize_1(0, 0, &instance->environment, &signals, 0, fl_execute_as_t_initialize);
 
     if (instance->rule.affinity.used) {
       execute_set.as.affinity = &instance->rule.affinity;
@@ -72,37 +72,76 @@ extern "C" {
       execute_set.as.id_user = &instance->rule.user;
     }
 
-    if (instance->rule.has & controller_rule_has_environment_d) {
-      status = fl_environment_load_names(instance->rule.environment, &environment);
+    {
+      controller_entry_t * const entry = (instance->type == controller_instance_type_entry_e)
+        ? &main->process.entry
+        : (instance->type == controller_instance_type_exit_e)
+          ? &main->process.exit
+          : 0;
 
-      if (F_status_is_error(status)) {
-        controller_print_error_status(&main->program.error, macro_controller_f(fl_environment_load_names), F_status_set_fine(status));
+      if (instance->rule.has & controller_rule_has_environment_d) {
+        status = fl_environment_load_names(instance->rule.environment, &instance->environment);
 
-        return status;
-      }
+        if (F_status_is_error(status)) {
+          controller_print_error_status(&main->program.error, macro_controller_f(fl_environment_load_names), F_status_set_fine(status));
 
-      // When a "define" from the entry/exit is in the "environment", add it to the exported environments (and overwrite any existing environment variable of the same name).
-      controller_entry_t *entry = 0;
+          return status;
+        }
 
-      if (instance->type == controller_instance_type_entry_e) {
-        entry = &main->process.entry;
-      }
-      else if (instance->type == controller_instance_type_exit_e) {
-        entry = &main->process.exit;
-      }
+        // When a "define" from the entry/exit is in the "environment", add it to the exported environments (and overwrite any existing environment variable of the same name).
+        if (entry) {
+          for (i = 0; i < entry->define.used; ++i) {
 
-      if (entry) {
-        for (i = 0; i < entry->define.used; ++i) {
+            for (j = 0; j < instance->rule.environment.used; ++j) {
+
+              if (f_compare_dynamic(entry->define.array[i].key, instance->rule.environment.array[j]) == F_equal_to) {
+                for (k = 0; k < instance->environment.used; ++k) {
+
+                  if (f_compare_dynamic(entry->define.array[i].key, instance->environment.array[k].key) == F_equal_to) {
+                    instance->environment.array[k].value.used = 0;
+
+                    status = f_string_dynamic_append(entry->define.array[i].value, &instance->environment.array[k].value);
+
+                    if (F_status_is_error(status)) {
+                      controller_print_error_status(&main->program.error, macro_controller_f(f_string_dynamic_append), F_status_set_fine(status));
+
+                      return status;
+                    }
+
+                    break;
+                  }
+                } // for
+
+                if (k == instance->environment.used) {
+                  status = f_string_maps_append(entry->define.array[i], &instance->environment);
+
+                  if (F_status_is_error(status)) {
+                    controller_print_error_status(&main->program.error, macro_controller_f(f_string_maps_append), F_status_set_fine(status));
+
+                    return status;
+                  }
+                }
+
+                break;
+              }
+            } // for
+          } // for
+        }
+
+        // When a "define" is in the "environment", add it to the exported environments (and overwrite any existing environment variable of the same name).
+        for (i = 0; i < instance->rule.define.used; ++i) {
 
           for (j = 0; j < instance->rule.environment.used; ++j) {
 
-            if (f_compare_dynamic(entry->define.array[i].key, instance->rule.environment.array[j]) == F_equal_to) {
-              for (k = 0; k < environment.used; ++k) {
+            if (f_compare_dynamic(instance->rule.define.array[i].key, instance->rule.environment.array[j]) == F_equal_to) {
 
-                if (f_compare_dynamic(entry->define.array[i].key, environment.array[k].key) == F_equal_to) {
-                  environment.array[k].value.used = 0;
+              for (k = 0; k < instance->environment.used; ++k) {
 
-                  status = f_string_dynamic_append(entry->define.array[i].value, &environment.array[k].value);
+                if (f_compare_dynamic(instance->rule.define.array[i].key, instance->environment.array[k].key) == F_equal_to) {
+
+                  instance->environment.array[k].value.used = 0;
+
+                  status = f_string_dynamic_append(instance->rule.define.array[i].value, &instance->environment.array[k].value);
 
                   if (F_status_is_error(status)) {
                     controller_print_error_status(&main->program.error, macro_controller_f(f_string_dynamic_append), F_status_set_fine(status));
@@ -114,8 +153,8 @@ extern "C" {
                 }
               } // for
 
-              if (k == environment.used) {
-                status = f_string_maps_append(entry->define.array[i], &environment);
+              if (k == instance->environment.used) {
+                status = f_string_maps_append(instance->rule.define.array[i], &instance->environment);
 
                 if (F_status_is_error(status)) {
                   controller_print_error_status(&main->program.error, macro_controller_f(f_string_maps_append), F_status_set_fine(status));
@@ -129,95 +168,47 @@ extern "C" {
           } // for
         } // for
       }
-
-      // When a "define" is in the "environment", add it to the exported environments (and overwrite any existing environment variable of the same name).
-      for (i = 0; i < instance->rule.define.used; ++i) {
-
-        for (j = 0; j < instance->rule.environment.used; ++j) {
-
-          if (f_compare_dynamic(instance->rule.define.array[i].key, instance->rule.environment.array[j]) == F_equal_to) {
-
-            for (k = 0; k < environment.used; ++k) {
-
-              if (f_compare_dynamic(instance->rule.define.array[i].key, environment.array[k].key) == F_equal_to) {
-
-                environment.array[k].value.used = 0;
-
-                status = f_string_dynamic_append(instance->rule.define.array[i].value, &environment.array[k].value);
-
-                if (F_status_is_error(status)) {
-                  controller_print_error_status(&main->program.error, macro_controller_f(f_string_dynamic_append), F_status_set_fine(status));
-
-                  return status;
-                }
-
-                break;
-              }
-            } // for
-
-            if (k == environment.used) {
-              status = f_string_maps_append(instance->rule.define.array[i], &environment);
-
-              if (F_status_is_error(status)) {
-                controller_print_error_status(&main->program.error, macro_controller_f(f_string_maps_append), F_status_set_fine(status));
-
-                return status;
-              }
-            }
-
-            break;
-          }
-        } // for
-      } // for
-    }
-    else {
-      controller_entry_t *entry = 0;
-
-      if (instance->type == controller_instance_type_entry_e) {
-        entry = &main->process.entry;
-      }
-      else if (instance->type == controller_instance_type_exit_e) {
-        entry = &main->process.exit;
-      }
-
-      // When a custom define is specified, it needs to be exported into the environment.
-      if (entry->define.used || instance->rule.define.used) {
-
-        // Copy all environment variables over when a custom define is used.
-        status = f_environment_get_all(&environment);
-
-        if (F_status_is_error(status)) {
-          controller_print_error_status(&main->program.error, macro_controller_f(f_environment_get_all), F_status_set_fine(status));
-
-          return status;
-        }
-
-        for (i = 0; i < entry->define.used; ++i) {
-
-          status = f_string_maps_append(entry->define.array[i], &environment);
-
-          if (F_status_is_error(status)) {
-            controller_print_error_status(&main->program.error, macro_controller_f(f_string_maps_append), F_status_set_fine(status));
-
-            return status;
-          }
-        } // for
-
-        for (i = 0; i < instance->rule.define.used; ++i) {
-
-          status = f_string_maps_append(instance->rule.define.array[i], &environment);
-
-          if (F_status_is_error(status)) {
-            controller_print_error_status(&main->program.error, macro_controller_f(f_string_maps_append), F_status_set_fine(status));
-
-            return status;
-          }
-        } // for
-      }
       else {
 
-        // When no custom environment variables are defined, just let the original environment pass through.
-        execute_set.parameter.environment = 0;
+        // When a custom define is specified, it needs to be exported into the environment.
+        if (entry->define.used || instance->rule.define.used) {
+
+          // Copy all environment variables over when a custom define is used.
+          status = f_environment_get_all(&instance->environment);
+
+          if (F_status_is_error(status)) {
+            controller_print_error_status(&main->program.error, macro_controller_f(f_environment_get_all), F_status_set_fine(status));
+
+            return status;
+          }
+
+          for (i = 0; i < entry->define.used; ++i) {
+
+            status = f_string_maps_append(entry->define.array[i], &instance->environment);
+
+            if (F_status_is_error(status)) {
+              controller_print_error_status(&main->program.error, macro_controller_f(f_string_maps_append), F_status_set_fine(status));
+
+              return status;
+            }
+          } // for
+
+          for (i = 0; i < instance->rule.define.used; ++i) {
+
+            status = f_string_maps_append(instance->rule.define.array[i], &instance->environment);
+
+            if (F_status_is_error(status)) {
+              controller_print_error_status(&main->program.error, macro_controller_f(f_string_maps_append), F_status_set_fine(status));
+
+              return status;
+            }
+          } // for
+        }
+        else {
+
+          // When no custom environment variables are defined, just let the original environment pass through.
+          execute_set.parameter.environment = 0;
+        }
       }
     }
 
@@ -414,14 +405,16 @@ extern "C" {
        }
     } // for
 
-    f_memory_arrays_resize(0, sizeof(f_string_map_t), (void **) &environment.array, &environment.used, &environment.size, &f_string_maps_delete_callback);
-
     // Lock failed, attempt to re-establish lock before returning.
     if (F_status_set_fine(status) == F_lock) {
       status = controller_lock_read(instance->type != controller_instance_type_exit_e, &main->thread, &instance->lock);
       if (F_status_is_error(status)) return F_status_set_error(F_lock);
 
       success = F_false;
+    }
+
+    if (success == false && !instance->rule.items.used) {
+      controller_print_error_rule_item_execute_none(&main->program.error, &instance->cache.action, instance->rule.alias);
     }
 
     if (!controller_thread_is_enabled_instance(instance)) return F_status_set_error(F_interrupt);
@@ -737,7 +730,7 @@ extern "C" {
         controller_print_error_lock_critical(&main->program.error, F_status_set_fine(status_lock), F_true);
       }
 
-      // The child instance should perform the change into background, therefore it is safe to wait for the child to exit (another instance is spawned).
+      // The child instance should perform the change into background, therefore it is safe to wait for the child to Exit (another instance is spawned).
       if (F_status_set_fine(status_lock) != F_interrupt) {
         waitpid(id_child, &result.status, 0);
       }

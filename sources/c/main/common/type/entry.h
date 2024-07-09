@@ -5,7 +5,7 @@
  * API Version: 0.7
  * Licenses: lgpl-2.1-or-later
  *
- * Provides the common entry type structures.
+ * Provides the common Entry type structures.
  *
  * This is auto-included and should not need to be explicitly included.
  */
@@ -137,13 +137,13 @@ extern "C" {
  * A special macro_controller_entry_t_initialize_1() is provided to easily initialize with a specific set of flags.
  *
  * Properties:
- *   - define:        Any defines (environment variables) made available to all Rules in this entry for IKI substitution or just as environment variables.
- *   - flag:          A set of flags associated with the entry.
- *   - items:         The array of entry items.
- *   - parameter:     Any parameters made available to all Rules in this entry for IKI substitution.
+ *   - define:        Any defines (environment variables) made available to all Rules in this Entry for IKI substitution or just as environment variables.
+ *   - flag:          A set of flags associated with the Entry.
+ *   - items:         The array of Entry Items.
+ *   - parameter:     Any parameters made available to all Rules in this Entry for IKI substitution.
  *   - pid:           The PID file generation setting.
  *   - session:       The default session settings (when NULL, no default is specified).
- *   - show:          The show setting for controlling what to show when executing entry items and rules.
+ *   - show:          The show setting for controlling what to show when executing Entry Items and rules.
  *   - status:        The overall status.
  *   - timeout_exit:  The timeout to wait when exiting the Controller program after sending the terminate signal to send the kill signal.
  *   - timeout_kill:  The timeout to wait relating to using a kill signal.

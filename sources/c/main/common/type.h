@@ -19,7 +19,7 @@ extern "C" {
 /**
  * The controller main program settings.
  *
- * This is passed to the program-specific main entry point to designate program settings.
+ * This is passed to the program-specific main Entry point to designate program settings.
  * These program settings are often processed from the program arguments (often called the command line arguments).
  *
  * Properties:

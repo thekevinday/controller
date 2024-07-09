@@ -70,9 +70,9 @@ extern "C" {
 
     controller_lock_print(print->to, &main->thread);
 
-    fl_print_format("%r%[%QThe rule '%]", print->to, f_string_eol_s, print->context, print->prefix, print->context);
+    fl_print_format("%r%[%QThe Rule '%]", print->to, f_string_eol_s, print->context, print->prefix, print->context);
     fl_print_format(f_string_format_Q_single_s.string, print->to, print->notable, alias, print->notable);
-    fl_print_format("%[' is not designating a pid file.%]%r", print->to, print->context, print->context, f_string_eol_s);
+    fl_print_format("%[' is not designating a PID file.%]%r", print->to, print->context, print->context, f_string_eol_s);
 
     controller_print_error_rule_cache(print, action, F_true);
 
@@ -160,7 +160,7 @@ extern "C" {
 
     controller_lock_print(print->to, &main->thread);
 
-    fl_print_format("%r%[%QUnsupported action type '%]", print->to, f_string_eol_s, print->context, print->prefix, print->context);
+    fl_print_format("%r%[%QUnsupported Action type '%]", print->to, f_string_eol_s, print->context, print->prefix, print->context);
     fl_print_format(f_string_format_Q_single_s.string, print->to, print->notable, type, print->notable);
     fl_print_format("%[' while attempting to %S.%]%r", print->to, print->context, message, print->context, f_string_eol_s);
 
@@ -207,14 +207,14 @@ extern "C" {
     controller_lock_print(print->to, &main->thread);
 
     if (total) {
-      fl_print_format("%r%[%QThe rule '%]", print->to, f_string_eol_s, print->context, print->prefix, print->context);
+      fl_print_format("%r%[%QThe Rule '%]", print->to, f_string_eol_s, print->context, print->prefix, print->context);
       fl_print_format(f_string_format_Q_single_s.string, print->to, print->notable, name, print->notable);
       fl_print_format("%[' has no '%]", print->to, print->context, print->context);
       fl_print_format(f_string_format_Q_single_s.string, print->to, print->notable, type, print->notable);
-      fl_print_format("%[' action to execute.%]%r", print->to, print->context, print->context, f_string_eol_s);
+      fl_print_format("%[' Action to execute.%]%r", print->to, print->context, print->context, f_string_eol_s);
     }
     else {
-      fl_print_format("%r%[%QThe rule '%]", print->to, f_string_eol_s, print->context, print->prefix, print->context);
+      fl_print_format("%r%[%QThe Rule '%]", print->to, f_string_eol_s, print->context, print->prefix, print->context);
       fl_print_format(f_string_format_Q_single_s.string, print->to, print->notable, name, print->notable);
       fl_print_format("%[ has no known '%]", print->to, print->context, print->context);
       fl_print_format("%[%r %r%]", print->to, print->notable, controller_rule_s, controller_type_s, print->notable);

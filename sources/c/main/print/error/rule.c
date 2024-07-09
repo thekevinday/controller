@@ -45,7 +45,7 @@ extern "C" {
     }
 
     if (action->name_item.used) {
-      fl_print_format("rule %r '%]", print->to, item ? controller_item_s : controller_settings_s, print->context);
+      fl_print_format("Rule %r '%]", print->to, item ? controller_item_s : controller_settings_s, print->context);
       fl_print_format(f_string_format_Q_single_s.string, print->to, print->notable, action->name_item, print->notable);
       fl_print_format("%[' on line%] ", print->to, print->context, print->context);
       fl_print_format(f_string_format_un_single_s.string, print->to, print->notable, action->line_item, print->notable);
@@ -53,7 +53,7 @@ extern "C" {
     }
 
     if (action->name_file.used) {
-      fl_print_format("rule file '%]%[%Q%]%['", print->to, print->context, print->notable, action->name_file, print->notable, print->context);
+      fl_print_format("Rule file '%]%[%Q%]%['", print->to, print->context, print->notable, action->name_file, print->notable, print->context);
     }
 
     fl_print_format(".%]%r", print->to, print->context, f_string_eol_s);
@@ -72,7 +72,7 @@ extern "C" {
 
     controller_lock_print(print->to, &main->thread);
 
-    fl_print_format("%r%[%QThe rule '%]", print->to, f_string_eol_s, print->context, print->prefix, print->context);
+    fl_print_format("%r%[%QThe Rule '%]", print->to, f_string_eol_s, print->context, print->prefix, print->context);
     fl_print_format(f_string_format_Q_single_s.string, print->to, print->notable, name, print->notable);
     fl_print_format("%[' is already on the execution dependency stack, this recursion is prohibited.%]%r", print->to, print->context, print->context, f_string_eol_s);
 

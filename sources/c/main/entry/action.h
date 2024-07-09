@@ -5,7 +5,7 @@
  * API Version: 0.7
  * Licenses: lgpl-2.1-or-later
  *
- * Provides the entry action functionality.
+ * Provides the Entry Action functionality.
  *
  * This is auto-included and should not need to be explicitly included.
  */
@@ -17,14 +17,14 @@ extern "C" {
 #endif
 
 /**
- * Read the entry list, loading all items and values.
+ * Read the Entry list, loading all Items and values.
  *
  * @param main
  *   The main program data.
  *
  *   Must not be NULL.
  * @param entry
- *   The entry.
+ *   The Entry.
  *
  *   Must not be NULL.
  * @param range

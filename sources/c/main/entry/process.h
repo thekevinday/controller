@@ -5,7 +5,7 @@
  * API Version: 0.7
  * Licenses: lgpl-2.1-or-later
  *
- * Provides the entry process functionality.
+ * Provides the Entry process functionality.
  *
  * This is auto-included and should not need to be explicitly included.
  */
@@ -27,8 +27,8 @@ extern "C" {
  *   If TRUE, operate in failsafe mode (starts at designated failsafe Item).
  *   If FALSE, operate in normal mode (starts at "main" Item).
  * @param is_entry
- *   If TRUE, then this operates as an entry.
- *   If FALSE, then this operates as an exit.
+ *   If TRUE, then this operates as an Entry.
+ *   If FALSE, then this operates as an Exit.
  *
  * @return
  *   F_okay on success.

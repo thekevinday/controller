@@ -151,7 +151,7 @@ extern "C" {
 
     controller_lock_print(print->to, &main->thread);
 
-    fl_print_format("%r%[%QThe first value for the rule setting '%]", print->to, f_string_eol_s, print->context, print->prefix, print->context);
+    fl_print_format("%r%[%QThe first value for the Rule setting '%]", print->to, f_string_eol_s, print->context, print->prefix, print->context);
     fl_print_format(f_string_format_Q_single_s.string, print->to, print->notable, controller_on_s, print->notable);
     fl_print_format("%[' has '%]", print->to, f_string_eol_s, print->context, print->prefix, print->context);
     fl_print_format(f_string_format_Q_range_single_s.string, print->to, print->notable, buffer, range, print->notable);
@@ -176,7 +176,7 @@ extern "C" {
 
     controller_lock_print(print->to, &main->thread);
 
-    fl_print_format("%r%[%QThe second value for the rule setting '%]", print->to, f_string_eol_s, print->context, print->prefix, print->context);
+    fl_print_format("%r%[%QThe second value for the Rule setting '%]", print->to, f_string_eol_s, print->context, print->prefix, print->context);
     fl_print_format(f_string_format_Q_single_s.string, print->to, print->notable, controller_on_s, print->notable);
     fl_print_format("%[' has '%]", print->to, f_string_eol_s, print->context, print->prefix, print->context);
     fl_print_format(f_string_format_Q_range_single_s.string, print->to, print->notable, buffer, range, print->notable);
@@ -233,7 +233,7 @@ extern "C" {
 
     controller_lock_print(print->to, &main->thread);
 
-    fl_print_format("%r%[%QThe first value for the rule setting '%]", print->to, f_string_eol_s, print->context, print->prefix, print->context);
+    fl_print_format("%r%[%QThe first value for the Rule setting '%]", print->to, f_string_eol_s, print->context, print->prefix, print->context);
     fl_print_format(f_string_format_Q_single_s.string, print->to, print->notable, controller_timeout_s, print->notable);
     fl_print_format("%[' has '%]", print->to, f_string_eol_s, print->context, print->prefix, print->context);
     fl_print_format(f_string_format_Q_range_single_s.string, print->to, print->notable, buffer, range, print->notable);

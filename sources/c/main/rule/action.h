@@ -5,7 +5,7 @@
  * API Version: 0.7
  * Licenses: lgpl-2.1-or-later
  *
- * Provides the rule "action" functionality.
+ * Provides the Rule "action" functionality.
  *
  * This is auto-included and should not need to be explicitly included.
  */
@@ -17,10 +17,10 @@ extern "C" {
 #endif
 
 /**
- * Get a string representing the rule action method.
+ * Get a string representing the Rule Action method.
  *
  * @param type
- *   The rule action type code.
+ *   The Rule Action type code.
  *
  * @return
  *   The string with used > 0 on success.
@@ -31,13 +31,13 @@ extern "C" {
 #endif // _di_controller_rule_action_method_name_
 
 /**
- * Convert the action type to an action execute type.
+ * Convert the Action type to an Action execute type.
  *
  * @param type
- *   The action type to convert from.
+ *   The Action type to convert from.
  *
  * @return
- *   The converted action type, converted into an action execute type.
+ *   The converted Action type, converted into an Action execute type.
  *
  *   The code controller_rule_action_execute_type__enum_size_e is returned for unknown types.
  */
@@ -46,7 +46,7 @@ extern "C" {
 #endif // _di_controller_rule_action_type_to_action_execute_type_
 
 /**
- * Read the content within the buffer, processing the action (or a set of within a list) for the given item.
+ * Read the content within the buffer, processing the Action (or a set of within a list) for the given item.
  *
  * This will automatically increase the size of the actions array as needed.
  *
@@ -61,12 +61,12 @@ extern "C" {
  *
  *   Must not be NULL.
  * @param is_normal
- *   If TRUE, then process as if this operates during a normal operation (entry and control).
- *   If FALSE, then process as if this operates during a an exit operation.
+ *   If TRUE, then process as if this operates during a normal operation (Entry and Control).
+ *   If FALSE, then process as if this operates during a an Exit operation.
  * @param type
- *   The action type for this action or set of actions.
+ *   The Action type for this Action or set of actions.
  * @param method
- *   The action method for this action or set of actions.
+ *   The Action method for this Action or set of actions.
  * @param item
  *   The processed item.
  *
@@ -80,24 +80,28 @@ extern "C" {
  *   This is expected to be set to a position immediately after a valid object read.
  *
  *   Must not be NULL.
+ * @param state
+ *   The state information.
  *
- * @return
- *   F_okay on success.
+ *   This alters state.status:
+ *     F_okay on success.
  *
- *   Errors (with error bit) from: controller_rule_parameters_read().
- *   Errors (with error bit) from: f_fss_count_lines().
- *   Errors (with error bit) from: f_memory_array_increase_by().
+ *     Errors (with error bit) from: controller_rule_parameters_read().
+ *     Errors (with error bit) from: f_fss_count_lines().
+ *     Errors (with error bit) from: f_memory_array_increase_by().
+ *
+ *   Must not be NULL.
  *
  * @see controller_rule_parameters_read()
  * @see f_fss_count_lines()
  * @see f_memory_array_increase_by()
  */
 #ifndef _di_controller_rule_action_read_
-  extern f_status_t controller_rule_action_read(controller_t * const main, controller_cache_t * const cache, const uint8_t is_normal, const uint8_t type, const uint8_t method, controller_rule_item_t * const item, controller_rule_actions_t * const actions, f_range_t * const range);
+  extern void controller_rule_action_read(controller_t * const main, controller_cache_t * const cache, const uint8_t is_normal, const uint8_t type, const uint8_t method, controller_rule_item_t * const item, controller_rule_actions_t * const actions, f_range_t * const range, f_state_t * const state);
 #endif // _di_controller_rule_action_read_
 
 /**
- * Process a number from a rule file, incrementing index as necessary.
+ * Process a number from a Rule file, incrementing index as necessary.
  *
  * This prints error messages as necessary.
  *
@@ -116,7 +120,7 @@ extern "C" {
  * @param name
  *   The name representing the value whose number is being processed.
  * @param index
- *   The position within the content action array for some rule to process.
+ *   The position within the content Action array for some Rule to process.
  * @param number
  *   The processed number will be saved here.
  *

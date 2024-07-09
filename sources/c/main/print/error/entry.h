@@ -5,7 +5,7 @@
  * API Version: 0.7
  * Licenses: lgpl-2.1-or-later
  *
- * Provides the print entry error functionality.
+ * Provides the print Entry error functionality.
  *
  * This is auto-included and should not need to be explicitly included.
  */
@@ -17,7 +17,7 @@ extern "C" {
 #endif
 
 /**
- * Print the entry related error.
+ * Print the Entry related error.
  *
  * @param print
  *   The output structure to print to.
@@ -28,8 +28,8 @@ extern "C" {
  *
  *   Must not be NULL.
  * @param is_entry
- *   If TRUE, then this loads as an entry.
- *   If FALSE, then this loads as an exit.
+ *   If TRUE, then this loads as an Entry.
+ *   If FALSE, then this loads as an Exit.
  * @param status
  *   The status code to process.
  *   Make sure this has F_status_set_fine() called if the status code has any error or warning bits.
@@ -52,7 +52,7 @@ extern "C" {
 #endif // _di_controller_print_error_entry_
 
 /**
- * Print additional error/warning information in addition to existing error that is found within the given action cache.
+ * Print additional error/warning information in addition to existing error that is found within the given Action cache.
  *
  * This is explicitly intended to be used in addition to the error message.
  *
@@ -67,12 +67,12 @@ extern "C" {
  *
  *   Must not be NULL.
  * @param action
- *   The action cache.
+ *   The Action cache.
  *
  *   Must not be NULL.
  * @param is_entry
- *   If TRUE, then this loads as an entry.
- *   If FALSE, then this loads as an exit.
+ *   If TRUE, then this loads as an Entry.
+ *   If FALSE, then this loads as an Exit.
  *
  * @return
  *   F_okay on success.
@@ -85,7 +85,7 @@ extern "C" {
 #endif // _di_controller_print_error_entry_cache_
 
 /**
- * Print the entry related file error.
+ * Print the Entry related file error.
  *
  * @param print
  *   The output structure to print to.
@@ -96,8 +96,8 @@ extern "C" {
  *
  *   Must not be NULL.
  * @param is_entry
- *   If TRUE, then this loads as an entry.
- *   If FALSE, then this loads as an exit.
+ *   If TRUE, then this loads as an Entry.
+ *   If FALSE, then this loads as an Exit.
  * @param status
  *   The status code to process.
  *   Make sure this has F_status_set_fine() called if the status code has any error or warning bits.

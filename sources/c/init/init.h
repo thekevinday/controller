@@ -26,12 +26,12 @@ extern "C" {
  *
  *   Must not be NULL.
  * @param entry
- *   The entry data.
+ *   The Entry data.
  *
  *   Must not be NULL.
  * @param is_entry
- *   If TRUE, then this operates as an entry.
- *   If FALSE, then this operates as an exit.
+ *   If TRUE, then this operates as an Entry.
+ *   If FALSE, then this operates as an Exit.
  *
  * @return
  *   F_okay on success.

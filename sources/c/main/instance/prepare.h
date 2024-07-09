@@ -19,7 +19,7 @@ extern "C" {
 /**
  * Prepare the instance.
  *
- * The instance is initialized with the instance id, the Rule alias, and the rule action type.
+ * The instance is initialized with the instance id, the Rule alias, and the Rule Action type.
  * These are the necessary parts for uniquely identifying the instance.
  *
  * If a instance by the given Rule alias and Rule Action already exists, then nothing is done.
@@ -31,8 +31,8 @@ extern "C" {
  *
  *   Must not be NULL.
  * @param is_normal
- *   If TRUE, then instance as if this operates during a normal operation (entry and control).
- *   If FALSE, then instance as if this operates during a an exit operation.
+ *   If TRUE, then instance as if this operates during a normal operation (Entry and Control).
+ *   If FALSE, then instance as if this operates during a an Exit operation.
  * @param action
  *   The Rule Action to use.
  * @param alias
@@ -65,7 +65,7 @@ extern "C" {
 /**
  * Prepare the instance for some instance type.
  *
- * The instance is initialized with the instance id, the Rule alias, and the rule action type.
+ * The instance is initialized with the instance id, the Rule alias, and the Rule Action type.
  * These are the necessary parts for uniquely identifying the instance.
  *
  * If a instance by the given Rule alias and Rule Action already exists, then nothing is done.

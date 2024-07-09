@@ -296,7 +296,7 @@ extern "C" {
               rule->items.array[rule->items.used].with |= controller_with_session_same_d;
             }
 
-            state.status = controller_rule_item_read(main, cache, is_normal, &rule->items.array[rule->items.used]);
+            controller_rule_item_read(main, cache, is_normal, &rule->items.array[rule->items.used], &state);
             if (F_status_is_error(state.status)) break;
 
             ++rule->items.used;

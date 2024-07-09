@@ -17,11 +17,11 @@ extern "C" {
 #endif
 
 /**
- * Check to see if thread is enabled for the normal operations like entry and control or for exit operations.
+ * Check to see if thread is enabled for the normal operations like Entry and Control or for Exit operations.
  *
  * @param is_normal
- *   If TRUE, then instance as if this operates during a normal operation (entry and control).
- *   If FALSE, then instance as if this operates during a an exit operation.
+ *   If TRUE, then instance as if this operates during a normal operation (Entry and Control).
+ *   If FALSE, then instance as if this operates during an Exit operation.
  * @param thread
  *   The thread data.
  *
@@ -36,7 +36,7 @@ extern "C" {
 #endif // _di_controller_thread_is_enabled_
 
 /**
- * Check to see if thread is enabled for the normal operations like entry and control or for exit operations for some instance.
+ * Check to see if thread is enabled for the normal operations like Entry and Control or for Exit operations for some instance.
  *
  * @param instance
  *   The instance to use when checking if thread is enabled.
@@ -54,7 +54,7 @@ extern "C" {
 #endif // _di_controller_thread_is_enabled_instance_
 
 /**
- * Check to see if thread is enabled for the normal operations like entry and control or for exit operations for some instance type.
+ * Check to see if thread is enabled for the normal operations like Entry and Control or for Exit operations for some instance type.
  *
  * @param type
  *   The instance type to use when checking if thread is enabled.

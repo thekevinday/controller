@@ -153,7 +153,7 @@ extern "C" {
       } // for
     }
 
-    // The first remaining argument represents the entry name.
+    // The first remaining argument represents the Entry name.
     main->setting.state.status = f_string_dynamic_append(main->program.parameters.remaining.used ? args[main->program.parameters.remaining.array[0]] : controller_default_s, &main->process.name_entry);
 
     if (F_status_is_error(main->setting.state.status)) {

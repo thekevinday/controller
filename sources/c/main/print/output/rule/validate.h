@@ -5,7 +5,7 @@
  * API Version: 0.7
  * Licenses: lgpl-2.1-or-later
  *
- * Provides the print output rule "validate" functionality.
+ * Provides the print output Rule "validate" functionality.
  *
  * This is auto-included and should not need to be explicitly included.
  */
@@ -17,9 +17,9 @@ extern "C" {
 #endif
 
 /**
- * Perform a simulated execution of the given rule.
+ * Perform a simulated execution of the given Rule.
  *
- * This simply prints information about the rule.
+ * This simply prints information about the Rule.
  *
  * This automatically sets the rule's status to F_complete.
  *
@@ -36,7 +36,7 @@ extern "C" {
  *
  *   Must not be NULL.
  * @param rule
- *   The rule to process.
+ *   The Rule to process.
  *
  *   Must not be NULL.
  * @param action
@@ -44,7 +44,7 @@ extern "C" {
  * @param options
  *   A number using bits to represent specific boolean options.
  *   If no bits set, then operate normally in a synchronous manner.
- *   If bit controller_instance_option_simulate_e, then the rule execution is in simulation mode (printing a message that the rule would be executed but does not execute the rule).
+ *   If bit controller_instance_option_simulate_e, then the Rule execution is in simulation mode (printing a message that the Rule would be executed but does not execute the rule).
  *   If bit controller_instance_option_asynchronous_e, then run asynchronously.
  *
  * @return

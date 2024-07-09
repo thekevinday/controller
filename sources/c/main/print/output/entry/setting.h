@@ -5,7 +5,7 @@
  * API Version: 0.7
  * Licenses: lgpl-2.1-or-later
  *
- * Provides the print entry setting output functionality.
+ * Provides the print Entry setting output functionality.
  *
  * This is auto-included and should not need to be explicitly included.
  */
@@ -28,8 +28,8 @@ extern "C" {
  *
  *   Must not be NULL.
  * @param is_entry
- *   If TRUE, then this operates as an entry.
- *   If FALSE, then this operates as an exit.
+ *   If TRUE, then this operates as an Entry.
+ *   If FALSE, then this operates as an Exit.
  * @param name
  *   The Object name of the setting being populated.
  * @param name_sub
@@ -51,7 +51,7 @@ extern "C" {
 #endif // _di_controller_print_output_entry_setting_simulate_value_
 
 /**
- * Print a simulated execution of the given entry.
+ * Print a simulated execution of the given Entry.
  *
  * @param print
  *   The output structure to print to.
@@ -62,8 +62,8 @@ extern "C" {
  *
  *   Must not be NULL.
  * @param is_entry
- *   If TRUE, then this is an entry.
- *   If FALSE, then this is an exit.
+ *   If TRUE, then this is an Entry.
+ *   If FALSE, then this is an Exit.
  *
  * @return
  *   F_okay on success.

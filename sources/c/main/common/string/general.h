@@ -19,7 +19,7 @@ extern "C" {
 /**
  * All special strings used within this program.
  *
- * These are generally the names to match, representing some action or setting.
+ * These are generally the names to match, representing some Action or setting.
  */
 #ifndef _di_controller_string_s_
   #define CONTROLLER_action_s        "action"

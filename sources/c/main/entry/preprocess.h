@@ -5,7 +5,7 @@
  * API Version: 0.7
  * Licenses: lgpl-2.1-or-later
  *
- * Provides the entry pre-process functionality.
+ * Provides the Entry pre-process functionality.
  *
  * This is auto-included and should not need to be explicitly included.
  */
@@ -17,20 +17,20 @@ extern "C" {
 #endif
 
 /**
- * Pre-process all items for the loaded entry.
+ * Pre-process all items for the loaded Entry.
  *
  * @param main
  *   The main program data.
  *
  *   Must not be NULL.
  * @param is_entry
- *   If TRUE, then this operates as an entry.
- *   If FALSE, then this operates as an exit.
+ *   If TRUE, then this operates as an Entry.
+ *   If FALSE, then this operates as an Exit.
  *
  * @return
  *   F_okay on success.
  *   F_recurse (with error bit) on a recursion error.
- *   F_valid_not (with error bit) on invalid entry item, Entry Item Action, or Entry Item Action value.
+ *   F_valid_not (with error bit) on invalid Entry Item, Entry Item Action, or Entry Item Action value.
  *
  *   Errors (with error bit) from: macro_f_number_unsigneds_t_increase_by().
  *   Errors (with error bit) from: f_string_dynamic_append().

@@ -5,7 +5,7 @@
  * API Version: 0.7
  * Licenses: lgpl-2.1-or-later
  *
- * Provides the print entry setting warning functionality.
+ * Provides the print Entry setting warning functionality.
  *
  * This is auto-included and should not need to be explicitly included.
  */
@@ -32,8 +32,8 @@ extern "C" {
  *
  *   Must not be NULL.
  * @param is_entry
- *   If TRUE, then this loads as an entry.
- *   If FALSE, then this loads as an exit.
+ *   If TRUE, then this loads as an Entry.
+ *   If FALSE, then this loads as an Exit.
  * @param name
  *   The parameter name whose value is unknown.
  *
@@ -63,8 +63,8 @@ extern "C" {
  *
  *   Must not be NULL.
  * @param is_entry
- *   If TRUE, then this loads as an entry.
- *   If FALSE, then this loads as an exit.
+ *   If TRUE, then this loads as an Entry.
+ *   If FALSE, then this loads as an Exit.
  * @param name
  *   The parameter name whose value is unknown.
  * @param buffer

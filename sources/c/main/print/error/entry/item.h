@@ -5,7 +5,7 @@
  * API Version: 0.7
  * Licenses: lgpl-2.1-or-later
  *
- * Provides the print entry item error functionality.
+ * Provides the print Entry item error functionality.
  *
  * This is auto-included and should not need to be explicitly included.
  */
@@ -32,8 +32,8 @@ extern "C" {
  *
  *   Must not be NULL.
  * @param is_entry
- *   If TRUE, then this loads as an entry.
- *   If FALSE, then this loads as an exit.
+ *   If TRUE, then this loads as an Entry.
+ *   If FALSE, then this loads as an Exit.
  * @param name
  *   The item name.
  * @param message
@@ -65,8 +65,8 @@ extern "C" {
  *
  *   Must not be NULL.
  * @param is_entry
- *   If TRUE, then this loads as an entry.
- *   If FALSE, then this loads as an exit.
+ *   If TRUE, then this loads as an Entry.
+ *   If FALSE, then this loads as an Exit.
  * @param number
  *   The index position of the invalid item.
  *
@@ -96,8 +96,8 @@ extern "C" {
  *
  *   Must not be NULL.
  * @param is_entry
- *   If TRUE, then this loads as an entry.
- *   If FALSE, then this loads as an exit.
+ *   If TRUE, then this loads as an Entry.
+ *   If FALSE, then this loads as an Exit.
  * @param buffer
  *   The buffer containing the setting name.
  * @param range

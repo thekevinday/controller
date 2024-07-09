@@ -80,11 +80,11 @@ extern "C" {
       }
     }
 
-    // Only make the rule and control threads available once any/all pre-processing is complete.
+    // Only make the Rule and control threads available once any/all pre-processing is complete.
     if (F_status_is_error_not(status) && status != F_failure && status != F_child && main->thread.enabled == controller_thread_enabled_e) {
       if (!(main->setting.flag & controller_main_flag_validate_e)) {
 
-        // Wait for the entry thread to complete before starting the rule thread.
+        // Wait for the Entry thread to complete before starting the Rule thread.
         controller_thread_join(&main->thread.id_rule);
 
         if (main->thread.enabled && main->process.mode == controller_process_mode_service_e) {

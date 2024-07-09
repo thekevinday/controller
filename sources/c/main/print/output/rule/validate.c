@@ -14,7 +14,7 @@ extern "C" {
     f_number_unsigned_t i = 0;
     f_number_unsigned_t j = 0;
 
-    // Find at least one of the requested action.
+    // Find at least one of the requested Action.
     {
       bool missing = F_true;
 
@@ -36,7 +36,7 @@ extern "C" {
         if (rule->items.used) {
           fl_print_format("%rRule '", print->to, f_string_eol_s);
           fl_print_format("%[%Q%]' has no '", print->to, print->set->title, rule->name, print->set->title);
-          fl_print_format("%[%r%]' action to execute and would '", print->to, print->set->title, controller_convert_rule_action_type_string(action), print->set->title);
+          fl_print_format("%[%r%]' Action to execute and would '", print->to, print->set->title, controller_convert_rule_action_type_string(action), print->set->title);
           fl_print_format("%[%r%]' because it is '", print->to, print->set->important, options & controller_instance_option_require_e ? controller_fail_s : controller_succeed_s, print->set->important);
           fl_print_format("%[%r%]'.%r", print->to, print->set->important, options & controller_instance_option_require_e ? controller_required_s : controller_optional_s, print->set->important, f_string_eol_s);
         }

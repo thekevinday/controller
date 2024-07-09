@@ -5,7 +5,7 @@
  * API Version: 0.7
  * Licenses: lgpl-2.1-or-later
  *
- * Provides the entry setting functionality.
+ * Provides the Entry setting functionality.
  *
  * This is auto-included and should not need to be explicitly included.
  */
@@ -17,15 +17,15 @@ extern "C" {
 #endif
 
 /**
- * Read the entry settings, loading all settings.
+ * Read the Entry settings, loading all settings.
  *
  * @param main
  *   The main program data.
  *
  *   Must not be NULL.
  * @param is_entry
- *   If TRUE, then this loads as an entry.
- *   If FALSE, then this loads as an exit.
+ *   If TRUE, then this loads as an Entry.
+ *   If FALSE, then this loads as an Exit.
  * @param content_range
  *   The range in the list buffer representing the content.
  *

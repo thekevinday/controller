@@ -5,7 +5,7 @@
  * API Version: 0.7
  * Licenses: lgpl-2.1-or-later
  *
- * Provides the print entry item message functionality.
+ * Provides the print Entry Item message functionality.
  *
  * This is auto-included and should not need to be explicitly included.
  */
@@ -26,8 +26,8 @@ extern "C" {
  *
  *   This does not alter print.custom.setting.state.status.
  * @param is_entry
- *   If TRUE, then this loads as an entry.
- *   If FALSE, then this loads as an exit.
+ *   If TRUE, then this loads as an Entry.
+ *   If FALSE, then this loads as an Exit.
  * @param failsafe
  *   If TRUE, then running in failsafe.
  *   If FALSE, then running normally.
@@ -45,7 +45,7 @@ extern "C" {
 #endif // _di_controller_print_message_entry_item_done_
 
 /**
- * Print message about the entry item executing.
+ * Print message about the Entry Item executing.
  *
  * @param print
  *   The output structure to print to.
@@ -56,8 +56,8 @@ extern "C" {
  *
  *   Must not be NULL.
  * @param is_entry
- *   If TRUE, then this loads as an entry.
- *   If FALSE, then this loads as an exit.
+ *   If TRUE, then this loads as an Entry.
+ *   If FALSE, then this loads as an Exit.
  * @param parameters
  *   The array of parameters.
  *
@@ -83,11 +83,11 @@ extern "C" {
  *
  *   This does not alter print.custom.setting.state.status.
  * @param is_entry
- *   If TRUE, then this loads as an entry.
- *   If FALSE, then this loads as an exit.
+ *   If TRUE, then this loads as an Entry.
+ *   If FALSE, then this loads as an Exit.
  * @param prepend
- *   A string to prepend before entry string in the message.
- *   When prepend.used is not 0, then a space is also printed between entry string and the prepend string.
+ *   A string to prepend before Entry string in the message.
+ *   When prepend.used is not 0, then a space is also printed between Entry string and the prepend string.
  *   Set prepend.used to 0 to disable.
  * @param name
  *   The item name.
@@ -104,7 +104,7 @@ extern "C" {
 #endif // _di_controller_print_message_entry_item_process_
 
 /**
- * Print message about a problem with an entry item.
+ * Print message about a problem with an Entry Item.
  *
  * @param print
  *   The output structure to print to.
@@ -113,12 +113,12 @@ extern "C" {
  *
  *   This does not alter print.custom.setting.state.status.
  * @param is_entry
- *   If TRUE, then this loads as an entry.
- *   If FALSE, then this loads as an exit.
+ *   If TRUE, then this loads as an Entry.
+ *   If FALSE, then this loads as an Exit.
  * @param name
  *   The item name.
  * @param reason
- *   The reason regarding the problem with the required entry item.
+ *   The reason regarding the problem with the required Entry Item.
  *
  * @return
  *   F_okay on success.
@@ -142,16 +142,16 @@ extern "C" {
  *
  *   Must not be NULL.
  * @param entry
- *   The entry.
+ *   The Entry.
  *
  *   Must not be NULL.
  * @param action
- *   The entry action.
+ *   The Entry Action.
  *
  *   Must not be NULL.
  * @param is_entry
- *   If TRUE, then this loads as an entry.
- *   If FALSE, then this loads as an exit.
+ *   If TRUE, then this loads as an Entry.
+ *   If FALSE, then this loads as an Exit.
  * @param alias_rule
  *   The Rule alias name.
  *

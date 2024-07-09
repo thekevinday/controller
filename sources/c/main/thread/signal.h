@@ -20,8 +20,8 @@
  *
  *   Must not be NULL.
  * @param is_normal
- *   If TRUE, then process as if this operates during a normal operation (entry and control).
- *   If FALSE, then process as if this operates during a an exit operation.
+ *   If TRUE, then process as if this operates during a normal operation (Entry and Control).
+ *   If FALSE, then process as if this operates during an Exit operation.
  */
 #ifndef _di_controller_thread_signal_
   extern void controller_thread_signal(controller_t * const main, const uint8_t is_normal);

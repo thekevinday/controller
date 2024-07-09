@@ -152,10 +152,10 @@ extern "C" {
 #endif // _di_controller_cache_delete_
 
 /**
- * De-allocate the Controller action cache.
+ * De-allocate the Controller Action cache.
  *
  * @param action
- *   The action cache.
+ *   The Action cache.
  *
  *   Must not be NULL.
  *

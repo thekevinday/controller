@@ -23,9 +23,9 @@ extern "C" {
    *   - enabled_not:          The controller is no longer enabled, shut down and abort all work.
    *   - enabled:              The controller is operating normally.
    *   - enabled_execute:      The controller is executing another process, all running operations must terminate.
-   *   - enabled_exit:         The controller is shutting down, only process exit rules.
+   *   - enabled_exit:         The controller is shutting down, only process Exit rules.
    *   - enabled_exit_execute: The controller is executing another process while in failsafe mode, all running operations must terminate.
-   *   - enabled_exit_ready:   The controller is shutting down, only process exit rules, and now ready to send termination signals.
+   *   - enabled_exit_ready:   The controller is shutting down, only process Exit rules, and now ready to send termination signals.
    */
   enum {
     controller_thread_enabled_not_e = 0,

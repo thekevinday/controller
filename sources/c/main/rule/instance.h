@@ -5,7 +5,7 @@
  * API Version: 0.7
  * Licenses: lgpl-2.1-or-later
  *
- * Provides the rule "instance" functionality.
+ * Provides the Rule "instance" functionality.
  *
  * This is auto-included and should not need to be explicitly included.
  */
@@ -17,19 +17,19 @@ extern "C" {
 #endif
 
 /**
- * Process and execute the given rule.
+ * Process and execute the given Rule.
  *
- * Any dependent rules are processed and executed as per "need", "want", and "wish" rule settings.
+ * Any dependent rules are processed and executed as per "need", "want", and "wish" Rule settings.
  * All dependent rules must be already loaded, this function will not load any rules.
  *
  * This requires that a read lock be set on instance->lock before being called.
  *
  * This function is recursively called for each "need", "want", and "wish", and has a max recursion length of the max size of the f_number_unsigneds_t array.
  *
- * The rule status will be updated by this function.
+ * The Rule status will be updated by this function.
  *
  * @param instance
- *   The instance data for processing this rule.
+ *   The instance data for processing this Rule.
  *
  *   Must not be NULL.
  *
@@ -49,7 +49,7 @@ extern "C" {
 #endif // _di_controller_rule_instance_
 
 /**
- * Synchronously or asynchronously begin processing some rule.
+ * Synchronously or asynchronously begin processing some Rule.
  *
  * @param main
  *   The main program data.
@@ -69,20 +69,20 @@ extern "C" {
  * @param alias_rule
  *   The alias of the rule, such as "boot/init".
  * @param action
- *   The action to perform based on the action type codes.
+ *   The Action to perform based on the Action type codes.
  * @param options
  *   The instance options to pass to the instance.
  * @param type
  *   The instance type, such as controller_instance_type_entry_e.
  * @param stack
- *   A stack representing the instances already running in this rule instance dependency tree.
+ *   A stack representing the instances already running in this Rule instance dependency tree.
  *   This is used to prevent circular dependencies.
  *
  * @return
  *   F_okay on success.
  *   F_busy on success and the instance is found to already be running (nothing to do).
  *
- *   F_found_not (with error bit) if unable to for a instance for the given rule id.
+ *   F_found_not (with error bit) if unable to for a instance for the given Rule ID.
  *   F_interrupt (with error bit) on receiving a process signal, such as an interrupt signal.
  *   F_recurse (with error bit) on recursion error (the instance is already on the instance stack).
  *
@@ -104,7 +104,7 @@ extern "C" {
  * Perform the work
  *
  * This does all the preparation work that needs to be synchronously performed within the same thread.
- * This will copy the rule by the alias to the instance structure.
+ * This will copy the Rule by the alias to the instance structure.
  *
  * @param options_force
  *   Force the given instance options, only supporting a subset of instance options.
@@ -121,7 +121,7 @@ extern "C" {
  *   F_found on the instance was found to already be running (nothing to do).
  *   F_process_not if the instance was not executed because it is a "consider" Action.
  *
- *   F_found_not (with error bit) if unable to for a instance for the given rule id.
+ *   F_found_not (with error bit) if unable to for a instance for the given Rule ID.
  *   F_interrupt (with error bit) on receiving a process signal, such as an interrupt signal.
  *
  *   Status from: controller_rule_instance().

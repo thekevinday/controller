@@ -33,8 +33,8 @@ extern "C" {
  * @param function
  *   The name of the function associated with the error.
  * @param is_entry
- *   If TRUE, then this operates as an entry.
- *   If FALSE, then this operates as an exit.
+ *   If TRUE, then this operates as an Entry.
+ *   If FALSE, then this operates as an Exit.
  *
  * @return
  *   F_okay on success.

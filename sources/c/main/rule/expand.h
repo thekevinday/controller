@@ -5,7 +5,7 @@
  * API Version: 0.7
  * Licenses: lgpl-2.1-or-later
  *
- * Provides the rule "expand" functionality.
+ * Provides the Rule "expand" functionality.
  *
  * This is auto-included and should not need to be explicitly included.
  */
@@ -26,7 +26,7 @@ extern "C" {
  *
  *   This does not alter main.setting.state.status.
  * @param action
- *   The rule action data.
+ *   The Rule Action data.
  * @param process
  *   The process information.
  *

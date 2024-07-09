@@ -262,8 +262,6 @@ extern "C" {
 
     if (F_status_is_error(status)) {
       controller_print_error_status(&main->program.error, macro_controller_f(f_string_dynamic_partial_append_nulless), F_status_set_fine(status));
-
-      return status;
     }
 
     return status;

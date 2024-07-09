@@ -5,7 +5,7 @@
  * API Version: 0.7
  * Licenses: lgpl-2.1-or-later
  *
- * Provides the print rule error functionality.
+ * Provides the print Rule error functionality.
  *
  * This is auto-included and should not need to be explicitly included.
  */
@@ -30,7 +30,7 @@ extern "C" {
  *
  *   Must not be NULL.
  * @param action
- *   The action cache.
+ *   The Action cache.
  *
  *   Must not be NULL.
  * @param status
@@ -43,7 +43,7 @@ extern "C" {
  *   Set to F_true to print the fallback error message for unknown errors.
  * @param item
  *   If TRUE, then this error is associated with an item.
- *   If FALSE, then this error is associated with a rule setting.
+ *   If FALSE, then this error is associated with a Rule setting.
  *
  * @return
  *   F_okay on success.
@@ -71,7 +71,7 @@ extern "C" {
  *
  *   Must not be NULL.
  * @param action
- *   The action cache.
+ *   The Action cache.
  *
  *   This uses:
  *     - action.line_action
@@ -83,7 +83,7 @@ extern "C" {
  *   Must not be NULL.
  * @param item
  *   If TRUE, then this error is associated with an item.
- *   If FALSE, then this error is associated with a rule setting.
+ *   If FALSE, then this error is associated with a Rule setting.
  *
  * @return
  *   F_okay on success.
@@ -96,7 +96,7 @@ extern "C" {
 #endif // _di_controller_print_error_rule_cache_
 
 /**
- * Print error regarding the rule already being on the execution stack.
+ * Print error regarding the Rule already being on the execution stack.
  *
  * @param print
  *   The output structure to print to.
@@ -107,14 +107,14 @@ extern "C" {
  *
  *   Must not be NULL.
  * @param action
- *   The action cache.
+ *   The Action cache.
  *
  *   Must not be NULL.
  * @param name
- *   The rule name.
+ *   The Rule name.
  * @param item
  *   If TRUE, then this error is associated with an item.
- *   If FALSE, then this error is associated with a rule setting.
+ *   If FALSE, then this error is associated with a Rule setting.
  *
  * @return
  *   F_okay on success.

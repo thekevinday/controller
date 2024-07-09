@@ -17,10 +17,10 @@ extern "C" {
 #endif
 
 /**
- * Thread for handling entry processing.
+ * Thread for handling Entry processing.
  *
- * This acts as the main rule thread during entry processing.
- * This runs all synchronous rules or spawns asynchronous rules.
+ * This acts as the main Rule thread during Entry processing.
+ * This runs all synchronous Rules or spawns asynchronous rules.
  *
  * @param arguments
  *   The main program data.
@@ -36,12 +36,12 @@ extern "C" {
 #endif // _di_controller_thread_entry_
 
 /**
- * Thread for handling exit file processing.
+ * Thread for handling Exit file processing.
  *
- * This acts as the main rule thread during exit processing.
- * This runs all synchronous rules or spawns asynchronous rules.
+ * This acts as the main Rule thread during Exit processing.
+ * This runs all synchronous Rules or spawns asynchronous rules.
  *
- * Do not confuse this with exiting a thread, this is the what process the exit files (similar to that of an entry file).
+ * Do not confuse this with exiting a thread, this is the what process the Exit files (similar to that of an Entry file).
  * Exit files process the "stop" action, whereas the Entry files process the "start" Action
  *
  * @param argument

@@ -28,6 +28,7 @@ extern "C" {
     f_memory_array_resize(0, sizeof(f_number_unsigned_t), (void **) &instance->stack.array, &instance->stack.used, &instance->stack.size);
 
     f_memory_arrays_resize(0, sizeof(f_string_dynamic_t), (void **) &instance->path_pids.array, &instance->path_pids.used, &instance->path_pids.size, &f_string_dynamics_delete_callback);
+    f_memory_arrays_resize(0, sizeof(f_string_map_t), (void **) &instance->environment.array, &instance->environment.used, &instance->environment.size, &f_string_maps_delete_callback);
   }
 #endif // _di_controller_instance_delete_
 

@@ -5,7 +5,7 @@
  * API Version: 0.7
  * Licenses: lgpl-2.1-or-later
  *
- * Provides the print entry action message functionality.
+ * Provides the print Entry Action message functionality.
  *
  * This is auto-included and should not need to be explicitly included.
  */
@@ -28,7 +28,7 @@ extern "C" {
  *
  *   Must not be NULL.
  * @param action
- *   The entry action.
+ *   The Entry Action.
  *
  *   Must not be NULL.
  *
@@ -56,8 +56,8 @@ extern "C" {
  *
  *   Must not be NULL.
  * @param is_entry
- *   If TRUE, then this loads as an entry.
- *   If FALSE, then this loads as an exit.
+ *   If TRUE, then this loads as an Entry.
+ *   If FALSE, then this loads as an Exit.
  * @param name
  *   The item name.
  *
@@ -72,7 +72,7 @@ extern "C" {
 #endif // _di_controller_print_message_entry_action_ready_
 
 /**
- * Print message about entry action state.
+ * Print message about Entry Action state.
  *
  * @param print
  *   The output structure to print to.
@@ -87,7 +87,7 @@ extern "C" {
  *
  *   Must not be NULL.
  * @param action
- *   The entry action.
+ *   The Entry Action.
  *
  *   Must not be NULL.
  *
@@ -102,7 +102,7 @@ extern "C" {
 #endif // _di_controller_print_message_entry_action_state_
 
 /**
- * Print message about entry action state having failed.
+ * Print message about Entry Action state having failed.
  *
  * @param print
  *   The output structure to print to.
@@ -117,12 +117,12 @@ extern "C" {
  *
  *   Must not be NULL.
  * @param action
- *   The entry action.
+ *   The Entry Action.
  *
  *   Must not be NULL.
  * @param is_entry
- *   If TRUE, then this loads as an entry.
- *   If FALSE, then this loads as an exit.
+ *   If TRUE, then this loads as an Entry.
+ *   If FALSE, then this loads as an Exit.
  *
  * @return
  *   F_okay on success.
@@ -148,8 +148,8 @@ extern "C" {
  *
  *   Must not be NULL.
  * @param is_entry
- *   If TRUE, then this loads as an entry.
- *   If FALSE, then this loads as an exit.
+ *   If TRUE, then this loads as an Entry.
+ *   If FALSE, then this loads as an Exit.
  * @param name
  *   The item name.
  *

@@ -5,7 +5,7 @@
  * API Version: 0.7
  * Licenses: lgpl-2.1-or-later
  *
- * Provides the print entry item error functionality.
+ * Provides the print Entry Item error functionality.
  *
  * This is auto-included and should not need to be explicitly included.
  */
@@ -35,7 +35,7 @@ extern "C" {
  *   Must not be NULL.
  * @param item
  *   If TRUE, then this error is associated with an item.
- *   If FALSE, then this error is associated with a rule setting.
+ *   If FALSE, then this error is associated with a Rule setting.
  * @param status
  *   The status code representing the failure (without the error bit set).
  *
@@ -83,7 +83,35 @@ extern "C" {
 #endif // _di_controller_print_error_rule_item_execute_
 
 /**
- * Print an error or warning message related to need/want/wish settings of some rule.
+ * Print an error about a Rule have no Items to execute.
+ *
+ * @param print
+ *   The output structure to print to.
+ *
+ *   This requires print.custom to be controller_t.
+ *
+ *   This does not alter print.custom.setting.state.status.
+ *
+ *   Must not be NULL.
+ * @param action
+ *   The Action cache.
+ *
+ *   Must not be NULL.
+ * @param alias
+ *   The Rule alias of the Rule that has no Items.
+ *
+ * @return
+ *   F_okay on success.
+ *   F_output_not on success, but no printing is performed.
+ *
+ *   F_output_not (with error bit) if setting is NULL.
+ */
+#ifndef _di_controller_print_error_rule_item_execute_none_
+  extern f_status_t controller_print_error_rule_item_execute_none(fl_print_t * const print, controller_cache_action_t * const action, const f_string_static_t alias);
+#endif // _di_controller_print_error_rule_item_execute_none_
+
+/**
+ * Print an error or warning message related to need/want/wish settings of some Rule.
  *
  * @param print
  *   The output structure to print to.
@@ -112,7 +140,7 @@ extern "C" {
 #endif // _di_controller_print_error_rule_item_need_want_wish_
 
 /**
- * Print an error or warning message about some rule not being loaded.
+ * Print an error or warning message about some Rule not being loaded.
  *
  * @param print
  *   The output structure to print to.

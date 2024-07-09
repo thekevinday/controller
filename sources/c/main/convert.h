@@ -77,10 +77,10 @@ extern "C" {
 #endif // _di_controller_convert_group_id_
 
 /**
- * Convert the rule action execute type code to the string representation.
+ * Convert the Rule Action execute type code to the string representation.
  *
  * @param type
- *   The rule action execute type code.
+ *   The Rule Action execute type code.
  *
  * @return
  *   The string with used > 0 on success.
@@ -91,10 +91,10 @@ extern "C" {
 #endif // _di_controller_convert_rule_action_execute_type_string_
 
 /**
- * Convert the rule action type code to the string representation.
+ * Convert the Rule Action type code to the string representation.
  *
  * @param type
- *   The rule action type code.
+ *   The Rule Action type code.
  *
  * @return
  *   The string with used > 0 on success.

@@ -5,7 +5,7 @@
  * API Version: 0.7
  * Licenses: lgpl-2.1-or-later
  *
- * Provides the rule "setting" functionality.
+ * Provides the Rule "setting" functionality.
  *
  * This is auto-included and should not need to be explicitly included.
  */
@@ -20,7 +20,7 @@ extern "C" {
  * Identify the Rule Item code the given name represents.
  *
  * @param item
- *   The string representing an rule action.
+ *   The string representing an Rule Action.
  *
  * @return
  *   The Rule Item type code on success.
@@ -31,10 +31,10 @@ extern "C" {
 #endif // _di_controller_rule_setting_limit_type_identify_
 
 /**
- * Get a string representing the rule setting limit type.
+ * Get a string representing the Rule setting limit type.
  *
  * @param type
- *   The rule setting limit type code.
+ *   The Rule setting limit type code.
  *
  * @return
  *   The string with used > 0 on success.
@@ -93,12 +93,12 @@ extern "C" {
  *
  *   This does not alter main.setting.state.status.
  * @param is_normal
- *   If TRUE, then process as if this operates during a normal operation (entry and control).
- *   If FALSE, then process as if this operates during a an exit operation.
+ *   If TRUE, then process as if this operates during a normal operation (Entry and Control).
+ *   If FALSE, then process as if this operates during a an Exit operation.
  * @param cache
  *   A structure for containing and caching relevant data.
  * @param rule
- *   The processed rule.
+ *   The processed Rule.
  *
  * @return
  *    F_okay on success.

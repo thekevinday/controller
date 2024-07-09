@@ -17,10 +17,10 @@ extern "C" {
 #endif
 
 /**
- * Thread for handling rule processing.
+ * Thread for handling Rule processing.
  *
- * This acts as the main rule thread after entry processing.
- * This runs all synchronous rules or spawns asynchronous rules.
+ * This acts as the main Rule thread after Entry processing.
+ * This runs all synchronous Rules or spawns asynchronous rules.
  *
  * @todo the control thread should send commands to this thread, somehow.
  *

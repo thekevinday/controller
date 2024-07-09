@@ -27,7 +27,7 @@ extern "C" {
  *
  *   - failsafe_item_id: The Entry Item ID to execute when failsafe execution is enabled.
  *
- *   - name_entry:   The name of the entry file.
+ *   - name_entry:   The name of the Entry file.
  *   - path_cgroup:  Directory path to the cgroup directory.
  *   - path_control: File path to the control socket (used for printing the path).
  *   - path_current: The current path.

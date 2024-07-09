@@ -28,7 +28,7 @@ extern "C" {
  *
  *   Must not be NULL.
  * @param action
- *   The action cache.
+ *   The Action cache.
  *
  *   Must not be NULL.
  * @param name

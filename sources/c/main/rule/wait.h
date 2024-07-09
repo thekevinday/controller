@@ -5,7 +5,7 @@
  * API Version: 0.7
  * Licenses: lgpl-2.1-or-later
  *
- * Provides the rule "wait" functionality.
+ * Provides the Rule "wait" functionality.
  *
  * This is auto-included and should not need to be explicitly included.
  */
@@ -26,17 +26,17 @@ extern "C" {
  *
  *   This does not alter main.setting.state.status.
  * @param is_normal
- *   If TRUE, then process as if this operates during a normal operation (entry and control).
- *   If FALSE, then process as if this operates during a an exit operation.
+ *   If TRUE, then process as if this operates during a normal operation (Entry and Control).
+ *   If FALSE, then process as if this operates during an Exit operation.
  *   This is ignored when caller is not NULL.
  * @param required
- *   If TRUE, then only process required rules and if a required rule has failed, return.
+ *   If TRUE, then only process required rules and if a required Rule has failed, return.
  *   If FALSE, process all waits, returning normally (required rules still result in failure).
  *
  * @return
  *   F_okay on success.
  *   F_data_not on success and nothing to do.
- *   F_require on success, but a required rule has not been run yet.
+ *   F_require on success, but a required Rule has not been run yet.
  *
  *   F_interrupt (with error bit) on receiving a process signal, such as an interrupt signal.
  *   F_require (with error bit set) if a required process is in failed status when required is TRUE.
@@ -57,7 +57,7 @@ extern "C" {
  * @param type
  *   The process type to use when checking if thread is enabled.
  * @param required
- *   If TRUE, then only process required rules and if a required rule has failed, return.
+ *   If TRUE, then only process required rules and if a required Rule has failed, return.
  *   If FALSE, process all waits, returning normally.
  *
  * @return

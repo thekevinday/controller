@@ -22,7 +22,7 @@ extern "C" {
 
     uint8_t error_has = F_false;
 
-    // This effectively sets the read for an entry and resets the ready for an exit.
+    // This effectively sets the read for an Entry and resets the ready for an Exit.
     main->process.ready = controller_process_ready_no_e;
 
     cache->ats.used = 0;
@@ -40,7 +40,7 @@ extern "C" {
       return status;
     }
 
-    // Utilize the ats cache as an item execution stack (at_i is for item index, and at_j (at_i + 1) is for action index).
+    // Utilize the ats cache as an item execution stack (at_i is for item index, and at_j (at_i + 1) is for Action index).
     cache->ats.array[0] = 0;
     cache->ats.array[1] = 0;
     cache->ats.used = 2;

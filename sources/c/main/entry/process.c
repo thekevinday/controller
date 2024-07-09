@@ -21,7 +21,7 @@ extern "C" {
     controller_entry_action_t *entry_action = 0;
     controller_entry_actions_t *entry_actions = 0;
 
-    // An empty stack is used here because each rule here is the first rule run in the rule's scope.
+    // An empty stack is used here because each Rule here is the first Rule run in the Rule's scope.
     const f_number_unsigneds_t stack = f_number_unsigneds_t_initialize;
 
     cache->ats.used = 0;
@@ -40,7 +40,7 @@ extern "C" {
       return status;
     }
 
-    // Utilize the "ats" cache as an item execution stack (at_i is for item index, and at_j (at_i + 1) is for action index).
+    // Utilize the "ats" cache as an item execution stack (at_i is for item index, and at_j (at_i + 1) is for Action index).
     cache->ats.array[0] = failsafe ? main->process.failsafe_item_id : 0;
     cache->ats.array[1] = 0;
     cache->ats.used = 2;
@@ -60,7 +60,7 @@ extern "C" {
       controller_print_message_entry_item_process(&main->program.message, is_entry, failsafe ? controller_failsafe_s : f_string_empty_s, cache->action.name_item);
     }
 
-    // The pre-process determines if ready is explicitly specified within the entry file and if it is not start as ready.
+    // The pre-process determines if ready is explicitly specified within the Entry file and if it is not start as ready.
     if (main->process.ready == controller_process_ready_yes_e) {
       status = controller_perform_ready(main, is_entry);
       if (F_status_is_error(status)) return status;
@@ -230,7 +230,7 @@ extern "C" {
 
           if (!controller_thread_is_enabled(is_entry, &main->thread)) break;
 
-          // The rule is not yet loaded, ensure that it is loaded.
+          // The Rule is not yet loaded, ensure that it is loaded.
           if (status != F_true) {
 
             // Rule execution will re-use the existing cache, so save the current cache.
@@ -292,7 +292,7 @@ extern "C" {
                 controller_unlock_print_flush(main->program.error.to, &main->thread);
               }
 
-              // Designate the action as failed.
+              // Designate the Action as failed.
               entry_action->status = controller_status_simplify_error(F_failure);
 
               if (!(main->setting.flag & controller_main_flag_simulate_e)) {

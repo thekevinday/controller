@@ -379,7 +379,7 @@ extern "C" {
  * Fully de-allocate all memory for the given Rule without caring about return status.
  *
  * @param rule
- *   The rule to de-allocate.
+ *   The Rule to de-allocate.
  *
  * @see f_capability_delete()
  * @see f_memory_array_resize()

@@ -34,7 +34,7 @@ extern "C" {
     fll_program_print_help_usage(print, controller_program_name_s, f_string_empty_s);
 
     fl_print_format("%r  When both the %[%r%r%] parameter and the", print->to, f_string_eol_s, print->set->notable, f_console_symbol_long_normal_s, controller_long_simulate_s, print->set->notable);
-    fl_print_format(" %[%r%r%] parameter are specified, then additional information on each would be executed rule is printed but no simulation is performed.%r%r", print->to, print->set->notable, f_console_symbol_long_normal_s, controller_long_validate_s, print->set->notable, f_string_eol_s, f_string_eol_s);
+    fl_print_format(" %[%r%r%] parameter are specified, then additional information on each would be executed Rule is printed but no simulation is performed.%r%r", print->to, print->set->notable, f_console_symbol_long_normal_s, controller_long_validate_s, print->set->notable, f_string_eol_s, f_string_eol_s);
 
     fl_print_format("  The default interrupt behavior is to operate as if the %[%r%r%] parameter is passed.%r%r", print->to, print->set->notable, f_console_symbol_long_normal_s, uninterrupt ? controller_long_uninterruptible_s : controller_long_interruptible_s, print->set->notable, f_string_eol_s, f_string_eol_s);
 

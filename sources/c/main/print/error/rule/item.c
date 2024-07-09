@@ -276,6 +276,24 @@ extern "C" {
   }
 #endif // _di_controller_print_error_rule_item_execute_
 
+#ifndef _di_controller_print_error_rule_item_execute_none_
+  f_status_t controller_print_error_rule_item_execute_none(fl_print_t * const print, controller_cache_action_t * const action, const f_string_static_t alias) {
+
+    if (!print || !print->custom) return F_status_set_error(F_output_not);
+    if (print->verbosity < f_console_verbosity_error_e) return F_output_not;
+
+    controller_t * const main = (controller_t *) print->custom;
+
+    controller_lock_print(print->to, &main->thread);
+
+    fl_print_format("%r%[%QThe Rule '%]", print->to, f_string_eol_s, print->context, print->prefix, print->context);
+    fl_print_format(f_string_format_Q_single_s.string, print->to, print->notable, alias, print->notable);
+    fl_print_format("%[' has no Items to execute.%]%r", print->to, print->context, print->context, f_string_eol_s);
+
+    controller_unlock_print_flush(print->to, &main->thread);
+  }
+#endif // _di_controller_print_error_rule_item_execute_none_
+
 #ifndef _di_controller_print_error_rule_item_need_want_wish_
   f_status_t controller_print_error_rule_item_need_want_wish(fl_print_t * const print, const f_string_static_t need_want_wish, const f_string_static_t value, const f_string_t why) {
 
@@ -286,7 +304,7 @@ extern "C" {
 
     if (print->verbosity == f_console_verbosity_quiet_e) return F_output_not;
 
-    fl_print_format("%r%[%QThe %r rule '%]", print->to, f_string_eol_s, print->context, print->prefix, need_want_wish, print->context);
+    fl_print_format("%r%[%QThe %r Rule '%]", print->to, f_string_eol_s, print->context, print->prefix, need_want_wish, print->context);
     fl_print_format(f_string_format_Q_single_s.string, print->to, print->notable, value, print->notable);
     fl_print_format("%[' %S.%]%r", print->to, print->context, why, print->context, f_string_eol_s);
 
@@ -304,7 +322,7 @@ extern "C" {
 
     controller_lock_print(print->to, &main->thread);
 
-    fl_print_format("%r%[%QThe rule '%]", print->to, f_string_eol_s, print->context, print->prefix, print->context);
+    fl_print_format("%r%[%QThe Rule '%]", print->to, f_string_eol_s, print->context, print->prefix, print->context);
     fl_print_format(f_string_format_Q_single_s.string, print->to, print->notable, alias, print->notable);
     fl_print_format("%[' is no longer loaded.%]%r", print->to, print->context, print->context, f_string_eol_s);
 

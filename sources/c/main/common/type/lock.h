@@ -23,14 +23,14 @@ extern "C" {
  * The cancel lock is intended for preventing double cancellation calls (which can happen due to interrupts).
  * The print lock is intended to lock any activity printing to stdout/stderr.
  * The instance lock is intended to lock any activity on the instance structure.
- * The rule lock is intended to lock any activity on the rules structure.
+ * The Rule lock is intended to lock any activity on the rules structure.
  *
  * Properties:
  *   - alert:           The alert mutex lock for waking up on alerts.
  *   - cancel:          The cancel mutex lock for locking the cancel operation.
  *   - print:           The print mutex lock.
  *   - instance:        The instance r/w lock.
- *   - rule:            The rule r/w lock.
+ *   - rule:            The Rule r/w lock.
  *   - alert_condition: The condition used to trigger alerts.
  */
 #ifndef _di_controller_lock_t_

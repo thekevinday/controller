@@ -5,7 +5,7 @@
  * API Version: 0.7
  * Licenses: lgpl-2.1-or-later
  *
- * Provides the rule "execute" functionality.
+ * Provides the Rule "execute" functionality.
  *
  * This is auto-included and should not need to be explicitly included.
  */
@@ -17,7 +17,7 @@ extern "C" {
 #endif
 
 /**
- * Perform an execution of the given rule.
+ * Perform an execution of the given Rule.
  *
  * This requires that a read lock be set on process->lock before being called.
  *
@@ -28,9 +28,9 @@ extern "C" {
  *
  *   This does not alter main.setting.state.status.
  * @param action
- *   The action to perform based on the action type codes.
+ *   The Action to perform based on the Action type codes.
  *
- *   Only subset of the action type codes are supported:
+ *   Only subset of the Action type codes are supported:
  *   - controller_rule_action_type_kill_e
  *   - controller_rule_action_type_pause_e
  *   - controller_rule_action_type_reload_e
@@ -40,29 +40,29 @@ extern "C" {
  *   - controller_rule_action_type_stop_e
  * @param options
  *   Process options to consider when executing.
- *   If bit controller_instance_option_simulate_e, then the rule execution is in simulation mode (printing a message that the rule would be executed but does not execute the rule).
+ *   If bit controller_instance_option_simulate_e, then the Rule execution is in simulation mode (printing a message that the Rule would be executed but does not execute the rule).
  * @param process
- *   The process data for processing this rule.
+ *   The process data for processing this Rule.
  *
  * @return
  *   F_okay on success.
  *   F_child on child process exiting.
- *   F_ignore if the rule is unknown and nothing can be done.
+ *   F_ignore if the Rule is unknown and nothing can be done.
  *
  *   F_failure (with error bit) if failed to execute.
  *   F_interrupt (with error bit) on receiving a process signal, such as an interrupt signal.
  *   F_lock (with error bit) if failed to re-establish read lock on process->lock while returning.
  *
- *   On success and the rule is run synchronously, then the individual status for the rule is set to F_complete.
- *   On success and the rule is run asynchronously, then the individual status for the rule is set to F_busy.
- *   On failure, the individual status for the rule is set to an appropriate error status.
+ *   On success and the Rule is run synchronously, then the individual status for the Rule is set to F_complete.
+ *   On success and the Rule is run asynchronously, then the individual status for the Rule is set to F_busy.
+ *   On failure, the individual status for the Rule is set to an appropriate error status.
  */
 #ifndef _di_controller_rule_execute_
   extern f_status_t controller_rule_execute(controller_t * const main, const uint8_t action, const uint8_t options, controller_instance_t * const instance);
 #endif // _di_controller_rule_execute_
 
 /**
- * Perform an execution of the given rule in the foreground.
+ * Perform an execution of the given Rule in the foreground.
  *
  * This requires that a read lock be set on process->lock before being called.
  *
@@ -74,11 +74,11 @@ extern "C" {
  *   The arguments to pass to the program.
  * @param options
  *   Process options to consider when executing.
- *   If bit controller_instance_option_simulate_e, then the rule execution is in simulation mode (printing a message that the rule would be executed but does not execute the rule).
+ *   If bit controller_instance_option_simulate_e, then the Rule execution is in simulation mode (printing a message that the Rule would be executed but does not execute the rule).
  * @param execute_set
  *   The execute parameter and as settings.
  * @param process
- *   The process data for processing this rule.
+ *   The process data for processing this Rule.
  *
  * @return
  *   F_okay on success.
@@ -96,12 +96,12 @@ extern "C" {
 #endif // _di_controller_rule_execute_foreground_
 
 /**
- * Perform an execution of the given rule in the foreground or background and creating a PID file.
+ * Perform an execution of the given Rule in the foreground or background and creating a PID file.
  *
  * This requires that a read lock be set on process->lock before being called.
  *
  * When this is synchronous, this will wait for the PID file to be generated before continuing.
- * When this is asynchronous, this will continue on adding the rule id and action to the asynchronous list.
+ * When this is asynchronous, this will continue on adding the Rule id and Action to the asynchronous list.
  *
  * @param pid_file
  *   The path to the PID file.
@@ -113,13 +113,13 @@ extern "C" {
  *   The arguments to pass to the program.
  * @param options
  *   Process options to consider when executing.
- *   If bit controller_instance_option_simulate_e, then the rule execution is in simulation mode (printing a message that the rule would be executed but does not execute the rule).
+ *   If bit controller_instance_option_simulate_e, then the Rule execution is in simulation mode (printing a message that the Rule would be executed but does not execute the rule).
  * @param with
  *   The "with" option flags.
  * @param execute_set
  *   The execute parameter and as settings.
  * @param process
- *   The process data for processing this rule.
+ *   The process data for processing this Rule.
  *
  * @return
  *   F_okay on success.
@@ -138,10 +138,10 @@ extern "C" {
 #endif // _di_controller_rule_execute_pid_with_
 
 /**
- * Determine whether or not an execute rule should be re-run, applying a delay as requested.
+ * Determine whether or not an execute Rule should be re-run, applying a delay as requested.
  *
  * @param instance
- *   The instance data for processing this rule.
+ *   The instance data for processing this Rule.
  *
  *   Must not be NULL.
  * @param item
@@ -149,7 +149,7 @@ extern "C" {
  *
  *   Must not be NULL.
  * @param action
- *   The action type.
+ *   The Action type.
  *
  * @return
  *   A positive number to designate re-run.

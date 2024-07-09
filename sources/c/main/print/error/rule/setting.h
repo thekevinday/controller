@@ -5,7 +5,7 @@
  * API Version: 0.7
  * Licenses: lgpl-2.1-or-later
  *
- * Provides the print entry setting error functionality.
+ * Provides the print Entry setting error functionality.
  *
  * This is auto-included and should not need to be explicitly included.
  */
@@ -17,7 +17,7 @@ extern "C" {
 #endif
 
 /**
- * Print a message about a rule setting problem.
+ * Print a message about a Rule setting problem.
  *
  * This is intended to be explicitly called by controller_rule_setting_read().
  * This is intended only to be used for simple messages.
@@ -50,7 +50,7 @@ extern "C" {
 #endif // _di_controller_print_error_rule_setting_
 
 /**
- * Print a message about a rule setting problem given a specified reason and providing the setting name or value.
+ * Print a message about a Rule setting problem given a specified reason and providing the setting name or value.
  *
  * @param print
  *   The output structure to print to.
@@ -80,7 +80,7 @@ extern "C" {
 #endif // _di_controller_print_error_rule_setting_reason_name_
 
 /**
- * Print a message about a rule setting problem, with additional messages about the value.
+ * Print a message about a Rule setting problem, with additional messages about the value.
  *
  * This is intended to be explicitly called by controller_rule_setting_read().
  * This is intended only to be used for simple messages.

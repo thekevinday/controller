@@ -30,7 +30,7 @@ extern "C" {
  *   - id:        The ID of this process relative to the processes array.
  *   - id_thread: The thread ID, a valid ID when state is "active", and an invalid ID when the state is "busy".
  *
- *   - action:  The action being performed.
+ *   - action:  The Action being performed.
  *   - options: Configuration options for this thread.
  *   - state:   The state of the process.
  *   - type:    The currently active process type (from the controller_instance_type_*_e).
@@ -38,14 +38,15 @@ extern "C" {
  *
  *   - active:    A read/write lock representing that something is currently using this (read locks = in use, write lock = begin deleting).
  *   - lock:      A read/write lock on the structure.
- *   - wait:      A thread condition to tell a process waiting process that the rule has is done being processed.
+ *   - wait:      A thread condition to tell a process waiting process that the Rule has is done being processed.
  *   - wait_lock: A mutex lock for working with "wait".
  *
- *   - child:     The process id of a child process, if one is running (when forking to execute a child process).
- *   - path_pids: An array of paths representing PID files.
- *   - stack:     A stack used to represent dependencies as Rule ID's to avoid circular Rule dependencies (If Rule A waits on Rule B, then Rule B must not wait on Rule A).
+ *   - child:       The process id of a child process, if one is running (when forking to execute a child process).
+ *   - path_pids:   An array of paths representing PID files.
+ *   - environment: Environment data used when executing the instance.
+ *   - stack:       A stack used to represent dependencies as Rule ID's to avoid circular Rule dependencies (If Rule A waits on Rule B, then Rule B must not wait on Rule A).
  *
- *   - rule:  A copy of the rule actively being executed.
+ *   - rule:  A copy of the Rule actively being executed.
  *   - cache: The cache used by this Instance.
  *   - main:  The main program data.
  */
@@ -67,6 +68,7 @@ extern "C" {
 
     f_pids_t childs;
     f_string_dynamics_t path_pids;
+    f_string_maps_t environment;
     f_number_unsigneds_t stack;
 
     controller_rule_t rule;
@@ -88,6 +90,7 @@ extern "C" {
     f_thread_mutex_t_initialize, \
     f_pids_t_initialize, \
     f_string_dynamics_t_initialize, \
+    f_string_maps_t_initialize, \
     f_number_unsigneds_t_initialize, \
     controller_rule_t_initialize, \
     controller_cache_t_initialize, \
