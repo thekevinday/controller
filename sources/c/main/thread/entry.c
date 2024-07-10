@@ -96,8 +96,8 @@ extern "C" {
 
         if (F_status_is_error_not(*status) && *status != F_child && main->program.parameters.array[controller_parameter_validate_e].result == f_console_result_none_e && main->process.mode == controller_process_mode_helper_e) {
           f_time_spec_t time;
-          time.tv_sec = controller_thread_exit_helper_timeout_seconds_d;
-          time.tv_nsec = controller_thread_exit_helper_timeout_nanoseconds_d;
+          time.tv_sec = controller_thread_timeout_exit_helper_seconds_d;
+          time.tv_nsec = controller_thread_timeout_exit_helper_nanoseconds_d;
 
           nanosleep(&time, 0);
 
@@ -217,11 +217,7 @@ extern "C" {
       return 0;
     }
 
-    if (F_status_is_error_not(f_thread_mutex_lock(&main->thread.lock.alert))) {
-      main->thread.enabled = controller_thread_enabled_not_e;
-
-      f_thread_mutex_unlock(&main->thread.lock.alert);
-    }
+    controller_thread_instance_force_set_disable(main);
 
     f_thread_condition_signal_all(&main->thread.lock.alert_condition);
 

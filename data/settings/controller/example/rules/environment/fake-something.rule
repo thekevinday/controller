@@ -1,0 +1,18 @@
+# fss-000d
+
+settings:
+  name "Environment using fake as an engine"
+  engine fake ++quiet
+
+  environment PATH PWD
+
+script:
+  start {
+    main\:
+      print
+      print "============================================="
+      print "Environment allowing PATH and PWD using fake."
+      print "============================================="
+
+      run env
+  }

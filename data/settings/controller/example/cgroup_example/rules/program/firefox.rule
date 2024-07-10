@@ -1,0 +1,8 @@
+# fss-000d
+
+settings:
+  name "Run Firefox (ESR)"
+  cgroup existing user.slice/user-1000.slice/user@1000.service/user_you/group/browser
+
+command:
+  start firefox-esr

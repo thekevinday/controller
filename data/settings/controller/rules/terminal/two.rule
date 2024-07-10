@@ -1,0 +1,16 @@
+# fss-000d
+#
+# Rule for the terminal programs.
+#
+# -m = don't prompt for login.
+# -J = don't clear on start, good for debugging.
+# 9600 and 115200 are common frequencies.
+
+settings:
+  name "System Terminal 2"
+
+command:
+  start agetty -8 tty2 linux
+
+  rerun start success delay 1000 reset
+  rerun start failure delay 5000 max 100

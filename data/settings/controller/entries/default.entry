@@ -1,0 +1,64 @@
+# fss-0005
+#
+# A very basic boot process.
+#
+
+settings:
+  pid ready
+  show init
+
+  control init.socket
+  control_user 0
+  control_group 0
+  control_mode ug+rwx,o-rwx
+
+task:
+  reboot system reboot
+  shutdown system shutdown
+
+main:
+  timeout start 7
+  timeout stop 7
+  timeout kill 3
+
+  failsafe maintenance
+
+  item boot
+  item net
+  item time
+  item keyboard
+  item console
+
+boot:
+  start boot root require
+  start boot proc asynchronous require
+  start boot devices asynchronous require
+  start boot file_system asynchronous
+  start boot modules wait
+
+  start service logger
+  start service dbus asynchronous
+
+  ready
+
+net:
+  start net all asynchronous
+
+time:
+  start task clock asynchronous
+
+keyboard:
+  start task keyboard asynchronous
+
+console:
+  start service mouse asynchronous
+
+  start terminal two asynchronous
+  start terminal three asynchronous
+  start terminal four asynchronous
+  start terminal one require wait
+
+maintenance:
+  #execute /bin/agetty -8 -i -J tty1 linux
+  #execute /bin/setsid -c /bin/bash --login
+  execute /bin/bash --login

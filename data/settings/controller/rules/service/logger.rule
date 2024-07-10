@@ -1,0 +1,16 @@
+# fss-000d
+#
+# Rule for system logger service.
+#
+
+settings:
+  name "System Logger"
+  capability all=
+  nice 19
+  scheduler idle
+
+service:
+  # @todo consider adding support for IKI to make "/var/run/logger/logger.pid" a variable.
+  pid_file /var/run/logger/logger.pid
+
+  start metalog -B -p /var/run/logger/logger.pid -C /etc/logger.conf

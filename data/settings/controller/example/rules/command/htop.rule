@@ -1,0 +1,9 @@
+# fss-000d
+
+settings:
+  name "Run htop"
+
+command:
+  start htop
+
+  rerun start success delay 3000 max 3

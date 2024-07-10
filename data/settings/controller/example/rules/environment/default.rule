@@ -1,0 +1,18 @@
+# fss-000d
+#
+# Note: bash automatically creates PWD, SHLVL, and _ environment variables.
+#
+
+settings:
+  name "Environment default"
+  engine bash
+
+script:
+  start {
+    echo
+    echo "==================================="
+    echo "Environment using default settings."
+    echo "==================================="
+
+    env
+  }

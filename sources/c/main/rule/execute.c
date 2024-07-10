@@ -470,7 +470,7 @@ extern "C" {
       {
         f_time_spec_t delay = f_time_spec_t_initialize;
 
-        status = f_time_spec_millisecond(0, controller_thread_simulation_timeout_d, &delay);
+        status = f_time_spec_millisecond(0, controller_thread_timeout_simulation_d, &delay);
 
         if (F_status_is_error(status)) {
           controller_print_error_status(&main->program.error, macro_controller_f(f_time_spec_millisecond), F_status_set_fine(status));
@@ -679,7 +679,7 @@ extern "C" {
       {
         f_time_spec_t delay = f_time_spec_t_initialize;
 
-        status = f_time_spec_millisecond(0, controller_thread_simulation_timeout_d, &delay);
+        status = f_time_spec_millisecond(0, controller_thread_timeout_simulation_d, &delay);
 
         if (F_status_is_error(status)) {
           controller_print_error_status(&main->program.error, macro_controller_f(f_time_spec_millisecond), F_status_set_fine(status));

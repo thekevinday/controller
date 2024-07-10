@@ -1,0 +1,16 @@
+# fss-000d
+
+settings:
+  name "Script #2"
+  on start need script succeed
+
+script:
+  start {
+    \#!/bin/bash
+    my_function() {
+      echo "Hello this is the last script, it should trigger failure."
+      return 1;
+    \}
+
+    my_function
+  }

@@ -1,6 +1,6 @@
 # fss-0002 iki-0000
 #
-# license: open-standard-license-1.0
+# license: open-standard-license-1.0-or-later
 # version 2024/07/02
 #
 # This file (assumed to be named exit.txt) can be more easily read using the following iki_read commands:

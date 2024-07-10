@@ -1,0 +1,8 @@
+# fss-0005
+
+settings:
+  mode program
+
+main:
+  start delay short
+  start delay long

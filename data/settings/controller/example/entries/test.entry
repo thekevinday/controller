@@ -1,0 +1,27 @@
+# fss-0005
+
+main:
+  timeout start 7
+  timeout stop 7
+  timeout kill 3
+
+  failsafe explode
+
+  item first
+  item last
+
+first:
+  consider script require_me
+
+  start script succeed
+  start script php
+  start command multiple
+
+  # uncomment python to see it fail.
+  #start script python
+
+last:
+  start script fail require wait
+
+explode:
+  start maintenance boom

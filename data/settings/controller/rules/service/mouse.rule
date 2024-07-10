@@ -1,0 +1,32 @@
+# fss-000d
+#
+# Rule for console mouse.
+#
+
+settings:
+  name "Console Mouse"
+  capability all=
+  nice 15
+
+script:
+  start {
+    # This works if gpm service is run as root, but if not then this should be in a separate rule file with appropriate access to write to /var/run (don't forget to chown!).
+    if [[ ! -d /var/run/mouse/ && -d /var/run ]] ; then
+      mkdir /var/run/mouse/
+    fi
+  }
+
+service:
+  pid_file /var/run/mouse/mouse.pid
+
+  # @todo consider a new type, such as "variable" than can be used to get the variable and store it in an iki parseable variable.
+  # This, however, may be too complicated than desirable (in terms of passing output back to the parent process).
+  # such as:
+  #variable device command fss_basic_read -can 0 device /etc/mouse
+  #variable protocal script {
+  #  fss_basic_read -can 0 device /etc/mouse
+  #}
+  #variable options set ""
+
+  # @todo
+  start gpm -m variable:"device" -t variable:"protocol" variable:"options"

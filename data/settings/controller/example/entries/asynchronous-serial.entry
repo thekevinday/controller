@@ -1,0 +1,11 @@
+# fss-0005
+
+main:
+  start serial s_1 asynchronous
+  start serial s_2 asynchronous
+  start serial s_3 asynchronous
+  start serial s_4 asynchronous
+  start serial s_5 asynchronous
+  start serial s_6 asynchronous
+
+  ready wait

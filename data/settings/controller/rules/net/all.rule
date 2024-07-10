@@ -1,0 +1,13 @@
+# fss-000d
+#
+# Rule for starting all network devices.
+#
+
+settings:
+  name "System Network"
+  capability cap_net_admin=
+
+command:
+  start network start
+  stop network stop
+  restart network restart

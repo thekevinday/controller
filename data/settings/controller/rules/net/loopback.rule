@@ -1,0 +1,19 @@
+# fss-000d
+#
+# Rule for loopback device.
+#
+
+settings:
+  name "Loopback Device"
+
+  on start need boot modules
+
+script:
+  start {
+    ip addr add 127.0.0.1/8 label lo dev lo
+    ip link set lo up
+  }
+
+  stop {
+    ip link set lo down
+  }

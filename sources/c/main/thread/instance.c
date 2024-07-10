@@ -12,8 +12,8 @@ extern "C" {
 
     const f_status_t status = controller_rule_instance_perform(controller_instance_option_asynchronous_e, instance);
 
-    // A forked child instance should de-allocate memory on exit.
-    // It seems that this function doesn't return to the calling thread for a forked child instance, even with the "return 0;" below.
+    // A forked child Instance should de-allocate memory on exit.
+    // It seems that this function doesn't return to the calling thread for a forked child Instance, even with the "return 0;" below.
     if (status == F_child) {
       controller_delete(instance->main);
 
@@ -125,7 +125,7 @@ extern "C" {
 
       instance = main->thread.instances.array[i];
 
-      // Do not cancel Exit instances, when not performing "execute" during exit.
+      // Do not cancel Exit Instances, when not performing "execute" during exit.
       if (instance->type == controller_instance_type_exit_e && main->thread.enabled != controller_thread_enabled_exit_execute_e) {
         continue;
       }
@@ -158,7 +158,7 @@ extern "C" {
 
         instance = main->thread.instances.array[i];
 
-        // Do not wait for instances, when not performing "execute" during exit.
+        // Do not wait for Instances, when not performing "execute" during exit.
         if (instance->type == controller_instance_type_exit_e && main->thread.enabled != controller_thread_enabled_exit_execute_e) {
           continue;
         }
@@ -167,7 +167,7 @@ extern "C" {
 
           while (instance->childs.array[j] > 0 && lapsed < entry->timeout_exit) {
 
-            // A hackish way to determine if the child instance exists while waiting (@todo look into pidfd() and epoll_wait()).
+            // A hackish way to determine if the child Instance exists while waiting (@todo look into pidfd() and epoll_wait()).
             if (getpgid(instance->childs.array[j]) >= 0) {
               time.tv_sec = 0;
               time.tv_nsec = interval_nanoseconds;
@@ -192,7 +192,7 @@ extern "C" {
             if (pid) {
               while (lapsed < entry->timeout_exit) {
 
-                // A hackish way to determine if the instance exists while waiting (@todo look into pidfd() and epoll_wait()).
+                // A hackish way to determine if the Instance exists while waiting (@todo look into pidfd() and epoll_wait()).
                 if (getpgid(pid) >= 0) {
                   time.tv_sec = 0;
                   time.tv_nsec = interval_nanoseconds;
@@ -219,7 +219,7 @@ extern "C" {
 
       instance = main->thread.instances.array[i];
 
-      // Do not kill Exit instances, when not performing "execute" during exit.
+      // Do not kill Exit Instances, when not performing "execute" during exit.
       if (instance->type == controller_instance_type_exit_e && main->thread.enabled != controller_thread_enabled_exit_execute_e) continue;
 
       if (instance->id_thread) {
@@ -284,7 +284,7 @@ extern "C" {
       // Shrink the child pids as much as possible.
       while (instance->childs.used) {
 
-        // Do not shrink below an Exit instances, when not performing "execute" during exit.
+        // Do not shrink below an Exit Instances, when not performing "execute" during exit.
         if (instance->type == controller_instance_type_exit_e && main->thread.enabled != controller_thread_enabled_exit_execute_e) break;
         if (instance->childs.array[j] > 0) break;
 
@@ -294,7 +294,7 @@ extern "C" {
       // Shrink the path pids as much as possible.
       while (instance->path_pids.used) {
 
-        // Do not shrink below an Exit instances, when not performing "execute" during exit.
+        // Do not shrink below an Exit Instances, when not performing "execute" during exit.
         if (instance->type == controller_instance_type_exit_e && main->thread.enabled != controller_thread_enabled_exit_execute_e) break;
         if (instance->path_pids.array[j].used) break;
 
@@ -333,11 +333,7 @@ extern "C" {
           controller_print_error_status(&main->program.error, macro_controller_f(f_thread_create), F_status_set_fine(status));
         }
 
-        if (F_status_is_error_not(f_thread_mutex_lock(&main->thread.lock.alert))) {
-          main->thread.enabled = controller_thread_enabled_not_e;
-
-          f_thread_mutex_unlock(&main->thread.lock.alert);
-        }
+        controller_thread_instance_force_set_disable(main);
       }
       else {
         f_time_spec_t time = f_time_spec_t_initialize;
@@ -346,7 +342,7 @@ extern "C" {
           status = f_thread_mutex_lock(&main->thread.lock.alert);
           if (F_status_is_error(status)) break;
 
-          controller_time_now(controller_thread_exit_ready_timeout_seconds_d, controller_thread_exit_ready_timeout_nanoseconds_d, &time);
+          controller_time_now(controller_thread_timeout_exit_ready_seconds_d, controller_thread_timeout_exit_ready_nanoseconds_d, &time);
 
           status = f_thread_condition_wait_timed(&time, &main->thread.lock.alert_condition, &main->thread.lock.alert);
 
@@ -354,13 +350,7 @@ extern "C" {
 
         } while (F_status_is_error_not(status) && main->thread.enabled == controller_thread_enabled_exit_e);
 
-        if (F_status_is_error(status)) {
-          if (F_status_is_error_not(f_thread_mutex_lock(&main->thread.lock.alert))) {
-            main->thread.enabled = controller_thread_enabled_not_e;
-
-            f_thread_mutex_unlock(&main->thread.lock.alert);
-          }
-        }
+        if (F_status_is_error(status)) controller_thread_instance_force_set_disable(main);
       }
 
       // The sigtimedwait() function that is run inside of signal must be interrupted via the f_thread_cancel().
@@ -374,14 +364,45 @@ extern "C" {
       controller_thread_instance_cancel(main, F_false, controller_thread_cancel_exit_e);
     }
     else {
-      if (F_status_is_error_not(f_thread_mutex_lock(&main->thread.lock.alert))) {
-        main->thread.enabled = controller_thread_enabled_not_e;
-
-        f_thread_mutex_unlock(&main->thread.lock.alert);
-      }
+      controller_thread_instance_force_set_disable(main);
     }
   }
 #endif // _di_controller_thread_instance_exit_
+
+#ifndef _di_controller_thread_instance_force_set_disable_
+  void controller_thread_instance_force_set_disable(controller_t * const main) {
+
+    if (!main) return;
+
+    if (F_status_is_error_not(f_thread_mutex_lock(&main->thread.lock.alert))) {
+      main->thread.enabled = controller_thread_enabled_not_e;
+
+      f_thread_mutex_unlock(&main->thread.lock.alert);
+
+      return;
+    }
+
+    f_time_spec_t time;
+
+    for (uint8_t i = 0; i < controller_thread_exit_disable_force_times; ++i) {
+
+      memset((void *) &time, 0, sizeof(struct timespec));
+
+      controller_time_now(controller_thread_timeout_exit_disable_force_seconds_d, controller_thread_timeout_exit_disable_force_nanoseconds_d, &time);
+
+      if (F_status_is_error_not(f_thread_mutex_lock_timed(&time, &main->thread.lock.alert))) {
+        main->thread.enabled = controller_thread_enabled_not_e;
+
+        f_thread_mutex_unlock(&main->thread.lock.alert);
+
+        return;
+      }
+    } // for
+
+    // Forcibly set disable regardless of the risk.
+    main->thread.enabled = controller_thread_enabled_not_e;
+  }
+#endif // _di_controller_thread_instance_force_set_disable_
 
 #ifndef _di_controller_thread_instance_normal_
   void * controller_thread_instance_normal(void * const argument) {

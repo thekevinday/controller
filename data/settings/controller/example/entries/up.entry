@@ -1,0 +1,16 @@
+# fss-0005
+
+settings:
+  control controller/run/up.socket
+  pid ready
+  pid_file controller/run/up.pid
+
+main:
+  failsafe maintenance
+
+  start script create_socket_path
+
+  ready
+
+maintenance:
+  start maintenance boom

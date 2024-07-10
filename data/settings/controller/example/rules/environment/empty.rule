@@ -1,0 +1,19 @@
+# fss-000d
+#
+# Note: bash automatically creates PWD, SHLVL, and _ environment variables.
+#
+
+settings:
+  name "Environment set to nothing"
+  environment
+  engine bash
+
+script:
+  start {
+    echo
+    echo "============================="
+    echo "Environment allowing nothing."
+    echo "============================="
+
+    env
+  }

@@ -1,7 +1,7 @@
 # fss-0002 iki-0000
 #
-# license: open-standard-license-1.0
-# version 2023/12/16
+# license: open-standard-license-1.0-or-later
+# version 2024/07/02
 #
 # This file (assumed to be named time.txt) can be more easily read using the following iki_read commands:
 #   iki_read time.txt +Q -r UTC UTC -w -WW character "'" "'" code '"' '"'

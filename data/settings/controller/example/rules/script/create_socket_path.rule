@@ -1,0 +1,14 @@
+# fss-000d
+
+settings:
+  name "Create Socket Path"
+
+  parameter verbose -v
+  parameter socket controller/run/
+
+script:
+  start {
+    if [[ ! -d "parameter:"socket"" ]] ; then
+      mkdir parameter:"verbose" -p parameter:"socket"
+    fi
+  }

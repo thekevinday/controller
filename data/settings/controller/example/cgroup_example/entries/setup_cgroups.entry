@@ -1,0 +1,7 @@
+# fss-0005
+
+settings:
+  mode program
+
+main:
+  start setup cgroups

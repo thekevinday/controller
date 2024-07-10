@@ -1,0 +1,19 @@
+# fss-0005
+#
+# This example shows how htop can be started during the exit process rather than the entry.
+# See the htop-alternate.exit example.
+
+settings:
+  mode program
+
+  control htop.socket
+  control_user 0
+  control_group 0
+  control_mode ug+rwx,o-rwx
+
+main:
+  start serial s_1 asynchronous
+  start serial s_2 asynchronous
+  start serial s_3 asynchronous
+
+  ready wait

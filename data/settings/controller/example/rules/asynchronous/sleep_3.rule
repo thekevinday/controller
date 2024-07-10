@@ -1,0 +1,19 @@
+# fss-000d
+#
+# Note: The example setting "limit nice 1 2" may cause this rule to fail if the user has insufficient privileges granted by ulimits or some other system security measure.
+#
+
+settings:
+  name "Sleep 3 Seconds."
+  nice 15
+  limit nice 1 2
+  on start need asynchronous sleep_8
+
+script:
+  start echo "Sleeping 3: $(date -u), depends: 8"
+
+script:
+  start sleep 3
+
+script:
+  start echo "Slept 3: $(date -u)"

@@ -1,0 +1,34 @@
+# fss-000d
+#
+# Rule for initializing the /dev file system.
+#
+
+settings:
+  name "Setup /dev file system"
+
+  on start need boot root
+
+# Newer kernels automount a devpts file system on /dev, so this may not be needed.
+#command:
+#  start mount /dev
+
+script:
+  start {
+    if [[ ! -d /dev/pts ]] ; then
+      mkdir /dev/pts
+    fi
+
+    if [[ ! -d /dev/shm ]] ; then
+      mkdir /dev/shm
+    fi
+
+    exit 0
+  }
+
+command:
+  start mount /dev/pts
+  stop umount -l /dev/pts
+
+command:
+  start mount /dev/shm
+  stop umount -l /dev/shm

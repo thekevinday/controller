@@ -1,0 +1,22 @@
+# fss-000d
+
+settings:
+  name "Environment using fake as an engine"
+  engine fake ++quiet
+
+  # PATH must be expoted so that "run env" works.
+  environment PATH
+
+script:
+  start {
+    settings\:
+      environment
+
+    main\:
+      print
+      print "========================================"
+      print "Environment allowing nothing using fake."
+      print "========================================"
+
+      run env
+  }

@@ -1,0 +1,21 @@
+# fss-0005
+#
+# This example shows how htop can be started during the exit process rather than the entry.
+# See the htop-alternate.entry example.
+
+main:
+  failsafe "start top"
+
+  consider serial s_5
+  consider serial s_6
+
+  stop serial s_4 asynchronous
+  stop serial s_5 asynchronous
+  stop serial s_6 asynchronous
+
+  ready wait
+
+  execute htop
+
+start top:
+  execute top

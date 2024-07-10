@@ -1,0 +1,28 @@
+# fss-000d
+#
+# Rule for executing ntpdate.
+#
+
+settings:
+  name "System Clock Using NTP Date"
+  capability cap_sys_time=
+  nice 15
+
+  on start want boot filesystem
+  on start need net all
+
+script:
+  start {
+    clock_file=/etc/clock
+    clock_mode=
+    clock_server=
+
+    if [[ -f $clock_file ]] ; then
+      clock_mode=$(fss_basic_read -can 0 mode $clock_file);
+      clock_server=$(fss_basic_read -can 0 server $clock_file)
+    fi
+
+    if [[ $clock_mode == "ntpdate" && $clock_host != "" ]] ; then
+      ntpdate $clock_server
+    fi
+  }

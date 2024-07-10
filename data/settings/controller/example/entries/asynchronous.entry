@@ -1,0 +1,17 @@
+# fss-0005
+
+settings:
+  mode program
+
+main:
+  ready
+
+  consider asynchronous sleep_8 asynchronous
+  consider asynchronous sleep_10 asynchronous
+
+  start asynchronous sleep_1 asynchronous
+  start asynchronous sleep_2 asynchronous
+  start asynchronous sleep_3 asynchronous
+  start asynchronous sleep_5 asynchronous
+  start asynchronous sleep_8 asynchronous
+  start asynchronous sleep_10 asynchronous

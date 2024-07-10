@@ -20,17 +20,17 @@ extern "C" {
     do {
       f_thread_mutex_lock(&instance->wait_lock);
 
-      if (count < controller_thread_wait_timeout_1_before_d) {
-        controller_time_now(controller_thread_wait_timeout_1_seconds_d, controller_thread_wait_timeout_1_nanoseconds_d, &time);
+      if (count < controller_thread_timeout_wait_1_before_d) {
+        controller_time_now(controller_thread_timeout_wait_1_seconds_d, controller_thread_timeout_wait_1_nanoseconds_d, &time);
       }
-      else if (count < controller_thread_wait_timeout_2_before_d) {
-        controller_time_now(controller_thread_wait_timeout_2_seconds_d, controller_thread_wait_timeout_2_nanoseconds_d, &time);
+      else if (count < controller_thread_timeout_wait_2_before_d) {
+        controller_time_now(controller_thread_timeout_wait_2_seconds_d, controller_thread_timeout_wait_2_nanoseconds_d, &time);
       }
-      else if (count < controller_thread_wait_timeout_3_before_d) {
-        controller_time_now(controller_thread_wait_timeout_3_seconds_d, controller_thread_wait_timeout_3_nanoseconds_d, &time);
+      else if (count < controller_thread_timeout_wait_3_before_d) {
+        controller_time_now(controller_thread_timeout_wait_3_seconds_d, controller_thread_timeout_wait_3_nanoseconds_d, &time);
       }
       else {
-        controller_time_now(controller_thread_wait_timeout_4_seconds_d, controller_thread_wait_timeout_4_nanoseconds_d, &time);
+        controller_time_now(controller_thread_timeout_wait_4_seconds_d, controller_thread_timeout_wait_4_nanoseconds_d, &time);
       }
 
       status = f_thread_condition_wait_timed(&time, &instance->wait, &instance->wait_lock);
@@ -57,20 +57,20 @@ extern "C" {
       if (status != F_time) {
 
         // move up the wait timer after a trigger was received.
-        if (count < controller_thread_wait_timeout_2_before_d) {
+        if (count < controller_thread_timeout_wait_2_before_d) {
           count = 0;
         }
-        else if (count < controller_thread_wait_timeout_3_before_d) {
-          count = controller_thread_wait_timeout_1_before_d;
+        else if (count < controller_thread_timeout_wait_3_before_d) {
+          count = controller_thread_timeout_wait_1_before_d;
         }
         else {
-          count = controller_thread_wait_timeout_2_before_d;
+          count = controller_thread_timeout_wait_2_before_d;
         }
       }
 
       f_thread_unlock(&instance->lock);
 
-      if (count < controller_thread_wait_timeout_3_before_d) {
+      if (count < controller_thread_timeout_wait_3_before_d) {
         ++count;
       }
 

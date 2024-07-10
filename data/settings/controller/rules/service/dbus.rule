@@ -1,0 +1,14 @@
+# fss-000d
+#
+# Rule for D-Bus service.
+#
+
+settings:
+  name "D-BUS"
+  capability all=
+  nice 15
+
+service:
+  pid_file /var/run/dbus/dbus.pid
+
+  start dbus-daemon --system --fork

@@ -176,7 +176,7 @@ extern "C" {
     0, \
     0, \
     0, \
-    controller_thread_exit_timeout_d, \
+    controller_thread_timeout_exit_d, \
     0, \
     0, \
     0, \
@@ -191,7 +191,7 @@ extern "C" {
     0, \
     0, \
     flag, \
-    controller_thread_exit_timeout_d, \
+    controller_thread_timeout_exit_d, \
     0, \
     0, \
     0, \

@@ -1,0 +1,14 @@
+# fss-0005
+
+settings:
+  mode program
+
+main:
+  start serial s_1
+  start serial s_2
+  start serial s_3
+  start serial s_4
+  start serial s_5
+  start serial s_6
+
+  ready

@@ -1,0 +1,10 @@
+# fss-000d
+#
+# Rule for a short delay.
+#
+
+settings:
+  name "Delay for 3 seconds."
+
+script:
+  start sleep 3s

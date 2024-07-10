@@ -1,0 +1,18 @@
+# fss-000d
+
+settings:
+  name "Serial 6"
+  on start need serial s_5
+
+script:
+  start {
+    echo "Serial 6: sleeping $(date -u)"
+    sleep 1
+    echo "Serial 6: slept    $(date -u)"
+  }
+
+  stop {
+    echo "Serial 6: stopping, sleeping $(date -u)"
+    sleep 1
+    echo "Serial 6: stopping, slept    $(date -u)"
+  }

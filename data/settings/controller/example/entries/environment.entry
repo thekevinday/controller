@@ -1,0 +1,14 @@
+# fss-0005
+
+settings:
+  mode program
+
+main:
+  start environment default
+  start environment exported
+  start environment empty
+  start environment exporting
+  start environment fake-nothing
+  start environment fake-something
+
+  start print newline

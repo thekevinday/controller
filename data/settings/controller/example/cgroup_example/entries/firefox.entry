@@ -1,0 +1,7 @@
+# fss-0005
+
+settings:
+  mode helper
+
+main:
+  start program firefox asynchronous

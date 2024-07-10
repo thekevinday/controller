@@ -1,0 +1,14 @@
+# fss-000d
+#
+# Example using the common sshd service.
+# Sshd appears to require a full path.
+#
+
+settings:
+  name "SSH Service"
+  nice 15
+
+service:
+  pid_file /var/run/sshd.pid
+  with full_path
+  start sshd

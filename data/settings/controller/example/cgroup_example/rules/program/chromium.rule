@@ -1,0 +1,8 @@
+# fss-000d
+
+settings:
+  name "Run Chromium"
+  cgroup existing user.slice/user-1000.slice/user@1000.service/user_you/group/browser
+
+command:
+  start chromium --disable-features=UserAgentClientHint

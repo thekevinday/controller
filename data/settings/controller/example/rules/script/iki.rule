@@ -1,0 +1,30 @@
+# fss-000d
+
+settings:
+  name "IKI Variable Substitution"
+  environment PATH IKI_TEST
+  define IKI_TEST "This is iki data in an environment variable."
+  parameter some "Some Parameter Value"
+
+script:
+  start {
+    \#!/bin/bash
+    echo "====================================="
+    env
+    echo "====================================="
+    echo "IKI Path is 'define:"PATH"'"
+    echo "IKI define IKI_TEST 'define:"IKI_TEST"'"
+    echo "ENV IKI_TEST '$IKI_TEST'"
+    echo "Some Parameter is 'parameter:"some"'"
+    echo "Unknown parameter is: 'parameter:"unknown"'"
+    echo "Unknown environment is: 'define:"unknown"'"
+    echo "Unavailable environment via IKI: 'define:"USER"'"
+    echo "Unavailable environment via ENV: '$USER'"
+    echo "Program parameter verbose: 'program:"verbose"'"
+    echo "Program parameter verbose(option): 'program:"verbose:option"'"
+    echo "Program parameter verbose(value): 'program:"verbose:value"'"
+    echo "Program parameter PID: 'program:"pid"'"
+    echo "Program parameter PID(option): 'program:"pid:option"'"
+    echo "Program parameter PID(value): 'program:"pid:value"'"
+    echo "====================================="
+  }

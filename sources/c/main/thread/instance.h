@@ -71,6 +71,28 @@ extern "C" {
 #endif // _di_controller_thread_instance_exit_
 
 /**
+ * Set the execution state to disabled during exiting and force the case if need be.
+ *
+ * The program must exit during the Exit process.
+ * The state must be properly set.
+ * Perform a limited number of attempts to set the state to exiting.
+ * Should this fail, then force the case regardless of the risk.
+ *
+ * @param main
+ *   The main program data.
+ *
+ *   Must not be NULL.
+ *
+ *   This does not alter main.setting.state.status.
+ *
+ *   The main.thread.lock.alert lock will be set and then unset if possible.
+ *   The main.thread.enabled will be updated and set to controller_thread_enabled_not_e.
+ */
+#ifndef _di_controller_thread_instance_force_set_disable_
+  extern void controller_thread_instance_force_set_disable(controller_t * const main);
+#endif // _di_controller_thread_instance_force_set_disable_
+
+/**
  * Asynchronously execute a Rule process during normal operations.
  *
  * @param argument

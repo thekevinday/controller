@@ -1,0 +1,19 @@
+# fss-000d
+
+settings:
+  name "Serial 3"
+  on start need serial s_2
+  on stop need serial s_4
+
+script:
+  start {
+    echo "Serial 3: sleeping $(date -u)"
+    sleep 1
+    echo "Serial 3: slept    $(date -u)"
+  }
+
+  stop {
+    echo "Serial 3: stopping, sleeping $(date -u)"
+    sleep 1
+    echo "Serial 3: stopping, slept    $(date -u)"
+  }

@@ -18,7 +18,7 @@ extern "C" {
 
       memset((void *) &information, 0, sizeof(siginfo_t));
 
-      controller_time_now(controller_thread_exit_ready_timeout_seconds_d, controller_thread_exit_ready_timeout_nanoseconds_d, &time);
+      controller_time_now(controller_thread_timeout_exit_ready_seconds_d, controller_thread_timeout_exit_ready_nanoseconds_d, &time);
 
       if (f_signal_wait_until(&main->program.signal.set, &time, &information) == F_time_out) continue;
 

@@ -1,0 +1,18 @@
+# fss-000d
+#
+# Note: The example setting "limit nice 1 2" may cause this rule to fail if the user has insufficient privileges granted by ulimits or some other system security measure.
+#
+
+settings:
+  name "Sleep 10 Seconds."
+  nice 15
+  limit nice 1 2
+
+script:
+  start echo "Sleeping 10: $(date -u), depends: none"
+
+script:
+  start sleep 10
+
+script:
+  start echo "Slept 10: $(date -u)"

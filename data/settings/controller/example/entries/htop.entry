@@ -1,0 +1,23 @@
+# fss-0005
+
+settings:
+  mode program
+
+  control htop.socket
+  control_user 0
+  control_group 0
+  control_mode ug+rwx,o-rwx
+
+main:
+  failsafe start_top
+
+  start serial s_1 asynchronous require
+  start serial s_2 asynchronous require
+  start serial s_3 asynchronous require
+
+  ready wait
+
+  execute htop
+
+start_top:
+  execute top

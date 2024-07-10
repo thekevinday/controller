@@ -1,0 +1,25 @@
+# fss-000d
+#
+# Note: bash automatically creates PWD, SHLVL, and _ environment variables.
+#
+
+settings:
+  name "Environment with PATH"
+  environment PATH custom_variable
+  engine bash
+
+script:
+  start {
+    echo
+    echo "================================="
+    echo "Exported Environment is isolated."
+    echo "================================="
+
+    export custom_variable="is not retained"
+    echo "export custom_variable='$custom_variable'"
+    echo
+    echo "Now for 'env' command:"
+  }
+
+command:
+  start env

@@ -1,0 +1,14 @@
+# fss-000d
+
+settings:
+  name "Python (Version 3.X) script"
+  environment PATH
+  engine python3
+
+script:
+  start {
+    # Python's indentation design presents problems here and this will likely fail with "IndentationError: unexpected indent"
+    print("This is a Python script.\n");
+
+    # this is simply a design flaw of Python and as such Python scripts must not be tabbed over (making these files less readable).
+  }

@@ -50,7 +50,7 @@ extern "C" {
 
       memset(&time, 0, sizeof(f_time_spec_t));
 
-      controller_time_now(controller_thread_lock_read_timeout_seconds_d, controller_thread_lock_read_timeout_nanoseconds_d, &time);
+      controller_time_now(controller_thread_timeout_lock_read_seconds_d, controller_thread_timeout_lock_read_nanoseconds_d, &time);
 
       status = f_thread_lock_read_timed(&time, lock);
 
@@ -93,7 +93,7 @@ extern "C" {
 
     for (f_time_spec_t time; ; ) {
 
-      controller_time_now(controller_thread_lock_write_timeout_seconds_d, controller_thread_lock_write_timeout_nanoseconds_d, &time);
+      controller_time_now(controller_thread_timeout_lock_write_seconds_d, controller_thread_timeout_lock_write_nanoseconds_d, &time);
 
       status = f_thread_lock_write_timed(&time, lock);
 

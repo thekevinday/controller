@@ -1,0 +1,13 @@
+# fss-0005
+#
+# A boot to bash process.
+#
+
+settings:
+  pid disable
+  show init
+
+main:
+  #execute /bin/agetty -8 -i -J tty1 linux
+  #execute /bin/setsid -c /bin/bash --login
+  execute /bin/bash --login

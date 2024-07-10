@@ -1,0 +1,39 @@
+# fss-000d
+#
+# Rule for setting the clock.
+#
+
+settings:
+  name "Setup Clock"
+  capability cap_sys_time=
+  nice 15
+
+  on start want boot filesystem
+  on start want net all
+
+script:
+  start {
+    clock_file=/etc/clock
+    clock_mode=
+    clock_server=
+    clock_ntpdate=
+
+    if [[ -f $clock_file ]] ; then
+      clock_mode=$(fss_basic_read -can 0 mode $clock_file);
+      clock_server=$(fss_basic_read -can 0 server $clock_file)
+      clock_ntpdate=$(fss_basic_read -can 0 ntpdate $clock_file)
+    fi
+
+    if [[ $clock_mode == "local" ]] ; then
+      hwclock --hctosys;
+    elif [[ $clock_mode == "ntp"  ]] ; then
+      if [[ $clock_ntpdate == "yes" ]] ; then
+        ntpdate $clock_server &&
+        hwclock --systohc --utc
+      fi
+    elif [[ $clock_mode == "ntpdate" && $clock_host != "" ]] ; then
+      ntpdate $clock_server
+    elif [[ $clock_mode == "utc" ]] ; then
+      hwclock --hctosys --utc;
+    fi
+  }

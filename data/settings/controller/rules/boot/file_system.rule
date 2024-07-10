@@ -1,0 +1,29 @@
+# fss-000d
+#
+# Rule for initializing the filesystem.
+#
+
+settings:
+  name "Setup Filesystem"
+
+  on start need boot root
+  on start need boot proc
+  on start need boot devices
+
+  on stop need boot proc
+  on stop need boot devices
+
+command:
+  start mount -n -a -O no_netdev
+  stop umount -n -arf -O no_netdev
+
+command:
+  start swapon -a
+  stop swapoff -a
+
+script:
+  start {
+    if [[ ! -d /var/run/init ]] ; then
+      mkdir /var/run/init
+    fi
+  }

@@ -1,0 +1,19 @@
+# fss-000d
+#
+# Note: bash automatically creates PWD, SHLVL, and _ environment variables.
+#
+
+settings:
+  name "Environment with PATH"
+  environment PATH
+  engine bash
+
+script:
+  start {
+    echo
+    echo "=========================="
+    echo "Environment allowing PATH."
+    echo "=========================="
+
+    env
+  }

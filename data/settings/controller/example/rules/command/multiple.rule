@@ -1,0 +1,57 @@
+# fss-000d
+
+settings:
+  name "Multiple Commands: id, whoami, date, etc.."
+  capability "all="
+  control_group new memory/example
+  nice 15
+  scheduler batch 0
+  #user kevin
+  #group list 8 root
+
+  limit nofile 5000 10000
+  limit nproc 1000 2000
+  limit nice 1 2
+
+  affinity 0
+
+  on start need script require_me
+
+script:
+  start {
+    echo
+    echo "Current ulimit is"
+    ulimit -a
+    sleep 5
+
+    echo
+    echo "Current cgroup for self (PPID $PPID, PID $$) is: '$(cat /proc/self/cgroup)'"
+    sleep 5
+  }
+
+command:
+  start {
+    id
+    sleep 5
+  }
+
+script:
+  start echo
+
+command:
+  start whoami
+
+script:
+  start echo
+
+command:
+  start sleep 5
+
+command:
+  start date -u
+
+script:
+  start echo
+
+script:
+  start sleep 5

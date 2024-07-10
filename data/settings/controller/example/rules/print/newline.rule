@@ -1,0 +1,8 @@
+# fss-000d
+
+settings:
+  name "Print New Line"
+  engine bash
+
+script:
+  start echo

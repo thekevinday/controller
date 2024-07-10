@@ -1,0 +1,30 @@
+# fss-000d
+# sleeper rule whose program creates its own PID file, runs in the background, sleep for a while, removes PID file, and returns.
+
+settings:
+  name "Sleeper #1"
+  nice 10
+
+utility:
+  pid_file /tmp/sleeper_1.pid
+  start {
+    \#!/bin/bash
+
+    main() {
+      if [[ -f /tmp/sleeper_1.pid ]] ; then
+        echo "Failure: pid file '/tmp/sleeper_1.pid' already exists."
+        return 1
+      fi
+
+      echo "$BASHPID" > /tmp/sleeper_1.pid
+
+      echo "Sleeper 1, now sleeping."
+      sleep 20m
+
+      echo "Sleeper 1, done sleeping."
+      rm -f /tmp/sleeper_1.pid
+      return 0
+    \}
+
+    main &
+  }

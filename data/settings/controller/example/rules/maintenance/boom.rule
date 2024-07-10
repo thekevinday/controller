@@ -1,0 +1,11 @@
+# fss-000d
+
+settings:
+  name "Explosion!"
+  engine sh
+
+script:
+  start {
+    echo "kaboooom!"
+  }
+

@@ -1,0 +1,29 @@
+# fss-000d
+#
+# Rule for initializing the /proc filesystem.
+#
+
+settings:
+  name "Setup /proc Filesystem"
+
+  on start need boot root
+
+command:
+  start mount /proc
+
+script:
+  start {
+    if [[ -d /proc/bus/usb ]] ; then
+      mount /proc/bus/usb
+    fi
+
+    exit 0
+  }
+
+  stop {
+    if [[ -d /proc/bus/usb ]] ; then
+      umount -l /proc/bus/usb
+    fi
+
+    exit 0
+  }

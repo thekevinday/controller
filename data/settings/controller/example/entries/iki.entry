@@ -1,0 +1,9 @@
+# fss-0005
+
+settings:
+  mode program
+
+main:
+  ready
+
+  start script iki

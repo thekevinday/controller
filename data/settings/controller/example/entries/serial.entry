@@ -1,0 +1,12 @@
+# fss-0005
+
+main:
+  consider serial s_1
+  consider serial s_2
+  consider serial s_3
+  consider serial s_4
+  consider serial s_5
+
+  start serial s_6
+
+  ready
