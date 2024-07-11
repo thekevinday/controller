@@ -9,7 +9,7 @@ extern "C" {
 
     if (!main) return F_status_set_error(F_parameter);
 
-    f_status_t status_lock = controller_lock_read(is_normal, &main->thread, &main->thread.lock.instance);
+    f_status_t status_lock = controller_lock_read(is_normal, F_false, &main->thread, &main->thread.lock.instance);
 
     if (F_status_is_error(status_lock)) {
       controller_print_error_lock_critical(&main->program.error, F_status_set_fine(status_lock), F_true);
@@ -45,7 +45,7 @@ extern "C" {
       if (!controller_thread_is_enabled(is_normal, &main->thread)) break;
 
       // Re-establish instance read lock to wait for or protect from the cleanup thread while checking the read instance.
-      status_lock = controller_lock_read(is_normal, &main->thread, &main->thread.lock.instance);
+      status_lock = controller_lock_read(is_normal, F_true, &main->thread, &main->thread.lock.instance);
       if (F_status_is_error(status_lock)) break;
 
       if (!instance_list[i]) {
@@ -54,7 +54,7 @@ extern "C" {
         continue;
       }
 
-      status_lock = controller_lock_read(is_normal, &main->thread, &instance_list[i]->active);
+      status_lock = controller_lock_read(is_normal, F_true, &main->thread, &instance_list[i]->active);
 
       if (F_status_is_error(status_lock)) {
         f_thread_unlock(&main->thread.lock.instance);
@@ -65,7 +65,7 @@ extern "C" {
       // Once the active lock is obtained, then the main instance read lock can be safely released.
       f_thread_unlock(&main->thread.lock.instance);
 
-      status_lock = controller_lock_read(is_normal, &main->thread, &instance_list[i]->lock);
+      status_lock = controller_lock_read(is_normal, F_true, &main->thread, &instance_list[i]->lock);
 
       if (F_status_is_error(status_lock)) {
         f_thread_unlock(&instance_list[i]->active);
@@ -87,7 +87,7 @@ extern "C" {
         if (instance_list[i]->state == controller_instance_state_done_e) {
           f_thread_unlock(&instance_list[i]->lock);
 
-          status_lock = controller_lock_write(is_normal, &main->thread, &instance_list[i]->lock);
+          status_lock = controller_lock_write(is_normal, F_true, &main->thread, &instance_list[i]->lock);
 
           if (F_status_is_error(status_lock)) {
             controller_print_error_lock_critical(&main->program.error, F_status_set_fine(status_lock), F_false);
@@ -112,7 +112,7 @@ extern "C" {
               f_thread_mutex_unlock(&instance_list[i]->wait_lock);
             }
 
-            status_lock = controller_lock_read(is_normal, &main->thread, &instance_list[i]->active);
+            status_lock = controller_lock_read(is_normal, F_true, &main->thread, &instance_list[i]->active);
 
             if (F_status_is_error(status_lock)) {
               f_thread_unlock(&instance_list[i]->lock);
@@ -123,7 +123,7 @@ extern "C" {
 
           f_thread_unlock(&instance_list[i]->lock);
 
-          status_lock = controller_lock_read(is_normal, &main->thread, &instance_list[i]->lock);
+          status_lock = controller_lock_read(is_normal, F_true, &main->thread, &instance_list[i]->lock);
           if (F_status_is_error(status_lock)) break;
         }
 
@@ -160,7 +160,7 @@ extern "C" {
           break;
         }
 
-        status_lock = controller_lock_read(is_normal, &main->thread, &instance_list[i]->lock);
+        status_lock = controller_lock_read(is_normal, F_true, &main->thread, &instance_list[i]->lock);
 
         if (F_status_is_error(status_lock)) {
           f_thread_unlock(&instance_list[i]->active);

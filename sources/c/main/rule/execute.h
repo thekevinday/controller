@@ -41,8 +41,10 @@ extern "C" {
  * @param options
  *   Process options to consider when executing.
  *   If bit controller_instance_option_simulate_e, then the Rule execution is in simulation mode (printing a message that the Rule would be executed but does not execute the rule).
- * @param process
- *   The process data for processing this Rule.
+ * @param instance
+ *   The instance data.
+ *
+ *   Must not be NULL.
  *
  * @return
  *   F_okay on success.
@@ -77,15 +79,20 @@ extern "C" {
  *   If bit controller_instance_option_simulate_e, then the Rule execution is in simulation mode (printing a message that the Rule would be executed but does not execute the rule).
  * @param execute_set
  *   The execute parameter and as settings.
- * @param process
- *   The process data for processing this Rule.
+ *
+ *   Must not be NULL.
+ * @param instance
+ *   The instance data.
+ *
+ *   Must not be NULL.
  *
  * @return
  *   F_okay on success.
  *   F_child on child process exiting.
  *
  *   F_interrupt (with error bit) on receiving a process signal, such as an interrupt signal.
- *   F_lock (with error bit) if failed to re-establish read lock on process->lock while returning.
+ *   F_lock_read (with error bit) if failed to re-establish read lock on process->lock while returning.
+ *   F_lock_write (with error bit) if failed to establish write lock on process->lock, and the read lock is able to be restored.
  *
  *   Errors (with error bit) from: fll_execute_program().
  *
@@ -94,6 +101,44 @@ extern "C" {
 #ifndef _di_controller_rule_execute_foreground_
   extern f_status_t controller_rule_execute_foreground(const uint8_t type, const f_string_static_t program, const f_string_statics_t arguments, const uint8_t options, controller_execute_set_t * const execute_set, controller_instance_t * const instance);
 #endif // _di_controller_rule_execute_foreground_
+
+/**
+ * Find the next available child slot and return a pointer to that location.
+ *
+ * @param instance
+ *   The instance data.
+ *
+ *   instance.childs.used is incremented on success if the last available position is at the "used" position in the array.
+ *
+ *   Must not be NULL.
+ *
+ * @return
+ *   A pointer the next avialable child pid_t slot in the instance.
+ *
+ *   NULL on error.
+ */
+#ifndef _di_controller_rule_execute_next_child_
+  extern pid_t * controller_rule_execute_next_child(controller_instance_t * const instance);
+#endif // _di_controller_rule_execute_next_child_
+
+/**
+ * Find the next available PID path slot and return a pointer to that location.
+ *
+ * @param instance
+ *   The instance data.
+ *
+ *   instance.path_pids.used is incremented on success if the last available position is at the "used" position in the array.
+ *
+ *   Must not be NULL.
+ *
+ * @return
+ *   A pointer the next avialable PID path f_string_dynamic_t slot in the instance.
+ *
+ *   NULL on error.
+ */
+#ifndef _di_controller_rule_execute_next_pid_path_
+  extern f_string_dynamic_t * controller_rule_execute_next_pid_path(controller_instance_t * const instance);
+#endif // _di_controller_rule_execute_next_pid_path_
 
 /**
  * Perform an execution of the given Rule in the foreground or background and creating a PID file.
@@ -118,8 +163,12 @@ extern "C" {
  *   The "with" option flags.
  * @param execute_set
  *   The execute parameter and as settings.
- * @param process
- *   The process data for processing this Rule.
+ *
+ *   Must not be NULL.
+ * @param instance
+ *   The instance data.
+ *
+ *   Must not be NULL.
  *
  * @return
  *   F_okay on success.
@@ -127,14 +176,15 @@ extern "C" {
  *
  *   F_file_found (with error bit) if the PID file already exists.
  *   F_interrupt (with error bit) on receiving a process signal, such as an interrupt signal.
- *   F_lock (with error bit) if failed to re-establish read lock on process->lock while returning.
+ *   F_lock_read (with error bit) if failed to re-establish read lock on process->lock while returning.
+ *   F_lock_write (with error bit) if failed to establish write lock on process->lock, and the read lock is able to be restored.
  *
  *   Errors (with error bit) from: fll_execute_program().
  *
  * @see fll_execute_program()
  */
 #ifndef _di_controller_rule_execute_pid_with_
-  extern f_status_t controller_rule_execute_pid_with(const f_string_dynamic_t pid_file, const uint8_t type, const f_string_static_t program, const f_string_statics_t arguments, const uint8_t options, const uint8_t with, controller_execute_set_t * const execute_set, controller_instance_t * const instance);
+  extern f_status_t controller_rule_execute_pid_with(controller_instance_t * const instance, const f_string_dynamic_t pid_file, const uint8_t type, const f_string_static_t program, const f_string_statics_t arguments, const uint8_t options, const uint8_t with, controller_execute_set_t * const execute_set);
 #endif // _di_controller_rule_execute_pid_with_
 
 /**

@@ -320,7 +320,7 @@ extern "C" {
 
           if (instance->rule.items.array[i].pid_file.used) {
             do {
-              status = controller_rule_execute_pid_with(instance->rule.items.array[i].pid_file, instance->rule.items.array[i].type, f_string_empty_s, instance->cache.expanded, options, instance->rule.items.array[i].with, &execute_set, instance);
+              status = controller_rule_execute_pid_with(instance, instance->rule.items.array[i].pid_file, instance->rule.items.array[i].type, f_string_empty_s, instance->cache.expanded, options, instance->rule.items.array[i].with, &execute_set);
 
               if (status == F_child || F_status_set_fine(status) == F_interrupt || F_status_set_fine(status) == F_lock) break;
               if (F_status_is_error(status) && F_status_set_fine(status) != F_failure) break;
@@ -364,7 +364,7 @@ extern "C" {
             }
 
             do {
-              status = controller_rule_execute_pid_with(instance->rule.items.array[i].pid_file, instance->rule.items.array[i].type, instance->rule.engine.used ? instance->rule.engine : controller_default_engine_s, instance->rule.engine_arguments, options, instance->rule.items.array[i].with, &execute_set, instance);
+              status = controller_rule_execute_pid_with(instance, instance->rule.items.array[i].pid_file, instance->rule.items.array[i].type, instance->rule.engine.used ? instance->rule.engine : controller_default_engine_s, instance->rule.engine_arguments, options, instance->rule.items.array[i].with, &execute_set);
 
               if (status == F_child || F_status_set_fine(status) == F_interrupt || F_status_set_fine(status) == F_lock) break;
               if (F_status_is_error(status) && F_status_set_fine(status) != F_failure) break;
@@ -407,7 +407,7 @@ extern "C" {
 
     // Lock failed, attempt to re-establish lock before returning.
     if (F_status_set_fine(status) == F_lock) {
-      status = controller_lock_read(instance->type != controller_instance_type_exit_e, &main->thread, &instance->lock);
+      status = controller_lock_read(instance->type != controller_instance_type_exit_e, F_true, &main->thread, &instance->lock);
       if (F_status_is_error(status)) return F_status_set_error(F_lock);
 
       success = F_false;
@@ -432,7 +432,6 @@ extern "C" {
     if (!instance || !instance->main) return F_status_set_error(F_parameter);
 
     f_status_t status = F_okay;
-    f_status_t status_lock = F_okay;
 
     controller_t * const main = instance->main;
 
@@ -446,23 +445,8 @@ extern "C" {
       return status;
     }
 
-    pid_t *child = 0;
+    pid_t * const process_child_id = controller_rule_execute_next_child(instance);
 
-    {
-      f_number_unsigned_t i = 0;
-
-      while (i < instance->childs.used && instance->childs.array[i]) {
-        ++i;
-      } // while
-
-      child = &instance->childs.array[i];
-
-      if (i == instance->childs.used) {
-        ++instance->childs.used;
-      }
-    }
-
-    // @fixme don't actually execute as even executing "bash" could be bad if the shell being run is something nefarious.
     if (options & controller_instance_option_simulate_e) {
       controller_print_entry_output_execute_simulate(&main->program.output, instance, program, arguments);
 
@@ -488,72 +472,46 @@ extern "C" {
       const pid_t id_child = result.pid;
       result.status = 0;
 
-      f_thread_unlock(&instance->lock);
-
-      status_lock = controller_lock_write_instance(instance, &instance->lock);
-
-      if (F_status_is_error(status_lock)) {
-        controller_print_error_lock_critical(&main->program.error, F_status_set_fine(status_lock), F_false);
-
-        if (F_status_set_fine(status_lock) != F_interrupt) {
-          status = controller_lock_read_instance(instance, &instance->lock);
-          if (status == F_okay) return status_lock;
-        }
-
-        return F_status_set_error(F_lock);
-      }
-
       // Assign the child instance id to allow for the cancel instance to send appropriate termination signals to the child instance.
-      *child = id_child;
+      *process_child_id = id_child;
+
+      // Have the parent wait for the child instance to finish.
+      waitpid(id_child, &result.status, 0);
 
       f_thread_unlock(&instance->lock);
 
-      status_lock = controller_lock_read_instance(instance, &instance->lock);
-
-      if (F_status_is_error(status_lock)) {
-        controller_print_error_lock_critical(&main->program.error, F_status_set_fine(status_lock), F_true);
-      }
-
-      if (F_status_set_fine(status_lock) != F_interrupt) {
-
-        // Have the parent wait for the child instance to finish.
-        waitpid(id_child, &result.status, 0);
-      }
-
-      if (F_status_set_fine(status_lock) == F_interrupt || !controller_thread_is_enabled_instance(instance)) {
-        return status_lock == F_okay ? F_status_set_error(F_interrupt) : F_status_set_error(F_lock);
-      }
-
-      if (status_lock == F_okay) {
-        f_thread_unlock(&instance->lock);
-      }
-
-      status_lock = controller_lock_write_instance(instance, &instance->lock);
+      f_status_t status_lock = controller_lock_write_instance(instance, &instance->lock);
 
       if (F_status_is_error(status_lock)) {
         controller_print_error_lock_critical(&main->program.error, F_status_set_fine(status_lock), F_false);
 
-        if (F_status_set_fine(status_lock) != F_interrupt) {
-          status = controller_lock_read_instance(instance, &instance->lock);
-          if (status == F_okay) return status_lock;
-        }
+        status_lock = controller_lock_read(instance->type != controller_instance_type_exit_e, F_false, &instance->main->thread, &instance->lock);
+        if (F_status_is_error(status_lock)) return F_status_set_error(F_lock_read);
 
-        return F_status_set_error(F_lock);
+        return F_status_set_error(F_lock_write);
       }
 
       instance->result = result.status;
 
       // Remove the pid now that waidpid() has returned.
-      *child = 0;
+      *process_child_id = 0;
 
       f_thread_unlock(&instance->lock);
 
       status_lock = controller_lock_read_instance(instance, &instance->lock);
 
       if (F_status_is_error(status_lock)) {
-        controller_print_error_lock_critical(&main->program.error, F_status_set_fine(status_lock), F_true);
 
-        return F_status_set_error(F_lock);
+        // Try again, after the first interrupt.
+        if (F_status_set_fine(status_lock) == F_interrupt) {
+          status_lock = controller_lock_read_instance(instance, &instance->lock);
+        }
+
+        if (F_status_is_error(status_lock)) {
+          controller_print_error_lock_critical(&main->program.error, F_status_set_fine(status_lock), F_true);
+
+          return F_status_set_error(F_lock_read);
+        }
       }
 
       if (WIFEXITED(result.status) ? WEXITSTATUS(result.status) : 0) {
@@ -599,13 +557,50 @@ extern "C" {
   }
 #endif // _di_controller_rule_execute_foreground_
 
+#ifndef _di_controller_rule_execute_next_child_
+  pid_t * controller_rule_execute_next_child(controller_instance_t * const instance) {
+
+    if (!instance) return 0;
+
+    f_number_unsigned_t i = 0;
+
+    while (i < instance->childs.used && instance->childs.array[i]) {
+      ++i;
+    } // while
+
+    if (i == instance->childs.used) {
+      ++instance->childs.used;
+    }
+
+    return &instance->childs.array[i];
+  }
+#endif // _di_controller_rule_execute_next_child_
+
+#ifndef _di_controller_rule_execute_next_pid_path_
+  f_string_dynamic_t * controller_rule_execute_next_pid_path(controller_instance_t * const instance) {
+
+    if (!instance) return 0;
+
+    f_number_unsigned_t i = 0;
+
+    while (i < instance->path_pids.used && instance->path_pids.array[i].used) {
+      ++i;
+    } // while
+
+    if (i == instance->path_pids.used) {
+      ++instance->path_pids.used;
+    }
+
+    return &instance->path_pids.array[i];
+  }
+#endif // _di_controller_rule_execute_next_pid_path_
+
 #ifndef _di_controller_rule_execute_pid_with_
-  f_status_t controller_rule_execute_pid_with(const f_string_dynamic_t pid_file, const uint8_t type, const f_string_static_t program, const f_string_statics_t arguments, const uint8_t options, const uint8_t with, controller_execute_set_t * const execute_set, controller_instance_t * const instance) {
+  f_status_t controller_rule_execute_pid_with(controller_instance_t * const instance, const f_string_dynamic_t pid_file, const uint8_t type, const f_string_static_t program, const f_string_statics_t arguments, const uint8_t options, const uint8_t with, controller_execute_set_t * const execute_set) {
 
     if (!execute_set || !instance || !instance->main) return F_status_set_error(F_parameter);
 
     f_status_t status = F_okay;
-    f_status_t status_lock = F_okay;
 
     controller_t * const main = instance->main;
 
@@ -627,44 +622,18 @@ extern "C" {
       return status;
     }
 
-    pid_t *child = 0;
-    f_string_dynamic_t *child_pid_file = 0;
-
-    {
-      f_number_unsigned_t i = 0;
-
-      while (i < instance->childs.used && instance->childs.array[i]) {
-        ++i;
-      } // while
-
-      child = &instance->childs.array[i];
-
-      if (i == instance->childs.used) {
-        ++instance->childs.used;
-      }
-
-      i = 0;
-
-      while (i < instance->path_pids.used && instance->path_pids.array[i].used) {
-        ++i;
-      } // while
-
-      child_pid_file = &instance->path_pids.array[i];
-
-      if (i == instance->path_pids.used) {
-        ++instance->path_pids.used;
-      }
-    }
+    pid_t * const process_child_id = controller_rule_execute_next_child(instance);
+    f_string_dynamic_t * const process_child_pid_file = controller_rule_execute_next_pid_path(instance);
 
     status = f_file_exists(pid_file, F_true);
 
     if (F_status_is_error(status) || status == F_true) {
-      controller_print_error_file_status(&main->program.error, macro_controller_f(f_file_exists), pid_file, f_file_operation_find_s, fll_error_file_type_file_e, status == F_true ? F_file_found : F_status_set_fine(status));
+      controller_print_error_file_status(&main->program.error, macro_controller_f(f_file_exists), pid_file, status == F_true ? f_file_operation_create_s : f_file_operation_find_s, fll_error_file_type_file_e, status == F_true ? F_file_found : F_status_set_fine(status));
 
       return status;
     }
 
-    status = f_string_dynamic_append_nulless(pid_file, child_pid_file);
+    status = f_string_dynamic_append_nulless(pid_file, process_child_pid_file);
 
     if (F_status_is_error(status)) {
       controller_print_error_status(&main->program.error, macro_controller_f(f_string_dynamic_append_nulless), F_status_set_fine(status));
@@ -704,31 +673,27 @@ extern "C" {
       const pid_t id_child = result.pid;
       result.status = 0;
 
+      // Assign the child instance id to allow for the cancel instance to send appropriate termination signals to the child instance.
+      *process_child_id = id_child;
+
+      // Have the parent wait for the child instance to finish.
+      waitpid(id_child, &result.status, 0);
+
       f_thread_unlock(&instance->lock);
 
-      status_lock = controller_lock_write_instance(instance, &instance->active);
+      f_status_t status_lock = controller_lock_write_instance(instance, &instance->lock);
 
       if (F_status_is_error(status_lock)) {
         controller_print_error_lock_critical(&main->program.error, F_status_set_fine(status_lock), F_false);
 
-        if (F_status_set_fine(status_lock) != F_interrupt) {
-          status = controller_lock_read_instance(instance, &instance->active);
-          if (status == F_okay) return status_lock;
-        }
+        status_lock = controller_lock_read(instance->type != controller_instance_type_exit_e, F_false, &instance->main->thread, &instance->lock);
+        if (F_status_is_error(status_lock)) return F_status_set_error(F_lock_read);
 
-        return F_status_set_error(F_lock);
+        return F_status_set_error(F_lock_write);
       }
 
       // Assign the child instance id to allow for the cancel instance to send appropriate termination signals to the child instance.
-      *child = id_child;
-
-      f_thread_unlock(&instance->lock);
-
-      status_lock = controller_lock_read_instance(instance, &instance->active);
-
-      if (F_status_is_error(status_lock)) {
-        controller_print_error_lock_critical(&main->program.error, F_status_set_fine(status_lock), F_true);
-      }
+      *process_child_id = id_child;
 
       // The child instance should perform the change into background, therefore it is safe to wait for the child to Exit (another instance is spawned).
       if (F_status_set_fine(status_lock) != F_interrupt) {
@@ -741,27 +706,25 @@ extern "C" {
         f_thread_unlock(&instance->lock);
       }
 
-      status_lock = controller_lock_write_instance(instance, &instance->active);
+      status_lock = controller_lock_write_instance(instance, &instance->lock);
 
       if (F_status_is_error(status_lock)) {
         controller_print_error_lock_critical(&main->program.error, F_status_set_fine(status_lock), F_false);
 
-        if (F_status_set_fine(status_lock) != F_interrupt) {
-          status = controller_lock_read_instance(instance, &instance->active);
-          if (status == F_okay) return status_lock;
-        }
+        status_lock = controller_lock_read(instance->type != controller_instance_type_exit_e, F_false, &instance->main->thread, &instance->lock);
+        if (F_status_is_error(status_lock)) return F_status_set_error(F_lock_read);
 
-        return F_status_set_error(F_lock);
+        return F_status_set_error(F_lock_write);
       }
 
       instance->result = result.status;
 
       // Remove the pid now that waidpid() has returned.
-      *child = 0;
+      *process_child_id = 0;
 
       f_thread_unlock(&instance->lock);
 
-      status_lock = controller_lock_read_instance(instance, &instance->active);
+      status_lock = controller_lock_read_instance(instance, &instance->lock);
 
       if (F_status_is_error(status_lock)) {
         controller_print_error_lock_critical(&main->program.error, F_status_set_fine(status_lock), F_true);

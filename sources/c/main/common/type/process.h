@@ -22,6 +22,7 @@ extern "C" {
  * The typedef for this is located in the defs.h header.
  *
  * Properties:
+ *   - flag:  Flags from controller_process_flag_*_e.
  *   - ready: State representing if the settings are all loaded and is ready to run program operations.
  *   - mode:  Controller setting mode based on the setting mode enumerator.
  *
@@ -41,6 +42,7 @@ extern "C" {
  */
 #ifndef _di_controller_process_t
   struct controller_process_t_ {
+    uint8_t flag;
     uint8_t ready;
     uint8_t mode;
 
@@ -60,6 +62,7 @@ extern "C" {
   };
 
   #define controller_process_t_initialize { \
+    0, \
     0, \
     0, \
     0, \

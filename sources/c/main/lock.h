@@ -47,6 +47,9 @@ extern "C" {
  * @param is_normal
  *   If TRUE, then perform as if this operates during a normal operation (Entry and Control).
  *   If FALSE, then perform as if this operates during a an Exit operation.
+ * @param check
+ *   If TRUE, then check if the state is enabled and if it is not then abort.
+ *   If FALSE, then do not check if the state is enabled and keep looping.
  * @param thread
  *   The thread data used to determine if the main thread is disabled or not.
  *
@@ -69,7 +72,7 @@ extern "C" {
  * @see f_thread_lock_read_timed()
  */
 #ifndef _di_controller_lock_read_
-  extern f_status_t controller_lock_read(const uint8_t is_normal, controller_thread_t * const thread, f_thread_lock_t * const lock);
+  extern f_status_t controller_lock_read(const uint8_t is_normal, const uint8_t check, controller_thread_t * const thread, f_thread_lock_t * const lock);
 #endif // _di_controller_lock_read_
 
 /**
@@ -100,35 +103,6 @@ extern "C" {
 #endif // _di_controller_lock_read_instance_
 
 /**
- * Wait to get a read lock for some instance type.
- *
- * Given a r/w lock, periodically check to see if main thread is disabled while waiting.
- *
- * @param type
- *   The instance type to use when checking if thread is enabled.
- * @param thread
- *   The thread data used to determine if the main thread is disabled or not.
- *
- *   Must not be NULL.
- * @param lock
- *   The r/w lock to obtain a read lock on.
- *
- *   Must not be NULL.
- *
- * @return
- *   Status from: controller_lock_read().
- *
- *   F_parameter (with error bit) if a parameter is invalid.
- *
- *   Errors (with error bit) from: controller_lock_read().
- *
- * @see controller_lock_read()
- */
-#ifndef _di_controller_lock_read_instance_type_
-  extern f_status_t controller_lock_read_instance_type(const uint8_t type, controller_thread_t * const thread, f_thread_lock_t * const lock);
-#endif // _di_controller_lock_read_instance_type_
-
-/**
  * Wait to get a write lock.
  *
  * Given a r/w lock, periodically check to see if main thread is disabled while waiting.
@@ -136,6 +110,9 @@ extern "C" {
  * @param is_normal
  *   If TRUE, then perform as if this operates during a normal operation (Entry and Control).
  *   If FALSE, then perform as if this operates during a an Exit operation.
+ * @param check
+ *   If TRUE, then check if the state is enabled and if it is not then abort.
+ *   If FALSE, then do not check if the state is enabled and keep looping.
  * @param thread
  *   The thread data used to determine if the main thread is disabled or not.
  *
@@ -158,7 +135,7 @@ extern "C" {
  * @see f_thread_lock_write_timed()
  */
 #ifndef _di_controller_lock_write_
-  extern f_status_t controller_lock_write(const uint8_t is_normal, controller_thread_t * const thread, f_thread_lock_t * const lock);
+  extern f_status_t controller_lock_write(const uint8_t is_normal, const uint8_t check, controller_thread_t * const thread, f_thread_lock_t * const lock);
 #endif // _di_controller_lock_write_
 
 /**
@@ -176,35 +153,6 @@ extern "C" {
  *   Must not be NULL.
  *
  * @return
- *   Status from: controller_lock_write_instance_type().
- *
- *   F_parameter (with error bit) if a parameter is invalid.
- *
- *   Errors (with error bit) from: controller_lock_write_instance_type().
- *
- * @see controller_lock_write_instance_type()
- */
-#ifndef _di_controller_lock_write_instance_
-  extern f_status_t controller_lock_write_instance(controller_instance_t * const instance, f_thread_lock_t * const lock);
-#endif // _di_controller_lock_write_instance_
-
-/**
- * Wait to get a write lock for some instance type.
- *
- * Given a r/w lock, periodically check to see if main thread is disabled while waiting.
- *
- * @param type
- *   The instance type to use when checking if thread is enabled.
- * @param thread
- *   The thread data used to determine if the main thread is disabled or not.
- *
- *   Must not be NULL.
- * @param lock
- *   The r/w lock to obtain a write lock on.
- *
- *   Must not be NULL.
- *
- * @return
  *   Status from: controller_lock_write().
  *
  *   F_parameter (with error bit) if a parameter is invalid.
@@ -213,9 +161,9 @@ extern "C" {
  *
  * @see controller_lock_write()
  */
-#ifndef _di_controller_lock_write_instance_type_
-  extern f_status_t controller_lock_write_instance_type(const uint8_t type, controller_thread_t * const thread, f_thread_lock_t * const lock);
-#endif // _di_controller_lock_write_instance_type_
+#ifndef _di_controller_lock_write_instance_
+  extern f_status_t controller_lock_write_instance(controller_instance_t * const instance, f_thread_lock_t * const lock);
+#endif // _di_controller_lock_write_instance_
 
 #ifdef __cplusplus
 } // extern "C"

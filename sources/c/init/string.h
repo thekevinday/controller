@@ -37,8 +37,8 @@ extern "C" {
     #define CONTROLLER_default_path_pid_s        _override_controller_path_pid_
     #define CONTROLLER_default_path_pid_s_length _override_controller_path_pid_length_
   #else
-    #define CONTROLLER_init_default_path_pid_s        "/var/run/init"
-    #define CONTROLLER_init_default_path_pid_s_length 13
+    #define CONTROLLER_init_default_path_pid_s        "/run/init"
+    #define CONTROLLER_init_default_path_pid_s_length 9
   #endif // defined(_override_controller_path_pid_) && defined(_override_controller_path_pid_length_)
 
   // The pid prefix is a system-specific path part and needs to be more easily controlled at compile time.
@@ -65,8 +65,8 @@ extern "C" {
     #define CONTROLLER_default_path_socket_s        _override_controller_path_socket_
     #define CONTROLLER_default_path_socket_s_length _override_controller_path_socket_length_
   #else
-    #define CONTROLLER_init_default_path_socket_s        "/var/run/init"
-    #define CONTROLLER_init_default_path_socket_s_length 13
+    #define CONTROLLER_init_default_path_socket_s        "/run/init"
+    #define CONTROLLER_init_default_path_socket_s_length 9
   #endif // defined(_override_controller_path_socket_) && defined(_override_controller_path_socket_length_)
 
   // The socket prefix path is a system-specific path part and needs to be more easily controlled at compile time.

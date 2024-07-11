@@ -533,7 +533,7 @@ extern "C" {
       return F_status_set_error(F_interrupt);
     }
 
-    f_status_t status = controller_lock_read_instance_type(type, &main->thread, &main->thread.lock.instance);
+    f_status_t status = controller_lock_read(type != controller_instance_type_exit_e, F_true, &main->thread, &main->thread.lock.instance);
 
     if (F_status_is_error(status)) {
       controller_print_error_lock_critical(&main->program.error, F_status_set_fine(status), F_true);
@@ -555,7 +555,7 @@ extern "C" {
 
     controller_instance_t * const instance = main->thread.instances.array[at];
 
-    status = controller_lock_read_instance_type(type, &main->thread, &instance->active);
+    status = controller_lock_read(type != controller_instance_type_exit_e, F_true, &main->thread, &instance->active);
 
     if (F_status_is_error(status)) {
       controller_print_error_lock_critical(&main->program.error, F_status_set_fine(status), F_true);

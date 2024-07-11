@@ -1,7 +1,7 @@
 # fss-0002 iki-0000
 #
 # license: open-standard-license-1.0-or-later
-# version 2024/07/02
+# version 2024/07/10
 #
 # This file (assumed to be named entry.txt) can be more easily read using the following iki_read commands:
 #   iki_read entry.txt +Q -r PID PID -w -WW code '"' '"'
@@ -173,8 +173,8 @@ Entry Documentation:
     - The code:"ready" Item Action\:
       Instructs the controller program when it is safe to perform normal tasks, such as creating the PID:"Process Identifier" file.
       When not specified, the state is always assumed to be ready.
-      For example, the controller program may be used as a full blown code:"init" replacement and therefore may need to mount the /var/run/ directory.
-      If the PID:"Process Identifier" file is created at program start, then the /var/run/controller.pid would be written before the /var/run/ directory is ready.
+      For example, the controller program may be used as a full blown code:"init" replacement and therefore may need to mount the /run/ directory.
+      If the PID:"Process Identifier" file is created at program start, then the /run/controller.pid would be written before the /run/ directory is ready.
       This could be a problem, such as on a read-only file system the PID:"Process Identifier" creation fails and controller bails out on error.
       Adding code:"ready" essentially specifies a point in time in the Entry in which things are expected to be safe for such basic operations.
       When the optional code:"wait" is provided, then code:"ready" will wait for all currently started asynchronous processes to complete before operating.

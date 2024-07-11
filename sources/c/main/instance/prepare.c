@@ -14,7 +14,7 @@ extern "C" {
     if (controller_instance_find(action, alias, main->thread.instances, id) == F_false) {
       f_thread_unlock(&main->thread.lock.instance);
 
-      status = controller_lock_write(is_normal, &main->thread, &main->thread.lock.instance);
+      status = controller_lock_write(is_normal, F_true, &main->thread, &main->thread.lock.instance);
 
       if (F_status_is_error(status)) {
         controller_print_error_lock_critical(&main->program.error, F_status_set_fine(status), F_false);
@@ -36,7 +36,7 @@ extern "C" {
         controller_instance_t * const instance = F_status_is_error_not(status) ? main->thread.instances.array[main->thread.instances.used] : 0;
 
         if (F_status_is_error_not(status)) {
-          status = controller_lock_write(is_normal, &main->thread, &instance->lock);
+          status = controller_lock_write(is_normal, F_true, &main->thread, &instance->lock);
         }
 
         if (F_status_is_error(status)) {
@@ -65,8 +65,8 @@ extern "C" {
       f_thread_unlock(&main->thread.lock.instance);
 
       // The read lock must be restored on return.
-      const f_status_t status_restore = F_status_is_error(controller_lock_read(is_normal, &main->thread, &main->thread.lock.instance))
-        ? F_status_set_error(F_lock)
+      const f_status_t status_restore = F_status_is_error(controller_lock_read(is_normal, F_false, &main->thread, &main->thread.lock.instance))
+        ? F_status_set_error(F_lock_read)
         : F_okay;
 
       if (F_status_is_fine(status)) {

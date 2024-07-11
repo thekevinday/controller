@@ -47,7 +47,7 @@ extern "C" {
           if (F_status_is_error(*status)) {
             main->process.ready = controller_process_ready_fail_e;
 
-            if ((F_status_set_fine(*status) == F_execute || F_status_set_fine(*status) == F_require) && (main->setting.flag & controller_process_flag_failsafe_e)) {
+            if ((F_status_set_fine(*status) == F_execute || F_status_set_fine(*status) == F_require) && (main->process.flag & controller_process_flag_failsafe_e)) {
               const uint8_t original_enabled = main->thread.enabled;
 
               // Restore operating mode so that the failsafe can execute.
@@ -158,7 +158,7 @@ extern "C" {
         if (F_status_is_error(*status)) {
           main->process.ready = controller_process_ready_fail_e;
 
-          if ((F_status_set_fine(*status) == F_execute || F_status_set_fine(*status) == F_require) && (main->setting.flag & controller_process_flag_failsafe_e)) {
+          if ((F_status_set_fine(*status) == F_execute || F_status_set_fine(*status) == F_require) && (main->process.flag & controller_process_flag_failsafe_e)) {
 
             const uint8_t original_enabled = main->thread.enabled;
 

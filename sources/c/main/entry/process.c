@@ -184,7 +184,7 @@ extern "C" {
           break;
         }
         else if (entry_action->type == controller_entry_action_type_consider_e || controller_entry_action_type_is_rule(entry_action->type)) {
-          status_lock = controller_lock_write(is_entry, &main->thread, &main->thread.lock.rule);
+          status_lock = controller_lock_write(is_entry, F_true, &main->thread, &main->thread.lock.rule);
 
           if (F_status_is_error(status_lock)) {
             controller_print_error_lock_critical(&main->program.error, F_status_set_fine(status_lock), F_false);
@@ -212,7 +212,7 @@ extern "C" {
           id_rule_name[entry_action->parameters.array[0].used] = f_path_separator_s.string[0];
           id_rule_name[id_rule_length] = 0;
 
-          status_lock = controller_lock_read(is_entry, &main->thread, &main->thread.lock.rule);
+          status_lock = controller_lock_read(is_entry, F_true, &main->thread, &main->thread.lock.rule);
 
           if (F_status_is_error(status_lock)) {
             controller_print_error_lock_critical(&main->program.error, F_status_set_fine(status_lock), F_true);
@@ -249,7 +249,7 @@ extern "C" {
             memcpy(cache_name_item, cache->action.name_item.string, sizeof(f_char_t) * cache->action.name_item.used);
             memcpy(cache_name_file, cache->action.name_file.string, sizeof(f_char_t) * cache->action.name_file.used);
 
-            status_lock = controller_lock_write(is_entry, &main->thread, &main->thread.lock.rule);
+            status_lock = controller_lock_write(is_entry, F_true, &main->thread, &main->thread.lock.rule);
 
             if (F_status_is_fine(status_lock)) {
               status = controller_rule_read(main, cache, is_entry, alias_rule, entry, &main->process.rules.array[main->process.rules.used]);
@@ -421,7 +421,7 @@ extern "C" {
               return F_status_is_error(F_critical);
             }
             else {
-              main->setting.flag |= controller_process_flag_failsafe_e;
+              main->process.flag |= controller_process_flag_failsafe_e;
               main->process.failsafe_item_id = entry_action->number;
 
               controller_print_output_entry_setting_simulate_value(&main->program.output, is_entry, controller_failsafe_s, f_string_empty_s, entry->items.array[main->process.failsafe_item_id].name, f_string_empty_s);

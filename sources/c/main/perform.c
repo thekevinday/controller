@@ -38,7 +38,7 @@ extern "C" {
         status = F_okay;
       }
       else {
-        main->setting.flag |= controller_process_flag_pid_created_e;
+        main->process.flag |= controller_process_flag_pid_created_e;
 
         controller_print_debug_perform_pid_file_create_success(&main->program.debug);
       }

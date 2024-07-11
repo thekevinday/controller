@@ -46,7 +46,7 @@ extern "C" {
  *   F_okay on success.
  *   F_found on success, but nothing was done because an existing instance was found.
  *
- *   F_lock (with error bit) if failed to re-establish read lock on main.thread.lock.instance while returning.
+ *   F_lock_read (with error bit) if failed to re-establish read lock on main.thread.lock.instance while returning.
  *   F_parameter (with error bit) if a parameter is invalid.
  *
  *   Errors (with error bit) from: f_string_dynamic_append().
