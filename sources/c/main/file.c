@@ -43,7 +43,11 @@ extern "C" {
     f_string_static_t path = f_string_static_t_initialize;
 
     if (main->process.path_setting.used) {
-      path.used = main->process.path_setting.used + F_path_separator_s_length + main->thread.cache.action.name_file.used;
+      path.used = main->process.path_setting.used + main->thread.cache.action.name_file.used;
+
+      if (main->process.path_setting.string[main->process.path_setting.used - 1] != f_path_separator_s.string[0]) {
+        path.used += f_path_separator_s.used;
+      }
     }
     else {
       path.used = main->thread.cache.action.name_file.used;
@@ -54,16 +58,21 @@ extern "C" {
 
     if (main->process.path_setting.used) {
       memcpy(path_string, main->process.path_setting.string, sizeof(f_char_t) * main->process.path_setting.used);
-      memcpy(path_string + main->process.path_setting.used + F_path_separator_s_length, main->thread.cache.action.name_file.string, sizeof(f_char_t) * main->thread.cache.action.name_file.used);
 
-      path_string[main->process.path_setting.used] = f_path_separator_s.string[0];
+      if (main->process.path_setting.string[main->process.path_setting.used - 1] == f_path_separator_s.string[0]) {
+        memcpy(path_string + main->process.path_setting.used, main->thread.cache.action.name_file.string, sizeof(f_char_t) * main->thread.cache.action.name_file.used);
+      }
+      else {
+        memcpy(path_string + main->process.path_setting.used + F_path_separator_s_length, main->thread.cache.action.name_file.string, sizeof(f_char_t) * main->thread.cache.action.name_file.used);
+
+        path_string[main->process.path_setting.used] = f_path_separator_s.string[0];
+      }
     }
     else {
       memcpy(path_string, main->thread.cache.action.name_file.string, sizeof(f_char_t) * main->thread.cache.action.name_file.used);
     }
 
     path_string[path.used] = 0;
-
 
     status = f_file_stream_open(path, f_string_empty_s, &file);
 
