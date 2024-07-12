@@ -39,7 +39,8 @@ extern "C" {
  *   F_failure on execution failure.
  *
  *   F_interrupt (with error bit) on receiving a instance signal, such as an interrupt signal.
- *   F_lock (with error bit) if failed to re-establish read lock on instance->lock while returning.
+ *   F_lock (with error bit) if failed to establish a lock, and the instance->lock read lock is already restored.
+ *   F_lock_read (with error bit) if failed to re-establish read lock on instance->lock while returning.
  *
  *   Errors (with error bit) from: controller_lock_read().
  *   Errors (with error bit) from: controller_lock_write().

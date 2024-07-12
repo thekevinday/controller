@@ -49,11 +49,11 @@ build_sources_library file.c lock.c path.c process.c
 build_sources_library rule.c rule/action.c rule/execute.c rule/expand.c rule/instance.c rule/is.c rule/item.c rule/parameter.c rule/read.c rule/setting.c rule/wait.c
 build_sources_library perform.c
 build_sources_library print/data.c
-build_sources_library print/debug.c print/debug/rule/action.c print/debug/rule/execute.c print/debug/perform/control.c print/debug/perform/pid.c
+build_sources_library print/debug.c print/debug/rule/action.c print/debug/rule/execute.c print/debug/rule/instance.c print/debug/perform/control.c print/debug/perform/pid.c
 build_sources_library print/error.c
 build_sources_library print/error/entry.c print/error/entry/action.c print/error/entry/item.c print/error/entry/setting.c
 build_sources_library print/error/perform/pid.c
-build_sources_library print/error/rule.c print/error/rule/action.c print/error/rule/item.c print/error/rule/setting.c
+build_sources_library print/error/rule.c print/error/rule/action.c print/error/rule/instance.c print/error/rule/item.c print/error/rule/setting.c
 build_sources_library print/lock.c print/error/lock.c
 build_sources_library print/output/entry/setting.c print/output/rule/execute.c print/output/rule/setting.c print/output/rule/validate.c
 build_sources_library print/message.c print/message/entry.c print/message/entry/action.c print/message/entry/item.c
@@ -74,11 +74,11 @@ build_sources_headers file.h lock.h path.h process.h
 build_sources_headers rule.h rule/action.h rule/execute.h rule/expand.h rule/instance.h rule/is.h rule/item.h rule/parameter.h rule/read.h rule/setting.h rule/wait.h
 build_sources_headers perform.h
 build_sources_headers print/data.h
-build_sources_headers print/debug.h print/debug/rule/action.h print/debug/rule/execute.h print/debug/perform/control.h print/debug/perform/pid.h
+build_sources_headers print/debug.h print/debug/rule/action.h print/debug/rule/execute.h print/debug/rule/instance.h print/debug/perform/control.h print/debug/perform/pid.h
 build_sources_headers print/error.h
 build_sources_headers print/error/entry.h print/error/entry/action.h print/error/entry/item.h print/error/entry/setting.h
 build_sources_headers print/error/perform/pid.h
-build_sources_headers print/error/rule.h print/error/rule/action.h print/error/rule/item.h print/error/rule/setting.h
+build_sources_headers print/error/rule.h print/error/rule/action.h print/error/rule/instance.h print/error/rule/item.h print/error/rule/setting.h
 build_sources_headers print/lock.h print/error/lock.h
 build_sources_headers print/output/entry/setting.h print/output/rule/execute.h print/output/rule/setting.h print/output/rule/validate.h
 build_sources_headers print/message.h print/message/entry.h print/message/entry/action.h print/message/entry/item.h
@@ -89,8 +89,6 @@ build_sources_headers thread.h thread/cleanup.h thread/control.h thread/entry.h 
 build_sources_headers validate.h
 
 build_sources_documentation man
-
-build_sources_setting controller
 
 build_script yes
 build_shared yes

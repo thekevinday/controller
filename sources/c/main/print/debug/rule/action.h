@@ -5,12 +5,12 @@
  * API Version: 0.7
  * Licenses: lgpl-2.1-or-later
  *
- * Provides the print Entry Action debug functionality.
+ * Provides the print Entry Rule Action debug functionality.
  *
  * This is auto-included and should not need to be explicitly included.
  */
-#ifndef _controller_main_print_debug_entry_action_h
-#define _controller_main_print_debug_entry_action_h
+#ifndef _controller_main_print_debug_rule_action_h
+#define _controller_main_print_debug_rule_action_h
 
 #ifdef __cplusplus
 extern "C" {
@@ -46,4 +46,4 @@ extern "C" {
 } // extern "C"
 #endif
 
-#endif // _controller_main_print_debug_entry_action_h
+#endif // _controller_main_print_debug_rule_action_h

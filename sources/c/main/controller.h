@@ -116,6 +116,7 @@
 #include <program/controller/main/print/debug/perform/pid.h>
 #include <program/controller/main/print/debug/rule/action.h>
 #include <program/controller/main/print/debug/rule/execute.h>
+#include <program/controller/main/print/debug/rule/instance.h>
 #include <program/controller/main/print/error.h>
 #include <program/controller/main/print/error/entry.h>
 #include <program/controller/main/print/error/entry/action.h>
@@ -125,6 +126,7 @@
 #include <program/controller/main/print/error/perform/pid.h>
 #include <program/controller/main/print/error/rule.h>
 #include <program/controller/main/print/error/rule/action.h>
+#include <program/controller/main/print/error/rule/instance.h>
 #include <program/controller/main/print/error/rule/item.h>
 #include <program/controller/main/print/error/rule/setting.h>
 #include <program/controller/main/print/lock.h>

@@ -5,7 +5,7 @@ extern "C" {
 #endif
 
 #ifndef _di_controller_rule_execute_
-  f_status_t controller_rule_execute(controller_t * const main, const uint8_t action, const uint8_t options, controller_instance_t * const instance) {
+  f_status_t controller_rule_execute(controller_t * const main, controller_instance_t * const instance, const uint8_t action, const uint8_t options) {
 
     if (!main || !instance) return F_status_set_error(F_parameter);
 
@@ -247,14 +247,14 @@ extern "C" {
           }
 
           do {
-            status = controller_rule_execute_foreground(instance->rule.items.array[i].type, f_string_empty_s, instance->cache.expanded, options, &execute_set, instance);
+            status = controller_rule_execute_foreground(instance, instance->rule.items.array[i].type, f_string_empty_s, instance->cache.expanded, options, &execute_set);
 
-            if (status == F_child || F_status_set_fine(status) == F_interrupt || F_status_set_fine(status) == F_lock) break;
+            if (status == F_child || F_status_set_fine(status) == F_interrupt || F_status_set_fine(status) == F_lock || F_status_set_fine(status) == F_lock_read) break;
             if (F_status_is_error(status) && F_status_set_fine(status) != F_failure) break;
 
           } while (controller_rule_execute_rerun(instance, &instance->rule.items.array[i], controller_rule_action_type_to_action_execute_type(action)) > 0);
 
-          if (status == F_child || F_status_set_fine(status) == F_interrupt || F_status_set_fine(status) == F_lock) break;
+          if (status == F_child || F_status_set_fine(status) == F_interrupt || F_status_set_fine(status) == F_lock || F_status_set_fine(status) == F_lock_read) break;
 
           if (F_status_is_error(status)) {
             instance->rule.items.array[i].actions.array[j].status = F_status_set_error(F_failure);
@@ -285,18 +285,18 @@ extern "C" {
 
           do {
             if (instance->rule.engine.used) {
-              status = controller_rule_execute_foreground(instance->rule.items.array[i].type, instance->rule.engine, instance->rule.engine_arguments, options, &execute_set, instance);
+              status = controller_rule_execute_foreground(instance, instance->rule.items.array[i].type, instance->rule.engine, instance->rule.engine_arguments, options, &execute_set);
             }
             else {
-              status = controller_rule_execute_foreground(instance->rule.items.array[i].type, controller_default_engine_s, instance->rule.engine_arguments, options, &execute_set, instance);
+              status = controller_rule_execute_foreground(instance, instance->rule.items.array[i].type, controller_default_engine_s, instance->rule.engine_arguments, options, &execute_set);
             }
 
-            if (status == F_child || F_status_set_fine(status) == F_lock) break;
+            if (status == F_child || F_status_set_fine(status) == F_lock || F_status_set_fine(status) == F_lock_read) break;
             if (F_status_is_error(status) && F_status_set_fine(status) != F_failure) break;
 
           } while (controller_rule_execute_rerun(instance, &instance->rule.items.array[i], controller_rule_action_type_to_action_execute_type(action)) > 0);
 
-          if (status == F_child || F_status_set_fine(status) == F_interrupt || F_status_set_fine(status) == F_lock) break;
+          if (status == F_child || F_status_set_fine(status) == F_interrupt || F_status_set_fine(status) == F_lock || F_status_set_fine(status) == F_lock_read) break;
 
           if (F_status_is_error(status)) {
             instance->rule.items.array[i].actions.array[j].status = F_status_set_error(F_failure);
@@ -322,12 +322,12 @@ extern "C" {
             do {
               status = controller_rule_execute_pid_with(instance, instance->rule.items.array[i].pid_file, instance->rule.items.array[i].type, f_string_empty_s, instance->cache.expanded, options, instance->rule.items.array[i].with, &execute_set);
 
-              if (status == F_child || F_status_set_fine(status) == F_interrupt || F_status_set_fine(status) == F_lock) break;
+              if (status == F_child || F_status_set_fine(status) == F_interrupt || F_status_set_fine(status) == F_lock || F_status_set_fine(status) == F_lock_read) break;
               if (F_status_is_error(status) && F_status_set_fine(status) != F_failure) break;
 
             } while (controller_rule_execute_rerun(instance, &instance->rule.items.array[i], controller_rule_action_type_to_action_execute_type(action)) > 0);
 
-            if (status == F_child || F_status_set_fine(status) == F_interrupt || F_status_set_fine(status) == F_lock) break;
+            if (status == F_child || F_status_set_fine(status) == F_interrupt || F_status_set_fine(status) == F_lock || F_status_set_fine(status) == F_lock_read) break;
 
             if (F_status_is_error(status)) {
               instance->rule.items.array[i].actions.array[j].status = F_status_set_error(F_failure);
@@ -366,12 +366,12 @@ extern "C" {
             do {
               status = controller_rule_execute_pid_with(instance, instance->rule.items.array[i].pid_file, instance->rule.items.array[i].type, instance->rule.engine.used ? instance->rule.engine : controller_default_engine_s, instance->rule.engine_arguments, options, instance->rule.items.array[i].with, &execute_set);
 
-              if (status == F_child || F_status_set_fine(status) == F_interrupt || F_status_set_fine(status) == F_lock) break;
+              if (status == F_child || F_status_set_fine(status) == F_interrupt || F_status_set_fine(status) == F_lock || F_status_set_fine(status) == F_lock_read) break;
               if (F_status_is_error(status) && F_status_set_fine(status) != F_failure) break;
 
             } while (controller_rule_execute_rerun(instance, &instance->rule.items.array[i], controller_rule_action_type_to_action_execute_type(action)) > 0);
 
-            if (status == F_child || F_status_set_fine(status) == F_interrupt || F_status_set_fine(status) == F_lock) break;
+            if (status == F_child || F_status_set_fine(status) == F_interrupt || F_status_set_fine(status) == F_lock || F_status_set_fine(status) == F_lock_read) break;
 
             if (F_status_is_error(status)) {
               instance->rule.items.array[i].actions.array[j].status = F_status_set_error(F_failure);
@@ -406,11 +406,15 @@ extern "C" {
     } // for
 
     // Lock failed, attempt to re-establish lock before returning.
-    if (F_status_set_fine(status) == F_lock) {
-      status = controller_lock_read(instance->type != controller_instance_type_exit_e, F_true, &main->thread, &instance->lock);
-      if (F_status_is_error(status)) return F_status_set_error(F_lock);
-
+    if (F_status_set_fine(status) == F_lock || F_status_set_fine(status) == F_lock_read) {
       success = F_false;
+
+      if (F_status_set_fine(status) == F_lock_read) {
+        status = controller_lock_read(instance->type != controller_instance_type_exit_e, F_false, &main->thread, &instance->lock);
+        if (F_status_is_error(status)) return F_status_set_error(F_lock_read);
+
+        status = F_status_set_error(F_lock);
+      }
     }
 
     if (success == false && !instance->rule.items.used) {
@@ -427,7 +431,7 @@ extern "C" {
 #endif // _di_controller_rule_execute_
 
 #ifndef _di_controller_rule_execute_foreground_
-  f_status_t controller_rule_execute_foreground(const uint8_t type, const f_string_static_t program, const f_string_statics_t arguments, const uint8_t options, controller_execute_set_t * const execute_set, controller_instance_t * const instance) {
+  f_status_t controller_rule_execute_foreground(controller_instance_t * const instance, const uint8_t type, const f_string_static_t program, const f_string_statics_t arguments, const uint8_t options, controller_execute_set_t * const execute_set) {
 
     if (!instance || !instance->main) return F_status_set_error(F_parameter);
 
@@ -488,7 +492,7 @@ extern "C" {
         status_lock = controller_lock_read(instance->type != controller_instance_type_exit_e, F_false, &instance->main->thread, &instance->lock);
         if (F_status_is_error(status_lock)) return F_status_set_error(F_lock_read);
 
-        return F_status_set_error(F_lock_write);
+        return F_status_set_error(F_lock);
       }
 
       instance->result = result.status;
@@ -504,7 +508,7 @@ extern "C" {
 
         // Try again, after the first interrupt.
         if (F_status_set_fine(status_lock) == F_interrupt) {
-          status_lock = controller_lock_read_instance(instance, &instance->lock);
+          status_lock = controller_lock_read(instance->type != controller_instance_type_exit_e, F_false, &instance->main->thread, &instance->lock);
         }
 
         if (F_status_is_error(status_lock)) {
@@ -514,12 +518,7 @@ extern "C" {
         }
       }
 
-      if (WIFEXITED(result.status) ? WEXITSTATUS(result.status) : 0) {
-        status = F_status_set_error(F_failure);
-      }
-      else {
-        status = F_okay;
-      }
+      status = WIFEXITED(result.status) && WEXITSTATUS(result.status) ? F_status_set_error(F_failure) : F_okay;
     }
     else {
       main->program.child = result.status;
@@ -689,7 +688,7 @@ extern "C" {
         status_lock = controller_lock_read(instance->type != controller_instance_type_exit_e, F_false, &instance->main->thread, &instance->lock);
         if (F_status_is_error(status_lock)) return F_status_set_error(F_lock_read);
 
-        return F_status_set_error(F_lock_write);
+        return F_status_set_error(F_lock);
       }
 
       // Assign the child instance id to allow for the cancel instance to send appropriate termination signals to the child instance.
@@ -714,7 +713,7 @@ extern "C" {
         status_lock = controller_lock_read(instance->type != controller_instance_type_exit_e, F_false, &instance->main->thread, &instance->lock);
         if (F_status_is_error(status_lock)) return F_status_set_error(F_lock_read);
 
-        return F_status_set_error(F_lock_write);
+        return F_status_set_error(F_lock);
       }
 
       instance->result = result.status;
@@ -732,12 +731,7 @@ extern "C" {
         return F_status_set_error(F_lock);
       }
 
-      if (WIFEXITED(result.status) ? WEXITSTATUS(result.status) : 0) {
-        status = F_status_set_error(F_failure);
-      }
-      else {
-        status = F_okay;
-      }
+      status = WIFEXITED(result.status) && WEXITSTATUS(result.status) ? F_status_set_error(F_failure) : F_okay;
     }
     else {
       main->program.child = result.status;
@@ -780,7 +774,7 @@ extern "C" {
 
     if (!instance || !instance->main || !item) return F_false;
 
-    const int result = WIFEXITED(instance->result) ? WEXITSTATUS(instance->result) : 0;
+    const int result = WIFEXITED(instance->result) && WEXITSTATUS(instance->result);
 
     if (item->reruns[action].is & (result ? controller_rule_rerun_is_failure_d : controller_rule_rerun_is_success_d)) {
       controller_t * const main = instance->main;
