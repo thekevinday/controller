@@ -19,14 +19,18 @@ extern "C" {
 /**
  * Convert the string from a string representation of an ID or a user name into the numeric representation of that ID or user name.
  *
- * @param buffer
- *   A string containing user name or ID.
- * @param range
- *   The range within the buffer specifically containing the name or ID.
  * @param cache
  *   The cache.
+ *
+ *   Must not be NULL.
+ * @param buffer
+ *   A string containing group name or ID.
+ * @param range
+ *   The range within the buffer specifically containing the name or ID.
  * @param id
  *   The determined user ID.
+ *
+ *   Must not be NULL.
  *
  * @return
  *   F_okay on success.
@@ -49,14 +53,18 @@ extern "C" {
 /**
  * Convert the string from a string representation of an ID or a group name into the numeric representation of that ID or group name.
  *
+ * @param cache
+ *   The cache.
+ *
+ *   Must not be NULL.
  * @param buffer
  *   A string containing group name or ID.
  * @param range
  *   The range within the buffer specifically containing the name or ID.
- * @param cache
- *   The cache.
  * @param id
- *   The determined group ID.
+ *   The determined user ID.
+ *
+ *   Must not be NULL.
  *
  * @return
  *   F_okay on success.

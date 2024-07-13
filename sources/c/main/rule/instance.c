@@ -144,7 +144,7 @@ extern "C" {
 
             if (F_status_is_error(status)) {
               if (F_status_set_fine(status) == F_lock) {
-                if (!controller_thread_is_enabled_instance_type(instance->type, &main->thread)) return F_status_set_error(F_interrupt);
+                if (!controller_thread_is_enabled_instance_type(&main->thread, instance->type)) return F_status_set_error(F_interrupt);
               }
 
               controller_print_error_rule_item_rule_not_loaded(&main->program.error, &instance->cache.action, dynamics[i]->array[j]);
@@ -475,7 +475,7 @@ extern "C" {
 
     if (!main || !cache) return F_status_set_error(F_parameter);
 
-    if (!controller_thread_is_enabled_instance_type(type, &main->thread)) {
+    if (!controller_thread_is_enabled_instance_type(&main->thread, type)) {
       return F_status_set_error(F_interrupt);
     }
 
@@ -638,7 +638,7 @@ extern "C" {
         }
       }
       else {
-        status = controller_rule_instance_perform(options_force, instance);
+        status = controller_rule_instance_perform(instance, options_force);
 
         if (status == F_child || F_status_set_fine(status) == F_interrupt) {
           f_thread_unlock(&instance->active);
@@ -682,7 +682,7 @@ extern "C" {
 #endif // _di_controller_rule_instance_begin_
 
 #ifndef _di_controller_rule_instance_perform_
-  f_status_t controller_rule_instance_perform(const uint8_t options_force, controller_instance_t * const instance) {
+  f_status_t controller_rule_instance_perform(controller_instance_t * const instance, const uint8_t options_force) {
 
     if (!instance || !instance->main) return F_status_set_error(F_parameter);
 

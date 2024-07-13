@@ -56,11 +56,11 @@ extern "C" {
       return status;
     }
 
-    while (controller_thread_is_enabled(is_entry, &main->thread)) {
+    while (controller_thread_is_enabled(&main->thread, is_entry)) {
 
       actions = &entry->items.array[cache->ats.array[at_i]].actions;
 
-      for (; cache->ats.array[at_j] < actions->used && controller_thread_is_enabled(is_entry, &main->thread); ++cache->ats.array[at_j]) {
+      for (; cache->ats.array[at_j] < actions->used && controller_thread_is_enabled(&main->thread, is_entry); ++cache->ats.array[at_j]) {
 
         cache->action.line_action = actions->array[cache->ats.array[at_j]].line;
         cache->action.name_action.used = 0;
@@ -85,15 +85,11 @@ extern "C" {
           error_has = F_false;
 
           // "main" is not allowed to be used for an "item" and "setting" is not an executable "item".
-          if (f_compare_dynamic(controller_main_s, actions->array[cache->ats.array[at_j]].parameters.array[0]) == F_equal_to) {
-            continue;
-          }
-          else if (f_compare_dynamic(controller_settings_s, actions->array[cache->ats.array[at_j]].parameters.array[0]) == F_equal_to) {
-            continue;
-          }
+          if (f_compare_dynamic(controller_main_s, actions->array[cache->ats.array[at_j]].parameters.array[0]) == F_equal_to) continue;
+          else if (f_compare_dynamic(controller_settings_s, actions->array[cache->ats.array[at_j]].parameters.array[0]) == F_equal_to) continue;
 
           // Walk though each items and check to see if the item actually exists.
-          for (i = 1; i < entry->items.used && controller_thread_is_enabled(is_entry, &main->thread); ++i) {
+          for (i = 1; i < entry->items.used && controller_thread_is_enabled(&main->thread, is_entry); ++i) {
 
             if (f_compare_dynamic(entry->items.array[i].name, actions->array[cache->ats.array[at_j]].parameters.array[0]) == F_equal_to) {
 
@@ -195,7 +191,7 @@ extern "C" {
       }
     } // while
 
-    if (!controller_thread_is_enabled(is_entry, &main->thread)) return F_status_set_error(F_interrupt);
+    if (!controller_thread_is_enabled(&main->thread, is_entry)) return F_status_set_error(F_interrupt);
 
     // If ready is not found in the entry, then default to always ready.
     if (main->process.ready == controller_process_ready_no_e) {

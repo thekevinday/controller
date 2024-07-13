@@ -13,7 +13,7 @@ extern "C" {
 
     controller_t * const main = (controller_t *) argument;
 
-    if (!controller_thread_is_enabled(F_true, &main->thread)) return 0;
+    if (!controller_thread_is_enabled(&main->thread, F_true)) return 0;
 
     return 0;
   }

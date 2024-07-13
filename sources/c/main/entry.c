@@ -5,11 +5,13 @@ extern "C" {
 #endif
 
 #ifndef _di_controller_entry_read_
-  f_status_t controller_entry_read(controller_t * const main, controller_entry_t * const entry) {
+  f_status_t controller_entry_read(controller_t * const main, const uint8_t is_entry) {
 
     if (!main) return F_status_set_error(F_parameter);
 
-    controller_interrupt_t custom = macro_controller_interrupt_t_initialize_1(entry->flag & controller_entry_flag_is_e, main);
+    controller_entry_t * const entry = is_entry ? &main->process.entry : &main->process.exit;
+
+    controller_interrupt_t custom = macro_controller_interrupt_t_initialize_1(is_entry, main);
     f_state_t state = macro_f_state_t_initialize_1(controller_allocation_large_d, controller_allocation_small_d, F_okay, 0, 0, 0, &controller_thread_signal_state_fss, 0, 0, 0);
 
     f_number_unsigned_t i = 0;
@@ -55,12 +57,18 @@ extern "C" {
     main->thread.cache.action.name_item.used = 0;
 
     if (F_status_is_error_not(state.status)) {
-      if (entry->flag & controller_entry_flag_is_e) {
+      if (is_entry) {
         state.status = controller_file_load(main, F_true, controller_entries_s, main->process.name_entry, controller_entry_s);
       }
       else {
         state.status = controller_file_load(main, F_false, controller_exits_s, main->process.name_entry, controller_exit_s);
-        if (state.status == F_file_found_not) return F_file_found_not;
+
+        // Immediately return on error whole loading the Exit.
+        if (state.status == F_file_found_not) {
+          entry->status = controller_status_simplify_error(F_file_found_not);
+
+          return F_status_set_error(F_file_found_not);
+        }
       }
     }
 
@@ -77,12 +85,12 @@ extern "C" {
           f_fss_apply_delimit(main->thread.cache.delimits, &main->thread.cache.buffer_file, &state);
 
           if (F_status_is_error(state.status)) {
-            controller_print_error_entry(&main->program.error, entry->flag & controller_entry_flag_is_e, F_status_set_fine(state.status), macro_controller_f(f_fss_apply_delimit), F_true);
+            controller_print_error_entry(&main->program.error, is_entry, F_status_set_fine(state.status), macro_controller_f(f_fss_apply_delimit), F_true);
           }
         }
       }
       else {
-        controller_print_error_file_status(&main->program.error, macro_controller_f(controller_file_load), (entry->flag & controller_entry_flag_is_e) ? controller_entry_s : controller_exit_s, f_file_operation_read_s, fll_error_file_type_file_e, F_status_set_fine(state.status));
+        controller_print_error_file_status(&main->program.error, macro_controller_f(controller_file_load), is_entry ? controller_entry_s : controller_exit_s, f_file_operation_read_s, fll_error_file_type_file_e, F_status_set_fine(state.status));
       }
     }
 
@@ -90,7 +98,7 @@ extern "C" {
       state.status = f_memory_array_increase_by(main->thread.cache.object_items.used, sizeof(f_range_t), (void **) &main->thread.cache.object_items.array, &main->thread.cache.object_items.used, &main->thread.cache.object_items.size);
 
       if (F_status_is_error(state.status)) {
-        controller_print_error_entry(&main->program.error, entry->flag & controller_entry_flag_is_e, F_status_set_fine(state.status), macro_controller_f(f_memory_array_increase_by), F_true);
+        controller_print_error_entry(&main->program.error, is_entry, F_status_set_fine(state.status), macro_controller_f(f_memory_array_increase_by), F_true);
       }
       else {
 
@@ -101,7 +109,7 @@ extern "C" {
         f_number_unsigned_t at = 0;
         f_number_unsigned_t j = 0;
 
-        for (i = 0; i < main->thread.cache.object_items.used && controller_thread_is_enabled(entry->flag & controller_entry_flag_is_e, &main->thread); ++i) {
+        for (i = 0; i < main->thread.cache.object_items.used && controller_thread_is_enabled(&main->thread, is_entry); ++i) {
 
           code &= ~0x2;
           at = 0;
@@ -126,7 +134,7 @@ extern "C" {
           state.status = f_memory_array_increase(controller_allocation_small_d, sizeof(controller_entry_item_t), (void **) &entry->items.array, &entry->items.used, &entry->items.size);
 
           if (F_status_is_error(state.status)) {
-            controller_print_error_entry(&main->program.error, entry->flag & controller_entry_flag_is_e, F_status_set_fine(state.status), macro_controller_f(f_memory_array_increase), F_true);
+            controller_print_error_entry(&main->program.error, is_entry, F_status_set_fine(state.status), macro_controller_f(f_memory_array_increase), F_true);
 
             break;
           }
@@ -134,7 +142,7 @@ extern "C" {
           state.status = f_string_dynamic_partial_append(main->thread.cache.buffer_file, main->thread.cache.object_items.array[i], &main->thread.cache.action.name_item);
 
           if (F_status_is_error(state.status)) {
-            controller_print_error_entry(&main->program.error, entry->flag & controller_entry_flag_is_e, F_status_set_fine(state.status), macro_controller_f(f_string_dynamic_partial_append), F_true);
+            controller_print_error_entry(&main->program.error, is_entry, F_status_set_fine(state.status), macro_controller_f(f_string_dynamic_partial_append), F_true);
 
             break;
           }
@@ -142,7 +150,7 @@ extern "C" {
           f_fss_count_lines(main->thread.cache.buffer_file, main->thread.cache.object_items.array[i].start, &main->thread.cache.action.line_item, &state);
 
           if (F_status_is_error(state.status)) {
-            controller_print_error_entry(&main->program.error, entry->flag & controller_entry_flag_is_e, F_status_set_fine(state.status), macro_controller_f(f_fss_count_lines), F_true);
+            controller_print_error_entry(&main->program.error, is_entry, F_status_set_fine(state.status), macro_controller_f(f_fss_count_lines), F_true);
 
             break;
           }
@@ -152,7 +160,7 @@ extern "C" {
           for (j = (code & 0x1) ? 1 : 0; j < entry->items.used; ++j) {
 
             if (f_compare_dynamic(entry->items.array[j].name, main->thread.cache.action.name_item) == F_equal_to) {
-              controller_print_warning_entry_item_duplicate_ignore(&main->program.warning, &main->thread.cache, entry->flag & controller_entry_flag_is_e, main->thread.cache.action.name_item);
+              controller_print_warning_entry_item_duplicate_ignore(&main->program.warning, &main->thread.cache, is_entry, main->thread.cache.action.name_item);
 
               code |= 0x2;
 
@@ -173,7 +181,7 @@ extern "C" {
             }
           }
           else if (f_compare_dynamic(controller_settings_s, main->thread.cache.action.name_item) == F_equal_to) {
-            state.status = controller_entry_setting_read(main, entry->flag & controller_entry_flag_is_e, *range);
+            state.status = controller_entry_setting_read(main, is_entry, *range);
 
             continue;
           }
@@ -205,7 +213,7 @@ extern "C" {
             if (F_status_set_fine(state.status) != F_interrupt) {
               controller_lock_print(main->program.error.to, &main->thread);
 
-              controller_print_error_entry_cache(&main->program.error, &main->thread.cache.action, entry->flag & controller_entry_flag_is_e);
+              controller_print_error_entry_cache(&main->program.error, &main->thread.cache.action, is_entry);
 
               controller_unlock_print_flush(main->program.error.to, &main->thread);
             }
@@ -214,13 +222,17 @@ extern "C" {
           }
         } // for
 
-        if (entry->flag & controller_entry_flag_is_e && F_status_set_fine(state.status) == F_interrupt) return state.status;
+        if (is_entry && F_status_set_fine(state.status) == F_interrupt) {
+          entry->status = controller_status_simplify_error(F_status_set_fine(state.status));
+
+          return state.status;
+        }
 
         if (F_status_is_error_not(state.status)) {
           if (!(code & 0x1)) {
             state.status = F_status_set_error(F_found_not);
 
-            controller_print_message_entry_item_required(&main->program.error, entry->flag & controller_entry_flag_is_e, main->thread.cache.action.name_item, "is not found");
+            controller_print_message_entry_item_required(&main->program.error, is_entry, main->thread.cache.action.name_item, "is not found");
           }
 
           main->thread.cache.action.name_action.used = 0;
@@ -228,7 +240,6 @@ extern "C" {
 
           if (F_status_is_error_not(state.status)) {
             controller_entry_action_t *action = 0;
-
             f_number_unsigned_t k = 0;
 
             // 0x1 = missing or not, 0x2 = one or more missing.
@@ -238,7 +249,9 @@ extern "C" {
 
               for (j = 0; j < entry->items.array[i].actions.used; ++j) {
 
-                if (!controller_thread_is_enabled(entry->flag & controller_entry_flag_is_e, &main->thread)) {
+                if (!controller_thread_is_enabled(&main->thread, is_entry)) {
+                  entry->status = controller_status_simplify_error(F_interrupt);
+
                   return F_status_set_error(F_interrupt);
                 }
 
@@ -274,7 +287,7 @@ extern "C" {
                       break;
                     }
 
-                    controller_print_message_entry_item_required(&main->program.error, entry->flag & controller_entry_flag_is_e, main->thread.cache.action.name_item, "does not exist");
+                    controller_print_message_entry_item_required(&main->program.error, is_entry, main->thread.cache.action.name_item, "does not exist");
 
                     action->number = 0;
                     action->status = controller_status_simplify_error(F_found_not);
@@ -297,7 +310,7 @@ extern "C" {
       entry->status = controller_status_simplify_error(F_status_set_fine(state.status));
 
       if (F_status_set_fine(state.status) != F_interrupt) {
-        controller_print_error_entry_cache(&main->program.error, &main->thread.cache.action, entry->flag & controller_entry_flag_is_e);
+        controller_print_error_entry_cache(&main->program.error, &main->thread.cache.action, is_entry);
       }
     }
     else {

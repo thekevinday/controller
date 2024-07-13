@@ -13,11 +13,11 @@ extern "C" {
 
     controller_t * const main = (controller_t *) argument;
 
-    if (!controller_thread_is_enabled(F_true, &main->thread)) return 0;
+    if (!controller_thread_is_enabled(&main->thread, F_true)) return 0;
 
     f_status_t * const status = &main->thread.status;
 
-    *status = controller_entry_read(main, &main->process.entry);
+    *status = controller_entry_read(main, F_true);
 
     if (F_status_set_fine(*status) == F_interrupt) {
       main->process.ready = controller_process_ready_abort_e;
@@ -42,7 +42,7 @@ extern "C" {
           controller_print_error_file_pid_exists(&main->program.error, &main->thread, main->process.path_pid);
         }
         else {
-          *status = controller_entry_process(main, F_false, F_true);
+          *status = controller_entry_process(main, F_true, F_false);
 
           if (F_status_is_error(*status)) {
             main->process.ready = controller_process_ready_fail_e;
@@ -94,12 +94,10 @@ extern "C" {
           }
         }
 
-        if (F_status_is_error_not(*status) && *status != F_child && main->program.parameters.array[controller_parameter_validate_e].result == f_console_result_none_e && main->process.mode == controller_process_mode_helper_e) {
-          f_time_spec_t time;
-          time.tv_sec = controller_thread_timeout_exit_helper_seconds_d;
-          time.tv_nsec = controller_thread_timeout_exit_helper_nanoseconds_d;
+        if (F_status_is_error_not(*status) && *status != F_child && !(main->setting.flag & controller_main_flag_validate_e) && main->process.mode == controller_process_mode_helper_e) {
+          const f_time_spec_t time = macro_f_time_spec_t_initialize_1(controller_thread_timeout_exit_helper_seconds_d, controller_thread_timeout_exit_helper_nanoseconds_d);
 
-          nanosleep(&time, 0);
+          f_time_sleep_spec(time, 0);
 
           controller_thread_instance_cancel(main, F_true, controller_thread_cancel_exit_e);
         }
@@ -131,7 +129,7 @@ extern "C" {
     controller_t * const main = (controller_t *) argument;
     f_status_t * const status = &main->thread.status;
 
-    *status = controller_entry_read(main, &main->process.exit);
+    *status = controller_entry_read(main, F_false);
 
     if (F_status_set_fine(*status) == F_interrupt) {
       main->process.ready = controller_process_ready_abort_e;
@@ -178,7 +176,7 @@ extern "C" {
               }
             }
 
-            const f_status_t status_failsafe = controller_entry_process(main, F_true, F_false);
+            const f_status_t status_failsafe = controller_entry_process(main, F_false, F_true);
 
             if (F_status_is_error(status_failsafe)) {
               *status = F_status_set_error(F_failure);

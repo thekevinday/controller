@@ -23,6 +23,9 @@ extern "C" {
  *
  * The "enabled" and "signal" utilize the lock: lock.process.
  *
+ * The lock.alert must be used when writing to any of:
+ *   - enabled.
+ *
  * The typedef for this is located in the defs.h header.
  *
  * Properties:

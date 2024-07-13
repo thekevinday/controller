@@ -5,12 +5,12 @@ extern "C" {
 #endif
 
 #ifndef _di_controller_thread_instance_
-  void controller_thread_instance(const uint8_t is_normal, controller_instance_t * const instance) {
+  void controller_thread_instance(controller_instance_t * const instance, const uint8_t is_normal) {
 
     if (!instance || !instance->main) return;
-    if (!controller_thread_is_enabled(is_normal, &instance->main->thread)) return;
+    if (!controller_thread_is_enabled(&instance->main->thread, is_normal)) return;
 
-    const f_status_t status = controller_rule_instance_perform(controller_instance_option_asynchronous_e, instance);
+    const f_status_t status = controller_rule_instance_perform(instance, controller_instance_option_asynchronous_e);
 
     // A forked child Instance should de-allocate memory on exit.
     // It seems that this function doesn't return to the calling thread for a forked child Instance, even with the "return 0;" below.
@@ -31,7 +31,7 @@ extern "C" {
     f_thread_mutex_lock(&main->thread.lock.cancel);
 
     // Only cancel when enabled.
-    if (!controller_thread_is_enabled(is_normal, &main->thread)) {
+    if (!controller_thread_is_enabled(&main->thread, is_normal)) {
       f_thread_mutex_unlock(&main->thread.lock.cancel);
 
       return;
@@ -41,7 +41,6 @@ extern "C" {
     controller_instance_t *instance = 0;
 
     f_time_spec_t time = f_time_spec_t_initialize;
-    f_status_t status = F_okay;
     f_number_unsigned_t i = 0;
     f_number_unsigned_t j = 0;
     pid_t pid = 0;
@@ -68,13 +67,16 @@ extern "C" {
       } // for
     }
 
-    // Use the alert lock to toggle enabled (using it as if it is a write like and a signal lock).
-    status = f_thread_mutex_lock(&main->thread.lock.alert);
+    f_status_t status = F_okay;
 
-    if (F_status_is_error(status)) {
-      main->thread.enabled = controller_thread_enabled_not_e;
-    }
-    else {
+    for (f_number_unsigned_t i = 0; i < controller_lock_mutex_max_retry_d; ++i) {
+
+      status = f_thread_mutex_lock(&main->thread.lock.alert);
+
+      if (F_status_is_error_not(status) || F_status_set_fine(status) == F_parameter || F_status_set_fine(status) == F_deadlock) break;
+    } // for
+
+    if (F_status_is_error_not(status) && F_status_set_fine(status) != F_parameter && F_status_set_fine(status) != F_deadlock) {
       if (by == controller_thread_cancel_execute_e) {
         main->thread.enabled = controller_thread_enabled_execute_e;
       }
@@ -411,7 +413,7 @@ extern "C" {
 
     f_thread_cancel_state_set(PTHREAD_CANCEL_DEFERRED, 0);
 
-    controller_thread_instance(F_true, (controller_instance_t * const) argument);
+    controller_thread_instance((controller_instance_t * const) argument, F_true);
 
     return 0;
   }
@@ -424,7 +426,7 @@ extern "C" {
 
     f_thread_cancel_state_set(PTHREAD_CANCEL_DEFERRED, 0);
 
-    controller_thread_instance(F_false, (controller_instance_t * const) argument);
+    controller_thread_instance((controller_instance_t * const) argument, F_false);
 
     return 0;
   }

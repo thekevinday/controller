@@ -15,14 +15,12 @@ extern "C" {
 
     if (main->thread.enabled != controller_thread_enabled_e) return 0;
 
-    const f_time_spec_t delay = {
-      .tv_sec = (main->setting.flag & controller_main_flag_simulate_e)
+    const f_time_spec_t delay = macro_f_time_spec_t_initialize_1(
+      (main->setting.flag & controller_main_flag_simulate_e)
         ? controller_thread_cleanup_interval_short_d
         : controller_thread_cleanup_interval_long_d,
-      .tv_nsec = 0,
-    };
-
-    f_status_t status = F_okay;
+      0
+    );
 
     while (main->thread.enabled == controller_thread_enabled_e) {
 
@@ -31,6 +29,7 @@ extern "C" {
       if (main->thread.enabled != controller_thread_enabled_e) break;
 
       if (f_thread_lock_write_try(&main->thread.lock.instance) == F_okay) {
+        f_status_t status = F_okay;
         controller_instance_t *instance = 0;
 
         f_number_unsigned_t i = 0;

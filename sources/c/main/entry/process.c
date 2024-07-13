@@ -5,7 +5,7 @@ extern "C" {
 #endif
 
 #ifndef _di_controller_entry_process_
-  f_status_t controller_entry_process(controller_t * const main, const uint8_t failsafe, const uint8_t is_entry) {
+  f_status_t controller_entry_process(controller_t * const main, const uint8_t is_entry, const uint8_t failsafe) {
 
     f_status_t status = F_okay;
     f_status_t status_lock = F_okay;
@@ -66,11 +66,11 @@ extern "C" {
       if (F_status_is_error(status)) return status;
     }
 
-    while (controller_thread_is_enabled(is_entry, &main->thread)) {
+    while (controller_thread_is_enabled(&main->thread, is_entry)) {
 
       entry_actions = &entry->items.array[cache->ats.array[at_i]].actions;
 
-      for (; cache->ats.array[at_j] < entry_actions->used && controller_thread_is_enabled(is_entry, &main->thread); ++cache->ats.array[at_j]) {
+      for (; cache->ats.array[at_j] < entry_actions->used && controller_thread_is_enabled(&main->thread, is_entry); ++cache->ats.array[at_j]) {
 
         entry_action = &entry_actions->array[cache->ats.array[at_j]];
 
@@ -228,7 +228,7 @@ extern "C" {
             controller_print_message_entry_item_rule(&main->program.message, entry, entry_action, is_entry, alias_rule);
           }
 
-          if (!controller_thread_is_enabled(is_entry, &main->thread)) break;
+          if (!controller_thread_is_enabled(&main->thread, is_entry)) break;
 
           // The Rule is not yet loaded, ensure that it is loaded.
           if (status != F_true) {
@@ -277,7 +277,7 @@ extern "C" {
               break;
             }
 
-            if (F_status_set_fine(status) == F_interrupt || !controller_thread_is_enabled(is_entry, &main->thread)) {
+            if (F_status_set_fine(status) == F_interrupt || !controller_thread_is_enabled(&main->thread, is_entry)) {
               f_thread_unlock(&main->thread.lock.rule);
 
               break;
@@ -464,7 +464,7 @@ extern "C" {
       }
     } // while
 
-    if (!controller_thread_is_enabled(is_entry, &main->thread)) return F_status_set_error(F_interrupt);
+    if (!controller_thread_is_enabled(&main->thread, is_entry)) return F_status_set_error(F_interrupt);
     if (status == F_child) return status;
     if (F_status_is_error(status_lock)) return status_lock;
 

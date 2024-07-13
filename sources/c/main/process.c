@@ -114,7 +114,7 @@ extern "C" {
       return;
     }
 
-    if (F_status_is_error_not(status) && status != F_failure && !(main->setting.flag & controller_main_flag_validate_e) && controller_thread_is_enabled(F_true, &main->thread)) {
+    if (F_status_is_error_not(status) && status != F_failure && !(main->setting.flag & controller_main_flag_validate_e) && controller_thread_is_enabled(&main->thread, F_true)) {
       if (main->process.mode == controller_process_mode_service_e) {
         controller_thread_join(&main->thread.id_signal);
       }

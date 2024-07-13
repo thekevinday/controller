@@ -19,7 +19,7 @@ utility:
       echo "$BASHPID" > /tmp/sleeper_3.1.pid
 
       echo "Sleeper 3.1, now sleeping."
-      sleep 15
+      sleep 10
 
       echo "Sleeper 3.1, done sleeping."
       rm -f /tmp/sleeper_3.1.pid

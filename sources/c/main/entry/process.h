@@ -23,12 +23,12 @@ extern "C" {
  *   The main program data.
  *
  *   Must not be NULL.
- * @param failsafe
- *   If TRUE, operate in failsafe mode (starts at designated failsafe Item).
- *   If FALSE, operate in normal mode (starts at "main" Item).
  * @param is_entry
  *   If TRUE, then this operates as an Entry.
  *   If FALSE, then this operates as an Exit.
+ * @param failsafe
+ *   If TRUE, operate in failsafe mode (starts at designated failsafe Item).
+ *   If FALSE, operate in normal mode (starts at "main" Item).
  *
  * @return
  *   F_okay on success.
@@ -49,7 +49,7 @@ extern "C" {
  * @see controller_perform_ready()
  */
 #ifndef _di_controller_entry_process_
-  extern f_status_t controller_entry_process(controller_t * const main, const uint8_t failsafe, const uint8_t is_entry);
+  extern f_status_t controller_entry_process(controller_t * const main, const uint8_t is_entry, const uint8_t failsafe);
 #endif // _di_controller_entry_process_
 
 #ifdef __cplusplus

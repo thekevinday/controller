@@ -19,20 +19,20 @@ extern "C" {
 /**
  * Check to see if thread is enabled for the normal operations like Entry and Control or for Exit operations.
  *
- * @param is_normal
- *   If TRUE, then instance as if this operates during a normal operation (Entry and Control).
- *   If FALSE, then instance as if this operates during an Exit operation.
  * @param thread
  *   The thread data.
  *
  *   Must not be NULL.
+ * @param is_normal
+ *   If TRUE, then instance as if this operates during a normal operation (Entry and Control).
+ *   If FALSE, then instance as if this operates during an Exit operation.
  *
  * @return
  *   F_true when enabled.
  *   F_false when disabled.
  */
 #ifndef _di_controller_thread_is_enabled_
-  extern f_status_t controller_thread_is_enabled(const uint8_t is_normal, controller_thread_t * const thread);
+  extern f_status_t controller_thread_is_enabled(controller_thread_t * const thread, const uint8_t is_normal);
 #endif // _di_controller_thread_is_enabled_
 
 /**
@@ -56,12 +56,12 @@ extern "C" {
 /**
  * Check to see if thread is enabled for the normal operations like Entry and Control or for Exit operations for some instance type.
  *
- * @param type
- *   The instance type to use when checking if thread is enabled.
  * @param thread
  *   The thread data.
  *
  *   Must not be NULL.
+ * @param type
+ *   The instance type to use when checking if thread is enabled.
  *
  * @return
  *   Success from controller_thread_is_enabled().
@@ -69,7 +69,7 @@ extern "C" {
  * @see controller_thread_is_enabled()
  */
 #ifndef _di_controller_thread_is_enabled_instance_type_
-  extern f_status_t controller_thread_is_enabled_instance_type(const uint8_t type, controller_thread_t * const thread);
+  extern f_status_t controller_thread_is_enabled_instance_type(controller_thread_t * const thread, const uint8_t type);
 #endif // _di_controller_thread_is_enabled_instance_type_
 
 #ifdef __cplusplus

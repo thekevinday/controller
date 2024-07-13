@@ -10,32 +10,62 @@ extern "C" {
     if (!lock) return F_status_set_error(F_parameter);
 
     f_status_t status = f_thread_mutex_create(0, &lock->alert);
+    if (F_status_is_error(status)) return status;
 
-    if (F_status_is_error_not(status)) {
-      status = f_thread_mutex_create(0, &lock->cancel);
+    status = f_thread_mutex_create(0, &lock->cancel);
+
+    if (F_status_is_error(status)) {
+      f_thread_mutex_delete(&lock->alert);
+
+      return status;
     }
 
-    if (F_status_is_error_not(status)) {
-      status = f_thread_mutex_create(0, &lock->print);
+    status = f_thread_mutex_create(0, &lock->print);
+
+    if (F_status_is_error(status)) {
+      f_thread_mutex_delete(&lock->alert);
+      f_thread_mutex_delete(&lock->cancel);
+
+      return status;
     }
 
-    if (F_status_is_error_not(status)) {
-      status = f_thread_lock_create(0, &lock->instance);
+    status = f_thread_lock_create(0, &lock->instance);
+
+    if (F_status_is_error(status)) {
+      f_thread_mutex_delete(&lock->alert);
+      f_thread_mutex_delete(&lock->cancel);
+      f_thread_mutex_delete(&lock->print);
+
+      return status;
     }
 
-    if (F_status_is_error_not(status)) {
-      status = f_thread_lock_create(0, &lock->rule);
+    status = f_thread_lock_create(0, &lock->rule);
+
+    if (F_status_is_error(status)) {
+      f_thread_mutex_delete(&lock->alert);
+      f_thread_mutex_delete(&lock->cancel);
+      f_thread_mutex_delete(&lock->print);
+      f_thread_lock_delete(&lock->instance);
+
+      return status;
     }
 
-    if (F_status_is_error_not(status)) {
-      status = f_thread_mutex_create(0, &lock->alert);
+
+    status = f_thread_condition_create(0, &lock->alert_condition);
+
+    if (F_status_is_error(status)) {
+      f_thread_mutex_delete(&lock->alert);
+      f_thread_mutex_delete(&lock->cancel);
+      f_thread_mutex_delete(&lock->print);
+      f_thread_lock_delete(&lock->instance);
+      f_thread_lock_delete(&lock->rule);
+
+      return status;
     }
 
-    if (F_status_is_error_not(status)) {
-      status = f_thread_condition_create(0, &lock->alert_condition);
-    }
+    lock->flag &= ~controller_lock_flag_setup_not_d;
 
-    return F_status_is_error(status) ? status : F_okay;
+    return F_okay;
   }
 #endif // _di_controller_lock_create_
 
@@ -55,7 +85,7 @@ extern "C" {
       status = f_thread_lock_read_timed(&time, lock);
 
       if (status == F_time) {
-        if (check && !controller_thread_is_enabled(is_normal, thread)) return F_status_set_error(F_interrupt);
+        if (check && !controller_thread_is_enabled(thread, is_normal)) return F_status_set_error(F_interrupt);
       }
       else {
         break;
@@ -89,7 +119,7 @@ extern "C" {
       status = f_thread_lock_write_timed(&time, lock);
 
       if (status == F_time) {
-        if (check && !controller_thread_is_enabled(is_normal, thread)) return F_status_set_error(F_interrupt);
+        if (check && !controller_thread_is_enabled(thread, is_normal)) return F_status_set_error(F_interrupt);
       }
       else {
         break;

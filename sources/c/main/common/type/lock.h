@@ -26,6 +26,7 @@ extern "C" {
  * The Rule lock is intended to lock any activity on the rules structure.
  *
  * Properties:
+ *   - flag:            A set of flags associated with the locks.
  *   - alert:           The alert mutex lock for waking up on alerts.
  *   - cancel:          The cancel mutex lock for locking the cancel operation.
  *   - print:           The print mutex lock.
@@ -35,6 +36,8 @@ extern "C" {
  */
 #ifndef _di_controller_lock_t_
   typedef struct {
+    uint8_t flag;
+
     f_thread_mutex_t alert;
     f_thread_mutex_t cancel;
     f_thread_mutex_t print;
@@ -46,6 +49,7 @@ extern "C" {
   } controller_lock_t;
 
   #define controller_lock_t_initialize { \
+    0, \
     f_thread_mutex_t_initialize, \
     f_thread_mutex_t_initialize, \
     f_thread_mutex_t_initialize, \

@@ -22,11 +22,12 @@ extern "C" {
  * @param main
  *   The main program data.
  *
- *   Must not be NULL.
- * @param entry
- *   The Entry data.
+ *   This alters either main.process.entry.state or main.process.exit.state.
  *
  *   Must not be NULL.
+ * @param is_entry
+ *   If TRUE, then this operates as an Entry.
+ *   If FALSE, then this operates as an Exit.
  *
  * @return
  *   F_okay on success.
@@ -63,7 +64,7 @@ extern "C" {
  * @see fll_fss_basic_list_read()
  */
 #ifndef _di_controller_entry_read_
-  extern f_status_t controller_entry_read(controller_t * const main, controller_entry_t * const entry);
+  extern f_status_t controller_entry_read(controller_t * const main, const uint8_t is_entry);
 #endif // _di_controller_entry_read_
 
 #ifdef __cplusplus

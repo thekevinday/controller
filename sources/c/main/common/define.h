@@ -66,6 +66,26 @@ extern "C" {
   #define controller_with_session_same_d 0x4
 #endif // _di_controller_with_d_
 
+/**
+ * Controller lock defines.
+ *
+ * controller_lock_*_d:
+ *   - mutex_max_retry: The maximum amount of times to retry the mutex lock before giving up.
+ */
+#ifndef _di_controller_lock_d_
+  #define controller_lock_mutex_max_retry_d 1000000
+#endif // _di_controller_lock_d_
+
+/**
+ * Flags associated with Controller locks.
+ *
+ * controller_lock_flag_*_d:
+ *   - setup_not: No locks are initialized, so do not attempt to deallocate them.
+ */
+#ifndef _di_controller_lock_flag_d_
+  #define controller_lock_flag_setup_not_d 0x1
+#endif // _di_controller_lock_flag_d_
+
 #ifdef __cplusplus
 } // extern "C"
 #endif

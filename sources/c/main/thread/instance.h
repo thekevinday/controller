@@ -19,18 +19,18 @@ extern "C" {
 /**
  * Asynchronously execute a Rule process.
  *
- * @param is_normal
- *   If F_true, then process as if this operates during a normal operation (Entry and Control).
- *   If F_false, then process as if this operates during an Exit operation.
  * @param instance
  *   The instance data.
  *
  *   Must not be NULL.
+ * @param is_normal
+ *   If F_true, then process as if this operates during a normal operation (Entry and Control).
+ *   If F_false, then process as if this operates during an Exit operation.
  *
  * @see controller_rule_instance_perform()
  */
 #ifndef _di_controller_thread_instance_
-  extern void controller_thread_instance(const uint8_t is_normal, controller_instance_t * const instance);
+  extern void controller_thread_instance(controller_instance_t * const instance, const uint8_t is_normal);
 #endif // _di_controller_thread_instance_
 
 /**

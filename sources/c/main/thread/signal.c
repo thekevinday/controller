@@ -8,13 +8,13 @@ extern "C" {
   void controller_thread_signal(controller_t * const main, const uint8_t is_normal) {
 
     if (!main) return;
-    if (!controller_thread_is_enabled(is_normal, &main->thread)) return;
+    if (!controller_thread_is_enabled(&main->thread, is_normal)) return;
     if (!(main->setting.flag & controller_main_flag_interruptible_e)) return;
 
     siginfo_t information;
     f_time_spec_t time = f_time_spec_t_initialize;
 
-    while (controller_thread_is_enabled(is_normal, &main->thread)) {
+    while (controller_thread_is_enabled(&main->thread, is_normal)) {
 
       memset((void *) &information, 0, sizeof(siginfo_t));
 
@@ -42,7 +42,7 @@ extern "C" {
 
     if (!interrupt->main) return;
 
-    if (!controller_thread_is_enabled(interrupt->is_normal, &interrupt->main->thread)) {
+    if (!controller_thread_is_enabled(&interrupt->main->thread, interrupt->is_normal)) {
       interrupt->main->program.signal_received = F_signal_abort;
       interrupt->main->setting.state.status = F_status_set_error(F_interrupt);
     }
@@ -62,7 +62,7 @@ extern "C" {
 
     if (!interrupt->main) return;
 
-    if (!controller_thread_is_enabled(interrupt->is_normal, &interrupt->main->thread)) {
+    if (!controller_thread_is_enabled(&interrupt->main->thread, interrupt->is_normal)) {
       interrupt->main->program.signal_received = F_signal_abort;
       interrupt->main->setting.state.status = F_status_set_error(F_interrupt);
     }
