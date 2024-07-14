@@ -366,7 +366,6 @@ extern "C" {
       // Find at least one of the requested Action when the Rule is required.
       if (instance->options & controller_instance_option_require_e) {
         bool missing = F_true;
-
         f_number_unsigned_t j = 0;
 
         for (i = 0; i < instance->rule.items.used; ++i) {
@@ -474,10 +473,7 @@ extern "C" {
   f_status_t controller_rule_instance_begin(controller_t * const main, controller_cache_t * const cache, const uint8_t options_force, const f_string_static_t alias_rule, const uint8_t action, const uint8_t options, const uint8_t type, const f_number_unsigneds_t stack) {
 
     if (!main || !cache) return F_status_set_error(F_parameter);
-
-    if (!controller_thread_is_enabled_instance_type(&main->thread, type)) {
-      return F_status_set_error(F_interrupt);
-    }
+    if (!controller_thread_is_enabled_instance_type(&main->thread, type)) return F_status_set_error(F_interrupt);
 
     f_status_t status = controller_lock_read(type != controller_instance_type_exit_e, F_true, &main->thread, &main->thread.lock.instance);
 
@@ -712,7 +708,6 @@ extern "C" {
     }
 
     f_status_t status = F_okay;
-
     f_number_unsigned_t id_rule = 0;
 
     const f_number_unsigned_t used_original_stack = instance->stack.used;

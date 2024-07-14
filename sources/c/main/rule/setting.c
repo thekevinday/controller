@@ -120,7 +120,6 @@ extern "C" {
 
     f_status_t status_return = F_okay;
     f_range_t range = macro_f_range_t_initialize_2(cache->buffer_item.used);
-    f_range_t range2 = f_range_t_initialize;
 
     controller_interrupt_t custom = macro_controller_interrupt_t_initialize_1(is_normal, main);
     f_state_t state = macro_f_state_t_initialize_1(controller_allocation_large_d, controller_allocation_small_d, F_okay, 0, 0, 0, &controller_thread_signal_state_fss, 0, (void *) &custom, 0);
@@ -137,11 +136,12 @@ extern "C" {
     f_string_dynamics_t *setting_values = 0;
     f_string_maps_t *setting_maps = 0;
 
+    f_range_t range2 = f_range_t_initialize;
     f_number_unsigned_t i = 0;
     f_number_unsigned_t j = 0;
     uint8_t type = 0;
     uint8_t action = 0;
-    bool empty_disallow = F_true;
+    uint8_t empty_disallow = F_true;
 
     // Save the current name item and line number to restore on return.
     const f_number_unsigned_t line_item = cache->action.line_item;

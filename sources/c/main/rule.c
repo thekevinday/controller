@@ -67,27 +67,35 @@ extern "C" {
     f_status_t status = F_okay;
 
     status = f_string_dynamic_append(source.alias, &destination->alias);
-    if (F_status_is_error(status)) return status;
 
-    status = f_string_dynamic_append(source.engine, &destination->engine);
-    if (F_status_is_error(status)) return status;
+    if (F_status_is_error_not(status)) {
+      status = f_string_dynamic_append(source.engine, &destination->engine);
+    }
 
-    status = f_string_dynamic_append(source.name, &destination->name);
-    if (F_status_is_error(status)) return status;
+    if (F_status_is_error_not(status)) {
+      status = f_string_dynamic_append(source.name, &destination->name);
+    }
 
-    status = f_string_dynamic_append(source.path, &destination->path);
-    if (F_status_is_error(status)) return status;
+    if (F_status_is_error_not(status)) {
+      status = f_string_dynamic_append(source.path, &destination->path);
+    }
 
-    status = f_string_maps_append_all(source.define, &destination->define);
-    if (F_status_is_error(status)) return status;
+    if (F_status_is_error_not(status)) {
+      status = f_string_maps_append_all(source.define, &destination->define);
+    }
 
-    status = f_string_maps_append_all(source.parameter, &destination->parameter);
-    if (F_status_is_error(status)) return status;
+    if (F_status_is_error_not(status)) {
+      status = f_string_maps_append_all(source.parameter, &destination->parameter);
+    }
 
-    status = f_string_dynamics_append_all(source.engine_arguments, &destination->engine_arguments);
-    if (F_status_is_error(status)) return status;
+    if (F_status_is_error_not(status)) {
+      status = f_string_dynamics_append_all(source.engine_arguments, &destination->engine_arguments);
+    }
 
-    status = f_string_dynamics_append_all(source.environment, &destination->environment);
+    if (F_status_is_error_not(status)) {
+      status = f_string_dynamics_append_all(source.environment, &destination->environment);
+    }
+
     if (F_status_is_error(status)) return status;
 
     if (source.ons.used) {
@@ -126,21 +134,24 @@ extern "C" {
     }
 
     status = f_memory_array_append_all((void *) source.affinity.array, source.affinity.used, sizeof(int32_t), (void **) &destination->affinity.array, &destination->affinity.used, &destination->affinity.size);
-    if (F_status_is_error(status)) return status;
 
-    if (source.capability) {
+    if (F_status_is_error_not(status) && source.capability) {
       status = f_capability_copy(source.capability, &destination->capability);
-      if (F_status_is_error(status)) return status;
     }
 
-    status = f_control_group_copy(source.cgroup, &destination->cgroup);
-    if (F_status_is_error(status)) return status;
+    if (F_status_is_error_not(status)) {
+      status = f_control_group_copy(source.cgroup, &destination->cgroup);
+    }
 
-    status = f_memory_array_append_all(source.groups.array, source.groups.used, sizeof(int32_t), (void **) &destination->groups.array, &destination->groups.used, &destination->groups.size);
-    if (F_status_is_error(status)) return status;
+    if (F_status_is_error_not(status)) {
+      status = f_memory_array_append_all(source.groups.array, source.groups.used, sizeof(int32_t), (void **) &destination->groups.array, &destination->groups.used, &destination->groups.size);
+    }
 
-    destination->limits.used = 0;
-    status = f_memory_array_append_all(source.limits.array, source.limits.used, sizeof(f_limit_set_t), (void **) &destination->limits.array, &destination->limits.used, &destination->limits.size);
+    if (F_status_is_error_not(status)) {
+      destination->limits.used = 0;
+      status = f_memory_array_append_all(source.limits.array, source.limits.used, sizeof(f_limit_set_t), (void **) &destination->limits.array, &destination->limits.used, &destination->limits.size);
+    }
+
     if (F_status_is_error(status)) return status;
 
     if (source.items.used) {
@@ -244,21 +255,13 @@ extern "C" {
 
     f_status_t status = f_string_dynamic_partial_append_nulless(source, directory, alias);
 
-    if (F_status_is_error(status)) {
-      controller_print_error_status(&main->program.error, macro_controller_f(f_string_dynamic_partial_append_nulless), F_status_set_fine(status));
-
-      return status;
+    if (F_status_is_error_not(status)) {
+      status = f_string_dynamic_append_nulless(f_path_separator_s, alias);
     }
 
-    status = f_string_dynamic_append(f_path_separator_s, alias);
-
-    if (F_status_is_error(status)) {
-      controller_print_error_status(&main->program.error, macro_controller_f(f_string_dynamic_append), F_status_set_fine(status));
-
-      return status;
+    if (F_status_is_error_not(status)) {
+      status = f_string_dynamic_partial_append_nulless(source, basename, alias);
     }
-
-    status = f_string_dynamic_partial_append_nulless(source, basename, alias);
 
     if (F_status_is_error(status)) {
       controller_print_error_status(&main->program.error, macro_controller_f(f_string_dynamic_partial_append_nulless), F_status_set_fine(status));

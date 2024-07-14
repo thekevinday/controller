@@ -7,8 +7,13 @@ extern "C" {
 #ifndef _di_controller_rule_action_method_name_
   f_string_static_t controller_rule_action_method_name(const uint8_t type) {
 
-    if (type == controller_rule_action_method_extended_e) return controller_rule_action_method_extended_s;
-    if (type == controller_rule_action_method_extended_list_e) return controller_rule_action_method_extended_list_s;
+    switch (type) {
+      case controller_rule_action_method_extended_e:
+        return controller_rule_action_method_extended_s;
+
+      case controller_rule_action_method_extended_list_e:
+        return controller_rule_action_method_extended_list_s;
+    }
 
     return f_string_empty_s;
   }
@@ -17,15 +22,34 @@ extern "C" {
 #ifndef _di_controller_rule_action_type_to_action_execute_type_
   uint8_t controller_rule_action_type_to_action_execute_type(const uint8_t type) {
 
-    if (type == controller_rule_action_type_freeze_e) return controller_rule_action_execute_type_freeze_e;
-    if (type == controller_rule_action_type_kill_e) return controller_rule_action_execute_type_kill_e;
-    if (type == controller_rule_action_type_pause_e) return controller_rule_action_execute_type_pause_e;
-    if (type == controller_rule_action_type_reload_e) return controller_rule_action_execute_type_reload_e;
-    if (type == controller_rule_action_type_restart_e) return controller_rule_action_execute_type_restart_e;
-    if (type == controller_rule_action_type_resume_e) return controller_rule_action_execute_type_resume_e;
-    if (type == controller_rule_action_type_start_e) return controller_rule_action_execute_type_start_e;
-    if (type == controller_rule_action_type_stop_e) return controller_rule_action_execute_type_stop_e;
-    if (type == controller_rule_action_type_thaw_e) return controller_rule_action_execute_type_thaw_e;
+    switch (type) {
+      case controller_rule_action_type_freeze_e:
+        return controller_rule_action_execute_type_freeze_e;
+
+      case controller_rule_action_type_kill_e:
+        return controller_rule_action_execute_type_kill_e;
+
+      case controller_rule_action_type_pause_e:
+        return controller_rule_action_execute_type_pause_e;
+
+      case controller_rule_action_type_reload_e:
+        return controller_rule_action_execute_type_reload_e;
+
+      case controller_rule_action_type_restart_e:
+        return controller_rule_action_execute_type_restart_e;
+
+      case controller_rule_action_type_resume_e:
+        return controller_rule_action_execute_type_resume_e;
+
+      case controller_rule_action_type_start_e:
+        return controller_rule_action_execute_type_start_e;
+
+      case controller_rule_action_type_stop_e:
+        return controller_rule_action_execute_type_stop_e;
+
+      case controller_rule_action_type_thaw_e:
+        return controller_rule_action_execute_type_thaw_e;
+    }
 
     return controller_rule_action_execute_type__enum_size_e;
   }

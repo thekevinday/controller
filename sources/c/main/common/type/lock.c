@@ -17,6 +17,8 @@ extern "C" {
     f_thread_lock_delete(&lock->rule);
 
     f_thread_condition_delete(&lock->alert_condition);
+
+    lock->flag |= controller_lock_flag_setup_not_d;
   }
 #endif // _di_controller_lock_delete_
 

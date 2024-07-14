@@ -405,6 +405,7 @@ extern "C" {
             }
             else {
               rerun_item = 0;
+
               continue;
             }
 
@@ -412,41 +413,47 @@ extern "C" {
             switch (j) {
               case controller_rule_action_execute_type_freeze_e:
                 f_print_dynamic_raw(controller_freeze_s, print->to);
+
                 break;
 
               case controller_rule_action_execute_type_kill_e:
                 f_print_dynamic_raw(controller_kill_s, print->to);
+
                 break;
 
               case controller_rule_action_execute_type_pause_e:
                 f_print_dynamic_raw(controller_pause_s, print->to);
+
                 break;
 
               case controller_rule_action_execute_type_reload_e:
                 f_print_dynamic_raw(controller_reload_s, print->to);
+
                 break;
 
               case controller_rule_action_execute_type_restart_e:
                 f_print_dynamic_raw(controller_restart_s, print->to);
+
                 break;
 
               case controller_rule_action_execute_type_resume_e:
                 f_print_dynamic_raw(controller_resume_s, print->to);
+
                 break;
 
               case controller_rule_action_execute_type_start_e:
                 f_print_dynamic_raw(controller_start_s, print->to);
+
                 break;
 
               case controller_rule_action_execute_type_stop_e:
                 f_print_dynamic_raw(controller_stop_s, print->to);
+
                 break;
 
               case controller_rule_action_execute_type_thaw_e:
                 f_print_dynamic_raw(controller_thaw_s, print->to);
-                break;
 
-              default:
                 break;
             }
 

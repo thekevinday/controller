@@ -45,7 +45,6 @@ extern "C" {
     if (print->verbosity < f_console_verbosity_error_e) return F_output_not;
 
     controller_t * const main = (controller_t *) print->custom;
-
     controller_entry_t * const entry = is_entry ? &main->process.entry : &main->process.exit;
 
     controller_lock_print(print->to, &main->thread);

@@ -211,13 +211,12 @@ extern "C" {
     // It seems that this function doesn't return to the calling thread for a forked child process, even with the "return 0;" below.
     if (*status == F_child) {
       controller_delete(main);
-
-      return 0;
     }
+    else {
+      controller_thread_instance_force_set_disable(main);
 
-    controller_thread_instance_force_set_disable(main);
-
-    f_thread_condition_signal_all(&main->thread.lock.alert_condition);
+      f_thread_condition_signal_all(&main->thread.lock.alert_condition);
+    }
 
     return 0;
   }

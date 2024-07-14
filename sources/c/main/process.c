@@ -139,8 +139,6 @@ extern "C" {
     main->thread.id_rule = 0;
     main->thread.id_signal = 0;
 
-    controller_thread_delete(&main->thread);
-
     if (F_status_set_fine(status) == F_interrupt) {
       main->setting.state.status = F_status_set_error(F_interrupt);
 

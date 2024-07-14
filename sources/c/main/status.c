@@ -45,10 +45,9 @@ extern "C" {
 
       case F_valid_not:
         return F_status_set_error(F_valid_not);
-
-      default:
-        return F_status_set_error(F_failure);
     };
+
+    return F_status_set_error(F_failure);
   }
 #endif // _di_controller_status_simplify_error_
 

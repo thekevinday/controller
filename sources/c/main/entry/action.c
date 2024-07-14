@@ -9,8 +9,6 @@ extern "C" {
 
     if (!main || !entry || !actions) return F_status_set_error(F_parameter);
 
-    f_status_t status_action = F_okay;
-
     actions->used = 0;
 
     main->thread.cache.object_actions.used = main->thread.cache.object_actions.size;
@@ -59,6 +57,7 @@ extern "C" {
       return state.status;
     }
 
+    f_status_t status_action = F_okay;
     controller_entry_action_t *action = 0;
 
     f_number_unsigned_t allocate = 0;

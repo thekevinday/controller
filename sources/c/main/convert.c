@@ -16,9 +16,11 @@ extern "C" {
         cache->action.generic.used = 0;
 
         status = f_rip_dynamic_partial_nulless(buffer, range, &cache->action.generic);
-        if (F_status_is_error(status)) return status;
 
-        status = f_account_id_by_name(cache->action.generic, id);
+        if (F_status_is_error_not(status)) {
+          status = f_account_id_by_name(cache->action.generic, id);
+        }
+
         if (F_status_is_error(status)) return status;
 
         return (status == F_exist_not) ? F_status_set_error(F_exist_not) : F_okay;
@@ -43,9 +45,11 @@ extern "C" {
         cache->action.generic.used = 0;
 
         status = f_rip_dynamic_partial_nulless(buffer, range, &cache->action.generic);
-        if (F_status_is_error(status)) return status;
 
-        status = f_account_group_id_by_name(cache->action.generic, id);
+        if (F_status_is_error_not(status)) {
+          status = f_account_group_id_by_name(cache->action.generic, id);
+        }
+
         if (F_status_is_error(status)) return status;
 
         return (status == F_exist_not) ? F_status_set_error(F_exist_not) : F_okay;

@@ -91,8 +91,7 @@ extern "C" {
   f_status_t controller_rule_expand_iki(controller_instance_t * const instance, const f_string_static_t source, const f_range_t vocabulary, const f_range_t content, f_string_dynamic_t * const destination) {
 
     if (!instance || !instance->main || !destination) return F_status_set_error(F_parameter);
-    if (vocabulary.start > vocabulary.stop) return F_okay;
-    if (content.start > content.stop) return F_okay;
+    if (vocabulary.start > vocabulary.stop || content.start > content.stop) return F_okay;
 
     f_status_t status = F_okay;
 
@@ -140,9 +139,11 @@ extern "C" {
         instance->cache.action.generic.used = 0;
 
         status = f_environment_get(buffer, &instance->cache.action.generic);
-        if (F_status_is_error(status)) return status;
 
-        status = f_string_dynamic_append(instance->cache.action.generic, destination);
+        if (F_status_is_error_not(status)) {
+          status = f_string_dynamic_append(instance->cache.action.generic, destination);
+        }
+
         if (F_status_is_error(status)) return status;
       }
     }
@@ -291,30 +292,40 @@ extern "C" {
               const f_number_unsigned_t index = parameters->array[codes[i]].values.array[parameters->array[codes[i]].values.used - 1];
 
               status = f_memory_array_increase_by(symbols[i].used + expands[i].used + f_string_ascii_space_s.used + argv[index].used + 1, sizeof(f_char_t), (void **) &destination->string, &destination->used, &destination->size);
-              if (F_status_is_error(status)) return status;
 
-              status = f_string_dynamic_append(symbols[i], destination);
-              if (F_status_is_error(status)) return status;
+              if (F_status_is_error_not(status)) {
+                status = f_string_dynamic_append(symbols[i], destination);
+              }
 
-              status = f_string_dynamic_append(expands[i], destination);
-              if (F_status_is_error(status)) return status;
+              if (F_status_is_error_not(status)) {
+                status = f_string_dynamic_append(expands[i], destination);
+              }
 
-              status = f_string_dynamic_append(f_string_ascii_space_s, destination);
-              if (F_status_is_error(status)) return status;
+              if (F_status_is_error_not(status)) {
+                status = f_string_dynamic_append(f_string_ascii_space_s, destination);
+              }
 
-              status = f_string_dynamic_append(argv[index], destination);
+              if (F_status_is_error_not(status)) {
+                status = f_string_dynamic_append(argv[index], destination);
+              }
+
               if (F_status_is_error(status)) return status;
             }
           }
           else {
             if (parameters->array[codes[i]].result & f_console_result_found_e) {
-              status = f_memory_array_increase_by(symbols[i].used + expands[i].used + 1, sizeof(f_char_t), (void **) &destination->string, &destination->used, &destination->size);
-              if (F_status_is_error(status)) return status;
+              if (F_status_is_error_not(status)) {
+                status = f_memory_array_increase_by(symbols[i].used + expands[i].used + 1, sizeof(f_char_t), (void **) &destination->string, &destination->used, &destination->size);
+              }
 
-              status = f_string_dynamic_append(symbols[i], destination);
-              if (F_status_is_error(status)) return status;
+              if (F_status_is_error_not(status)) {
+                status = f_string_dynamic_append(symbols[i], destination);
+              }
 
-              status = f_string_dynamic_append(expands[i], destination);
+              if (F_status_is_error_not(status)) {
+                status = f_string_dynamic_append(expands[i], destination);
+              }
+
               if (F_status_is_error(status)) return status;
             }
           }
@@ -335,12 +346,15 @@ extern "C" {
           if (f_compare_dynamic_partial_string(buffer.string, source, buffer.used, content) == F_equal_to) {
             if (values[i] && parameters->array[codes[i]].result & f_console_result_value_e || !values[i] && (parameters->array[codes[i]].result & f_console_result_found_e)) {
               status = f_memory_array_increase_by(symbols[i].used + expands[i].used + 1, sizeof(f_char_t), (void **) &destination->string, &destination->used, &destination->size);
-              if (F_status_is_error(status)) return status;
 
-              status = f_string_dynamic_append(symbols[i], destination);
-              if (F_status_is_error(status)) return status;
+              if (F_status_is_error_not(status)) {
+                status = f_string_dynamic_append(symbols[i], destination);
+              }
 
-              status = f_string_dynamic_append(expands[i], destination);
+              if (F_status_is_error_not(status)) {
+                status = f_string_dynamic_append(expands[i], destination);
+              }
+
               if (F_status_is_error(status)) return status;
             }
 

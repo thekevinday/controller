@@ -600,20 +600,14 @@ extern "C" {
     if (!execute_set || !instance || !instance->main) return F_status_set_error(F_parameter);
 
     f_status_t status = F_okay;
-
     controller_t * const main = instance->main;
-
     f_execute_result_t result = f_execute_result_t_initialize;
 
     status = f_memory_array_increase(controller_allocation_small_d, sizeof(pid_t), (void **) &instance->childs.array, &instance->childs.used, &instance->childs.size);
 
-    if (F_status_is_error(status)) {
-      controller_print_error_status(&main->program.error, macro_controller_f(f_memory_array_increase), F_status_set_fine(status));
-
-      return status;
+    if (F_status_is_error_not(status)) {
+      status = f_memory_array_increase(controller_allocation_small_d, sizeof(f_string_dynamic_t), (void **) &instance->path_pids.array, &instance->path_pids.used, &instance->path_pids.size);
     }
-
-    status = f_memory_array_increase(controller_allocation_small_d, sizeof(f_string_dynamic_t), (void **) &instance->path_pids.array, &instance->path_pids.used, &instance->path_pids.size);
 
     if (F_status_is_error(status)) {
       controller_print_error_status(&main->program.error, macro_controller_f(f_memory_array_increase), F_status_set_fine(status));
@@ -789,17 +783,15 @@ extern "C" {
           f_time_spec_t delay = f_time_spec_t_initialize;
 
           {
-            const f_status_t status = f_time_spec_millisecond(0, rerun_item->delay, &delay);
+            f_status_t status = f_time_spec_millisecond(0, rerun_item->delay, &delay);
 
             if (F_status_is_error(status)) {
               controller_print_error_status(&main->program.error, macro_controller_f(f_time_spec_millisecond), F_status_set_fine(status));
 
               return -1;
             }
-          }
 
-          {
-            const f_status_t status = controller_time_sleep_nanoseconds(instance->main, delay);
+            status = controller_time_sleep_nanoseconds(instance->main, delay);
             if (F_status_is_error(status) || status == F_interrupt) return -1;
           }
 

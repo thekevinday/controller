@@ -27,12 +27,9 @@ extern "C" {
       }
 
       if (F_status_is_error_not(state->status)) {
-        if (content) {
-          state->status = f_memory_array_increase_by(content->used + 1, sizeof(f_iki_data_t), (void **) &action->ikis.array, &action->ikis.used, &action->ikis.size);
-        }
-        else {
-          state->status = f_memory_array_increase(controller_allocation_small_d, sizeof(f_iki_data_t), (void **) &action->ikis.array, &action->ikis.used, &action->ikis.size);
-        }
+        state->status = content
+          ? f_memory_array_increase_by(content->used + 1, sizeof(f_iki_data_t), (void **) &action->ikis.array, &action->ikis.used, &action->ikis.size);
+          : f_memory_array_increase(controller_allocation_small_d, sizeof(f_iki_data_t), (void **) &action->ikis.array, &action->ikis.used, &action->ikis.size);
       }
 
       if (F_status_is_error(state->status)) {
