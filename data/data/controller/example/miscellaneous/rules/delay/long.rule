@@ -4,7 +4,7 @@
 #
 
 settings:
-  name "Delay for 3 minutes."
+  name "Delay for 10 seconds."
 
 script:
-  start sleep 3m
+  start sleep 10s

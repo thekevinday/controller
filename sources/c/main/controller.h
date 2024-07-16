@@ -110,7 +110,6 @@
 #include <program/controller/main/lock.h>
 #include <program/controller/main/path.h>
 #include <program/controller/main/perform.h>
-#include <program/controller/main/print/data.h>
 #include <program/controller/main/print/debug.h>
 #include <program/controller/main/print/debug/perform/control.h>
 #include <program/controller/main/print/debug/perform/pid.h>
@@ -138,8 +137,6 @@
 #include <program/controller/main/print/output/rule/execute.h>
 #include <program/controller/main/print/output/rule/setting.h>
 #include <program/controller/main/print/output/rule/validate.h>
-#include <program/controller/main/print/verbose.h>
-#include <program/controller/main/print/warning.h>
 #include <program/controller/main/print/warning/entry/action.h>
 #include <program/controller/main/print/warning/entry/item.h>
 #include <program/controller/main/print/warning/entry/setting.h>

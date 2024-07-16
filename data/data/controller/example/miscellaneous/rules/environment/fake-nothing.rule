@@ -4,8 +4,9 @@ settings:
   name "Environment using fake as an engine"
   engine fake ++quiet
 
+  # LD_LIBRARY_PATH might be required in certain circumstances.
   # PATH must be expoted so that "run env" works.
-  environment PATH
+  environment LD_LIBRARY_PATH PATH
 
 script:
   start {

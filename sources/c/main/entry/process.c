@@ -298,9 +298,7 @@ extern "C" {
               if (!(main->setting.flag & controller_main_flag_simulate_e)) {
                 f_thread_unlock(&main->thread.lock.rule);
 
-                if (entry_action->code & controller_entry_rule_code_require_d) {
-                  return F_status_set_error(F_require);
-                }
+                if (entry_action->code & controller_entry_rule_code_require_d) return F_status_set_error(F_require);
 
                 ++cache->ats.array[at_j];
 
@@ -475,7 +473,7 @@ extern "C" {
       if (status_wait == F_require) return F_status_set_error(F_require);
     }
 
-    if ((main->setting.flag & controller_main_flag_simulate_e && main->program.error.verbosity > f_console_verbosity_error_e) || main->program.error.verbosity > f_console_verbosity_normal_e) {
+    if (((main->setting.flag & controller_main_flag_simulate_e) && main->program.error.verbosity > f_console_verbosity_error_e) || main->program.error.verbosity > f_console_verbosity_normal_e) {
       controller_print_message_entry_item_done(&main->program.message, is_entry, failsafe, controller_main_s);
     }
 

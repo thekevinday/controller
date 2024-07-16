@@ -208,7 +208,7 @@ extern "C" {
       };
 
       for (index = 0; index < 3; ++index) {
-        if (main->program.parameters.array[codes[index]].result & f_console_result_value_e) main->setting.flag |= flags[index];
+        if (main->program.parameters.array[codes[index]].result & f_console_result_found_e) main->setting.flag |= flags[index];
       } // for
     }
 

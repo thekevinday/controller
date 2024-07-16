@@ -4,7 +4,7 @@ settings:
   name "Environment using fake as an engine"
   engine fake ++quiet
 
-  environment PATH PWD
+  environment LD_LIBRARY_PATH PATH PWD
 
 script:
   start {

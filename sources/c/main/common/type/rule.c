@@ -41,8 +41,7 @@ extern "C" {
     if (!action) return;
 
     f_memory_arrays_resize(0, sizeof(f_string_dynamic_t), (void **) &action->parameters.array, &action->parameters.used, &action->parameters.size, &f_string_dynamics_delete_callback);
-
-    f_memory_array_resize(0, sizeof(f_iki_data_t), (void **) &action->ikis.array, &action->ikis.used, &action->ikis.size);
+    f_memory_arrays_resize(0, sizeof(f_iki_data_t), (void **) &action->ikis.array, &action->ikis.used, &action->ikis.size, &f_iki_datas_delete_callback);
   }
 #endif // _di_controller_rule_action_delete_
 
