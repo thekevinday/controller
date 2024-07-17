@@ -1,0 +1,56 @@
+# fss-0005 iki-0002
+#
+# This requires the FLL sources to be placed along this projects sources.
+#
+# See the dependencies file for details on the FLL packages that are needed.
+#
+# The build settings file must be updated with all of the appropriate paths from the FLL source files.
+# These source files must be copied over into the sources directory under 'sources/c/fll'.
+#
+
+settings:
+  fail exit
+  modes individual individual_thread level monolithic clang test fanalyzer coverage thread threadlesss
+
+  environment PATH LD_LIBRARY_PATH
+  environment LANG LC_ALL LC_COLLATE LC_CTYPE LC_FASTMSG LC_MESSAGES LC_MONETARY LC_NUMERIC LC_TIME LOCPATH NLSPATH
+
+main:
+  build settings.controller
+  build settings.init
+
+main_controller:
+  build settings.controller
+
+main_init:
+  build settings.init
+
+install:
+  shell ./install.sh parameter:'work' parameter:'verbosity' parameter:'color'
+  shell ./install.sh parameter:'work' parameter:'verbosity' parameter:'color' -s data/build/settings.controller
+  shell ./install.sh parameter:'work' parameter:'verbosity' parameter:'color' -s data/build/settings.init
+
+install_controller:
+  shell ./install.sh parameter:'work' parameter:'verbosity' parameter:'color'
+  shell ./install.sh parameter:'work' parameter:'verbosity' parameter:'color' -s data/build/settings.controller
+
+install_init:
+  shell ./install.sh parameter:'work' parameter:'verbosity' parameter:'color'
+  shell ./install.sh parameter:'work' parameter:'verbosity' parameter:'color' -s data/build/settings.init
+
+help:
+  print
+  print context:'title'Fakefile Options for the Controller and the Init Programs.context:'reset'
+
+  print
+  print The following operations are available\:
+  print "  - context:'notable'help:context:'reset'               Perform the help operation, printing this message."
+  print "  - context:'notable'install:context:'reset'            A helper operation that calls the ./install.sh script for both the controller and init programs."
+  print "  - context:'notable'install_controller:context:'reset' A helper operation that calls the ./install.sh script for the controller program."
+  print "  - context:'notable'install_init:context:'reset'       A helper operation that calls the ./install.sh script for the init program."
+  print "  - context:'notable'main:context:'reset'               Compilation using the build settings mode for both the controller and init programs (default)."
+  print "  - context:'notable'main_controller:context:'reset'    Compilation using the build settings mode for the controller program."
+  print "  - context:'notable'main_init:context:'reset'          Compilation using the build settings mode for the init program."
+
+  print
+  print The context:'notable'install context:'reset'operation supports the context:'notable'work,context:'reset' context:'notable'verbosity,context:'reset' and context:'notable'color context:'reset'parameters.
