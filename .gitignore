@@ -1,2 +1,9 @@
 /build/
 /build/*
+
+# Disclude FLL sources dropped for stand alone building.
+sources/c/fll
+
+# Do not include the local configuration sources.
+sources/c/config.c
+sources/c/config.h

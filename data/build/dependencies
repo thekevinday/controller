@@ -6,6 +6,7 @@ f_memory
 f_type_array
 f_string
 f_utf
+f_abstruse
 f_account
 f_capability
 f_color
@@ -27,7 +28,6 @@ f_print
 f_rip
 f_signal
 f_socket
-f_status_string
 f_time
 f_thread
 
@@ -47,4 +47,3 @@ fll_execute
 fll_fss
 fll_print
 fll_program
-fll_status_string

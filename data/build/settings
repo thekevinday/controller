@@ -5,8 +5,8 @@
 #   - individual_thread: This is required when compiling in individual mode with "thread" mode.
 #   - level:             Compile using per level libraries.
 #   - monolithic:        Compile using per monolithic libraries.
-#   - clang:             Use clang rather than the default, which is generally gcc.
-#   - gcc:               Use gcc specific settings.
+#   - clang:             Use CLang rather than the default, which is generally GCC.
+#   - gcc:               Use GCC specific settings.
 #   - test:              Compile for a test, such as unit testing.
 #   - fanalyzer:         Compile using GCC's -fanalyzer compile time option.
 #   - coverage:          Compile for building coverage.
@@ -32,10 +32,10 @@ build_indexer_arguments rcs
 build_language c
 
 build_libraries -lc -lcap
-build_libraries-individual -lfll_control_group -lfll_error -lfll_execute -lfll_fss -lfll_print -lfll_program -lfll_status_string
+build_libraries-individual -lfll_control_group -lfll_error -lfll_execute -lfll_fss -lfll_print -lfll_program
 build_libraries-individual_thread -lf_thread
 build_libraries-individual -lfl_control_group -lfl_conversion -lfl_directory -lfl_environment -lfl_execute -lfl_fss -lfl_iki -lfl_path -lfl_print
-build_libraries-individual -lf_account -lf_capability -lf_color -lf_compare -lf_console -lf_control_group -lf_conversion -lf_directory -lf_environment -lf_execute -lf_file -lf_fss -lf_iki -lf_limit -lf_memory -lf_parse -lf_path -lf_pipe -lf_print -lf_rip -lf_signal -lf_socket -lf_status_string -lf_string -lf_time -lf_type_array -lf_utf
+build_libraries-individual -lf_abstruse -lf_account -lf_capability -lf_color -lf_compare -lf_console -lf_control_group -lf_conversion -lf_directory -lf_environment -lf_execute -lf_file -lf_fss -lf_iki -lf_limit -lf_memory -lf_parse -lf_path -lf_pipe -lf_print -lf_rip -lf_signal -lf_socket -lf_string -lf_time -lf_type_array -lf_utf
 build_libraries-individual_thread -lf_thread
 build_libraries-level -lfll_2 -lfll_1 -lfll_0
 build_libraries-monolithic -lfll
@@ -100,7 +100,7 @@ path_object_static static
 path_program_script script
 path_program_shared shared
 path_program_static static
-path_sources sources/c/main
+path_sources sources/c/program/controller/main
 
 has_path_standard no
 preserve_path_headers yes
