@@ -7,10 +7,13 @@
 # The build settings file must be updated with all of the appropriate paths from the FLL source files.
 # These source files must be copied over into the sources directory under 'sources/c/fll'.
 #
+# This can be built via:
+#   fake -U build/stand_alone/ clean make
+#
 
 settings:
   fail exit
-  modes individual individual_thread level monolithic clang test fanalyzer coverage thread threadlesss
+  modes clang coverage fanalyzer gcc stand_alone test thread threadless
 
   environment PATH LD_LIBRARY_PATH
   environment LANG LC_ALL LC_COLLATE LC_CTYPE LC_FASTMSG LC_MESSAGES LC_MONETARY LC_NUMERIC LC_TIME LOCPATH NLSPATH

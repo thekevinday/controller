@@ -6,7 +6,10 @@
 # The FLL sources from the monolithic package must be dropped into the sources directory under the fll sub-directory (which must be created).
 # The Controller sources must be dropped into the sources directory under the program sub-directory (which must be created).
 #
-# The init.config.h should be copied to sources/c/config.h.
+# The data/build/stand_alone/config.h should be copied to sources/c/config.h.
+#
+# This can be built directly via:
+#    fake -s data/build/stand_alone/settings.init clean build
 #
 # Modes:
 #   - clang:       Use clang rather than the default, which is generally GCC.
@@ -17,6 +20,7 @@
 #   - test:        Compile for a test, such as unit testing.
 #   - thread:      Compile with thread support.
 #   - threadless:  Compile without thread support.
+#
 
 build_name init
 
