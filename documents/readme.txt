@@ -21,10 +21,8 @@ Readme Documentation:
 
   This project follows bold:"Specification Driven Development" and details of the configuration files are defined in the directory:"specifications/" and in the directory:"documents/".
 
-  To facilitate building of this project, two different build systems are provided\:
-  - The bootstrap, via the file:"bootstrap.sh" script.
+  To facilitate building of this project, these build systems are provided\:
   - The bold:"Featureless Make", which is a level 3 project provided by FLL:"Featureless Linux Library".
 
   See: file:"data/build/dependencies" for specific dependencies of this project.
-  See: file:"documents/readme.bootstrap.txt" for bootstrap compiling (or just regular compiling) any part of the FLL:"Featureless Linux Library" and notes on installing.
   See: file:"documents/readme.build.txt" for bold:"Featureless Make" compiling and notes on installing.

@@ -1,4 +1,4 @@
-ALl files within this project unless otherwise specified are Copyright © 2007-2023 Kevin Day.
+ALl files within this project unless otherwise specified are Copyright © 2007-2024 Kevin Day.
 
 Source code and related files are under lgpl-2.1-or-later.
 Specifications and related files are under open-standard-license-1.0-or-later.
