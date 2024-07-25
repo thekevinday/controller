@@ -82,12 +82,12 @@ defines-thread -D_pthread_attr_unsupported_ -D_pthread_sigqueue_unsupported_
 flags -O2 -g -fdiagnostics-color=always -Wno-logical-not-parentheses -Wno-parentheses -Wno-missing-braces
 flags -fstack-clash-protection -fno-delete-null-pointer-checks
 flags -Wl,-z,nodlopen -Wl,-z,noexecstack -Wl,-z,relro -Wl,-z,now
-flags-thread -pthread
 flags-clang -Wno-logical-op-parentheses
+flags-coverage -O0 --coverage -fprofile-abs-path -fprofile-dir=build/coverage/
+flags-fanalyzer -fanalyzer
 flags-gcc_13 -fstrict-flex-arrays=3
 flags-test -O0 -fstack-protector-strong -Wall
-flags-fanalyzer -fanalyzer
-flags-coverage -O0 --coverage -fprofile-abs-path -fprofile-dir=build/coverage/
+flags-thread -pthread
 
 flags_library -fPIC
 flags_object -fPIC
