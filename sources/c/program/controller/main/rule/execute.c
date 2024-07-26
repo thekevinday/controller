@@ -41,7 +41,7 @@ extern "C" {
         status = fll_control_group_prepare(instance->rule.cgroup);
 
         if (F_status_is_error(status)) {
-          controller_print_error_file(&main->program.error, macro_controller_f(fll_control_group_prepare), instance->rule.cgroup.path, controller_print_rule_control_groups_prepare_s, fll_error_file_type_directory_e);
+          controller_print_error_file_status(&main->program.error, macro_controller_f(fll_control_group_prepare), instance->rule.cgroup.path, controller_print_rule_control_groups_prepare_s, fll_error_file_type_directory_e, F_status_set_fine(status));
 
           return status;
         }
