@@ -235,7 +235,7 @@ extern "C" {
  */
 #ifndef _di_controller_print_rule_s_
   #define CONTROLLER_print_rule_control_groups_prepare_s "prepare control groups for"
-  #define CONTROLLER_print_rule_control_groups_prepare_s_length 24
+  #define CONTROLLER_print_rule_control_groups_prepare_s_length 26
 
   extern const f_string_static_t controller_print_rule_control_groups_prepare_s;
 #endif // _di_controller_print_rule_s_
