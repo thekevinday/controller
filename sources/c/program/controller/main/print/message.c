@@ -7,9 +7,7 @@ extern "C" {
 #ifndef _di_controller_print_message_help_
   f_status_t controller_print_message_help(fl_print_t * const print, const uint8_t uninterrupt) {
 
-    if (!print || !print->custom) return F_status_set_error(F_output_not);
-
-    controller_t * const main = (controller_t *) print->custom;
+    if (!print) return F_status_set_error(F_output_not);
 
     f_file_stream_lock(print->to);
 

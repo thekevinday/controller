@@ -35,7 +35,6 @@ extern "C" {
  *   - validate:               Perform validation of rules rather than execution.
  *   - version:                Print version.
  *   - version_copyright_help: A helper flag representing version, copyright, and help flag bits being set.
- *   - warning:                Check if status is "warning".
  */
 #ifndef _di_controller_main_flag_e_
   enum {
@@ -52,7 +51,6 @@ extern "C" {
     controller_main_flag_validate_e               = 0x200,
     controller_main_flag_version_e                = 0x400,
     controller_main_flag_version_copyright_help_e = 0x411,
-    controller_main_flag_warning_e                = 0x800,
   }; // enum
 #endif // _di_controller_main_flag_e_
 

@@ -39,13 +39,13 @@ help:
 
   print
   print The following operations are available\:
-  print "  - context:'notable'help:context:'reset'               Perform the help operation, printing this message."
-  print "  - context:'notable'install:context:'reset'            A helper operation that calls the ./install.sh script for both the controller and init programs."
-  print "  - context:'notable'install_controller:context:'reset' A helper operation that calls the ./install.sh script for the controller program."
-  print "  - context:'notable'install_init:context:'reset'       A helper operation that calls the ./install.sh script for the init program."
-  print "  - context:'notable'main:context:'reset'               Compilation using the build settings mode for both the controller and init programs (default)."
-  print "  - context:'notable'main_controller:context:'reset'    Compilation using the build settings mode for the controller program."
-  print "  - context:'notable'main_init:context:'reset'          Compilation using the build settings mode for the init program."
+  print "  - context:'notable'help:context:'reset'                Perform the help operation, printing this message."
+  print "  - context:'notable'install:context:'reset'             A helper operation that calls the ./install.sh script for both the controller and init programs."
+  print "  - context:'notable'install_controller:context:'reset'  A helper operation that calls the ./install.sh script for the controller program."
+  print "  - context:'notable'install_init:context:'reset'        A helper operation that calls the ./install.sh script for the init program."
+  print "  - context:'notable'main:context:'reset'                Compilation using the build settings mode for both the controller and init programs (default)."
+  print "  - context:'notable'main_controller:context:'reset'     Compilation using the build settings mode for the controller program."
+  print "  - context:'notable'main_init:context:'reset'           Compilation using the build settings mode for the init program."
 
   print
   print The context:'notable'install context:'reset'operation supports the context:'notable'work,context:'reset' context:'notable'verbosity,context:'reset' and context:'notable'color context:'reset'parameters.

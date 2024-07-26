@@ -5,15 +5,15 @@ extern "C" {
 #endif
 
 #ifndef _di_controller_delete_
-  void controller_delete(controller_t * const main) {
+  void controller_delete(controller_t * const controller) {
 
-    if (!main) return;
+    if (!controller) return;
 
-    fll_program_data_delete(&main->program);
+    fll_program_data_delete(&controller->program);
 
-    controller_process_delete(&main->process);
-    controller_setting_delete(&main->setting);
-    controller_thread_delete(&main->thread);
+    controller_process_delete(&controller->process);
+    controller_setting_delete(&controller->setting);
+    controller_thread_delete(&controller->thread);
   }
 #endif // _di_controller_delete_
 

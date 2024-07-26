@@ -103,10 +103,10 @@ extern "C" {
 #endif // _di_controller_t_
 
 /**
- * De-allocate main program data.
+ * De-allocate controller data.
  *
- * @param main
- *   The main program data.
+ * @param controller
+ *   The controller data.
  *
  *   Must not be NULL.
  *
@@ -120,7 +120,7 @@ extern "C" {
  * @see fll_program_data_delete()
  */
 #ifndef _di_controller_delete_
-  extern void controller_delete(controller_t * const main);
+  extern void controller_delete(controller_t * const controller);
 #endif // _di_controller_delete_
 
 /**
