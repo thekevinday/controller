@@ -165,9 +165,13 @@ extern "C" {
       for (index = 0; index < 4; ++index) {
 
         if (main->program.parameters.array[codes[index]].result & f_console_result_found_e) {
-          main->setting.state.status = F_status_set_error(F_parameter);
+          if (main->program.parameters.array[codes[index]].locations.used != main->program.parameters.array[codes[index]].values.used) {
+            main->setting.state.status = F_status_set_error(F_parameter);
 
-          fll_program_print_error_parameter_missing_value(&main->program.error, f_console_symbol_long_normal_s, strings[index]);
+            fll_program_print_error_parameter_missing_value(&main->program.error, f_console_symbol_long_normal_s, strings[index]);
+
+            continue;
+          }
         }
         else if (main->program.parameters.array[codes[index]].result & f_console_result_value_e) {
           if (flags[index]) main->setting.flag |= flags[index];
