@@ -5,7 +5,7 @@
  * API Version: 0.7
  * Licenses: lgpl-2.1-or-later
  *
- * This file is only ever included by main/main.c and should not normally be included anywhere else.
+ * This file is only ever included by program/controller/init/main.c and should not normally be included anywhere else.
  * Anything that wants to include this should be providing the "controller" program functionality in some manner.
  */
 #ifndef _controller_init_main_h
