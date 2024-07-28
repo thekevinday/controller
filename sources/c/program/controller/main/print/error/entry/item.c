@@ -63,7 +63,7 @@ extern "C" {
     fl_print_format("%[' does not support the option '%]", print->to, print->context, print->context, f_string_eol_s);
 
     fl_print_format(f_string_format_Q_range_single_s.string, print->to, print->notable, buffer, range, print->notable);
-    fl_print_format(f_string_format_sentence_end_quote_s.string, print->to, print->context, print->context, f_string_eol_s);
+    fl_print_format(f_string_format_sentence_end_single_quote_s.string, print->to, print->context, print->context, f_string_eol_s);
 
     controller_print_error_entry_cache(print, &cache->action, is_entry);
 

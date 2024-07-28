@@ -28,7 +28,7 @@ extern "C" {
     fl_print_format("%[%r%]%[', '%]", print->to, print->notable, controller_start_s, print->notable, print->context, print->context);
     fl_print_format("%[%r%]%[', or '%]", print->to, print->notable, controller_stop_s, print->notable, print->context, print->context);
     fl_print_format(f_string_format_r_single_s.string, print->to, print->notable, controller_thaw_s, print->notable, print->context);
-    fl_print_format(f_string_format_sentence_end_quote_s.string, print->to, print->context, print->context, f_string_eol_s);
+    fl_print_format(f_string_format_sentence_end_single_quote_s.string, print->to, print->context, print->context, f_string_eol_s);
 
     controller_print_error_rule_cache(print, action, F_true);
 
@@ -50,7 +50,7 @@ extern "C" {
 
     fl_print_format("%r%[%QFSS Extended List (FSS-0003) is not allowed for the Rule Item Action '%]", print->to, f_string_eol_s, print->context, print->prefix, print->context);
     fl_print_format(f_string_format_Q_single_s.string, print->to, print->notable, name, print->notable);
-    fl_print_format(f_string_format_sentence_end_quote_s.string, print->to, print->context, print->context, f_string_eol_s);
+    fl_print_format(f_string_format_sentence_end_single_quote_s.string, print->to, print->context, print->context, f_string_eol_s);
 
     controller_print_error_rule_cache(print, action, F_true);
 
@@ -140,7 +140,7 @@ extern "C" {
     fl_print_format("%[' as the second value, only the following are allowed: '%]", print->to, print->context, print->context);
     fl_print_format("%[%r%]%[' or '%]", print->to, print->notable, controller_stop_s, print->notable, print->context, print->context);
     fl_print_format(f_string_format_r_single_s.string, print->to, print->notable, controller_thaw_s, print->notable, print->context);
-    fl_print_format(f_string_format_sentence_end_quote_s.string, print->to, print->context, print->context, f_string_eol_s);
+    fl_print_format(f_string_format_sentence_end_single_quote_s.string, print->to, print->context, print->context, f_string_eol_s);
 
     controller_print_error_rule_cache(print, action, F_true);
 
@@ -186,7 +186,7 @@ extern "C" {
     fl_print_format(f_string_format_Q_single_s.string, print->to, print->notable, name, print->notable);
     fl_print_format("%[' has an unknown value '%]", print->to, print->context, print->context);
     fl_print_format(f_string_format_Q_range_single_s.string, print->to, print->notable, buffer, range, print->notable);
-    fl_print_format(f_string_format_sentence_end_quote_s.string, print->to, print->context, print->context, f_string_eol_s);
+    fl_print_format(f_string_format_sentence_end_single_quote_s.string, print->to, print->context, print->context, f_string_eol_s);
 
     controller_print_error_rule_cache(print, action, F_true);
 

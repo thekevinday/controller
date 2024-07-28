@@ -133,7 +133,7 @@ extern "C" {
 
     fl_print_format("%rWaiting before processing %r Item Action '", print->to, f_string_eol_s, is_entry ? controller_entry_s : controller_exit_s);
     fl_print_format(f_string_format_Q_single_s.string, print->to, print->set->title, name, print->set->title);
-    fl_print_format("'.%r", print->to, f_string_eol_s);
+    fl_print_format(f_string_format_sentence_end_quote_s.string, print->to, f_string_eol_s);
 
     controller_unlock_print_flush(print->to, &main->thread);
 

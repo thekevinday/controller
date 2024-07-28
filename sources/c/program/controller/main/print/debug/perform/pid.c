@@ -20,7 +20,7 @@ extern "C" {
     if (main->process.path_control.used) {
       fl_print_format("%rControl socket '", print->to, f_string_eol_s);
       fl_print_format(f_string_format_Q_single_s.string, print->to, print->notable, main->process.path_control, print->notable);
-      fl_print_format("'.%r", print->to, f_string_eol_s);
+      fl_print_format(f_string_format_sentence_end_quote_s.string, print->to, f_string_eol_s);
     }
 
     controller_unlock_print_flush(print->to, &main->thread);

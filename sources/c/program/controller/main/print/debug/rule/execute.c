@@ -24,7 +24,7 @@ extern "C" {
       fl_print_format(" for %[%ul%]", print->to, print->set->notable, rerun->count, print->set->notable);
       fl_print_format(" of %[%r%] ", print->to, print->set->notable, controller_max_s, print->set->notable);
       fl_print_format(f_string_format_un_single_s.string, print->to, print->set->notable, rerun->max, print->set->notable);
-      fl_print_format(".%r", print->to, f_string_eol_s);
+      fl_print_format(f_string_format_sentence_end_s.string, print->to, f_string_eol_s);
     }
     else {
       fl_print_format(" with no %[%r%].%r", print->to, print->set->notable, controller_max_s, print->set->notable, f_string_eol_s);

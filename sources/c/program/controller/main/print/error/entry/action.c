@@ -16,7 +16,7 @@ extern "C" {
 
     fl_print_format("%r%[%QExecution failed with return value of '%]", print->to, f_string_eol_s, print->context, print->prefix, print->context);
     fl_print_format(f_string_format_i_single_s.string, print->to, print->notable, code, print->notable);
-    fl_print_format(f_string_format_sentence_end_quote_s.string, print->to, print->context, print->context, f_string_eol_s);
+    fl_print_format(f_string_format_sentence_end_single_quote_s.string, print->to, print->context, print->context, f_string_eol_s);
 
     controller_print_error_entry_cache(print, action, is_entry);
 
@@ -38,7 +38,7 @@ extern "C" {
 
     fl_print_format("%r%[%QExecution failed, unable to find program or script '%]", print->to, f_string_eol_s, print->context, print->prefix, print->context);
     fl_print_format(f_string_format_Q_single_s.string, print->to, print->notable, name, print->notable);
-    fl_print_format(f_string_format_sentence_end_quote_s.string, print->to, print->context, print->context, f_string_eol_s);
+    fl_print_format(f_string_format_sentence_end_single_quote_s.string, print->to, print->context, print->context, f_string_eol_s);
 
     controller_print_error_entry_cache(print, action, is_entry);
 
@@ -69,7 +69,7 @@ extern "C" {
     fl_print_format(f_string_format_Q_single_s.string, print->to, print->notable, allow, print->notable);
     fl_print_format("%[' but instead has '%]", print->to, print->context, print->context);
     fl_print_format(f_string_format_Q_single_s.string, print->to, print->notable, has, print->notable);
-    fl_print_format(f_string_format_sentence_end_quote_s.string, print->to, print->context, print->context, f_string_eol_s);
+    fl_print_format(f_string_format_sentence_end_single_quote_s.string, print->to, print->context, print->context, f_string_eol_s);
 
     controller_print_error_entry_cache(print, action, is_entry);
 
@@ -103,7 +103,7 @@ extern "C" {
     fl_print_format(f_string_format_r_single_s.string, print->to, print->notable, allow_3, print->notable);
     fl_print_format("%[' but instead has '%]", print->to, print->context, print->context);
     fl_print_format(f_string_format_Q_single_s.string, print->to, print->notable, has, print->notable);
-    fl_print_format(f_string_format_sentence_end_quote_s.string, print->to, print->context, print->context, f_string_eol_s);
+    fl_print_format(f_string_format_sentence_end_single_quote_s.string, print->to, print->context, print->context, f_string_eol_s);
 
     controller_print_error_entry_cache(print, action, is_entry);
 
@@ -147,7 +147,7 @@ extern "C" {
     fl_print_format(f_string_format_Q_single_s.string, print->to, print->notable, has, print->notable);
     fl_print_format("%[' must be a base path name, such as '%]", print->to, print->context, print->context);
     fl_print_format(f_string_format_Q_single_s.string, print->to, print->notable, example, print->notable);
-    fl_print_format(f_string_format_sentence_end_quote_s.string, print->to, print->context, print->context, f_string_eol_s);
+    fl_print_format(f_string_format_sentence_end_single_quote_s.string, print->to, print->context, print->context, f_string_eol_s);
 
     controller_print_error_entry_cache(print, action, is_entry);
 
@@ -234,7 +234,7 @@ extern "C" {
 
     fl_print_format("%r%[%QThe %r Item Action may not specify the reserved item '%]", print->to, f_string_eol_s, print->context, print->prefix, is_entry ? controller_entry_s : controller_exit_s, print->context);
     fl_print_format(f_string_format_r_single_s.string, print->to, print->notable, item, print->notable);
-    fl_print_format(f_string_format_sentence_end_quote_s.string, print->to, print->context, print->context, f_string_eol_s);
+    fl_print_format(f_string_format_sentence_end_single_quote_s.string, print->to, print->context, print->context, f_string_eol_s);
 
     controller_print_error_entry_cache(print, action, is_entry);
 

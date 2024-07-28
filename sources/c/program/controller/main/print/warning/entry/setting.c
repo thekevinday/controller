@@ -16,7 +16,7 @@ extern "C" {
 
     fl_print_format("%r%[%QUnknown %r item setting '%]", print->to, f_string_eol_s, print->context, print->prefix, is_entry ? controller_entry_s : controller_exit_s, print->context);
     fl_print_format(f_string_format_Q_single_s.string, print->to, print->notable, name, print->notable);
-    fl_print_format(f_string_format_sentence_end_quote_s.string, print->to, print->context, print->context, f_string_eol_s);
+    fl_print_format(f_string_format_sentence_end_single_quote_s.string, print->to, print->context, print->context, f_string_eol_s);
 
     controller_print_error_entry_cache(print, &cache->action, is_entry);
 
@@ -40,7 +40,7 @@ extern "C" {
     fl_print_format(f_string_format_Q_single_s.string, print->to, print->notable, name, print->notable);
     fl_print_format("%[' has an unknown value '%]", print->to, print->context, print->context);
     fl_print_format(f_string_format_Q_range_single_s.string, print->to, print->notable, buffer, range, print->notable);
-    fl_print_format(f_string_format_sentence_end_quote_s.string, print->to, print->context, print->context, f_string_eol_s);
+    fl_print_format(f_string_format_sentence_end_single_quote_s.string, print->to, print->context, print->context, f_string_eol_s);
 
     controller_print_error_entry_cache(print, &cache->action, is_entry);
 

@@ -45,7 +45,7 @@ extern "C" {
       }
     } // for
 
-    fl_print_format("'.%r", print->to, f_string_eol_s);
+    fl_print_format(f_string_format_sentence_end_quote_s.string, print->to, f_string_eol_s);
 
     controller_unlock_print_flush(print->to, &main->thread);
 
@@ -124,7 +124,7 @@ extern "C" {
       }
     }
 
-    fl_print_format(".%r", print->to, f_string_eol_s);
+    fl_print_format(f_string_format_sentence_end_s.string, print->to, f_string_eol_s);
 
     controller_unlock_print_flush(print->to, &main->thread);
 

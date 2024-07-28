@@ -18,7 +18,7 @@ extern "C" {
     fl_print_format(f_string_format_Q_single_s.string, print->to, print->notable, main->process.path_control, print->notable);
     fl_print_format("%[' %S, code %]", print->to, print->context, message, print->context);
     fl_print_format(f_string_format_ui_single_s.string, print->to, print->notable, status, print->notable);
-    fl_print_format(f_string_format_sentence_end_s.string, print->to, print->context, print->context, f_string_eol_s);
+    fl_print_format(f_string_format_sentence_end_single_s.string, print->to, print->context, print->context, f_string_eol_s);
 
     controller_unlock_print_flush(print->to, &main->thread);
   }

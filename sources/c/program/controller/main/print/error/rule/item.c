@@ -263,7 +263,7 @@ extern "C" {
       else {
         fl_print_format("%[' failed with the execute error code %]", print->to, print->context, print->context);
         fl_print_format("%[%i%]", print->to, print->notable, code, print->notable);
-        fl_print_format(f_string_format_sentence_end_s.string, print->to, print->context, print->context, f_string_eol_s);
+        fl_print_format(f_string_format_sentence_end_single_s.string, print->to, print->context, print->context, f_string_eol_s);
       }
     }
     else {
