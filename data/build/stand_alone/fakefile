@@ -56,4 +56,4 @@ help:
   print "  - context:'notable'main_init:context:'reset'          Compilation using the build settings mode for the init program."
 
   print
-  print The context:'notable'install context:'reset'operation supports the context:'notable'work,context:'reset' context:'notable'verbosity,context:'reset' and context:'notable'color context:'reset'parameters.
+  print The context:'notable'install[context]:'reset' operation supports the context:'notable'work[context]:'reset', context:'notable'verbosity[context]:'reset', and context:'notable'color[context]:'reset' parameters.
