@@ -10,7 +10,6 @@
 #   - coverage:    Compile for building coverage.
 #   - fanalyzer:   Compile using GCC's -fanalyzer compile time option.
 #   - gcc:         Use GCC specific settings.
-#   - stand_alone: The stand alone build mode, which in general should always be used.
 #   - test:        Compile for a test, such as unit testing.
 #   - thread:      Compile with thread support.
 #   - threadless:  Compile without thread support.
@@ -24,7 +23,7 @@ version_micro 0
 version_file micro
 version_target minor
 
-modes clang coverage fanalyzer gcc stand_alone test thread threadless
+modes clang coverage fanalyzer gcc test thread threadless
 modes_default thread gcc
 
 build_compiler gcc

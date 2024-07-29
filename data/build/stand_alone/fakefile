@@ -29,17 +29,14 @@ main_init:
   build settings.init
 
 install:
-  shell ./install.sh parameter:'work' parameter:'verbosity' parameter:'color'
-  shell ./install.sh parameter:'work' parameter:'verbosity' parameter:'color' -s data/build/settings.controller
-  shell ./install.sh parameter:'work' parameter:'verbosity' parameter:'color' -s data/build/settings.init
+  shell ./install.sh parameter:'work' parameter:'verbosity' parameter:'color' -s data/build/stand_alone/settings.controller
+  shell ./install.sh parameter:'work' parameter:'verbosity' parameter:'color' -s data/build/stand_alone/settings.init
 
 install_controller:
-  shell ./install.sh parameter:'work' parameter:'verbosity' parameter:'color'
-  shell ./install.sh parameter:'work' parameter:'verbosity' parameter:'color' -s data/build/settings.controller
+  shell ./install.sh parameter:'work' parameter:'verbosity' parameter:'color' -s data/build/stand_alone/settings.controller
 
 install_init:
-  shell ./install.sh parameter:'work' parameter:'verbosity' parameter:'color'
-  shell ./install.sh parameter:'work' parameter:'verbosity' parameter:'color' -s data/build/settings.init
+  shell ./install.sh parameter:'work' parameter:'verbosity' parameter:'color' -s data/build/stand_alone/settings.init
 
 help:
   print
