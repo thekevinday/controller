@@ -23,7 +23,7 @@ version_micro 0
 version_file micro
 version_target minor
 
-modes  clang coverage fanalyzer gcc test thread threadless
+modes clang coverage fanalyzer gcc test thread threadless
 modes_default thread gcc
 
 build_compiler gcc

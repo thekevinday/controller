@@ -632,6 +632,7 @@
 //#define _di_f_fss_skip_past_delimit_
 //#define _di_f_fss_skip_past_space_
 //#define _di_f_fss_state_flag_e_
+//#define _di_f_fss_status_code_e_
 //#define _di_f_fss_type_s_
 #define _di_f_f_utf_space_em_per_four_s_
 #define _di_f_f_utf_space_em_per_six_s_
