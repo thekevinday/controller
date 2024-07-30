@@ -1645,8 +1645,8 @@
 //#define _di_f_string_format_s_
 #define _di_f_string_format_s_double_s_
 #define _di_f_string_format_S_double_s_
-#define _di_f_string_format_sentence_end_quote_s_
-#define _di_f_string_format_sentence_end_s_
+//#define _di_f_string_format_sentence_end_quote_s_
+//#define _di_f_string_format_sentence_end_s_
 #define _di_f_string_format_sentence_end_double_quote_s_
 #define _di_f_string_format_sentence_end_double_s_
 //#define _di_f_string_format_sentence_end_single_single_quote_s_
