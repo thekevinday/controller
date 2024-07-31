@@ -4,10 +4,10 @@
 # version 2024/07/10
 #
 # This file (assumed to be named readme.build.txt) can be more easily read using the following iki_read commands:
-#   iki_read readme.build.txt +Q -w -rr FLL FLL FSS FSS -WW character "'" "'" code '"' '"'
+#   iki_read readme.build.txt +Q -w -rr FLL FLL FSS FSS -W code '"' '"'
 #
 # To read the "Build Readme Documentation" section of this file, use this command sequence:
-#   fss_basic_list_read readme.build.txt +Q -cn "Build Readme Documentation" | iki_read +Q -w -rr FLL FLL FSS FSS -WW character "'" "'" code '"' '"'
+#   fss_basic_list_read readme.build.txt +Q -cn "Build Readme Documentation" | iki_read +Q -w -rr FLL FLL FSS FSS -W code '"' '"'
 #
 
 Build Readme Documentation:
