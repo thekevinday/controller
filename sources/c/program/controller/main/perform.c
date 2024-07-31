@@ -10,8 +10,8 @@ extern "C" {
     if (!main) return F_status_set_error(F_parameter);
     if (!is_entry) return F_okay;
 
-    if (main->setting.flag & controller_main_flag_validate_e) {
-      if ((main->setting.flag & controller_main_flag_simulate_e)) {
+    if (main->setting.flag & controller_main_flag_validate_d) {
+      if ((main->setting.flag & controller_main_flag_simulate_d)) {
         controller_print_debug_perform_pid_file_control_socket(&main->program.debug);
       }
 

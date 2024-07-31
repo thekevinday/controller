@@ -105,28 +105,28 @@ extern "C" {
     }
 
     if (main->program.parameters.array[f_console_standard_parameter_help_e].result & f_console_result_found_e) {
-      main->setting.flag |= controller_main_flag_help_e;
+      main->setting.flag |= controller_main_flag_help_d;
 
       return;
     }
 
     if (main->program.parameters.array[f_console_standard_parameter_version_e].result & f_console_result_found_e) {
-      main->setting.flag |= controller_main_flag_version_e;
+      main->setting.flag |= controller_main_flag_version_d;
 
       return;
     }
 
     if (main->program.parameters.array[f_console_standard_parameter_copyright_e].result & f_console_result_found_e) {
-      main->setting.flag |= controller_main_flag_copyright_e;
+      main->setting.flag |= controller_main_flag_copyright_d;
 
       return;
     }
 
     if (main->program.pipe & fll_program_data_pipe_input_e) {
-      main->setting.flag |= controller_main_flag_pipe_e;
+      main->setting.flag |= controller_main_flag_pipe_d;
     }
     else {
-      main->setting.flag &= ~controller_main_flag_pipe_e;
+      main->setting.flag &= ~controller_main_flag_pipe_d;
     }
 
     f_string_static_t * const args = main->program.parameters.arguments.array;
@@ -155,7 +155,7 @@ extern "C" {
 
       const uint16_t flags[] = {
         0,
-        controller_main_flag_pid_e,
+        controller_main_flag_pid_d,
         0,
         0,
       };
@@ -206,9 +206,9 @@ extern "C" {
       };
 
       const uint16_t flags[] = {
-        controller_main_flag_daemon_e,
-        controller_main_flag_simulate_e,
-        controller_main_flag_validate_e,
+        controller_main_flag_daemon_d,
+        controller_main_flag_simulate_d,
+        controller_main_flag_validate_d,
       };
 
       for (index = 0; index < 3; ++index) {
@@ -239,7 +239,7 @@ extern "C" {
       }
     }
 
-    if (!main->process.path_pid.used && !(main->setting.flag & controller_main_flag_pid_e)) {
+    if (!main->process.path_pid.used && !(main->setting.flag & controller_main_flag_pid_d)) {
       main->setting.state.status = f_string_dynamic_append(controller_default_path_pid_s, &main->process.path_pid);
 
       if (F_status_is_error_not(main->setting.state.status)) {
@@ -314,18 +314,18 @@ extern "C" {
     if (main->program.parameters.array[controller_parameter_interruptible_e].result & f_console_result_found_e) {
       if (main->program.parameters.array[controller_parameter_uninterruptible_e].result & f_console_result_found_e) {
         if (main->program.parameters.array[controller_parameter_interruptible_e].location < main->program.parameters.array[controller_parameter_uninterruptible_e].location) {
-          main->setting.flag &= ~controller_main_flag_interruptible_e;
+          main->setting.flag &= ~controller_main_flag_interruptible_d;
         }
         else {
-          main->setting.flag |= controller_main_flag_interruptible_e;
+          main->setting.flag |= controller_main_flag_interruptible_d;
         }
       }
       else {
-        main->setting.flag |= controller_main_flag_interruptible_e;
+        main->setting.flag |= controller_main_flag_interruptible_d;
       }
     }
     else if (main->program.parameters.array[controller_parameter_uninterruptible_e].result & f_console_result_found_e) {
-      main->setting.flag &= ~controller_main_flag_interruptible_e;
+      main->setting.flag &= ~controller_main_flag_interruptible_d;
     }
   }
 #endif // _di_controller_setting_load_

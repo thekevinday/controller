@@ -44,7 +44,7 @@ extern "C" {
 
   #define controller_setting_t_initialize \
     { \
-      controller_main_flag_none_e, \
+      controller_main_flag_none_d, \
       F_okay, \
       f_state_t_initialize, \
       f_string_dynamic_t_initialize, \

@@ -261,7 +261,7 @@ extern "C" {
 
                 options_instance = 0;
 
-                if (main->setting.flag & controller_main_flag_simulate_e) {
+                if (main->setting.flag & controller_main_flag_simulate_d) {
                   options_instance |= controller_instance_option_simulate_e;
                 }
 

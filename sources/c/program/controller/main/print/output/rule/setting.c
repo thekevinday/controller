@@ -11,7 +11,7 @@ extern "C" {
 
     controller_t * const main = (controller_t *) print->custom;
 
-    if (print->verbosity < f_console_verbosity_debug_e && !((main->setting.flag & controller_main_flag_simulate_e) && print->verbosity > f_console_verbosity_normal_e)) {
+    if (print->verbosity < f_console_verbosity_debug_e && !((main->setting.flag & controller_main_flag_simulate_d) && print->verbosity > f_console_verbosity_normal_e)) {
       return F_output_not;
     }
 
@@ -35,7 +35,7 @@ extern "C" {
 
     controller_t * const main = (controller_t *) print->custom;
 
-    if (print->verbosity < f_console_verbosity_debug_e && !((main->setting.flag & controller_main_flag_simulate_e) && print->verbosity > f_console_verbosity_normal_e)) {
+    if (print->verbosity < f_console_verbosity_debug_e && !((main->setting.flag & controller_main_flag_simulate_d) && print->verbosity > f_console_verbosity_normal_e)) {
       return F_output_not;
     }
 

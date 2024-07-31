@@ -37,6 +37,62 @@ extern "C" {
 #endif // _di_controller_allocation_d_
 
 /**
+ * Controller lock defines.
+ *
+ * controller_lock_*_d:
+ *   - mutex_max_retry: The maximum amount of times to retry the mutex lock before giving up.
+ */
+#ifndef _di_controller_lock_d_
+  #define controller_lock_mutex_max_retry_d 1000000
+#endif // _di_controller_lock_d_
+
+/**
+ * Flags associated with Controller locks.
+ *
+ * controller_lock_flag_*_d:
+ *   - setup_not: No locks are initialized, so do not attempt to deallocate them.
+ */
+#ifndef _di_controller_lock_flag_d_
+  #define controller_lock_flag_setup_not_d 0x1
+#endif // _di_controller_lock_flag_d_
+
+/**
+ * Flags passed to the main function or program.
+ *
+ * When number mode is not specified, then mode is "string" mode (there is no flag for "string" mode).
+ *
+ * controller_main_flag_*_d:
+ *   - none:                   No flags set.
+ *   - copyright:              Print copyright.
+ *   - daemon:                 Run the process in the background and create a PID file.
+ *   - error:                  Check if status is "error".
+ *   - fine:                   Check if status is "fine".
+ *   - help:                   Print help.
+ *   - interruptible:          The process is interruptible.
+ *   - pid:                    Designate that a custom PID is specified.
+ *   - pipe:                   Use the input pipe.
+ *   - simulate:               Perform simulation of rules rather than execution.
+ *   - validate:               Perform validation of rules rather than execution.
+ *   - version:                Print version.
+ *   - version_copyright_help: A helper flag representing version, copyright, and help flag bits being set.
+ */
+#ifndef _di_controller_main_flag_d_
+  #define controller_main_flag_none_d                   0x0
+  #define controller_main_flag_copyright_d              0x1
+  #define controller_main_flag_daemon_d                 0x2
+  #define controller_main_flag_error_d                  0x4
+  #define controller_main_flag_fine_d                   0x8
+  #define controller_main_flag_help_d                   0x10
+  #define controller_main_flag_interruptible_d          0x20
+  #define controller_main_flag_pid_d                    0x40
+  #define controller_main_flag_pipe_d                   0x80
+  #define controller_main_flag_simulate_d               0x100
+  #define controller_main_flag_validate_d               0x200
+  #define controller_main_flag_version_d                0x400
+  #define controller_main_flag_version_copyright_help_d 0x411
+#endif // _di_controller_main_flag_d_
+
+/**
  * The program signal defines.
  *
  * controller_signal_*_d:
@@ -65,26 +121,6 @@ extern "C" {
   #define controller_with_session_new_d  0x2
   #define controller_with_session_same_d 0x4
 #endif // _di_controller_with_d_
-
-/**
- * Controller lock defines.
- *
- * controller_lock_*_d:
- *   - mutex_max_retry: The maximum amount of times to retry the mutex lock before giving up.
- */
-#ifndef _di_controller_lock_d_
-  #define controller_lock_mutex_max_retry_d 1000000
-#endif // _di_controller_lock_d_
-
-/**
- * Flags associated with Controller locks.
- *
- * controller_lock_flag_*_d:
- *   - setup_not: No locks are initialized, so do not attempt to deallocate them.
- */
-#ifndef _di_controller_lock_flag_d_
-  #define controller_lock_flag_setup_not_d 0x1
-#endif // _di_controller_lock_flag_d_
 
 #ifdef __cplusplus
 } // extern "C"

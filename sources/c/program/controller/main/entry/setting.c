@@ -269,7 +269,7 @@ extern "C" {
           continue;
         }
 
-        if (main->setting.flag & controller_main_flag_pid_e) {
+        if (main->setting.flag & controller_main_flag_pid_d) {
           controller_print_error_entry_setting_ignored(&main->program.error, cache, is_entry);
         }
         else {

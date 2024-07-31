@@ -112,7 +112,7 @@ extern "C" {
     fl_print_format("%r%r %r Item Rule ", print->to, f_string_eol_s, action->type == controller_entry_action_type_consider_e ? controller_print_entry_considering_s : controller_print_entry_processing_s, is_entry ? controller_entry_s : controller_exit_s);
     fl_print_format("'%[%Q%]'", print->to, print->set->title, alias_rule, print->set->title);
 
-    if (entry->show == controller_entry_show_init_e && !(main->setting.flag & controller_main_flag_simulate_e)) {
+    if (entry->show == controller_entry_show_init_e && !(main->setting.flag & controller_main_flag_simulate_d)) {
       fl_print_format(" [%[%r%]]", print->to, print->notable, action->code == controller_entry_rule_code_asynchronous_d ? controller_asynchronous_s : controller_synchronous_s, print->notable);
 
       if (action->code == controller_entry_rule_code_wait_d) {

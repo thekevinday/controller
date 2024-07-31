@@ -25,7 +25,7 @@ int main(const int argc, const f_string_t *argv, const f_string_t *envp) {
     data.program.pipe = fll_program_data_pipe_input_e;
   }
 
-  data.setting.flag |= controller_main_flag_interruptible_e;
+  data.setting.flag |= controller_main_flag_interruptible_d;
 
   fll_program_standard_set_up(&data.program);
 

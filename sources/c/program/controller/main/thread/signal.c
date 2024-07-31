@@ -9,7 +9,7 @@ extern "C" {
 
     if (!main) return;
     if (!controller_thread_is_enabled(&main->thread, is_normal)) return;
-    if (!(main->setting.flag & controller_main_flag_interruptible_e)) return;
+    if (!(main->setting.flag & controller_main_flag_interruptible_d)) return;
 
     siginfo_t information;
     f_time_spec_t time = f_time_spec_t_initialize;

@@ -47,7 +47,7 @@ extern "C" {
     if (!main) return F_status_set_error(F_parameter);
 
     // When sleep is a second or more, instead wait for terminating signals if interruptible.
-    if ((main->setting.flag & controller_main_flag_interruptible_e) && time.tv_sec) {
+    if ((main->setting.flag & controller_main_flag_interruptible_d) && time.tv_sec) {
       siginfo_t information;
       f_signal_t signal = f_signal_t_initialize;
 

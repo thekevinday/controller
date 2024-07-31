@@ -52,7 +52,7 @@ extern "C" {
     time.tv_sec = 0;
     time.tv_nsec = interval_nanoseconds;
 
-    if (main->process.mode == controller_process_mode_helper_e && !(main->setting.flag & controller_main_flag_validate_e)) {
+    if (main->process.mode == controller_process_mode_helper_e && !(main->setting.flag & controller_main_flag_validate_d)) {
       for (i = 0; i < main->thread.instances.used; ++i) {
 
         if (!main->thread.instances.array[i]) continue;
@@ -115,7 +115,7 @@ extern "C" {
       main->thread.id_signal = 0;
     }
 
-    if (main->process.mode == controller_process_mode_helper_e && !(main->setting.flag & controller_main_flag_validate_e)) {
+    if (main->process.mode == controller_process_mode_helper_e && !(main->setting.flag & controller_main_flag_validate_d)) {
       f_thread_mutex_unlock(&main->thread.lock.cancel);
 
       return;

@@ -28,13 +28,13 @@ extern "C" {
     else if (*status != F_child) {
       *status = controller_entry_preprocess(main, F_true);
 
-      if ((main->setting.flag & controller_main_flag_simulate_e) && (main->setting.flag & controller_main_flag_validate_e)) {
+      if ((main->setting.flag & controller_main_flag_simulate_d) && (main->setting.flag & controller_main_flag_validate_d)) {
         controller_print_output_entry_setting_validate(&main->program.output, F_true);
       }
     }
 
     if (F_status_is_error_not(*status) && *status != F_child) {
-      if (!(main->setting.flag & controller_main_flag_validate_e) || (main->setting.flag & controller_main_flag_simulate_e)) {
+      if (!(main->setting.flag & controller_main_flag_validate_d) || (main->setting.flag & controller_main_flag_simulate_d)) {
         if (main->process.entry.pid == controller_entry_pid_require_e && f_file_exists(main->process.path_pid, F_true) == F_true) {
           *status = F_status_set_error(F_available_not);
           main->process.ready = controller_process_ready_fail_e;
@@ -94,7 +94,7 @@ extern "C" {
           }
         }
 
-        if (F_status_is_error_not(*status) && *status != F_child && !(main->setting.flag & controller_main_flag_validate_e) && main->process.mode == controller_process_mode_helper_e) {
+        if (F_status_is_error_not(*status) && *status != F_child && !(main->setting.flag & controller_main_flag_validate_d) && main->process.mode == controller_process_mode_helper_e) {
           const f_time_spec_t time = macro_f_time_spec_t_initialize_1(controller_thread_timeout_exit_helper_seconds_d, controller_thread_timeout_exit_helper_nanoseconds_d);
 
           f_time_sleep_spec(time, 0);
@@ -143,13 +143,13 @@ extern "C" {
     else if (*status != F_child) {
       *status = controller_entry_preprocess(main, F_false);
 
-      if ((main->setting.flag & controller_main_flag_simulate_e) && (main->setting.flag & controller_main_flag_validate_e)) {
+      if ((main->setting.flag & controller_main_flag_simulate_d) && (main->setting.flag & controller_main_flag_validate_d)) {
         controller_print_output_entry_setting_validate(&main->program.output, F_false);
       }
     }
 
     if (F_status_is_error_not(*status) && *status != F_child && *status != F_file_found_not) {
-      if (!(main->setting.flag & controller_main_flag_validate_e) || (main->setting.flag & controller_main_flag_simulate_e)) {
+      if (!(main->setting.flag & controller_main_flag_validate_d) || (main->setting.flag & controller_main_flag_simulate_d)) {
 
         *status = controller_entry_process(main, F_false, F_false);
 

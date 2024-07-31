@@ -56,7 +56,7 @@ extern "C" {
       return status;
     }
 
-    if ((main->setting.flag & controller_main_flag_simulate_e) || main->program.message.verbosity > f_console_verbosity_normal_e) {
+    if ((main->setting.flag & controller_main_flag_simulate_d) || main->program.message.verbosity > f_console_verbosity_normal_e) {
       controller_print_message_entry_item_process(&main->program.message, is_entry, failsafe ? controller_failsafe_s : f_string_empty_s, cache->action.name_item);
     }
 
@@ -86,7 +86,7 @@ extern "C" {
         }
 
         if (F_status_is_error(entry_action->status)) {
-          if (main->setting.flag & controller_main_flag_simulate_e) {
+          if (main->setting.flag & controller_main_flag_simulate_d) {
             controller_print_message_entry_action_state_failed(&main->program.message, cache, entry_action, is_entry);
           }
           else {
@@ -112,23 +112,23 @@ extern "C" {
 
         if (entry_action->type == controller_entry_action_type_ready_e) {
           if ((entry_action->code & controller_entry_rule_code_wait_d) || main->process.ready == controller_process_ready_wait_e) {
-            if ((main->setting.flag & controller_main_flag_simulate_e) || main->program.error.verbosity == f_console_verbosity_verbose_e || main->program.error.verbosity == f_console_verbosity_debug_e || entry->show == controller_entry_show_init_e) {
+            if ((main->setting.flag & controller_main_flag_simulate_d) || main->program.error.verbosity == f_console_verbosity_verbose_e || main->program.error.verbosity == f_console_verbosity_debug_e || entry->show == controller_entry_show_init_e) {
               controller_print_message_entry_action_wait(&main->program.message, is_entry, controller_ready_s);
             }
 
-            if (!(main->setting.flag & controller_main_flag_validate_e)) {
+            if (!(main->setting.flag & controller_main_flag_validate_d)) {
               status = controller_rule_wait_all(main, is_entry, F_false);
               if (F_status_is_error(status)) return status;
             }
           }
 
           if (main->process.ready == controller_process_ready_yes_e) {
-            if ((main->setting.flag & controller_main_flag_simulate_e) || main->program.error.verbosity == f_console_verbosity_verbose_e || main->program.error.verbosity == f_console_verbosity_debug_e) {
+            if ((main->setting.flag & controller_main_flag_simulate_d) || main->program.error.verbosity == f_console_verbosity_verbose_e || main->program.error.verbosity == f_console_verbosity_debug_e) {
               controller_print_message_entry_action_ready(&main->program.message, is_entry, controller_ready_s);
             }
           }
           else {
-            if (!failsafe && (main->program.error.verbosity == f_console_verbosity_verbose_e || entry->show == controller_entry_show_init_e) && !(main->setting.flag & controller_main_flag_simulate_e)) {
+            if (!failsafe && (main->program.error.verbosity == f_console_verbosity_verbose_e || entry->show == controller_entry_show_init_e) && !(main->setting.flag & controller_main_flag_simulate_d)) {
               controller_print_message_entry_state(&main->program.message, is_entry, controller_ready_s);
             }
 
@@ -176,7 +176,7 @@ extern "C" {
             return status;
           }
 
-          if ((main->setting.flag & controller_main_flag_simulate_e) || main->program.message.verbosity > f_console_verbosity_normal_e) {
+          if ((main->setting.flag & controller_main_flag_simulate_d) || main->program.message.verbosity > f_console_verbosity_normal_e) {
             controller_print_message_entry_item_process(&main->program.message, is_entry, f_string_empty_s, cache->action.name_item);
           }
 
@@ -224,7 +224,7 @@ extern "C" {
 
           f_thread_unlock(&main->thread.lock.rule);
 
-          if ((main->setting.flag & controller_main_flag_simulate_e) || main->program.error.verbosity == f_console_verbosity_verbose_e || main->program.error.verbosity == f_console_verbosity_debug_e || (entry->show == controller_entry_show_init_e && entry_action->type != controller_entry_action_type_consider_e)) {
+          if ((main->setting.flag & controller_main_flag_simulate_d) || main->program.error.verbosity == f_console_verbosity_verbose_e || main->program.error.verbosity == f_console_verbosity_debug_e || (entry->show == controller_entry_show_init_e && entry_action->type != controller_entry_action_type_consider_e)) {
             controller_print_message_entry_item_rule(&main->program.message, entry, entry_action, is_entry, alias_rule);
           }
 
@@ -295,7 +295,7 @@ extern "C" {
               // Designate the Action as failed.
               entry_action->status = controller_status_simplify_error(F_failure);
 
-              if (!(main->setting.flag & controller_main_flag_simulate_e)) {
+              if (!(main->setting.flag & controller_main_flag_simulate_d)) {
                 f_thread_unlock(&main->thread.lock.rule);
 
                 if (entry_action->code & controller_entry_rule_code_require_d) return F_status_set_error(F_require);
@@ -316,7 +316,7 @@ extern "C" {
             options_force = 0;
             options_instance = 0;
 
-            if (main->setting.flag & controller_main_flag_simulate_e) {
+            if (main->setting.flag & controller_main_flag_simulate_d) {
               options_instance |= controller_instance_option_simulate_e;
             }
 
@@ -328,12 +328,12 @@ extern "C" {
               options_instance |= controller_instance_option_wait_e;
             }
 
-            if (main->setting.flag & controller_main_flag_validate_e) {
+            if (main->setting.flag & controller_main_flag_validate_d) {
               options_instance |= controller_instance_option_validate_e;
             }
 
             if (entry_action->code & controller_entry_rule_code_asynchronous_d) {
-              if (!(main->setting.flag & controller_main_flag_validate_e)) {
+              if (!(main->setting.flag & controller_main_flag_validate_d)) {
                 options_force |= controller_instance_option_asynchronous_e;
               }
 
@@ -343,17 +343,17 @@ extern "C" {
             status = controller_rule_instance_begin(main, cache, options_force, alias_rule, controller_entry_action_type_to_rule_action_type(entry_action->type), options_instance, is_entry ? controller_instance_type_entry_e : controller_instance_type_exit_e, stack);
             if (F_status_set_fine(status) == F_memory_not || status == F_child || F_status_set_fine(status) == F_interrupt) break;
 
-            if (F_status_is_error(status) && !(main->setting.flag & controller_main_flag_simulate_e) && (entry_action->code & controller_entry_rule_code_require_d)) {
+            if (F_status_is_error(status) && !(main->setting.flag & controller_main_flag_simulate_d) && (entry_action->code & controller_entry_rule_code_require_d)) {
               return F_status_set_error(F_require);
             }
           }
         }
         else if (entry_action->type == controller_entry_action_type_execute_e) {
-          if ((main->setting.flag & controller_main_flag_simulate_e) || main->program.message.verbosity > f_console_verbosity_normal_e || entry->show == controller_entry_show_init_e) {
+          if ((main->setting.flag & controller_main_flag_simulate_d) || main->program.message.verbosity > f_console_verbosity_normal_e || entry->show == controller_entry_show_init_e) {
             controller_print_message_entry_item_executing(&main->program.message, is_entry, &entry_action->parameters);
           }
 
-          if (main->setting.flag & controller_main_flag_simulate_e) return F_execute;
+          if (main->setting.flag & controller_main_flag_simulate_d) return F_execute;
 
           controller_thread_instance_cancel(main, is_entry, is_entry ? controller_thread_cancel_execute_e : controller_thread_cancel_exit_execute_e);
 
@@ -467,13 +467,13 @@ extern "C" {
     if (F_status_is_error(status_lock)) return status_lock;
 
     // Check to see if any required processes failed, but do not do this if already operating in failsafe.
-    if (F_status_is_error_not(status) && !failsafe && !(main->setting.flag & controller_main_flag_validate_e) && main->process.mode != controller_process_mode_helper_e) {
+    if (F_status_is_error_not(status) && !failsafe && !(main->setting.flag & controller_main_flag_validate_d) && main->process.mode != controller_process_mode_helper_e) {
       const f_status_t status_wait = controller_rule_wait_all(main, is_entry, F_true);
       if (F_status_is_error(status_wait)) return status_wait;
       if (status_wait == F_require) return F_status_set_error(F_require);
     }
 
-    if (((main->setting.flag & controller_main_flag_simulate_e) && main->program.error.verbosity > f_console_verbosity_error_e) || main->program.error.verbosity > f_console_verbosity_normal_e) {
+    if (((main->setting.flag & controller_main_flag_simulate_d) && main->program.error.verbosity > f_console_verbosity_error_e) || main->program.error.verbosity > f_console_verbosity_normal_e) {
       controller_print_message_entry_item_done(&main->program.message, is_entry, failsafe, controller_main_s);
     }
 

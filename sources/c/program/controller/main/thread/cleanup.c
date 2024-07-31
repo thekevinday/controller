@@ -16,7 +16,7 @@ extern "C" {
     if (main->thread.enabled != controller_thread_enabled_e) return 0;
 
     const f_time_spec_t delay = macro_f_time_spec_t_initialize_1(
-      (main->setting.flag & controller_main_flag_simulate_e)
+      (main->setting.flag & controller_main_flag_simulate_d)
         ? controller_thread_cleanup_interval_short_d
         : controller_thread_cleanup_interval_long_d,
       0

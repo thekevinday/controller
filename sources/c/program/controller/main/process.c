@@ -11,14 +11,14 @@ extern "C" {
 
     main->setting.state.status = F_okay;
 
-    if (main->setting.flag & controller_main_flag_version_copyright_help_e) {
-      if (main->setting.flag & controller_main_flag_help_e) {
+    if (main->setting.flag & controller_main_flag_version_copyright_help_d) {
+      if (main->setting.flag & controller_main_flag_help_d) {
         controller_print_message_help(&main->program.message, F_false);
       }
-      else if (main->setting.flag & controller_main_flag_version_e) {
+      else if (main->setting.flag & controller_main_flag_version_d) {
         fll_program_print_version(&main->program.message, controller_program_version_s);
       }
-      else if (main->setting.flag & controller_main_flag_copyright_e) {
+      else if (main->setting.flag & controller_main_flag_copyright_d) {
         fll_program_print_copyright(&main->program.message, fll_program_copyright_year_author_s);
       }
 
@@ -54,7 +54,7 @@ extern "C" {
         controller_print_error_status(&main->program.error, macro_controller_f(f_thread_create), status);
       }
       else {
-        if (main->setting.flag & controller_main_flag_daemon_e) {
+        if (main->setting.flag & controller_main_flag_daemon_d) {
           main->process.ready = controller_process_ready_done_e;
 
           if (f_file_exists(main->process.path_pid, F_true) == F_true) {
@@ -82,7 +82,7 @@ extern "C" {
 
     // Only make the Rule and control threads available once any/all pre-processing is complete.
     if (F_status_is_error_not(status) && status != F_failure && status != F_child && main->thread.enabled == controller_thread_enabled_e) {
-      if (!(main->setting.flag & controller_main_flag_validate_e)) {
+      if (!(main->setting.flag & controller_main_flag_validate_d)) {
 
         // Wait for the Entry thread to complete before starting the Rule thread.
         controller_thread_join(&main->thread.id_rule);
@@ -114,7 +114,7 @@ extern "C" {
       return;
     }
 
-    if (F_status_is_error_not(status) && status != F_failure && !(main->setting.flag & controller_main_flag_validate_e) && controller_thread_is_enabled(&main->thread, F_true)) {
+    if (F_status_is_error_not(status) && status != F_failure && !(main->setting.flag & controller_main_flag_validate_d) && controller_thread_is_enabled(&main->thread, F_true)) {
       if (main->process.mode == controller_process_mode_service_e) {
         controller_thread_join(&main->thread.id_signal);
       }

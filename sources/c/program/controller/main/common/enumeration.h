@@ -17,44 +17,6 @@ extern "C" {
 #endif
 
 /**
- * Flags passed to the main function or program.
- *
- * When number mode is not specified, then mode is "string" mode (there is no flag for "string" mode).
- *
- * controller_main_flag_*_e:
- *   - none:                   No flags set.
- *   - copyright:              Print copyright.
- *   - daemon:                 Run the process in the background and create a PID file.
- *   - error:                  Check if status is "error".
- *   - fine:                   Check if status is "fine".
- *   - help:                   Print help.
- *   - interruptible:          The process is interruptible.
- *   - pid:                    Designate that a custom PID is specified.
- *   - pipe:                   Use the input pipe.
- *   - simulate:               Perform simulation of rules rather than execution.
- *   - validate:               Perform validation of rules rather than execution.
- *   - version:                Print version.
- *   - version_copyright_help: A helper flag representing version, copyright, and help flag bits being set.
- */
-#ifndef _di_controller_main_flag_e_
-  enum {
-    controller_main_flag_none_e                   = 0x0,
-    controller_main_flag_copyright_e              = 0x1,
-    controller_main_flag_daemon_e                 = 0x2,
-    controller_main_flag_error_e                  = 0x4,
-    controller_main_flag_fine_e                   = 0x8,
-    controller_main_flag_help_e                   = 0x10,
-    controller_main_flag_interruptible_e          = 0x20,
-    controller_main_flag_pid_e                    = 0x40,
-    controller_main_flag_pipe_e                   = 0x80,
-    controller_main_flag_simulate_e               = 0x100,
-    controller_main_flag_validate_e               = 0x200,
-    controller_main_flag_version_e                = 0x400,
-    controller_main_flag_version_copyright_help_e = 0x411,
-  }; // enum
-#endif // _di_controller_main_flag_e_
-
-/**
  * The main program parameters.
  */
 #ifndef _di_controller_parameter_e_
