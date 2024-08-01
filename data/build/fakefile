@@ -2,7 +2,7 @@
 
 settings:
   fail exit
-  modes individual individual_thread level monolithic clang test fanalyzer coverage thread threadlesss
+  modes individual individual_thread level monolithic clang gcc gcc_13 test fanalyzer coverage thread threadless
 
   environment PATH LD_LIBRARY_PATH
   environment LANG LC_ALL LC_COLLATE LC_CTYPE LC_FASTMSG LC_MESSAGES LC_MONETARY LC_NUMERIC LC_TIME LOCPATH NLSPATH

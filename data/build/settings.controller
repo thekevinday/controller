@@ -7,6 +7,7 @@
 #   - monolithic:        Compile using per monolithic libraries.
 #   - clang:             Use CLang rather than the default, which is generally GCC.
 #   - gcc:               Use GCC specific settings.
+#   - gcc_13:            Use gcc version 13 or greater specific settings.
 #   - test:              Compile for a test, such as unit testing.
 #   - fanalyzer:         Compile using GCC's -fanalyzer compile time option.
 #   - coverage:          Compile for building coverage.
@@ -22,7 +23,7 @@ version_micro 0
 version_file micro
 version_target minor
 
-modes individual individual_thread level monolithic clang gcc test fanalyzer coverage thread threadless
+modes individual individual_thread level monolithic clang gcc gcc_13 test fanalyzer coverage thread threadless
 modes_default monolithic thread gcc
 
 build_compiler gcc
@@ -76,8 +77,8 @@ environment LANG LC_ALL LC_COLLATE LC_CTYPE LC_FASTMSG LC_MESSAGES LC_MONETARY L
 
 #defines -D_di_libcap_
 defines -D_libcap_legacy_only_
-defines-thread -D_pthread_attr_unsupported_ -D_pthread_sigqueue_unsupported_
 defines-threadless -D_di_thread_support_
+defines-thread -D_pthread_attr_unsupported_ -D_pthread_sigqueue_unsupported_
 
 flags -O2 -g -fdiagnostics-color=always -Wno-logical-not-parentheses -Wno-parentheses -Wno-missing-braces
 flags -fstack-clash-protection -fno-delete-null-pointer-checks

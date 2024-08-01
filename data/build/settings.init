@@ -7,6 +7,7 @@
 #   - monolithic:        Compile using per monolithic libraries.
 #   - clang:             Use CLang rather than the default, which is generally GCC.
 #   - gcc:               Use GCC specific settings.
+#   - gcc_13:            Use gcc version 13 or greater specific settings.
 #   - test:              Compile for a test, such as unit testing.
 #   - fanalyzer:         Compile using GCC's -fanalyzer compile time option.
 #   - coverage:          Compile for building coverage.
@@ -22,7 +23,7 @@ version_micro 0
 version_file micro
 version_target minor
 
-modes individual individual_thread level monolithic clang gcc test fanalyzer coverage thread threadless
+modes individual individual_thread level monolithic clang gcc gcc_13 test fanalyzer coverage thread threadless
 modes_default monolithic thread gcc
 
 build_compiler gcc
