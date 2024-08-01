@@ -76,8 +76,8 @@ environment LANG LC_ALL LC_COLLATE LC_CTYPE LC_FASTMSG LC_MESSAGES LC_MONETARY L
 
 #defines -D_di_libcap_
 defines -D_libcap_legacy_only_
-defines-threadless -D_di_thread_support_
 defines-thread -D_pthread_attr_unsupported_ -D_pthread_sigqueue_unsupported_
+defines-threadless -D_di_thread_support_
 
 flags -O2 -g -fdiagnostics-color=always -Wno-logical-not-parentheses -Wno-parentheses -Wno-missing-braces
 flags -fstack-clash-protection -fno-delete-null-pointer-checks
