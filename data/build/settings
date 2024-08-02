@@ -6,11 +6,11 @@
 #   - level:             Compile using per level libraries.
 #   - monolithic:        Compile using per monolithic libraries.
 #   - clang:             Use CLang rather than the default, which is generally GCC.
-#   - gcc:               Use GCC specific settings.
-#   - gcc_13:            Use gcc version 13 or greater specific settings.
-#   - test:              Compile for a test, such as unit testing.
-#   - fanalyzer:         Compile using GCC's -fanalyzer compile time option.
 #   - coverage:          Compile for building coverage.
+#   - fanalyzer:         Compile using GCC's -fanalyzer compile time option.
+#   - gcc:               Use GCC specific settings.
+#   - gcc_13:            Use GCC version 13 or greater specific settings.
+#   - test:              Compile for a test, such as unit testing.
 #   - thread:            Compile with thread support.
 #   - threadless:        Compile without thread support.
 #
