@@ -7,8 +7,8 @@
  *
  * This program provides the base include for the controller program.
  */
-#ifndef _controller_controller_h
-#define _controller_controller_h
+#ifndef _controller_controller_controller_h
+#define _controller_controller_controller_h
 
 // Controller includes.
 #include <program/controller/main/controller.h>
@@ -22,4 +22,4 @@ extern "C" {
 } // extern "C"
 #endif
 
-#endif // _controller_controller_h
+#endif // _controller_controller_controller_h

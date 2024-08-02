@@ -9,8 +9,8 @@
  *
  * This is auto-included and should not need to be explicitly included.
  */
-#ifndef _controller_file_h
-#define _controller_file_h
+#ifndef _controller_main_file_h
+#define _controller_main_file_h
 
 #ifdef __cplusplus
 extern "C" {
@@ -130,4 +130,4 @@ extern "C" {
 } // extern "C"
 #endif
 
-#endif // _controller_file_h
+#endif // _controller_main_file_h

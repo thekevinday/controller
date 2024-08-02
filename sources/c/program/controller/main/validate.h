@@ -9,8 +9,8 @@
  *
  * This is auto-included and should not need to be explicitly included.
  */
-#ifndef _controller_validate_h
-#define _controller_validate_h
+#ifndef _controller_main_validate_h
+#define _controller_main_validate_h
 
 /**
  * Validate that the given string is a valid environment variable name.
@@ -60,4 +60,4 @@
 } // extern "C"
 #endif
 
-#endif // _controller_validate_h
+#endif // _controller_main_validate_h

@@ -9,8 +9,8 @@
  *
  * This is auto-included and should not need to be explicitly included.
  */
-#ifndef _controller_entry_h
-#define _controller_entry_h
+#ifndef _controller_main_entry_h
+#define _controller_main_entry_h
 
 #ifdef __cplusplus
 extern "C" {
@@ -71,4 +71,4 @@ extern "C" {
 } // extern "C"
 #endif
 
-#endif // _controller_entry_h
+#endif // _controller_main_entry_h

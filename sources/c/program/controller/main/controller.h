@@ -9,8 +9,8 @@
  *
  * This program does nothing but can be used as a starting point for new program projects.
  */
-#ifndef _controller_h
-#define _controller_h
+#ifndef _controller_main_h
+#define _controller_main_h
 
 // Include pre-requirements.
 #ifndef _GNU_SOURCE
@@ -180,4 +180,4 @@ extern "C" {
 } // extern "C"
 #endif
 
-#endif // _controller_h
+#endif // _controller_main_h

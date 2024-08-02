@@ -9,8 +9,8 @@
  *
  * This is auto-included and should not need to be explicitly included.
  */
-#ifndef _controller_time_h
-#define _controller_time_h
+#ifndef _controller_main_time_h
+#define _controller_main_time_h
 
 /**
  * Get the current time, plus the given offset.
@@ -59,4 +59,4 @@
 } // extern "C"
 #endif
 
-#endif // _controller_time_h
+#endif // _controller_main_time_h
