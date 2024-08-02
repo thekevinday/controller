@@ -17,7 +17,7 @@
 
 #define _di_f_abstruse_delete_
 #define _di_f_abstruse_destroy_
-#define _di_f_abstruse_e_
+//#define _di_f_abstruse_e_
 #define _di_f_abstruse_map_delete_
 #define _di_f_abstruse_map_destroy_
 #define _di_f_abstruse_maps_delete_callback_
@@ -33,8 +33,8 @@
 #define _di_f_abstrusess_destroy_callback_
 #define _di_f_abstrusess_t_
 #define _di_f_abstruses_t_
-#define _di_f_abstruse_t_
-#define _di_f_abstruse_type_t_
+//#define _di_f_abstruse_t_
+//#define _di_f_abstruse_type_t_
 #define _di_f_account_by_id_
 #define _di_f_account_by_name_
 //#define _di_f_account_d_
@@ -1693,7 +1693,7 @@
 #define _di_f_string_format_Z_single_s_
 #define _di_f_string_map_multis_append_
 #define _di_f_string_map_multis_append_all_
-#define _di_f_string_map_multis_delete_callback_
+//#define _di_f_string_map_multis_delete_callback_
 #define _di_f_string_map_multis_destroy_callback_
 #define _di_f_string_map_multiss_append_
 #define _di_f_string_map_multiss_append_all_
@@ -1733,7 +1733,7 @@
 //#define _di_f_string_t_
 #define _di_f_string_triples_append_
 #define _di_f_string_triples_append_all_
-#define _di_f_string_triples_delete_callback_
+//#define _di_f_string_triples_delete_callback_
 #define _di_f_string_triples_destroy_callback_
 #define _di_f_string_tripless_append_
 #define _di_f_string_tripless_append_all_
