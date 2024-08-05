@@ -1040,6 +1040,7 @@
 //#define _di_f_memory_default_d_
 //#define _di_f_memory_delete_
 #define _di_f_memory_destroy_
+//#define _di_f_memory_increase_step_d_
 //#define _di_f_memory_new_
 #define _di_f_memory_new_aligned_
 #define _di_f_memory_resize_
