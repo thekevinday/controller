@@ -6,13 +6,14 @@
 #   fake -s data/build/stand_alone/settings.controller clean build
 #
 # Modes:
-#   - clang:       Use clang rather than the default, which is generally GCC.
-#   - coverage:    Compile for building coverage.
-#   - fanalyzer:   Compile using GCC's -fanalyzer compile time option.
-#   - gcc:         Use GCC specific settings.
-#   - test:        Compile for a test, such as unit testing.
-#   - thread:      Compile with thread support.
-#   - threadless:  Compile without thread support.
+#   - android:    Compile on an android system (using Termux; may need modification depending on the android system).
+#   - clang:      Use clang rather than the default, which is generally GCC.
+#   - coverage:   Compile for building coverage.
+#   - fanalyzer:  Compile using GCC's -fanalyzer compile time option.
+#   - gcc:        Use GCC specific settings.
+#   - test:       Compile for a test, such as unit testing.
+#   - thread:     Compile with thread support.
+#   - threadless: Compile without thread support.
 #
 
 build_name controller
@@ -24,7 +25,7 @@ version_micro 0
 version_file micro
 version_target minor
 
-modes clang coverage fanalyzer gcc test thread threadless
+modes android clang coverage fanalyzer gcc test thread threadless
 modes_default thread gcc
 
 build_compiler gcc
@@ -141,12 +142,14 @@ environment LANG LC_ALL LC_COLLATE LC_CTYPE LC_FASTMSG LC_MESSAGES LC_MONETARY L
 defines -include sources/c/config.h -I sources/c/
 #defines -D_di_libcap_
 defines -D_libcap_legacy_only_
+defines-android -D_di_f_thread_attribute_affinity_get_ -D_di_f_thread_attribute_affinity_set_ -D_di_f_thread_attribute_concurrency_get_ -D_di_f_thread_attribute_concurrency_set_ -D_di_f_thread_attribute_default_get_ -D_di_f_thread_attribute_default_set_ -D_di_f_thread_cancel_ -D_di_f_thread_cancel_state_set_ -D_di_f_thread_cancel_test_ -D_di_f_thread_join_try_ -D_di_f_thread_join_timed_ -D_pthread_mutex_prioceiling_unsupported_ -D_di_f_thread_semaphore_file_close_ -D_di_f_thread_semaphore_file_open_ -D_di_f_thread_semaphore_file_delete_ -D_di_f_thread_cancel_type_set_
 defines-thread -D_pthread_attr_unsupported_ -D_pthread_sigqueue_unsupported_
 defines-threadless -D_di_thread_support_
 
 flags -O2 -g -fdiagnostics-color=always -Wno-logical-not-parentheses -Wno-parentheses -Wno-missing-braces
 flags -fstack-clash-protection -fno-delete-null-pointer-checks
 flags -Wl,-z,nodlopen -Wl,-z,noexecstack -Wl,-z,relro -Wl,-z,now
+flags-android -Wno-implicit-function-declaration -Wl,-z,norelro
 flags-thread -pthread
 flags-clang -Wno-logical-op-parentheses
 flags-gcc_13 -fstrict-flex-arrays=3
@@ -157,3 +160,4 @@ flags-coverage -O0 --coverage -fprofile-abs-path -fprofile-dir=build/coverage/
 flags_library -fPIC
 flags_object -fPIC
 flags_program -fPIE
+flags_program-android -fPIE -Wl,-z,relro
