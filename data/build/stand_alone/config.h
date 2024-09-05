@@ -530,7 +530,7 @@
 #define _di_f_fll_id_t_
 //#define _di_f_fss_apply_delimit_
 #define _di_f_fss_apply_delimit_range_
-#define _di_f_fss_complete_e_
+//#define _di_f_fss_complete_e_
 //#define _di_f_fss_count_lines_
 #define _di_f_fss_count_lines_range_
 //#define _di_f_fss_default_d_
@@ -1984,7 +1984,7 @@
 #define _di_f_uint8ss_destroy_callback_
 //#define _di_f_uint8ss_t_
 //#define _di_f_uint8s_t_
-#define _di_f_utf_buffer_decrement_
+//#define _di_f_utf_buffer_decrement_
 //#define _di_f_utf_buffer_increment_
 //#define _di_f_utf_byte_d_
 #define _di_f_utf_character_is_

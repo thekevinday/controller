@@ -84,12 +84,15 @@ extern "C" {
       cache->content_action.array[i].stop = 0;
     } // for
 
+    cache->close.start = 1;
+    cache->close.stop = 0;
+
     cache->comments.used = 0;
     cache->delimits.used = 0;
     cache->content_action.used = 0;
 
     if (method == controller_rule_action_method_extended_list_e) {
-      fl_fss_extended_list_content_read(cache->buffer_item, range, &cache->content_action, &cache->delimits, &cache->comments, state);
+      fl_fss_extended_list_content_read(cache->buffer_item, range, &cache->content_action, &cache->close, &cache->delimits, &cache->comments, state);
 
       if (F_status_is_error(state->status)) {
         controller_print_error(&main->program.error, macro_controller_f(fl_fss_extended_list_content_read));

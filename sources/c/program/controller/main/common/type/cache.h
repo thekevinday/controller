@@ -69,6 +69,7 @@ extern "C" {
  *   - ats:   Locations.
  *   - stack: Locations within a items history used as a history stack for circular recursion prevention.
  *
+ *   - close:   Close positions associated with a buffer string.
  *   - comments: Comments associated with a buffer string.
  *   - delimits: Delimits associated with a buffer string.
  *
@@ -96,6 +97,7 @@ extern "C" {
     f_number_unsigneds_t ats;
     f_number_unsigneds_t stack;
 
+    f_range_t close;
     f_ranges_t comments;
     f_number_unsigneds_t delimits;
 
@@ -121,6 +123,7 @@ extern "C" {
       f_range_t_initialize, \
       f_number_unsigneds_t_initialize, \
       f_number_unsigneds_t_initialize, \
+      f_range_t_initialize, \
       f_ranges_t_initialize, \
       f_number_unsigneds_t_initialize, \
       f_ranges_t_initialize, \
