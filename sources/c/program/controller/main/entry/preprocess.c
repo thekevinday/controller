@@ -32,12 +32,14 @@ extern "C" {
     cache->action.name_action.used = 0;
     cache->action.name_item.used = 0;
 
-    status = f_memory_array_increase(controller_allocation_small_d, sizeof(f_number_unsigned_t), (void **) &cache->ats.array, &cache->ats.used, &cache->ats.size);
+    if (cache->ats.size < 2) {
+      status = f_memory_array_resize(2, sizeof(f_number_unsigned_t), (void **) &cache->ats.array, &cache->ats.used, &cache->ats.size);
 
-    if (F_status_is_error(status)) {
-      controller_print_error_entry(&main->program.error, is_entry, F_status_set_fine(status), macro_controller_f(f_memory_array_increase), F_true);
+      if (F_status_is_error(status)) {
+        controller_print_error_entry(&main->program.error, is_entry, F_status_set_fine(status), macro_controller_f(f_memory_array_resize), F_true);
 
-      return status;
+        return status;
+      }
     }
 
     // Utilize the ats cache as an item execution stack (at_i is for item index, and at_j (at_i + 1) is for Action index).
