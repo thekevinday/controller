@@ -1,122 +1,152 @@
 # fss-000d
 #
-# A cgroups2 example for systemd-based system using example user with example subdirectories and example programs.
+# Rule for auto-configuring specific CGroup settings for some users.
 #
-# This uses a 12-core system as an example.
-#
-# This is intended to be run as the user rather than as root.
-#
-# Example sizes:
-#  For 2GB: 2 * 1024 * 1024 * 1024.
+# This is setup to be run under a SystemD system and there is an example SystemD service file provided for this.
+# This can be run without SystemD using controller or controller as init.
+# In such cases, the cgroup paths could be further simplified as suggested in some commented out examples.
 #
 
 settings:
-  name "Setup Cgroups for User 1000, named "you""
+  name "Setup CGroups for users."
+
+  environment PATH
 
 script:
 
   start {
     main() {
-      local user="you"
-      local group="you"
-      local path_cgroup="/sys/fs/cgroup/"
-      local path_slice_1="${path_cgroup}user.slice/"
-      local path_slice_2="${path_slice_1}user-1000.slice/"
-      #local path_slice_3="${path_slice_2}" # Some systemd's might work without the service directory.
-      local path_slice_3="${path_slice_2}user@1000.service/" # Some systemd's only give access to this service directory (the '@' is a problem and requires quoting).
-      local path_user="${path_slice_3}user_${user}/"
-      local path_group="${path_user}group/"
-      local path_top_subtree="${path_cgroup}cgroup.subtree_control" # Modifying this likely requires root privileges.
-      local directories="browser eclipse untrusted"
-      local d=
-      local i=
-      local subtree="+cpu +cpuset +memory +pids"
+      # Example PATH containing the FLL programs at a custom isolated directory.
+      PATH=/usr/local/fll/programs/shared/:$PATH
 
-      # The user path is for restricting the user and should not grant permissions to user other than read and execute directory.
-      if [[ ! -d "${path_user}" ]] ; then
-        mkdir -p "${path_user}"
+      local settings=/etc/init/settings/cgroup.fss
+      local all_subtree=$(fss_extended_read -nl all_subtree 0 "${settings}")
+      local group_subtree=$(fss_extended_read -nl group_subtree 0 "${settings}")
+      local total=$(fss_extended_read -nt user "${settings}")
+      let -i i=0
 
-        if [[ $? -ne 0 ]] ; then echo "Failed mkdir ${path_user}." ; return 1 ; fi
+      if [[ $total == "" ]] ; then
+        let total=0
       fi
 
-      chmod -R u+rwX,g+rX-w,o-rwx "${path_user}" &&
-      chgrp -R ${group} "${path_user}"
+      while [[ $i -lt $total ]] ; do
 
-      if [[ $? -ne 0 ]] ; then echo "Failed mkdir ${path_group}." ; return 1 ; fi
+        setup_cgroup $(fss_extended_read -nls user ${i} 0 "${settings}") $(fss_extended_read -nls user ${i} 1 "${settings}") $(fss_extended_read -nls user ${i} 2 "${settings}")
 
-      # The group path is for the user to restrict processes they run and must have ownership with write access.
-      if [[ ! -d "${path_group}" ]] ; then
-        mkdir -p "${path_group}"
-
-        if [[ $? -ne 0 ]] ; then echo "Failed mkdir ${path_group}." ; return 1 ; fi
-      fi
-
-      # Must have common ancestor with write acces, so fix setup from systemd to work with this one.
-      chmod -R u+rw+X,g+rX-w,o-rwx "${path_group}" &&
-      chown -R ${user}:${group} "${path_group}"
-
-      if [[ $? -ne 0 ]] ; then echo "Failed change permission on ${path_group}." ; return 1 ; fi
-
-      # Make sure the user can manipulate subtrees (May fail if any path outside of ${path_slice_1} lacks things wanted by ${subtree}).
-      echo ${subtree} >> "${path_slice_1}cgroup.subtree_control"
-      if [[ $? -ne 0 ]] ; then echo "Failed populate subtree of ${path_slice_1}cgroup.subtree_control." ; return 1 ; fi
-
-      echo ${subtree} >> "${path_slice_2}cgroup.subtree_control"
-      if [[ $? -ne 0 ]] ; then echo "Failed populate subtree of ${path_slice_2}cgroup.subtree_control." ; return 1 ; fi
-
-      echo ${subtree} >> "${path_slice_3}cgroup.subtree_control"
-      if [[ $? -ne 0 ]] ; then echo "Failed populate subtree of ${path_slice_3}cgroup.subtree_control." ; return 1 ; fi
-
-      echo ${subtree} >> "${path_slice_4}cgroup.subtree_control"
-      if [[ $? -ne 0 ]] ; then echo "Failed populate subtree of ${path_slice_4}cgroup.subtree_control." ; return 1 ; fi
-
-      echo ${subtree} >> "${path_user}cgroup.subtree_control"
-      if [[ $? -ne 0 ]] ; then echo "Failed populate subtree of ${path_user}cgroup.subtree_control." ; return 1 ; fi
-
-      echo ${subtree} >> "${path_group}cgroup.subtree_control"
-      if [[ $? -ne 0 ]] ; then echo "Failed populate subtree of ${path_group}cgroup.subtree_control." ; return 1 ; fi
-
-      for d in ${directories} ; do
-        i="${path_group}${d}/"
-
-        if [[ ! -d ${i} ]] ; then
-          echo "Creating cgroup directory '${i}'."
-
-          mkdir -p "${i}" &&
-          chown -R ${user}:${group} "${i}" &&
-          chmod -R u+rw+X,g+rX-w,o-rwx "${i}" &&
-          chmod g+s "${i}"
-
-          if [[ $? -ne 0 ]] ; then echo "Failed change permission on ${i}." ; return 1 ; fi
-        fi
-
-        if [[ ${d} == "browser" ]] ; then
-          put_into "7516192768" "${i}memory.high" &&
-          put_into "8589934592" "${i}memory.max" &&
-          put_into "3-6" "${i}cpuset.cpus"
-        elif [[ ${d} == "eclipse" ]] ; then
-          put_into "3758096384" "${i}memory.high" &&
-          put_into "4294967296" "${i}memory.max" &&
-          put_into "5-8" "${i}cpuset.cpus"
-        else
-          put_into "858993459" "${i}memory.high" &&
-          put_into "1073741824" "${i}memory.max" &&
-          put_into "9-11" "${i}cpuset.cpus"
-        fi
-
-        if [[ $? -ne 0 ]] ; then echo "Failed to restrictions for ${d} at ${i}." ; return 1 ; fi
+        let i++
       done
 
       return 0
     \}
 
-     put_into() {
-       if [[ -e ${2} ]] ; then
-         echo ${1} > ${2} || return 1
-       fi
+    setup_cgroup() {
+      local user="${1}"
+      local user_id="user-${3}"
+      local group="${2}"
+      local path_cgroup="/sys/fs/cgroup/"
+      local path_group="group/"
+      local path_slice_1="user.slice/"
+      local path_slice_2="${path_slice_1}${user_id}.slice/"
+      local path_slice_3="${path_slice_2}section-1.scope/"
+      local path_user="${path_slice_3}user_${user}/"
+      #local path_user="user_${user}/" # Common SystemD designs prevent this cleaner path from being used.
+      #local path_systemd_control="/sys/fs/cgroup/user.slice/cgroup.subtree_control"
+      #local path_systemd_control_user="/sys/fs/cgroup/user.slice/${user_id}.slice/cgroup.subtree_control"
+      local path_systemd_procs_user="/sys/fs/cgroup/user.slice/${user_id}.slice/cgroup.procs"
+      local categories=$(fss_extended_read -nl categories 0 "${settings}")
+      local category=
+      local total=
+      local key=
+      local c=
+      local i=
+      local j=
 
-       return 0
-     \}
+      # The user path is for restricting the user and should not grant permissions to user other than read and execute directory.
+      if [[ ! -d ${path_cgroup}${path_user} ]] ; then
+        mkdir -p ${path_cgroup}${path_user} || return 1
+      fi
 
-     main
+      chmod u+rwX,g+rX-w,o-rwx ${path_cgroup}${path_slice_1} || return 1
+      chgrp ${group} ${path_cgroup}${path_slice_1} || return 1
+
+      chmod u+rwX,g+rX-w,o-rwx ${path_cgroup}${path_slice_2} || return 1
+      chgrp ${group} ${path_cgroup}${path_slice_2} || return 1
+
+      chmod u+rwX,g+rX-w,o-rwx ${path_cgroup}${path_slice_3} || return 1
+      chgrp ${group} ${path_cgroup}${path_slice_3} || return 1
+
+      chmod -R u+rwX,g+rX-w,o-rwx ${path_cgroup}${path_user} || return 1
+      chgrp -R ${group} ${path_cgroup}${path_user} || return 1
+
+      # The group path is for the user to restrict processes they run and must have ownership with write access.
+      if [[ ! -d ${path_cgroup}${path_user}${path_group} ]] ; then
+        mkdir -p ${path_cgroup}${path_user}${path_group} || return 1
+      fi
+
+      chmod -R u+rw+X,g+rX-w,o-rwx ${path_cgroup}${path_user}${path_group} || return 1
+      chown -R ${user}:${group} ${path_cgroup}${path_user}${path_group} || return 1
+
+      find ${path_cgroup}${path_user} -type d -exec chmod g+s '{}' ';' || return 1
+
+      # make sure the user can manipulate subtrees.
+      echo ${all_subtree} >> ${path_cgroup}cgroup.subtree_control || return 1
+      #echo ${all_subtree} >> ${path_systemd_control} || return 1
+      #echo ${all_subtree} >> ${path_systemd_control_user} || return 1
+      echo ${group_subtree} >> ${path_cgroup}${path_slice_1}cgroup.subtree_control || return 1
+      echo ${group_subtree} >> ${path_cgroup}${path_slice_2}cgroup.subtree_control || return 1
+      echo ${group_subtree} >> ${path_cgroup}${path_slice_3}cgroup.subtree_control || return 1
+      echo ${group_subtree} >> ${path_cgroup}${path_user}cgroup.subtree_control || return 1
+      echo ${group_subtree} >> ${path_cgroup}${path_user}${path_group}cgroup.subtree_control || return 1
+
+      # must have common ancestort write acces, so fix setup from systemd to work with this one.
+      chgrp ${group} ${path_systemd_procs_user}
+      chmod g+w ${path_systemd_procs_user}
+
+      for c in ${categories} ; do
+        i="${path_cgroup}${path_user}${path_group}${c}/"
+
+        if [[ ! -d ${i} ]] ; then
+          echo "Creating cgroup directory '${i}'."
+
+          mkdir -p ${i} &&
+          chown -R ${user}:${group} ${i} &&
+          chmod -R u+rw+X,g+rX-w,o-rwx ${i} || exit 1
+          chmod g+s ${i} || exit 1
+        fi
+
+        if [[ $(fss_extended_read -nls "category_${c}" 0 0 "${settings}") != "" ]] ; then
+          category="category_${c}"
+        else
+          category="default"
+        fi
+
+        total=$(fss_extended_read -nt "${category}" "${settings}")
+        let j=0
+
+        if [[ $total == "" ]] ; then
+          let total=0
+        fi
+
+        while [[ $j -lt $total ]] ; do
+
+          key=$(fss_extended_read -nls "${category}" ${j} 0 "${settings}")
+
+          put_into $(fss_extended_read -nls "${category}" ${j} 1 "${settings}") "${i}${key}" || return 1
+
+          let j++
+        done
+      done
+
+      return 0
+    \}
+
+    put_into() {
+      if [[ -e ${2} ]] ; then
+        echo ${1} > ${2} || return 1
+      fi
+
+      return 0
+    \}
+
+    main
   }

@@ -1,8 +1,0 @@
-# fss-000d
-
-settings:
-  name "Run Eclipse"
-  cgroup existing user.slice/user-1000.slice/user@1000.service/user_you/group/eclipse
-
-command:
-  start eclipse

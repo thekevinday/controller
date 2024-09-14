@@ -1,0 +1,12 @@
+[Unit]
+Description=Controller: Setup CGroup
+
+[Service]
+#Type=simple
+Type=oneshot
+User=0
+Group=0
+ExecStart=/usr/local/fll/programs/shared/controller -s /etc/init startup
+
+[Install]
+WantedBy=default.target

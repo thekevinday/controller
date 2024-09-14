@@ -1,7 +1,0 @@
-# fss-0005
-
-settings:
-  mode helper
-
-main:
-  start program eclipse asynchronous

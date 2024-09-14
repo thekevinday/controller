@@ -1,0 +1,10 @@
+# fss-0005
+#
+# Helper entry for starting terminator using a sub-user account rule.
+#
+
+settings:
+  mode helper
+
+main:
+  start program terminator asynchronous

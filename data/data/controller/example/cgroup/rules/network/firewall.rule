@@ -1,0 +1,10 @@
+# fss-000d
+#
+# Rule for loading the FLL firewall settings on system start.
+#
+
+setting:
+  name "Load firewall settings."
+
+command:
+  start /usr/local/fll/programs/shared/firewall restart

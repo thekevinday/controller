@@ -1,0 +1,18 @@
+# fss-0001
+
+all_subtree +cpu +cpuset +memory +pids
+group_subtree +cpu +cpuset +memory +pids
+
+# For 2GB: 2 * 1024 * 1024 * 1024 = 2147483648.
+# For 1GB: 1024 * 1024 * 1024 = 1073741824
+# For 768MB: 1024 * 1024 * 768 = 805306368.
+default memory.high 805306368
+default memory.max 1073741824
+default cpuset.cpus 1-2
+
+categories browser untrusted
+
+category_browser memory.high 1073741824
+category_browser memory.max 1288490188
+
+user some_user some_group 1000

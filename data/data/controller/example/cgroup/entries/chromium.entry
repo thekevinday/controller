@@ -1,4 +1,7 @@
 # fss-0005
+#
+# Helper entry for starting chromium using a sub-user account rule.
+#
 
 settings:
   mode helper

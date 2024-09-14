@@ -1,8 +1,31 @@
 # fss-000d
+#
+# Helper rule for starting chromium using a sub-user account.
+#
 
 settings:
-  name "Run Chromium"
-  cgroup existing user.slice/user-1000.slice/user@1000.service/user_you/group/browser
+  name "Run Chromoum as some_user."
+  cgroup existing user.slice/user-1000.slice/section-1.scope/user_xmpme/group/browser
+  environment DISPLAY
+  #user some_user
+  #group some_group
+  nice 5
+
+script:
+  start {
+    if [[ $(xhost | grep '^SI:localuser:some_user$') == "" ]] ; then
+      xhost SI:localuser:some_user
+    fi
+
+    if [[ $DISPLAY == "" ]] ; then
+      export DISPLAY=:0.0
+    fi
+
+    export WEBKIT_DISABLE_COMPOSITING_MODE=1
+  }
 
 command:
-  start chromium --disable-features=UserAgentClientHint
+
+  # Run as a custom user in which the current user has passwordless sudo access to.
+  start sudo -n --preserve-env=WEBKIT_DISABLE_COMPOSITING_MODE,DISPLAY -u some_user chromium-browser --disable-features=UserAgentClientHint
+  #start sudo -n --preserve-env=WEBKIT_DISABLE_COMPOSITING_MODE,DISPLAY -u some_user chromium-browser --disable-features=UserAgentClientHint --disable-web-security

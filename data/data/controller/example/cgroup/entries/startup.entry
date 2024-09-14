@@ -1,0 +1,26 @@
+# fss-0005
+#
+# Entry file for system startup tasks, setting up cgroup for sub-users.
+#
+# A sub-user is a second user in which some other user can switch to without a password and run processes in a more controlled, or perhaps jailed, environment.
+#
+# The Rules that utilize the cgroup for sub-users functionality generally use sudo to perform this task and run in helper mode with asynchronous to allow for the controller program to exit while the program executes as a forked process.
+#
+
+settings:
+  mode program
+
+  control_user 0
+  control_group 0
+  control_mode ug+rwx,o-rwx
+
+  session new
+
+main:
+  failsafe failure
+
+  start network firewall asynchronous
+  start setup cgroups
+
+failure:
+  print Controller Startup Failed.

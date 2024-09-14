@@ -1,10 +1,10 @@
 # fss-000d
 #
-# Helper rule for starting firefox using a sub-user account.
+# Helper rule for starting terminator using a sub-user account.
 #
 
 settings:
-  name "Run Firefox as some_user."
+  name "Run Terminator as some_user."
   cgroup existing user.slice/user-1000.slice/section-1.scope/user_xmpme/group/browser
   environment DISPLAY
   #user some_user
@@ -25,4 +25,4 @@ script:
 command:
 
   # Run as a custom user in which the current user has passwordless sudo access to.
-  start sudo -n --preserve-env=DISPLAY -u some_user firefox
+  start sudo -n --preserve-env=DISPLAY -u some_user terminator
