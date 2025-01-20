@@ -17,39 +17,39 @@ extern "C" {
 #endif
 
 /**
+ * Pre-define the main type so it can be used in child classes.
+ */
+#ifndef _di_fake_main_t_typedef_
+  typedef struct controller_t_ controller_t;
+#endif // _di_fake_main_t_typedef_
+
+/**
  * The controller instance typedef.
  */
- #ifndef _di_controller_instance_t_
+ #ifndef _di_controller_instance_t_typedef_
   typedef struct controller_instance_t_ controller_instance_t;
-#endif // _di_controller_instance_t_
+#endif // _di_controller_instance_t_typedef_
 
 /**
  * The controller instances typedef.
  */
- #ifndef _di_controller_instances_t_
+ #ifndef _di_controller_instances_t_typedef_
   typedef struct controller_instances_t_ controller_instances_t;
-#endif // _di_controller_instances_t_
-
-/**
- * The controller main typedef.
- */
-#ifndef _di_controller_t_
-  typedef struct controller_t_ controller_t;
-#endif // _di_controller_t_
+#endif // _di_controller_instances_t_typedef_
 
 /**
  * The controller program typedef.
  */
-#ifndef _di_controller_process_t
+#ifndef _di_controller_process_t_typedef_
   typedef struct controller_process_t_ controller_process_t;
-#endif // _di_controller_process_t
+#endif // _di_controller_process_t_typedef_
 
 /**
  * The controller thread typedef.
  */
- #ifndef _di_controller_thread_t_
+ #ifndef _di_controller_thread_t_typedef_
   typedef struct controller_thread_t_ controller_thread_t;
-#endif // _di_controller_thread_t_
+#endif // _di_controller_thread_t_typedef_
 
 #ifdef __cplusplus
 } // extern "C"
