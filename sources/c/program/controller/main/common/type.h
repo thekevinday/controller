@@ -23,10 +23,8 @@ extern "C" {
  * These program settings are often processed from the program arguments (often called the command line arguments).
  *
  * Properties:
- *   - flag: Flags passed to the main function.
- *
- *   - status_signal: A status used eclusively by the threaded signal handler.
- *   - state:         The state data used when processing the FSS data.
+ *   - flag:  Flags passed to the main function.
+ *   - state: The state data used when processing the FSS data.
  *
  *   - path_pid:     The name of the program.
  *   - path_setting: The long name of the program.
@@ -34,8 +32,6 @@ extern "C" {
 #ifndef _di_controller_setting_t_
   typedef struct {
     uint16_t flag;
-
-    f_status_t status_signal;
     f_state_t state;
 
     f_string_dynamic_t path_pid;
@@ -45,7 +41,6 @@ extern "C" {
   #define controller_setting_t_initialize \
     { \
       controller_main_flag_none_d, \
-      F_okay, \
       f_state_t_initialize, \
       f_string_dynamic_t_initialize, \
       f_string_dynamic_t_initialize, \

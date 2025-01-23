@@ -1981,6 +1981,7 @@
 #define _di_fl_iki_eki_read_
 //#define _di_fl_iki_read_
 //#define _di_fl_path_canonical_
+#define _di_fl_path_clean_
 //#define _di_fl_print_debug_s_
 //#define _di_fl_print_error_s_
 //#define _di_fl_print_format_
@@ -2206,5 +2207,6 @@
 //#define _di_fll_program_standard_set_up_
 //#define _di_fll_program_standard_signal_handle_
 //#define _di_fll_program_standard_signal_received_
+//#define _di_fll_program_standard_signal_received_wait_
 #define _di_private_inline_f_print_to_error_
 #define _di_private_inline_private_f_print_to_error_
