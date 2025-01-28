@@ -11,9 +11,7 @@ extern "C" {
     if (main->program.signal_received) return F_true;
 
     if (!((++main->program.signal_check) % controller_signal_check_d)) {
-      if (F_status_set_fine(fll_program_standard_signal_received(&main->program)) == F_interupt) {
-        fll_program_print_signal_received(&main->program.warning, main->program.signal_received);
-
+      if (F_status_set_fine(fll_program_standard_signal_received(&main->program)) == F_interrupt) {
         main->setting.state.status = F_status_set_error(F_interrupt);
 
         return F_true;
@@ -29,11 +27,9 @@ extern "C" {
 #if !defined(_di_controller_signal_check_) && !defined(_di_thread_support_)
   f_status_t controller_signal_check(controller_t * const main) {
 
-    if (!main || main->program.signal.id == -1) return F_false;
+    if (!main) return F_false;
 
     if (main->program.signal_received) {
-      fll_program_print_signal_received(&main->program.warning, main->program.signal_received);
-
       main->setting.state.status = F_status_set_error(F_interrupt);
 
       return F_true;

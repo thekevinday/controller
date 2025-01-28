@@ -22,6 +22,10 @@ extern "C" {
         fll_program_print_copyright(&main->program.message, fll_program_copyright_year_author_s);
       }
 
+      if (main->program.signal_received) {
+        fll_program_print_signal_received(&main->program.warning, main->program.signal_received);
+      }
+
       return;
     }
 
@@ -145,15 +149,13 @@ extern "C" {
       if (main->thread.signal) {
         main->program.signal_received = main->thread.signal;
       }
-
-      if (main->program.message.verbosity > f_console_verbosity_error_e) {
-        fll_print_dynamic_raw(f_string_eol_s, main->program.message.to);
-      }
-
-      fll_program_print_signal_received(&main->program.warning, main->program.signal_received);
     }
     else {
       main->setting.state.status = F_status_is_error(status) ? F_status_set_error(F_failure) : F_okay;
+    }
+
+    if (main->program.signal_received) {
+      fll_program_print_signal_received(&main->program.warning, main->program.signal_received);
     }
   }
 #endif // _di_controller_process_
