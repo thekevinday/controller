@@ -552,6 +552,16 @@
 #define _di_f_fll_idss_delete_callback_
 #define _di_f_fll_idss_destroy_callback_
 #define _di_f_fll_idss_t_
+//#define _di_f_gid_t_
+#define _di_f_gids_t_
+#define _di_f_gidss_delete_callback_
+#define _di_f_gidss_destroy_callback_
+#define _di_f_gidss_t_
+//#define _di_f_id_t_
+#define _di_f_ids_t_
+#define _di_f_idss_delete_callback_
+#define _di_f_idss_destroy_callback_
+#define _di_f_idss_t_
 //#define _di_f_fss_apply_delimit_
 #define _di_f_fss_apply_delimit_range_
 //#define _di_f_fss_complete_e_
@@ -1693,6 +1703,11 @@
 //#define _di_f_type_file_flag_d_
 //#define _di_f_type_number_64_t_
 //#define _di_f_type_sizes_d_
+//#define _di_f_uid_t_
+#define _di_f_uids_t_
+#define _di_f_uidss_delete_callback_
+#define _di_f_uidss_destroy_callback_
+#define _di_f_uidss_t_
 //#define _di_f_uint128_t_
 #define _di_f_uint128s_t_
 #define _di_f_uint128ss_delete_callback_
@@ -1924,6 +1939,7 @@
 #define _di_f_utf_unicode_string_to_
 #define _di_f_utf_unicode_to_
 #define _di_f_utf_width_e_
+#define _di_f_void_call_t_
 //#define _di_fl_control_group_apply_
 //#define _di_fl_conversion_data_base_10_c_
 #define _di_fl_conversion_data_base_12_c_
@@ -1994,6 +2010,7 @@
 //#define _di_fl_iki_read_
 //#define _di_fl_path_canonical_
 #define _di_fl_path_clean_
+#define _di_fl_print_call_t_
 //#define _di_fl_print_debug_s_
 //#define _di_fl_print_error_s_
 //#define _di_fl_print_format_
