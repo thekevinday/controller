@@ -81,7 +81,7 @@ build_sources_program fll/level_1/path.c
 build_sources_program fll/level_1/print.c fll/level_1/private-print.c fll/level_1/print/common.c
 
 build_sources_program fll/level_2/control_group.c
-build_sources_program fll/level_2/error.c fll/level_2/private-error.c fll/level_2/error/common.c
+build_sources_program fll/level_2/error.c fll/level_2/private-error.c fll/level_2/error/common.c fll/level_2/error/string.c
 build_sources_program fll/level_2/execute.c fll/level_2/private-execute.c
 build_sources_program fll/level_2/fss.c fll/level_2/fss/basic.c fll/level_2/fss/basic_list.c fll/level_2/fss/embedded_list.c fll/level_2/fss/extended.c fll/level_2/fss/extended_list.c fll/level_2/fss/payload.c
 build_sources_program fll/level_2/print.c
